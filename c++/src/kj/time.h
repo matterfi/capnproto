@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "units.h"
 #include <inttypes.h>
 #include "string.h"
@@ -44,13 +45,13 @@ static constexpr size_t TIME_STR_LEN = sizeof(int64_t) * 3 + 8;
 using Duration = Quantity<int64_t, _::NanosecondLabel>;
 // A time value, in nanoseconds.
 
-constexpr Duration NANOSECONDS = unit<Duration>();
-constexpr Duration MICROSECONDS = 1000 * NANOSECONDS;
-constexpr Duration MILLISECONDS = 1000 * MICROSECONDS;
-constexpr Duration SECONDS = 1000 * MILLISECONDS;
-constexpr Duration MINUTES = 60 * SECONDS;
-constexpr Duration HOURS = 60 * MINUTES;
-constexpr Duration DAYS = 24 * HOURS;
+constexpr Duration KJ_API NANOSECONDS = unit<Duration>();
+constexpr Duration KJ_API MICROSECONDS = 1000 * NANOSECONDS;
+constexpr Duration KJ_API MILLISECONDS = 1000 * MICROSECONDS;
+constexpr Duration KJ_API SECONDS = 1000 * MILLISECONDS;
+constexpr Duration KJ_API MINUTES = 60 * SECONDS;
+constexpr Duration KJ_API HOURS = 60 * MINUTES;
+constexpr Duration KJ_API DAYS = 24 * HOURS;
 
 using TimePoint = Absolute<Duration, _::TimeLabel>;
 // An absolute time measured by some particular instance of `Timer` or `MonotonicClock`. `Time`s
@@ -60,20 +61,20 @@ using TimePoint = Absolute<Duration, _::TimeLabel>;
 using Date = Absolute<Duration, _::DateLabel>;
 // A point in real-world time, measured relative to the Unix epoch (Jan 1, 1970 00:00:00 UTC).
 
-CappedArray<char, _::TIME_STR_LEN> KJ_STRINGIFY(TimePoint);
-CappedArray<char, _::TIME_STR_LEN> KJ_STRINGIFY(Date);
-CappedArray<char, _::TIME_STR_LEN> KJ_STRINGIFY(Duration);
+CappedArray<char, _::TIME_STR_LEN> KJ_API KJ_STRINGIFY(TimePoint);
+CappedArray<char, _::TIME_STR_LEN> KJ_API KJ_STRINGIFY(Date);
+CappedArray<char, _::TIME_STR_LEN> KJ_API KJ_STRINGIFY(Duration);
 
-constexpr Date UNIX_EPOCH = origin<Date>();
+constexpr Date KJ_API UNIX_EPOCH = origin<Date>();
 // The `Date` representing Jan 1, 1970 00:00:00 UTC.
 
-class Clock {
+class KJ_CLASS Clock {
   // Interface to read the current date and time.
 public:
-  virtual Date now() const = 0;
+  virtual Date KJ_API now() const = 0;
 };
 
-class MonotonicClock {
+class KJ_CLASS MonotonicClock {
   // Interface to read time in a way that increases as real-world time increases, independent of
   // any manual changes to the calendar date/time. Such a clock never "goes backwards" even if the
   // system administrator changes the calendar time or suspends the system. However, this clock's
@@ -81,15 +82,15 @@ class MonotonicClock {
   // cannot be used to determine the current calendar date.
 
 public:
-  virtual TimePoint now() const = 0;
+  virtual TimePoint KJ_API now() const = 0;
 };
 
-const Clock& nullClock();
+const Clock& KJ_CLASS nullClock();
 // A clock which always returns UNIX_EPOCH as the current time. Useful when you don't care about
 // time.
 
-const Clock& systemCoarseCalendarClock();
-const Clock& systemPreciseCalendarClock();
+const Clock& KJ_API systemCoarseCalendarClock();
+const Clock& KJ_API systemPreciseCalendarClock();
 // A clock that reads the real system time.
 //
 // In well-designed code, this should only be called by the top-level dependency injector. All
@@ -103,8 +104,8 @@ const Clock& systemPreciseCalendarClock();
 // Note: On Windows prior to Windows 8, there is no precise calendar clock; the "precise" clock
 //   will be no more precise than the "coarse" clock in this case.
 
-const MonotonicClock& systemCoarseMonotonicClock();
-const MonotonicClock& systemPreciseMonotonicClock();
+const MonotonicClock& KJ_API systemCoarseMonotonicClock();
+const MonotonicClock& KJ_API systemPreciseMonotonicClock();
 // A MonotonicClock that reads the real system time.
 //
 // In well-designed code, this should only be called by the top-level dependency injector. All

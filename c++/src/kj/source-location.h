@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "string.h"
 
 KJ_BEGIN_HEADER
@@ -58,20 +59,20 @@ KJ_BEGIN_HEADER
 #endif
 
 namespace kj {
-class SourceLocation {
+class KJ_CLASS SourceLocation {
   // libc++ doesn't seem to implement <source_location> (or even <experimental/source_location>), so
   // this is a non-STL wrapper over the compiler primitives (these are the same across MSVC/clang/
   // gcc). Additionally this uses kj::StringPtr for holding the strings instead of const char* which
   // makes it integrate a little more nicely into KJ.
 
-  struct Badge { explicit constexpr Badge() = default; };
+  struct KJ_CLASS Badge { explicit constexpr Badge() = default; };
   // Neat little trick to make sure we can never call SourceLocation with explicit arguments.
 public:
 #if !KJ_COMPILER_SUPPORTS_SOURCE_LOCATION
-  constexpr SourceLocation() : fileName("??"), function("??"), lineNumber(0), columnNumber(0) {}
+  constexpr KJ_API SourceLocation() : fileName("??"), function("??"), lineNumber(0), columnNumber(0) {}
   // Constructs a dummy source location that's not pointing at anything.
 #else
-  constexpr SourceLocation(Badge = Badge{}, const char* file = __builtin_FILE(),
+  constexpr KJ_API SourceLocation(Badge = Badge{}, const char* file = __builtin_FILE(),
       const char* func = __builtin_FUNCTION(), uint line = __builtin_LINE(),
       uint column = KJ_CALLER_COLUMN())
     : fileName(file), function(func), lineNumber(line), columnNumber(column)
@@ -81,7 +82,7 @@ public:
 #if KJ_COMPILER_SUPPORTS_SOURCE_LOCATION
   // This can only be exposed if we actually generate valid SourceLocation objects as otherwise all
   // SourceLocation objects would confusingly (and likely problematically) be equated equal.
-  constexpr bool operator==(const SourceLocation& o) const {
+  constexpr bool KJ_API operator==(const SourceLocation& o) const {
     // Pointer equality is fine here based on how SourceLocation operates & how compilers will
     // intern all duplicate string constants.
     return fileName == o.fileName && function == o.function && lineNumber == o.lineNumber &&
@@ -89,21 +90,21 @@ public:
   }
 #endif
 
-  const char* fileName;
-  const char* function;
-  uint lineNumber;
-  uint columnNumber;
+  const char* KJ_API fileName;
+  const char* KJ_API function;
+  uint KJ_API lineNumber;
+  uint KJ_API columnNumber;
 };
 
-kj::String KJ_STRINGIFY(const SourceLocation& l);
+kj::String KJ_API KJ_STRINGIFY(const SourceLocation& l);
 
-class NoopSourceLocation {
+class KJ_CLASS NoopSourceLocation {
   // This is used in places where we want to conditionally compile out tracking the source location.
   // As such it intentionally lacks all the features but the default constructor so that the API
   // isn't accidentally used in the wrong compilation context.
 };
 
-KJ_UNUSED static kj::String KJ_STRINGIFY(const NoopSourceLocation& l) {
+KJ_UNUSED static kj::String KJ_API KJ_STRINGIFY(const NoopSourceLocation& l) {
   return kj::String();
 }
 }  // namespace kj

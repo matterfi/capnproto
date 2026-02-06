@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "memory.h"
 
 #if _MSC_VER
@@ -38,7 +39,7 @@ namespace kj {
 // =======================================================================================
 // Non-atomic (thread-unsafe) refcounting
 
-class Refcounted: private Disposer {
+class KJ_CLASS Refcounted: private Disposer {
   // Subclass this to create a class that contains a reference count. Then, use
   // `kj::refcounted<T>()` to allocate a new refcounted pointer.
   //
@@ -65,11 +66,11 @@ class Refcounted: private Disposer {
   //   Own<T> could also be nice.
 
 public:
-  Refcounted() = default;
-  virtual ~Refcounted() noexcept(false);
+  KJ_API Refcounted() = default;
+  virtual KJ_API ~Refcounted() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(Refcounted);
 
-  inline bool isShared() const { return refcount > 1; }
+  inline bool KJ_API isShared() const { return refcount > 1; }
   // Check if there are multiple references to this object. This is sometimes useful for deciding
   // whether it's safe to modify the object vs. make a copy.
 
@@ -181,13 +182,13 @@ Own<RefcountedWrapper<Own<T>>> refcountedWrapper(Own<T>&& wrapped) {
 #endif
 #endif
 
-class AtomicRefcounted: private kj::Disposer {
+class KJ_CLASS AtomicRefcounted: private kj::Disposer {
 public:
-  AtomicRefcounted() = default;
-  virtual ~AtomicRefcounted() noexcept(false);
+  KJ_API AtomicRefcounted() = default;
+  virtual KJ_API ~AtomicRefcounted() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(AtomicRefcounted);
 
-  inline bool isShared() const {
+  inline bool KJ_API isShared() const {
 #if _MSC_VER && !defined(__clang__)
     return KJ_MSVC_INTERLOCKED(Or, acq)(&refcount, 0) > 1;
 #else

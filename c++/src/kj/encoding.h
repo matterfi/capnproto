@@ -26,6 +26,7 @@
 // - URI encoding
 // - Base64
 
+#include "export-kj.h"
 #include "string.h"
 
 KJ_BEGIN_HEADER
@@ -55,8 +56,10 @@ inline auto KJ_STRINGIFY(const EncodingResult<T>& value)
   return toCharSequence(implicitCast<const T&>(value));
 }
 
-EncodingResult<Array<char16_t>> encodeUtf16(ArrayPtr<const char> text, bool nulTerminate = false);
-EncodingResult<Array<char32_t>> encodeUtf32(ArrayPtr<const char> text, bool nulTerminate = false);
+EncodingResult<Array<char16_t>> KJ_API encodeUtf16(ArrayPtr<const char> text,
+                                                   bool nulTerminate = false);
+EncodingResult<Array<char32_t>> KJ_API encodeUtf32(ArrayPtr<const char> text,
+                                                   bool nulTerminate = false);
 // Convert UTF-8 text (which KJ strings use) to UTF-16 or UTF-32.
 //
 // If `nulTerminate` is true, an extra NUL character will be added to the end of the output.
@@ -68,8 +71,8 @@ EncodingResult<Array<char32_t>> encodeUtf32(ArrayPtr<const char> text, bool nulT
 // [WTF-8 encoding](http://simonsapin.github.io/wtf-8/), which affects how invalid input is
 // handled. See comments on decodeUtf16() for more info.
 
-EncodingResult<String> decodeUtf16(ArrayPtr<const char16_t> utf16);
-EncodingResult<String> decodeUtf32(ArrayPtr<const char32_t> utf32);
+EncodingResult<String> KJ_API decodeUtf16(ArrayPtr<const char16_t> utf16);
+EncodingResult<String> KJ_API decodeUtf32(ArrayPtr<const char32_t> utf32);
 // Convert UTF-16 or UTF-32 to UTF-8 (which KJ strings use).
 //
 // The input should NOT include a NUL terminator; any NUL characters in the input array will be
@@ -104,9 +107,9 @@ EncodingResult<String> decodeUtf32(ArrayPtr<const char32_t> utf32);
 //   raised on subsequent legs unless all invalid sequences were replaced with U+FFFD (which, after
 //   all, is a valid code point).
 
-EncodingResult<Array<wchar_t>> encodeWideString(
+EncodingResult<Array<wchar_t>> KJ_API encodeWideString(
     ArrayPtr<const char> text, bool nulTerminate = false);
-EncodingResult<String> decodeWideString(ArrayPtr<const wchar_t> wide);
+EncodingResult<String> KJ_API decodeWideString(ArrayPtr<const wchar_t> wide);
 // Encode / decode strings of wchar_t, aka "wide strings". Unfortunately, different platforms have
 // different definitions for wchar_t. For example, on Windows they are 16-bit and encode UTF-16,
 // but on Linux they are 32-bit and encode UTF-32. Some platforms even define wchar_t as 8-bit,
@@ -116,20 +119,20 @@ EncodingResult<String> decodeWideString(ArrayPtr<const wchar_t> wide);
 // the target platform. So, these functions are simple aliases for encodeUtf*/decodeUtf*, above
 // (or simply make a copy if wchar_t is 8 bits).
 
-String encodeHex(ArrayPtr<const byte> bytes);
-EncodingResult<Array<byte>> decodeHex(ArrayPtr<const char> text);
+String KJ_API encodeHex(ArrayPtr<const byte> bytes);
+EncodingResult<Array<byte>> KJ_API decodeHex(ArrayPtr<const char> text);
 // Encode/decode bytes as hex strings.
 
-String encodeUriComponent(ArrayPtr<const byte> bytes);
-String encodeUriComponent(ArrayPtr<const char> bytes);
-EncodingResult<String> decodeUriComponent(ArrayPtr<const char> text);
+String KJ_API encodeUriComponent(ArrayPtr<const byte> bytes);
+String KJ_API encodeUriComponent(ArrayPtr<const char> bytes);
+EncodingResult<String> KJ_API decodeUriComponent(ArrayPtr<const char> text);
 // Encode/decode URI components using % escapes for characters listed as "reserved" in RFC 2396.
 // This is the same behavior as JavaScript's `encodeURIComponent()`.
 //
 // See https://tools.ietf.org/html/rfc2396#section-2.3
 
-String encodeUriFragment(ArrayPtr<const byte> bytes);
-String encodeUriFragment(ArrayPtr<const char> bytes);
+String KJ_API encodeUriFragment(ArrayPtr<const byte> bytes);
+String KJ_API encodeUriFragment(ArrayPtr<const char> bytes);
 // Encode URL fragment components using the fragment percent encode set defined by the WHATWG URL
 // specification. Use decodeUriComponent() to decode.
 //
@@ -138,8 +141,8 @@ String encodeUriFragment(ArrayPtr<const char> bytes);
 //
 // See https://url.spec.whatwg.org/#fragment-percent-encode-set
 
-String encodeUriPath(ArrayPtr<const byte> bytes);
-String encodeUriPath(ArrayPtr<const char> bytes);
+String KJ_API encodeUriPath(ArrayPtr<const byte> bytes);
+String KJ_API encodeUriPath(ArrayPtr<const char> bytes);
 // Encode URL path components (not entire paths!) using the path percent encode set defined by the
 // WHATWG URL specification. Use decodeUriComponent() to decode.
 //
@@ -154,8 +157,8 @@ String encodeUriPath(ArrayPtr<const char> bytes);
 //
 // See https://url.spec.whatwg.org/#path-percent-encode-set
 
-String encodeUriUserInfo(ArrayPtr<const byte> bytes);
-String encodeUriUserInfo(ArrayPtr<const char> bytes);
+String KJ_API encodeUriUserInfo(ArrayPtr<const byte> bytes);
+String KJ_API encodeUriUserInfo(ArrayPtr<const char> bytes);
 // Encode URL userinfo components using the userinfo percent encode set defined by the WHATWG URL
 // specification. Use decodeUriComponent() to decode.
 //
@@ -164,9 +167,9 @@ String encodeUriUserInfo(ArrayPtr<const char> bytes);
 //
 // See https://url.spec.whatwg.org/#userinfo-percent-encode-set
 
-String encodeWwwForm(ArrayPtr<const byte> bytes);
-String encodeWwwForm(ArrayPtr<const char> bytes);
-EncodingResult<String> decodeWwwForm(ArrayPtr<const char> text);
+String KJ_API encodeWwwForm(ArrayPtr<const byte> bytes);
+String KJ_API encodeWwwForm(ArrayPtr<const char> bytes);
+EncodingResult<String> KJ_API decodeWwwForm(ArrayPtr<const char> text);
 // Encode/decode URI components using % escapes and '+' (for spaces) according to the
 // application/x-www-form-urlencoded format defined by the WHATWG URL specification.
 //
@@ -176,42 +179,42 @@ EncodingResult<String> decodeWwwForm(ArrayPtr<const char> text);
 //
 // See https://url.spec.whatwg.org/#concept-urlencoded-byte-serializer
 
-struct DecodeUriOptions {
+struct KJ_CLASS DecodeUriOptions {
   // Parameter to `decodeBinaryUriComponent()`.
 
   // This struct is intentionally convertible from bool, in order to maintain backwards
   // compatibility with code written when `decodeBinaryUriComponent()` took a boolean second
   // parameter.
-  DecodeUriOptions(bool nulTerminate = false, bool plusToSpace = false)
+  KJ_API DecodeUriOptions(bool nulTerminate = false, bool plusToSpace = false)
       : nulTerminate(nulTerminate), plusToSpace(plusToSpace) {}
 
-  bool nulTerminate;
+  bool KJ_API nulTerminate;
   // Append a terminal NUL byte.
 
-  bool plusToSpace;
+  bool KJ_API plusToSpace;
   // Convert '+' to ' ' characters before percent decoding. Used to decode
   // application/x-www-form-urlencoded text, such as query strings.
 };
-EncodingResult<Array<byte>> decodeBinaryUriComponent(
+EncodingResult<Array<byte>> KJ_API decodeBinaryUriComponent(
     ArrayPtr<const char> text, DecodeUriOptions options = DecodeUriOptions());
 // Decode URI components using % escapes. This is a lower-level interface used to implement both
 // `decodeUriComponent()` and `decodeWwwForm()`
 
-String encodeCEscape(ArrayPtr<const byte> bytes);
-String encodeCEscape(ArrayPtr<const char> bytes);
-EncodingResult<Array<byte>> decodeBinaryCEscape(
+String KJ_API encodeCEscape(ArrayPtr<const byte> bytes);
+String KJ_API encodeCEscape(ArrayPtr<const char> bytes);
+EncodingResult<Array<byte>> KJ_API decodeBinaryCEscape(
     ArrayPtr<const char> text, bool nulTerminate = false);
-EncodingResult<String> decodeCEscape(ArrayPtr<const char> text);
+EncodingResult<String> KJ_API decodeCEscape(ArrayPtr<const char> text);
 
-String encodeBase64(ArrayPtr<const byte> bytes, bool breakLines = false);
+String KJ_API encodeBase64(ArrayPtr<const byte> bytes, bool breakLines = false);
 // Encode the given bytes as base64 text. If `breakLines` is true, line breaks will be inserted
 // into the output every 72 characters (e.g. for encoding e-mail bodies).
 
-EncodingResult<Array<byte>> decodeBase64(ArrayPtr<const char> text);
+EncodingResult<Array<byte>> KJ_API decodeBase64(ArrayPtr<const char> text);
 // Decode base64 text. This function reports errors required by the WHATWG HTML/Infra specs: see
 // https://html.spec.whatwg.org/multipage/webappapis.html#atob for details.
 
-String encodeBase64Url(ArrayPtr<const byte> bytes);
+String KJ_API encodeBase64Url(ArrayPtr<const byte> bytes);
 // Encode the given bytes as URL-safe base64 text. (RFC 4648, section 5)
 
 // =======================================================================================
@@ -246,7 +249,7 @@ const T* readMaybe(const EncodingResult<T>& value) {
   }
 }
 
-String encodeCEscapeImpl(ArrayPtr<const byte> bytes, bool isBinary);
+String KJ_API encodeCEscapeImpl(ArrayPtr<const byte> bytes, bool isBinary);
 
 }  // namespace _ (private)
 

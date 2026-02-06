@@ -37,6 +37,7 @@ else()
 endif()
 
 set(kj_headers
+  export-kj.h
   common.h
   units.h
   memory.h
@@ -96,8 +97,20 @@ if(NOT CAPNP_BUILDS_WITHOUT_LIBATOMIC)
   target_link_libraries(kj PUBLIC atomic)
 endif()
 
+get_target_property(KJ_TYPE kj TYPE)
+
+if(KJ_TYPE STREQUAL "SHARED_LIBRARY")
+  set(KJ_EXPORT_MACRO "KJ_BUILD")
+  set(KJ_IMPORT_MACRO "")
+else()
+  set(KJ_EXPORT_MACRO "KJ_STATIC_DEFINE")
+  set(KJ_IMPORT_MACRO "KJ_STATIC_DEFINE")
+endif()
+
 #make sure the lite flag propagates to all users (internal + external) of this library
 target_compile_definitions(kj PUBLIC ${CAPNP_LITE_FLAG})
+#set symbol visibility macros
+target_compile_definitions(kj INTERFACE ${KJ_IMPORT_MACRO} PRIVATE ${KJ_EXPORT_MACRO})
 #make sure external consumers don't need to manually set the include dirs
 get_filename_component(PARENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 target_include_directories(kj PUBLIC

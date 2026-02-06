@@ -21,13 +21,14 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "string.h"
 
 KJ_BEGIN_HEADER
 
 namespace kj {
 
-class StringTree {
+class KJ_CLASS StringTree {
   // A long string, represented internally as a tree of strings.  This data structure is like a
   // String, but optimized for concatenation and iteration at the expense of seek time.  The
   // structure is intended to be used for building large text blobs from many small pieces, where
@@ -42,26 +43,26 @@ class StringTree {
   // to return StringTree rather than a flat char container.
 
 public:
-  inline StringTree(): size_(0) {}
-  inline StringTree(String&& text): size_(text.size()), text(kj::mv(text)) {}
+  inline KJ_API StringTree(): size_(0) {}
+  inline KJ_API StringTree(String&& text): size_(text.size()), text(kj::mv(text)) {}
 
-  StringTree(Array<StringTree>&& pieces, StringPtr delim);
+  KJ_API StringTree(Array<StringTree>&& pieces, StringPtr delim);
   // Build a StringTree by concatenating the given pieces, delimited by the given delimiter
   // (e.g. ", ").
 
-  inline size_t size() const { return size_; }
+  inline size_t KJ_API size() const { return size_; }
 
   template <typename Func>
   void visit(Func&& func) const;
 
-  String flatten() const;
+  String KJ_API flatten() const;
   // Return the contents as a string.
 
   // TODO(someday):  flatten() when *this is an rvalue and when branches.size() == 0 could simply
   //   return `kj::mv(text)`.  Requires reference qualifiers (Clang 3.3 / GCC 4.8).
 
-  char* flattenTo(char* __restrict__ target) const;
-  char* flattenTo(char* __restrict__ target, char* limit) const;
+  char* KJ_API flattenTo(char* __restrict__ target) const;
+  char* KJ_API flattenTo(char* __restrict__ target, char* limit) const;
   // Copy the contents to the given character array.  Does not add a NUL terminator. Returns a
   // pointer just past the end of what was filled.
 
@@ -100,10 +101,12 @@ private:
   friend StringTree strTree(Params&&... params);
 };
 
-inline StringTree&& KJ_STRINGIFY(StringTree&& tree) { return kj::mv(tree); }
-inline const StringTree& KJ_STRINGIFY(const StringTree& tree) { return tree; }
+inline StringTree&& KJ_API KJ_STRINGIFY(StringTree&& tree) { return kj::mv(tree); }
+inline const StringTree& KJ_API KJ_STRINGIFY(const StringTree& tree) { return tree; }
 
-inline StringTree KJ_STRINGIFY(Array<StringTree>&& trees) { return StringTree(kj::mv(trees), ""); }
+inline StringTree KJ_API KJ_STRINGIFY(Array<StringTree>&& trees) {
+  return StringTree(kj::mv(trees), "");
+}
 
 template <typename... Params>
 StringTree strTree(Params&&... params);
@@ -150,11 +153,11 @@ inline auto toStringTreeOrCharSequence(T&& value)
 
 }  // namespace _ (private)
 
-struct StringTree::Branch {
-  size_t index;
+struct KJ_CLASS StringTree::Branch {
+  size_t KJ_API index;
   // Index in `text` where this branch should be inserted.
 
-  StringTree content;
+  StringTree KJ_API content;
 };
 
 template <typename Func>

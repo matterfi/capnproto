@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "common.h"
 #include <inttypes.h>
 
@@ -65,8 +66,8 @@ struct Id {
 // =======================================================================================
 // Quantity and UnitRatio -- implement unit analysis via the type system
 
-struct Unsafe_ {};
-constexpr Unsafe_ unsafe = Unsafe_();
+struct KJ_CLASS Unsafe_ {};
+constexpr Unsafe_ KJ_API unsafe = Unsafe_();
 // Use as a parameter to constructors that are unsafe to indicate that you really do mean it.
 
 template <uint64_t maxN, typename T>
@@ -480,13 +481,13 @@ inline constexpr uint bitCount() { return BitCount_<n>::value; }
 template <uint bitCountBitCount> struct AtLeastUInt_ {
   static_assert(bitCountBitCount < 7, "don't know how to represent integers over 64 bits");
 };
-template <> struct AtLeastUInt_<0> { typedef uint8_t Type; };
-template <> struct AtLeastUInt_<1> { typedef uint8_t Type; };
-template <> struct AtLeastUInt_<2> { typedef uint8_t Type; };
-template <> struct AtLeastUInt_<3> { typedef uint8_t Type; };
-template <> struct AtLeastUInt_<4> { typedef uint16_t Type; };
-template <> struct AtLeastUInt_<5> { typedef uint32_t Type; };
-template <> struct AtLeastUInt_<6> { typedef uint64_t Type; };
+template <> struct KJ_CLASS AtLeastUInt_<0> { typedef uint8_t Type; };
+template <> struct KJ_CLASS AtLeastUInt_<1> { typedef uint8_t Type; };
+template <> struct KJ_CLASS AtLeastUInt_<2> { typedef uint8_t Type; };
+template <> struct KJ_CLASS AtLeastUInt_<3> { typedef uint8_t Type; };
+template <> struct KJ_CLASS AtLeastUInt_<4> { typedef uint16_t Type; };
+template <> struct KJ_CLASS AtLeastUInt_<5> { typedef uint32_t Type; };
+template <> struct KJ_CLASS AtLeastUInt_<6> { typedef uint64_t Type; };
 
 template <uint bits>
 using AtLeastUInt = typename AtLeastUInt_<bitCount<max(bits, 1) - 1>()>::Type;

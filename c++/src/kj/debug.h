@@ -114,6 +114,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "string.h"
 #include "exception.h"
 #include "windows-sanity.h"  // work-around macro conflict with `ERROR`
@@ -385,7 +386,7 @@ namespace kj {
 
 namespace _ {  // private
 
-class Debug {
+class KJ_CLASS Debug {
 public:
   Debug() = delete;
 
@@ -411,7 +412,7 @@ public:
   static void log(const char* file, int line, LogSeverity severity, const char* macroArgs,
                   Params&&... params);
 
-  class Fault {
+  class KJ_CLASS Fault {
   public:
     template <typename Code, typename... Params>
     Fault(const char* file, int line, Code code,
@@ -424,16 +425,16 @@ public:
     Fault(const char* file, int line, Win32Result osErrorNumber,
           const char* condition, const char* macroArgs);
 #endif
-    ~Fault() noexcept(false);
+    KJ_API ~Fault() noexcept(false);
 
-    KJ_NOINLINE KJ_NORETURN(void fatal());
+    KJ_NOINLINE KJ_NORETURN(void KJ_API fatal());
     // Throw the exception.
 
   private:
-    void init(const char* file, int line, Exception::Type type,
-              const char* condition, const char* macroArgs, ArrayPtr<String> argValues);
-    void init(const char* file, int line, int osErrorNumber,
-              const char* condition, const char* macroArgs, ArrayPtr<String> argValues);
+    void KJ_API init(const char* file, int line, Exception::Type type,
+                     const char* condition, const char* macroArgs, ArrayPtr<String> argValues);
+    void KJ_API init(const char* file, int line, int osErrorNumber,
+                     const char* condition, const char* macroArgs, ArrayPtr<String> argValues);
 #if _WIN32 || __CYGWIN__
     void init(const char* file, int line, Win32Result osErrorNumber,
               const char* condition, const char* macroArgs, ArrayPtr<String> argValues);
@@ -464,11 +465,11 @@ public:
   static uint getWin32ErrorCode();
 #endif
 
-  class Context: public ExceptionCallback {
+  class KJ_CLASS Context: public ExceptionCallback {
   public:
-    Context();
+    KJ_API Context();
     KJ_DISALLOW_COPY_AND_MOVE(Context);
-    virtual ~Context() noexcept(false);
+    virtual KJ_API ~Context() noexcept(false);
 
     struct Value {
       const char* file;
@@ -481,10 +482,10 @@ public:
 
     virtual Value evaluate() = 0;
 
-    virtual void onRecoverableException(Exception&& exception) override;
-    virtual void onFatalException(Exception&& exception) override;
-    virtual void logMessage(LogSeverity severity, const char* file, int line, int contextDepth,
-                            String&& text) override;
+    virtual void KJ_API onRecoverableException(Exception&& exception) override;
+    virtual void KJ_API onFatalException(Exception&& exception) override;
+    virtual void KJ_API logMessage(LogSeverity severity, const char* file, int line,
+                                   int contextDepth, String&& text) override;
 
   private:
     bool logged;
@@ -510,11 +511,11 @@ public:
   static String makeDescription(const char* macroArgs, Params&&... params);
 
 private:
-  static LogSeverity minSeverity;
+  static LogSeverity KJ_API minSeverity;
 
-  static void logInternal(const char* file, int line, LogSeverity severity, const char* macroArgs,
-                          ArrayPtr<String> argValues);
-  static String makeDescriptionInternal(const char* macroArgs, ArrayPtr<String> argValues);
+  static void KJ_API logInternal(const char* file, int line, LogSeverity severity,
+                                 const char* macroArgs, ArrayPtr<String> argValues);
+  static String KJ_API makeDescriptionInternal(const char* macroArgs, ArrayPtr<String> argValues);
 
   static int getOsErrorNumber(bool nonblocking);
   // Get the error code of the last error (e.g. from errno).  Returns -1 on EINTR.
