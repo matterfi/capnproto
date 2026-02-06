@@ -128,6 +128,7 @@ set(kj-test_sources
   test.c++
 )
 set(kj-test_headers
+  export-kj-test.h
   test.h
 )
 set(kj-test-compat_headers
@@ -136,6 +137,20 @@ set(kj-test-compat_headers
 add_library(kj-test ${kj-test_sources})
 add_library(CapnProto::kj-test ALIAS kj-test)
 target_link_libraries(kj-test PUBLIC kj)
+
+get_target_property(KJ_TEST_TYPE kj-test TYPE)
+
+if(KJ_TEST_TYPE STREQUAL "SHARED_LIBRARY")
+  set(KJ_TEST_EXPORT_MACRO "KJ_TEST_BUILD")
+  set(KJ_TEST_IMPORT_MACRO "")
+else()
+  set(KJ_TEST_EXPORT_MACRO "KJ_TEST_STATIC_DEFINE")
+  set(KJ_TEST_IMPORT_MACRO "KJ_TEST_STATIC_DEFINE")
+endif()
+
+#set symbol visibility macros
+target_compile_definitions(kj-test INTERFACE ${KJ_TEST_IMPORT_MACRO} PRIVATE ${KJ_TEST_EXPORT_MACRO})
+
 # Ensure the library has a version set to match autotools build
 set_target_properties(kj-test PROPERTIES VERSION ${VERSION})
 install(TARGETS kj-test ${INSTALL_TARGETS_DEFAULT_ARGS})
