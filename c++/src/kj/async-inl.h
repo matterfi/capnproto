@@ -35,6 +35,7 @@
 #include <intrin.h>
 #endif
 
+#include "export-kj-async.h"
 #include <kj/list.h>
 
 KJ_BEGIN_HEADER
@@ -143,17 +144,17 @@ struct alignas(void*) PromiseArena {
   byte bytes[1024];
 };
 
-class Event: private AsyncObject {
+class KJ_ASYNC_CLASS Event: private AsyncObject {
   // An event waiting to be executed.  Not for direct use by applications -- promises use this
   // internally.
 
 public:
-  Event(SourceLocation location);
-  Event(kj::EventLoop& loop, SourceLocation location);
-  ~Event() noexcept(false);
+  KJ_ASYNC_API Event(SourceLocation location);
+  KJ_ASYNC_API Event(kj::EventLoop& loop, SourceLocation location);
+  KJ_ASYNC_API ~Event() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(Event);
 
-  void armDepthFirst();
+  void KJ_ASYNC_API armDepthFirst();
   // Enqueue this event so that `fire()` will be called from the event loop soon.
   //
   // Events scheduled in this way are executed in depth-first order:  if an event callback arms
@@ -168,14 +169,14 @@ public:
   //
   // To use breadth-first scheduling instead, use `armBreadthFirst()`.
 
-  void armBreadthFirst();
+  void KJ_ASYNC_API armBreadthFirst();
   // Like `armDepthFirst()` except that the event is placed at the end of the queue.
 
-  void armLast();
+  void KJ_ASYNC_API armLast();
   // Enqueues this event to happen after all other events have run to completion and there is
   // really nothing left to do except wait for I/O.
 
-  bool isNext();
+  bool KJ_ASYNC_API isNext();
   // True if the Event has been armed and is next in line to be fired. This can be used after
   // calling PromiseNode::onReady(event) to determine if a promise being waited is immediately
   // ready, in which case continuations may be optimistically run without returning to the event
@@ -187,11 +188,11 @@ public:
   // Returns false if the event loop is not currently running. This ensures that promise
   // continuations don't execute except under a call to .wait().
 
-  void disarm();
+  void KJ_ASYNC_API disarm();
   // If the event is armed but hasn't fired, cancel it. (Destroying the event does this
   // implicitly.)
 
-  virtual void traceEvent(TraceBuilder& builder) = 0;
+  virtual void KJ_ASYNC_API traceEvent(TraceBuilder& builder) = 0;
   // Build a trace of the callers leading up to this event. `builder` will be populated with
   // "return addresses" of the promise chain waiting on this event. The return addresses may
   // actually the addresses of lambdas passed to .then(), but in any case, feeding them into
@@ -200,11 +201,11 @@ public:
   // `traceEvent()` may be called from an async signal handler while `fire()` is executing. It
   // must not allocate nor take locks.
 
-  String traceEvent();
+  String KJ_ASYNC_API traceEvent();
   // Helper that builds a trace and stringifies it.
 
 protected:
-  virtual Maybe<Own<Event>> fire() = 0;
+  virtual Maybe<Own<Event>> KJ_ASYNC_API fire() = 0;
   // Fire the event.  Possibly returns a pointer to itself, which will be discarded by the
   // caller.  This is the only way that an event can delete itself as a result of firing, as
   // doing so from within fire() will throw an exception.
@@ -254,7 +255,7 @@ private:
   friend class PromiseDisposer;
 };
 
-class PromiseNode: public PromiseArenaMember, private AsyncObject {
+class KJ_ASYNC_CLASS PromiseNode: public PromiseArenaMember, private AsyncObject {
   // A Promise<T> contains a chain of PromiseNodes tracking the pending transformations.
   //
   // To reduce generated code bloat, PromiseNode is not a template.  Instead, it makes very hacky
@@ -263,25 +264,25 @@ class PromiseNode: public PromiseArenaMember, private AsyncObject {
   // internal implementation details.
 
 public:
-  virtual void onReady(Event* event) noexcept = 0;
+  virtual void KJ_ASYNC_API onReady(Event* event) noexcept = 0;
   // Arms the given event when ready.
   //
   // May be called multiple times. If called again before the event was armed, the old event will
   // never be armed, only the new one. If called again after the event was armed, the new event
   // will be armed immediately. Can be called with nullptr to un-register the existing event.
 
-  virtual void setSelfPointer(OwnPromiseNode* selfPtr) noexcept;
+  virtual void KJ_ASYNC_API setSelfPointer(OwnPromiseNode* selfPtr) noexcept;
   // Tells the node that `selfPtr` is the pointer that owns this node, and will continue to own
   // this node until it is destroyed or setSelfPointer() is called again.  ChainPromiseNode uses
   // this to shorten redundant chains.  The default implementation does nothing; only
   // ChainPromiseNode should implement this.
 
-  virtual void get(ExceptionOrValue& output) noexcept = 0;
+  virtual void KJ_ASYNC_API get(ExceptionOrValue& output) noexcept = 0;
   // Get the result.  `output` points to an ExceptionOr<T> into which the result will be written.
   // Can only be called once, and only after the node is ready.  Must be called directly from the
   // event loop, with no application code on the stack.
 
-  virtual void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) = 0;
+  virtual void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) = 0;
   // Build a trace of this promise chain, showing what it is currently waiting on.
   //
   // Since traces are ordered callee-before-caller, PromiseNode::tracePromise() should typically
@@ -326,7 +327,7 @@ protected:
   public:
     void init(Event* newEvent);
 
-    void arm();
+    void KJ_ASYNC_API arm();
     void armBreadthFirst();
     // Arms the event if init() has already been called and makes future calls to init()
     // automatically arm the event.
@@ -468,13 +469,13 @@ inline NeverDone::operator Promise<T>() const {
 
 // -------------------------------------------------------------------
 
-class ImmediatePromiseNodeBase: public PromiseNode {
+class KJ_ASYNC_CLASS ImmediatePromiseNodeBase: public PromiseNode {
 public:
-  ImmediatePromiseNodeBase();
-  ~ImmediatePromiseNodeBase() noexcept(false);
+  KJ_ASYNC_API ImmediatePromiseNodeBase();
+  KJ_ASYNC_API ~ImmediatePromiseNodeBase() noexcept(false);
 
-  void onReady(Event* event) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
+  KJ_ASYNC_API void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 };
 
 template <typename T>
@@ -493,12 +494,12 @@ private:
   ExceptionOr<T> result;
 };
 
-class ImmediateBrokenPromiseNode final: public ImmediatePromiseNodeBase {
+class KJ_ASYNC_CLASS ImmediateBrokenPromiseNode final: public ImmediatePromiseNodeBase {
 public:
-  ImmediateBrokenPromiseNode(Exception&& exception);
-  void destroy() override;
+  KJ_ASYNC_API ImmediateBrokenPromiseNode(Exception&& exception);
+  void KJ_ASYNC_API destroy() override;
 
-  void get(ExceptionOrValue& output) noexcept override;
+  void KJ_ASYNC_API get(ExceptionOrValue& output) noexcept override;
 
 private:
   Exception exception;
@@ -515,18 +516,18 @@ public:
 
 // -------------------------------------------------------------------
 
-class AttachmentPromiseNodeBase: public PromiseNode {
+class KJ_ASYNC_CLASS AttachmentPromiseNodeBase: public PromiseNode {
 public:
-  AttachmentPromiseNodeBase(OwnPromiseNode&& dependency);
+  KJ_ASYNC_API AttachmentPromiseNodeBase(OwnPromiseNode&& dependency);
 
-  void onReady(Event* event) noexcept override;
-  void get(ExceptionOrValue& output) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
+  void KJ_ASYNC_API get(ExceptionOrValue& output) noexcept override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 private:
   OwnPromiseNode dependency;
 
-  void dropDependency();
+  void KJ_ASYNC_API dropDependency();
 
   template <typename>
   friend class AttachmentPromiseNode;
@@ -686,20 +687,20 @@ struct GetFunctorStartAddress<Void&&>: public GetFunctorStartAddress<> {};
 // Hack for TransformPromiseNode use case: an input type of `Void` indicates that the function
 // actually has no parameters.
 
-class TransformPromiseNodeBase: public PromiseNode {
+class KJ_ASYNC_CLASS TransformPromiseNodeBase: public PromiseNode {
 public:
-  TransformPromiseNodeBase(OwnPromiseNode&& dependency, void* continuationTracePtr);
+  KJ_ASYNC_API TransformPromiseNodeBase(OwnPromiseNode&& dependency, void* continuationTracePtr);
 
-  void onReady(Event* event) noexcept override;
-  void get(ExceptionOrValue& output) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
+  void KJ_ASYNC_API get(ExceptionOrValue& output) noexcept override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 private:
   OwnPromiseNode dependency;
   void* continuationTracePtr;
 
-  void dropDependency();
-  void getDepResult(ExceptionOrValue& output);
+  void KJ_ASYNC_API dropDependency();
+  void KJ_ASYNC_API getDepResult(ExceptionOrValue& output);
 
   virtual void getImpl(ExceptionOrValue& output) = 0;
 
@@ -755,22 +756,22 @@ private:
 class ForkHubBase;
 using OwnForkHubBase = Own<ForkHubBase, ForkHubBase>;
 
-class ForkBranchBase: public PromiseNode {
+class KJ_ASYNC_CLASS ForkBranchBase: public PromiseNode {
 public:
-  ForkBranchBase(OwnForkHubBase&& hub);
-  ~ForkBranchBase() noexcept(false);
+  KJ_ASYNC_API ForkBranchBase(OwnForkHubBase&& hub);
+  KJ_ASYNC_API ~ForkBranchBase() noexcept(false);
 
-  void hubReady() noexcept;
+  void KJ_ASYNC_API hubReady() noexcept;
   // Called by the hub to indicate that it is ready.
 
   // implements PromiseNode ------------------------------------------
-  void onReady(Event* event) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 protected:
-  inline ExceptionOrValue& getHubResultRef();
+  inline ExceptionOrValue& KJ_ASYNC_API getHubResultRef();
 
-  void releaseHub(ExceptionOrValue& output);
+  void KJ_ASYNC_API releaseHub(ExceptionOrValue& output);
   // Release the hub.  If an exception is thrown, add it to `output`.
 
 private:
@@ -837,20 +838,21 @@ public:
 
 // -------------------------------------------------------------------
 
-class ForkHubBase: public PromiseArenaMember, protected Event {
+class KJ_ASYNC_CLASS ForkHubBase: public PromiseArenaMember, protected Event {
 public:
-  ForkHubBase(OwnPromiseNode&& inner, ExceptionOrValue& resultRef, SourceLocation location);
+  KJ_ASYNC_API ForkHubBase(OwnPromiseNode&& inner, ExceptionOrValue& resultRef,
+                           SourceLocation location);
 
-  inline ExceptionOrValue& getResultRef() { return resultRef; }
+  inline ExceptionOrValue& KJ_ASYNC_API getResultRef() { return resultRef; }
 
   inline bool isShared() const { return refcount > 1; }
 
-  Own<ForkHubBase, ForkHubBase> addRef() {
+  Own<ForkHubBase, ForkHubBase> KJ_ASYNC_API addRef() {
     ++refcount;
     return Own<ForkHubBase, ForkHubBase>(this);
   }
 
-  static void dispose(ForkHubBase* obj) {
+  static void KJ_ASYNC_API dispose(ForkHubBase* obj) {
     if (--obj->refcount == 0) {
       PromiseDisposer::dispose(obj);
     }
@@ -868,8 +870,8 @@ private:
   ForkBranchBase** tailBranch = &headBranch;
   // Tail becomes null once the inner promise is ready and all branches have been notified.
 
-  Maybe<Own<Event>> fire() override;
-  void traceEvent(TraceBuilder& builder) override;
+  Maybe<Own<Event>> KJ_ASYNC_API fire() override;
+  void KJ_ASYNC_API traceEvent(TraceBuilder& builder) override;
 
   friend class ForkBranchBase;
 };
@@ -917,21 +919,21 @@ inline ExceptionOrValue& ForkBranchBase::getHubResultRef() {
 
 // -------------------------------------------------------------------
 
-class ChainPromiseNode final: public PromiseNode, public Event {
+class KJ_ASYNC_CLASS ChainPromiseNode final: public PromiseNode, public Event {
   // Promise node which reduces Promise<Promise<T>> to Promise<T>.
   //
   // `Event` is only a public base class because otherwise we can't cast Own<ChainPromiseNode> to
   // Own<Event>.  Ugh, templates and private...
 
 public:
-  explicit ChainPromiseNode(OwnPromiseNode inner, SourceLocation location);
-  ~ChainPromiseNode() noexcept(false);
-  void destroy() override;
+  explicit KJ_ASYNC_API ChainPromiseNode(OwnPromiseNode inner, SourceLocation location);
+  KJ_ASYNC_API ~ChainPromiseNode() noexcept(false);
+  void KJ_ASYNC_API destroy() override;
 
-  void onReady(Event* event) noexcept override;
-  void setSelfPointer(OwnPromiseNode* selfPtr) noexcept override;
-  void get(ExceptionOrValue& output) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
+  void KJ_ASYNC_API setSelfPointer(OwnPromiseNode* selfPtr) noexcept override;
+  void KJ_ASYNC_API get(ExceptionOrValue& output) noexcept override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 private:
   enum State {
@@ -974,15 +976,16 @@ inline Promise<T> maybeReduce(Promise<T>&& promise, ...) {
 
 // -------------------------------------------------------------------
 
-class ExclusiveJoinPromiseNode final: public PromiseNode {
+class KJ_ASYNC_CLASS ExclusiveJoinPromiseNode final: public PromiseNode {
 public:
-  ExclusiveJoinPromiseNode(OwnPromiseNode left, OwnPromiseNode right, SourceLocation location);
-  ~ExclusiveJoinPromiseNode() noexcept(false);
-  void destroy() override;
+  KJ_ASYNC_API ExclusiveJoinPromiseNode(OwnPromiseNode left, OwnPromiseNode right,
+                                        SourceLocation location);
+  KJ_ASYNC_API ~ExclusiveJoinPromiseNode() noexcept(false);
+  void KJ_ASYNC_API destroy() override;
 
-  void onReady(Event* event) noexcept override;
-  void get(ExceptionOrValue& output) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
+  void KJ_ASYNC_API get(ExceptionOrValue& output) noexcept override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 private:
   class Branch: public Event {
@@ -1016,20 +1019,20 @@ enum class ArrayJoinBehavior {
   EAGER,
 };
 
-class ArrayJoinPromiseNodeBase: public PromiseNode {
+class KJ_ASYNC_CLASS ArrayJoinPromiseNodeBase: public PromiseNode {
 public:
-  ArrayJoinPromiseNodeBase(Array<OwnPromiseNode> promises,
-                           ExceptionOrValue* resultParts, size_t partSize,
-                           SourceLocation location,
-                           ArrayJoinBehavior joinBehavior);
-  ~ArrayJoinPromiseNodeBase() noexcept(false);
+  KJ_ASYNC_API ArrayJoinPromiseNodeBase(Array<OwnPromiseNode> promises,
+                                        ExceptionOrValue* resultParts, size_t partSize,
+                                        SourceLocation location,
+                                        ArrayJoinBehavior joinBehavior);
+  KJ_ASYNC_API ~ArrayJoinPromiseNodeBase() noexcept(false);
 
-  void onReady(Event* event) noexcept override final;
-  void get(ExceptionOrValue& output) noexcept override final;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override final;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override final;
+  void KJ_ASYNC_API get(ExceptionOrValue& output) noexcept override final;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override final;
 
 protected:
-  virtual void getNoError(ExceptionOrValue& output) noexcept = 0;
+  virtual void KJ_ASYNC_API getNoError(ExceptionOrValue& output) noexcept = 0;
   // Called to compile the result only in the case where there were no errors.
 
 private:
@@ -1105,16 +1108,16 @@ private:
 
 // -------------------------------------------------------------------
 
-class EagerPromiseNodeBase: public PromiseNode, protected Event {
+class KJ_ASYNC_CLASS EagerPromiseNodeBase: public PromiseNode, protected Event {
   // A PromiseNode that eagerly evaluates its dependency even if its dependent does not eagerly
   // evaluate it.
 
 public:
-  EagerPromiseNodeBase(OwnPromiseNode&& dependency, ExceptionOrValue& resultRef,
-                       SourceLocation location);
+  KJ_ASYNC_API EagerPromiseNodeBase(OwnPromiseNode&& dependency, ExceptionOrValue& resultRef,
+                                    SourceLocation location);
 
-  void onReady(Event* event) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 private:
   OwnPromiseNode dependency;
@@ -1122,8 +1125,8 @@ private:
 
   ExceptionOrValue& resultRef;
 
-  Maybe<Own<Event>> fire() override;
-  void traceEvent(TraceBuilder& builder) override;
+  Maybe<Own<Event>> KJ_ASYNC_API fire() override;
+  void KJ_ASYNC_API traceEvent(TraceBuilder& builder) override;
 };
 
 template <typename T>
@@ -1150,13 +1153,13 @@ OwnPromiseNode spark(OwnPromiseNode&& node, SourceLocation location) {
 
 // -------------------------------------------------------------------
 
-class AdapterPromiseNodeBase: public PromiseNode {
+class KJ_ASYNC_CLASS AdapterPromiseNodeBase: public PromiseNode {
 public:
-  void onReady(Event* event) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 protected:
-  inline void setReady() {
+  inline void KJ_ASYNC_API setReady() {
     onReadyEvent.arm();
   }
 
@@ -1208,25 +1211,27 @@ private:
 
 // -------------------------------------------------------------------
 
-class FiberBase: public PromiseNode, private Event {
+class KJ_ASYNC_CLASS FiberBase: public PromiseNode, private Event {
   // Base class for the outer PromiseNode representing a fiber.
 
 public:
-  explicit FiberBase(size_t stackSize, _::ExceptionOrValue& result, SourceLocation location);
-  explicit FiberBase(const FiberPool& pool, _::ExceptionOrValue& result, SourceLocation location);
-  ~FiberBase() noexcept(false);
+  explicit KJ_ASYNC_API FiberBase(size_t stackSize, _::ExceptionOrValue& result,
+                                  SourceLocation location);
+  explicit KJ_ASYNC_API FiberBase(const FiberPool& pool, _::ExceptionOrValue& result,
+                                  SourceLocation location);
+  KJ_ASYNC_API ~FiberBase() noexcept(false);
 
-  void start() { armDepthFirst(); }
+  void KJ_ASYNC_API start() { armDepthFirst(); }
   // Call immediately after construction to begin executing the fiber.
 
   class WaitDoneEvent;
 
-  void onReady(_::Event* event) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(_::Event* event) noexcept override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 protected:
-  bool isFinished() { return state == FINISHED; }
-  void cancel();
+  bool KJ_ASYNC_API isFinished() { return state == FINISHED; }
+  void KJ_ASYNC_API cancel();
 
 private:
   enum { WAITING, RUNNING, CANCELED, FINISHED } state;
@@ -1239,8 +1244,8 @@ private:
   void run();
   virtual void runImpl(WaitScope& waitScope) = 0;
 
-  Maybe<Own<Event>> fire() override;
-  void traceEvent(TraceBuilder& builder) override;
+  Maybe<Own<Event>> KJ_ASYNC_API fire() override;
+  void KJ_ASYNC_API traceEvent(TraceBuilder& builder) override;
   // Implements Event. Each time the event is fired, switchToFiber() is called.
 
   friend class FiberStack;
@@ -1540,10 +1545,10 @@ Promise<Array<T>> joinPromisesFailFast(Array<Promise<T>>&& promises, SourceLocat
 
 namespace _ {  // private
 
-class WeakFulfillerBase: protected kj::Disposer {
+class KJ_ASYNC_CLASS WeakFulfillerBase: protected kj::Disposer {
 protected:
-  WeakFulfillerBase(): inner(nullptr) {}
-  virtual ~WeakFulfillerBase() noexcept(false) {}
+  KJ_ASYNC_API WeakFulfillerBase(): inner(nullptr) {}
+  virtual KJ_ASYNC_API ~WeakFulfillerBase() noexcept(false) {}
 
   template <typename T>
   inline PromiseFulfiller<T>* getInner() {
@@ -1557,7 +1562,7 @@ protected:
 private:
   mutable PromiseRejector* inner;
 
-  void disposeImpl(void* pointer) const override;
+  void KJ_ASYNC_API disposeImpl(void* pointer) const override;
 };
 
 template <typename T>
@@ -1686,26 +1691,26 @@ PromiseFulfillerPair<T> newPromiseAndFulfiller(SourceLocation location) {
 
 namespace _ {  // (private)
 
-class XThreadEvent: public PromiseNode,    // it's a PromiseNode in the requesting thread
-                    private Event {        // it's an event in the target thread
+class KJ_ASYNC_CLASS XThreadEvent: public PromiseNode,    // it's a PromiseNode in the requesting thread
+                                   private Event {        // it's an event in the target thread
 public:
-  XThreadEvent(ExceptionOrValue& result, const Executor& targetExecutor, EventLoop& loop,
-               void* funcTracePtr, SourceLocation location);
+  KJ_ASYNC_API XThreadEvent(ExceptionOrValue& result, const Executor& targetExecutor,
+                            EventLoop& loop, void* funcTracePtr, SourceLocation location);
 
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 protected:
-  void ensureDoneOrCanceled();
+  void KJ_ASYNC_API ensureDoneOrCanceled();
   // MUST be called in destructor of subclasses to make sure the object is not destroyed while
   // still being accessed by the other thread. (This can't be placed in ~XThreadEvent() because
   // that destructor doesn't run until the subclass has already been destroyed.)
 
-  virtual kj::Maybe<OwnPromiseNode> execute() = 0;
+  virtual kj::Maybe<OwnPromiseNode> KJ_ASYNC_API execute() = 0;
   // Run the function. If the function returns a promise, returns the inner PromiseNode, otherwise
   // returns null.
 
   // implements PromiseNode ----------------------------------------------------
-  void onReady(Event* event) noexcept override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
 
 private:
   ExceptionOrValue& result;
@@ -1780,11 +1785,11 @@ private:
   class DelayedDoneHack;
 
   // implements Event ----------------------------------------------------------
-  Maybe<Own<Event>> fire() override;
+  Maybe<Own<Event>> KJ_ASYNC_API fire() override;
   // If called with promiseNode == nullptr, it's time to call execute(). If promiseNode != nullptr,
   // then it just indicated readiness and we need to get its result.
 
-  void traceEvent(TraceBuilder& builder) override;
+  void KJ_ASYNC_API traceEvent(TraceBuilder& builder) override;
 };
 
 template <typename Func, typename = _::FixVoid<_::ReturnType<Func, void>>>
@@ -1871,15 +1876,15 @@ namespace _ {  // (private)
 template <typename T>
 class XThreadFulfiller;
 
-class XThreadPaf: public PromiseNode {
+class KJ_ASYNC_CLASS XThreadPaf: public PromiseNode {
 public:
-  XThreadPaf();
-  virtual ~XThreadPaf() noexcept(false);
-  void destroy() override;
+  KJ_ASYNC_API XThreadPaf();
+  virtual KJ_ASYNC_API ~XThreadPaf() noexcept(false);
+  void KJ_ASYNC_API destroy() override;
 
   // implements PromiseNode ----------------------------------------------------
-  void onReady(Event* event) noexcept override;
-  void tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
+  void KJ_ASYNC_API onReady(Event* event) noexcept override;
+  void KJ_ASYNC_API tracePromise(TraceBuilder& builder, bool stopAtNextEvent) override;
 
 private:
   enum {
@@ -1928,7 +1933,7 @@ private:
 
   class FulfillScope;
 
-  static kj::Exception unfulfilledException();
+  static kj::Exception KJ_ASYNC_API unfulfilledException();
   // Construct appropriate exception to use to reject an unfulfilled XThreadPaf.
 
   template <typename T>
@@ -1950,21 +1955,21 @@ private:
   friend class XThreadFulfiller<T>;
 };
 
-class XThreadPaf::FulfillScope {
+class KJ_ASYNC_CLASS XThreadPaf::FulfillScope {
   // Create on stack while setting `XThreadPafImpl<T>::result`.
   //
   // This ensures that:
   // - Only one call is carried out, even if multiple threads try to fulfill concurrently.
   // - The waiting thread is correctly signaled.
 public:
-  FulfillScope(XThreadPaf** pointer);
+  KJ_ASYNC_API FulfillScope(XThreadPaf** pointer);
   // Atomically nulls out *pointer and takes ownership of the pointer.
 
-  ~FulfillScope() noexcept(false);
+  KJ_ASYNC_API ~FulfillScope() noexcept(false);
 
   KJ_DISALLOW_COPY_AND_MOVE(FulfillScope);
 
-  bool shouldFulfill() { return obj != nullptr; }
+  bool KJ_ASYNC_API shouldFulfill() { return obj != nullptr; }
 
   template <typename T>
   XThreadPafImpl<T>* getTarget() { return static_cast<XThreadPafImpl<T>*>(obj); }

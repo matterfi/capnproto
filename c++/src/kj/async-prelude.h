@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include "export-kj-async.h"
 #include <kj/exception.h>
 #include <kj/tuple.h>
 #include <kj/source-location.h>
@@ -57,8 +58,10 @@ class Promise;
 class WaitScope;
 class TaskSet;
 
-Promise<void> joinPromises(Array<Promise<void>>&& promises, SourceLocation location = {});
-Promise<void> joinPromisesFailFast(Array<Promise<void>>&& promises, SourceLocation location = {});
+Promise<void> KJ_ASYNC_API joinPromises(Array<Promise<void>>&& promises,
+                                        SourceLocation location = {});
+Promise<void> KJ_ASYNC_API joinPromisesFailFast(Array<Promise<void>>&& promises,
+                                                SourceLocation location = {});
 // Out-of-line <void> specialization of template function defined in async.h.
 
 namespace _ {  // private
@@ -219,9 +222,9 @@ class PromiseDisposer;
 using OwnPromiseNode = Own<PromiseNode, PromiseDisposer>;
 // PromiseNode uses a static disposer.
 
-class PromiseBase {
+class KJ_CLASS PromiseBase {
 public:
-  kj::String trace();
+  kj::String KJ_ASYNC_API trace();
   // Dump debug info about this promise.
 
 private:
@@ -235,26 +238,26 @@ private:
   friend class PromiseNode;
 };
 
-void detach(kj::Promise<void>&& promise);
-void waitImpl(_::OwnPromiseNode&& node, _::ExceptionOrValue& result, WaitScope& waitScope,
-              SourceLocation location);
-bool pollImpl(_::PromiseNode& node, WaitScope& waitScope, SourceLocation location);
-Promise<void> yield();
-Promise<void> yieldHarder();
-OwnPromiseNode readyNow();
-OwnPromiseNode neverDone();
+void KJ_ASYNC_API detach(kj::Promise<void>&& promise);
+void KJ_ASYNC_API waitImpl(_::OwnPromiseNode&& node, _::ExceptionOrValue& result,
+                           WaitScope& waitScope, SourceLocation location);
+bool KJ_ASYNC_API pollImpl(_::PromiseNode& node, WaitScope& waitScope, SourceLocation location);
+Promise<void> KJ_ASYNC_API yield();
+Promise<void> KJ_ASYNC_API yieldHarder();
+OwnPromiseNode KJ_ASYNC_API readyNow();
+OwnPromiseNode KJ_ASYNC_API neverDone();
 
 class ReadyNow {
 public:
   operator Promise<void>() const;
 };
 
-class NeverDone {
+class KJ_ASYNC_CLASS NeverDone {
 public:
   template <typename T>
   operator Promise<T>() const;
 
-  KJ_NORETURN(void wait(WaitScope& waitScope, SourceLocation location = {}) const);
+  KJ_NORETURN(void KJ_ASYNC_API wait(WaitScope& waitScope, SourceLocation location = {}) const);
 };
 
 }  // namespace _ (private)

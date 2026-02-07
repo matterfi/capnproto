@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj-async.h"
 #include "async.h"
 #include <kj/function.h>
 #include <kj/thread.h>
@@ -51,16 +52,16 @@ class File;
 // =======================================================================================
 // Streaming I/O
 
-class AsyncInputStream: private AsyncObject {
+class KJ_ASYNC_CLASS AsyncInputStream: private AsyncObject {
   // Asynchronous equivalent of InputStream (from io.h).
 
 public:
-  virtual Promise<size_t> read(void* buffer, size_t minBytes, size_t maxBytes);
-  virtual Promise<size_t> tryRead(void* buffer, size_t minBytes, size_t maxBytes) = 0;
+  virtual Promise<size_t> KJ_ASYNC_API read(void* buffer, size_t minBytes, size_t maxBytes);
+  virtual Promise<size_t> KJ_ASYNC_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) = 0;
 
-  Promise<void> read(void* buffer, size_t bytes);
+  Promise<void> KJ_ASYNC_API read(void* buffer, size_t bytes);
 
-  virtual Maybe<uint64_t> tryGetLength();
+  virtual Maybe<uint64_t> KJ_ASYNC_API tryGetLength();
   // Get the remaining number of bytes that will be produced by this stream, if known.
   //
   // This is used e.g. to fill in the Content-Length header of an HTTP message. If unknown, the
@@ -68,7 +69,7 @@ public:
   //
   // The default implementation always returns null.
 
-  virtual Promise<uint64_t> pumpTo(
+  virtual Promise<uint64_t> KJ_ASYNC_API pumpTo(
       AsyncOutputStream& output, uint64_t amount = kj::maxValue);
   // Read `amount` bytes from this stream (or to EOF) and write them to `output`, returning the
   // total bytes actually pumped (which is only less than `amount` if EOF was reached).
@@ -81,21 +82,22 @@ public:
   // The default implementation first tries calling output.tryPumpFrom(), but if that fails, it
   // performs a naive pump by allocating a buffer and reading to it / writing from it in a loop.
 
-  Promise<Array<byte>> readAllBytes(uint64_t limit = kj::maxValue);
-  Promise<String> readAllText(uint64_t limit = kj::maxValue);
+  Promise<Array<byte>> KJ_ASYNC_API readAllBytes(uint64_t limit = kj::maxValue);
+  Promise<String> KJ_ASYNC_API readAllText(uint64_t limit = kj::maxValue);
   // Read until EOF and return as one big byte array or string. Throw an exception if EOF is not
   // seen before reading `limit` bytes.
   //
   // To prevent runaway memory allocation, consider using a more conservative value for `limit` than
   // the default, particularly on untrusted data streams which may never see EOF.
 
-  virtual void registerAncillaryMessageHandler(Function<void(ArrayPtr<AncillaryMessage>)> fn);
+  virtual void KJ_ASYNC_API registerAncillaryMessageHandler(
+      Function<void(ArrayPtr<AncillaryMessage>)> fn);
   // Register interest in checking for ancillary messages (aka control messages) when reading.
   // The provided callback will be called whenever any are encountered. The messages passed to
   // the function do not live beyond when function returns.
   // Only supported on Unix (the default impl throws UNIMPLEMENTED). Most apps will not use this.
 
-  virtual Maybe<Own<AsyncInputStream>> tryTee(uint64_t limit = kj::maxValue);
+  virtual Maybe<Own<AsyncInputStream>> KJ_ASYNC_API tryTee(uint64_t limit = kj::maxValue);
   // Primarily intended as an optimization for the `tee` call. Returns an input stream whose state
   // is independent from this one but which will return the exact same set of bytes read going
   // forward. limit is a total limit on the amount of memory, in bytes, which a tee implementation
@@ -105,15 +107,16 @@ public:
   // likely to arise if tryTee() is called twice with different limits on the same stream.
 };
 
-class AsyncOutputStream: private AsyncObject {
+class KJ_ASYNC_CLASS AsyncOutputStream: private AsyncObject {
   // Asynchronous equivalent of OutputStream (from io.h).
 
 public:
-  virtual Promise<void> write(const void* buffer, size_t size) KJ_WARN_UNUSED_RESULT = 0;
-  virtual Promise<void> write(ArrayPtr<const ArrayPtr<const byte>> pieces)
+  virtual Promise<void> KJ_ASYNC_API write(const void* buffer, size_t size)
+      KJ_WARN_UNUSED_RESULT = 0;
+  virtual Promise<void> KJ_ASYNC_API write(ArrayPtr<const ArrayPtr<const byte>> pieces)
       KJ_WARN_UNUSED_RESULT = 0;
 
-  virtual Maybe<Promise<uint64_t>> tryPumpFrom(
+  virtual Maybe<Promise<uint64_t>> KJ_ASYNC_API tryPumpFrom(
       AsyncInputStream& input, uint64_t amount = kj::maxValue);
   // Implements double-dispatch for AsyncInputStream::pumpTo().
   //
@@ -124,7 +127,7 @@ public:
   //
   // The default implementation always returns null.
 
-  virtual Promise<void> whenWriteDisconnected() = 0;
+  virtual Promise<void> KJ_ASYNC_API whenWriteDisconnected() = 0;
   // Returns a promise that resolves when the stream has become disconnected such that new write()s
   // will fail with a DISCONNECTED exception. This is particularly useful, for example, to cancel
   // work early when it is detected that no one will receive the result.
@@ -139,25 +142,25 @@ public:
   // multiple times without canceling the previous promises.
 };
 
-class AsyncIoStream: public AsyncInputStream, public AsyncOutputStream {
+class KJ_ASYNC_CLASS AsyncIoStream: public AsyncInputStream, public AsyncOutputStream {
   // A combination input and output stream.
 
 public:
-  virtual void shutdownWrite() = 0;
+  virtual void KJ_ASYNC_API shutdownWrite() = 0;
   // Cleanly shut down just the write end of the stream, while keeping the read end open.
 
-  virtual void abortRead() {}
+  virtual void KJ_ASYNC_API abortRead() {}
   // Similar to shutdownWrite, but this will shut down the read end of the stream, and should only
   // be called when an error has occurred.
 
-  virtual void getsockopt(int level, int option, void* value, uint* length);
-  virtual void setsockopt(int level, int option, const void* value, uint length);
+  virtual void KJ_ASYNC_API getsockopt(int level, int option, void* value, uint* length);
+  virtual void KJ_ASYNC_API setsockopt(int level, int option, const void* value, uint length);
   // Corresponds to getsockopt() and setsockopt() syscalls. Will throw an "unimplemented" exception
   // if the stream is not a socket or the option is not appropriate for the socket type. The
   // default implementations always throw "unimplemented".
 
-  virtual void getsockname(struct sockaddr* addr, uint* length);
-  virtual void getpeername(struct sockaddr* addr, uint* length);
+  virtual void KJ_ASYNC_API getsockname(struct sockaddr* addr, uint* length);
+  virtual void KJ_ASYNC_API getpeername(struct sockaddr* addr, uint* length);
   // Corresponds to getsockname() and getpeername() syscalls. Will throw an "unimplemented"
   // exception if the stream is not a socket. The default implementations always throw
   // "unimplemented".
@@ -166,16 +169,16 @@ public:
   // be useful. You can't connect() to or listen() on these addresses, obviously, because they are
   // ephemeral addresses for a single connection.
 
-  virtual kj::Maybe<int> getFd() const { return nullptr; }
+  virtual kj::Maybe<int> KJ_ASYNC_API getFd() const { return nullptr; }
   // Get the underlying Unix file descriptor, if any. Returns nullptr if this object actually
   // isn't wrapping a file descriptor.
 
-  virtual Maybe<void*> getWin32Handle() const { return nullptr; }
+  virtual Maybe<void*> KJ_ASYNC_API getWin32Handle() const { return nullptr; }
   // Get the underlying Win32 HANDLE, if any. Returns nullptr if this object actually isn't
   // wrapping a handle.
 };
 
-Promise<uint64_t> unoptimizedPumpTo(
+Promise<uint64_t> KJ_ASYNC_API unoptimizedPumpTo(
     AsyncInputStream& input, AsyncOutputStream& output, uint64_t amount,
     uint64_t completedSoFar = 0);
 // Performs a pump using read() and write(), without calling the stream's pumpTo() nor
@@ -189,7 +192,7 @@ Promise<uint64_t> unoptimizedPumpTo(
 // provided for convenience for cases where the caller has already done some pumping before they
 // give up. Otherwise, a `.then()` would need to be used to add the bytes to the final result.
 
-class AsyncCapabilityStream: public AsyncIoStream {
+class KJ_ASYNC_CLASS AsyncCapabilityStream: public AsyncIoStream {
   // An AsyncIoStream that also allows transmitting new stream objects and file descriptors
   // (capabilities, in the object-capability model sense), in addition to bytes.
   //
@@ -217,25 +220,26 @@ class AsyncCapabilityStream: public AsyncIoStream {
   // broker, or in terms of direct handle passing if at least one process trusts the other.
 
 public:
-  virtual Promise<void> writeWithFds(ArrayPtr<const byte> data,
-                                     ArrayPtr<const ArrayPtr<const byte>> moreData,
-                                     ArrayPtr<const int> fds) = 0;
-  Promise<void> writeWithFds(ArrayPtr<const byte> data,
-                             ArrayPtr<const ArrayPtr<const byte>> moreData,
-                             ArrayPtr<const AutoCloseFd> fds);
+  virtual Promise<void> KJ_ASYNC_API writeWithFds(ArrayPtr<const byte> data,
+                                                  ArrayPtr<const ArrayPtr<const byte>> moreData,
+                                                  ArrayPtr<const int> fds) = 0;
+  Promise<void> KJ_ASYNC_API writeWithFds(ArrayPtr<const byte> data,
+                                          ArrayPtr<const ArrayPtr<const byte>> moreData,
+                                          ArrayPtr<const AutoCloseFd> fds);
   // Write some data to the stream with some file descriptors attached to it.
   //
   // The maximum number of FDs that can be sent at a time is usually subject to an OS-imposed
   // limit. On Linux, this is 253. In practice, sending more than a handful of FDs at once is
   // probably a bad idea.
 
-  struct ReadResult {
-    size_t byteCount;
-    size_t capCount;
+  struct KJ_ASYNC_CLASS ReadResult {
+    size_t KJ_ASYNC_API byteCount;
+    size_t KJ_ASYNC_API capCount;
   };
 
-  virtual Promise<ReadResult> tryReadWithFds(void* buffer, size_t minBytes, size_t maxBytes,
-                                             AutoCloseFd* fdBuffer, size_t maxFds) = 0;
+  virtual Promise<ReadResult> KJ_ASYNC_API tryReadWithFds(void* buffer, size_t minBytes,
+                                                          size_t maxBytes, AutoCloseFd* fdBuffer,
+                                                          size_t maxFds) = 0;
   // Read data from the stream that may have file descriptors attached. Any attached descriptors
   // will be placed in `fdBuffer`. If multiple bundles of FDs are encountered in the course of
   // reading the amount of data requested by minBytes/maxBytes, then they will be concatenated. If
@@ -244,10 +248,10 @@ public:
   // fill up the FD table with garbage. Applications must think carefully about how many FDs they
   // really need to receive at once and set a well-defined limit.
 
-  virtual Promise<void> writeWithStreams(ArrayPtr<const byte> data,
-                                         ArrayPtr<const ArrayPtr<const byte>> moreData,
-                                         Array<Own<AsyncCapabilityStream>> streams) = 0;
-  virtual Promise<ReadResult> tryReadWithStreams(
+  virtual Promise<void> KJ_ASYNC_API writeWithStreams(ArrayPtr<const byte> data,
+                                                ArrayPtr<const ArrayPtr<const byte>> moreData,
+                                                Array<Own<AsyncCapabilityStream>> streams) = 0;
+  virtual Promise<ReadResult> KJ_ASYNC_API tryReadWithStreams(
       void* buffer, size_t minBytes, size_t maxBytes,
       Own<AsyncCapabilityStream>* streamBuffer, size_t maxStreams) = 0;
   // Like above, but passes AsyncCapabilityStream objects. The stream implementations must be from
@@ -259,49 +263,49 @@ public:
   // These are equivalent to the above methods with the constraint that only one FD is
   // sent/received at a time and the corresponding data is a single zero-valued byte.
 
-  Promise<Own<AsyncCapabilityStream>> receiveStream();
-  Promise<Maybe<Own<AsyncCapabilityStream>>> tryReceiveStream();
-  Promise<void> sendStream(Own<AsyncCapabilityStream> stream);
+  Promise<Own<AsyncCapabilityStream>> KJ_ASYNC_API receiveStream();
+  Promise<Maybe<Own<AsyncCapabilityStream>>> KJ_ASYNC_API tryReceiveStream();
+  Promise<void> KJ_ASYNC_API sendStream(Own<AsyncCapabilityStream> stream);
   // Transfer a single stream.
 
-  Promise<AutoCloseFd> receiveFd();
-  Promise<Maybe<AutoCloseFd>> tryReceiveFd();
-  Promise<void> sendFd(int fd);
+  Promise<AutoCloseFd> KJ_ASYNC_API receiveFd();
+  Promise<Maybe<AutoCloseFd>> KJ_ASYNC_API tryReceiveFd();
+  Promise<void> KJ_ASYNC_API sendFd(int fd);
   // Transfer a single raw file descriptor.
 };
 
-struct OneWayPipe {
+struct KJ_ASYNC_CLASS OneWayPipe {
   // A data pipe with an input end and an output end.  (Typically backed by pipe() system call.)
 
-  Own<AsyncInputStream> in;
-  Own<AsyncOutputStream> out;
+  Own<AsyncInputStream> KJ_ASYNC_API in;
+  Own<AsyncOutputStream> KJ_ASYNC_API out;
 };
 
-OneWayPipe newOneWayPipe(kj::Maybe<uint64_t> expectedLength = nullptr);
+OneWayPipe KJ_ASYNC_API newOneWayPipe(kj::Maybe<uint64_t> expectedLength = nullptr);
 // Constructs a OneWayPipe that operates in-process. The pipe does not do any buffering -- it waits
 // until both a read() and a write() call are pending, then resolves both.
 //
 // If `expectedLength` is non-null, then the pipe will be expected to transmit exactly that many
 // bytes. The input end's `tryGetLength()` will return the number of bytes left.
 
-struct TwoWayPipe {
+struct KJ_ASYNC_CLASS TwoWayPipe {
   // A data pipe that supports sending in both directions.  Each end's output sends data to the
   // other end's input.  (Typically backed by socketpair() system call.)
 
-  Own<AsyncIoStream> ends[2];
+  Own<AsyncIoStream> KJ_ASYNC_API ends[2];
 };
 
-TwoWayPipe newTwoWayPipe();
+TwoWayPipe KJ_ASYNC_API newTwoWayPipe();
 // Constructs a TwoWayPipe that operates in-process. The pipe does not do any buffering -- it waits
 // until both a read() and a write() call are pending, then resolves both.
 
-struct CapabilityPipe {
+struct KJ_ASYNC_CLASS CapabilityPipe {
   // Like TwoWayPipe but allowing capability-passing.
 
-  Own<AsyncCapabilityStream> ends[2];
+  Own<AsyncCapabilityStream> KJ_ASYNC_API ends[2];
 };
 
-CapabilityPipe newCapabilityPipe();
+CapabilityPipe KJ_ASYNC_API newCapabilityPipe();
 // Like newTwoWayPipe() but creates a capability pipe.
 //
 // The requirement of `writeWithStreams()` that "The stream implementations must be from the same
@@ -311,13 +315,13 @@ CapabilityPipe newCapabilityPipe();
 // This implementation does not know how to convert streams to FDs or vice versa; if you write FDs
 // you must read FDs, and if you write streams you must read streams.
 
-struct Tee {
+struct KJ_ASYNC_CLASS Tee {
   // Two AsyncInputStreams which each read the same data from some wrapped inner AsyncInputStream.
 
-  Own<AsyncInputStream> branches[2];
+  Own<AsyncInputStream> KJ_ASYNC_API branches[2];
 };
 
-Tee newTee(Own<AsyncInputStream> input, uint64_t limit = kj::maxValue);
+Tee KJ_ASYNC_API newTee(Own<AsyncInputStream> input, uint64_t limit = kj::maxValue);
 // Constructs a Tee that operates in-process. The tee buffers data if any read or pump operations is
 // called on one of the two input ends. If a read or pump operation is subsequently called on the
 // other input end, the buffered data is consumed.
@@ -335,32 +339,32 @@ Tee newTee(Own<AsyncInputStream> input, uint64_t limit = kj::maxValue);
 //
 // It is recommended that you use a more conservative value for `limit` than the default.
 
-Own<AsyncOutputStream> newPromisedStream(Promise<Own<AsyncOutputStream>> promise);
-Own<AsyncIoStream> newPromisedStream(Promise<Own<AsyncIoStream>> promise);
+Own<AsyncOutputStream> KJ_ASYNC_API newPromisedStream(Promise<Own<AsyncOutputStream>> promise);
+Own<AsyncIoStream> KJ_ASYNC_API newPromisedStream(Promise<Own<AsyncIoStream>> promise);
 // Constructs an Async*Stream which waits for a promise to resolve, then forwards all calls to the
 // promised stream.
 
 // =======================================================================================
 // Authenticated streams
 
-class PeerIdentity {
+class KJ_ASYNC_CLASS PeerIdentity {
   // PeerIdentity provides information about a connecting client. Various subclasses exist to
   // address different network types.
 public:
-  virtual kj::String toString() = 0;
+  virtual kj::String KJ_ASYNC_API toString() = 0;
   // Returns a human-readable string identifying the peer. Where possible, this string will be
   // in the same format as the addresses you could pass to `kj::Network::parseAddress()`. However,
   // only certain subclasses of `PeerIdentity` guarantee this property.
 };
 
-struct AuthenticatedStream {
+struct KJ_ASYNC_CLASS AuthenticatedStream {
   // A pair of an `AsyncIoStream` and a `PeerIdentity`. This is used as the return type of
   // `NetworkAddress::connectAuthenticated()` and `ConnectionReceiver::acceptAuthenticated()`.
 
-  Own<AsyncIoStream> stream;
+  Own<AsyncIoStream> KJ_ASYNC_API stream;
   // The byte stream.
 
-  Own<PeerIdentity> peerIdentity;
+  Own<PeerIdentity> KJ_ASYNC_API peerIdentity;
   // An object indicating who is at the other end of the stream.
   //
   // Different subclasses of `PeerIdentity` are used in different situations:
@@ -377,37 +381,37 @@ struct AuthenticatedStream {
   // documented promises, RTTI may be needed to query the type.
 };
 
-class NetworkPeerIdentity: public PeerIdentity {
+class KJ_ASYNC_CLASS NetworkPeerIdentity: public PeerIdentity {
   // PeerIdentity used for network protocols like TCP/IP. This identifies the remote peer.
   //
   // This is only "authenticated" to the extent that we know data written to the stream will be
   // routed to the given address. This does not preclude the possibility of man-in-the-middle
   // attacks by attackers who are able to manipulate traffic along the route.
 public:
-  virtual NetworkAddress& getAddress() = 0;
+  virtual NetworkAddress& KJ_ASYNC_API getAddress() = 0;
   // Obtain the peer's address as a NetworkAddress object. The returned reference's lifetime is the
   // same as the `NetworkPeerIdentity`, but you can always call `clone()` on it to get a copy that
   // lives longer.
 
-  static kj::Own<NetworkPeerIdentity> newInstance(kj::Own<NetworkAddress> addr);
+  static kj::Own<NetworkPeerIdentity> KJ_ASYNC_API newInstance(kj::Own<NetworkAddress> addr);
   // Construct an instance of this interface wrapping the given address.
 };
 
-class LocalPeerIdentity: public PeerIdentity {
+class KJ_ASYNC_CLASS LocalPeerIdentity: public PeerIdentity {
   // PeerIdentity used for connections between processes on the local machine -- in particular,
   // Unix sockets.
   //
   // (This interface probably isn't useful on Windows.)
 public:
-  struct Credentials {
-    kj::Maybe<int> pid;
-    kj::Maybe<uint> uid;
+  struct KJ_ASYNC_CLASS Credentials {
+    kj::Maybe<int> KJ_ASYNC_API pid;
+    kj::Maybe<uint> KJ_ASYNC_API uid;
 
     // We don't cover groups at present because some systems produce a list of groups while others
     // only provide the peer's main group, the latter being pretty useless.
   };
 
-  virtual Credentials getCredentials() = 0;
+  virtual Credentials KJ_ASYNC_API getCredentials() = 0;
   // Get the PID and UID of the peer process, if possible.
   //
   // Either ID may be null if the peer could not be identified. Some operating systems do not
@@ -421,13 +425,13 @@ public:
   //
   // On Linux this is implemented with SO_PEERCRED.
 
-  static kj::Own<LocalPeerIdentity> newInstance(Credentials creds);
+  static kj::Own<LocalPeerIdentity> KJ_ASYNC_API newInstance(Credentials creds);
   // Construct an instance of this interface wrapping the given credentials.
 };
 
-class UnknownPeerIdentity: public PeerIdentity {
+class KJ_ASYNC_CLASS UnknownPeerIdentity: public PeerIdentity {
 public:
-  static kj::Own<UnknownPeerIdentity> newInstance();
+  static kj::Own<UnknownPeerIdentity> KJ_ASYNC_API newInstance();
   // Get an instance of this interface. This actually always returns the same instance with no
   // memory allocation.
 };
@@ -435,50 +439,51 @@ public:
 // =======================================================================================
 // Accepting connections
 
-class ConnectionReceiver: private AsyncObject {
+class KJ_ASYNC_CLASS ConnectionReceiver: private AsyncObject {
   // Represents a server socket listening on a port.
 
 public:
-  virtual Promise<Own<AsyncIoStream>> accept() = 0;
+  virtual Promise<Own<AsyncIoStream>> KJ_ASYNC_API accept() = 0;
   // Accept the next incoming connection.
 
-  virtual Promise<AuthenticatedStream> acceptAuthenticated();
+  virtual Promise<AuthenticatedStream> KJ_ASYNC_API acceptAuthenticated();
   // Accept the next incoming connection, and also provide a PeerIdentity with any information
   // about the client.
   //
   // For backwards-compatibility, the default implementation of this method calls `accept()` and
   // then adds `UnknownPeerIdentity`.
 
-  virtual uint getPort() = 0;
+  virtual uint KJ_ASYNC_API getPort() = 0;
   // Gets the port number, if applicable (i.e. if listening on IP).  This is useful if you didn't
   // specify a port when constructing the NetworkAddress -- one will have been assigned
   // automatically.
 
-  virtual void getsockopt(int level, int option, void* value, uint* length);
-  virtual void setsockopt(int level, int option, const void* value, uint length);
-  virtual void getsockname(struct sockaddr* addr, uint* length);
+  virtual void KJ_ASYNC_API getsockopt(int level, int option, void* value, uint* length);
+  virtual void KJ_ASYNC_API setsockopt(int level, int option, const void* value, uint length);
+  virtual void KJ_ASYNC_API getsockname(struct sockaddr* addr, uint* length);
   // Same as the methods of AsyncIoStream.
 };
 
-Own<ConnectionReceiver> newAggregateConnectionReceiver(Array<Own<ConnectionReceiver>> receivers);
+Own<ConnectionReceiver> KJ_ASYNC_API newAggregateConnectionReceiver(
+    Array<Own<ConnectionReceiver>> receivers);
 // Create a ConnectionReceiver that listens on several other ConnectionReceivers and returns
 // sockets from any of them.
 
 // =======================================================================================
 // Datagram I/O
 
-class AncillaryMessage {
+class KJ_ASYNC_CLASS AncillaryMessage {
   // Represents an ancillary message (aka control message) received using the recvmsg() system
   // call (or equivalent). Most apps will not use this.
 
 public:
-  inline AncillaryMessage(int level, int type, ArrayPtr<const byte> data);
-  AncillaryMessage() = default;
+  inline KJ_ASYNC_API AncillaryMessage(int level, int type, ArrayPtr<const byte> data);
+  KJ_ASYNC_API AncillaryMessage() = default;
 
-  inline int getLevel() const;
+  inline int KJ_ASYNC_API getLevel() const;
   // Originating protocol / socket level.
 
-  inline int getType() const;
+  inline int KJ_ASYNC_API getType() const;
   // Protocol-specific message type.
 
   template <typename T>
@@ -501,12 +506,12 @@ private:
   // Message data. In most cases you should use `as()` or `asArray()`.
 };
 
-class DatagramReceiver {
+class KJ_ASYNC_CLASS DatagramReceiver {
   // Class encapsulating the recvmsg() system call. You must specify the DatagramReceiver's
   // capacity in advance; if a received packet is larger than the capacity, it will be truncated.
 
 public:
-  virtual Promise<void> receive() = 0;
+  virtual Promise<void> KJ_ASYNC_API receive() = 0;
   // Receive a new message, overwriting this object's content.
   //
   // receive() may reuse the same buffers for content and ancillary data with each call.
@@ -520,10 +525,10 @@ public:
     // value is truncated.
   };
 
-  virtual MaybeTruncated<ArrayPtr<const byte>> getContent() = 0;
+  virtual MaybeTruncated<ArrayPtr<const byte>> KJ_ASYNC_API getContent() = 0;
   // Get the content of the datagram.
 
-  virtual MaybeTruncated<ArrayPtr<const AncillaryMessage>> getAncillary() = 0;
+  virtual MaybeTruncated<ArrayPtr<const AncillaryMessage>> KJ_ASYNC_API getAncillary() = 0;
   // Ancillary messages received with the datagram. See the recvmsg() system call and the cmsghdr
   // struct. Most apps don't need this.
   //
@@ -532,54 +537,55 @@ public:
   // return fewer elements than expected. Truncation can also mean that additional messages were
   // available but discarded.
 
-  virtual NetworkAddress& getSource() = 0;
+  virtual NetworkAddress& KJ_ASYNC_API getSource() = 0;
   // Get the datagram sender's address.
 
-  struct Capacity {
-    size_t content = 8192;
+  struct KJ_ASYNC_CLASS Capacity {
+    size_t KJ_ASYNC_API content = 8192;
     // How much space to allocate for the datagram content. If a datagram is received that is
     // larger than this, it will be truncated, with no way to recover the tail.
 
-    size_t ancillary = 0;
+    size_t KJ_ASYNC_API ancillary = 0;
     // How much space to allocate for ancillary messages. As with content, if the ancillary data
     // is larger than this, it will be truncated.
   };
 };
 
-class DatagramPort {
+class KJ_ASYNC_CLASS DatagramPort {
 public:
-  virtual Promise<size_t> send(const void* buffer, size_t size, NetworkAddress& destination) = 0;
-  virtual Promise<size_t> send(ArrayPtr<const ArrayPtr<const byte>> pieces,
-                               NetworkAddress& destination) = 0;
+  virtual Promise<size_t> KJ_ASYNC_API send(const void* buffer, size_t size,
+                                            NetworkAddress& destination) = 0;
+  virtual Promise<size_t> KJ_ASYNC_API send(ArrayPtr<const ArrayPtr<const byte>> pieces,
+                                            NetworkAddress& destination) = 0;
 
-  virtual Own<DatagramReceiver> makeReceiver(
+  virtual Own<DatagramReceiver> KJ_ASYNC_API makeReceiver(
       DatagramReceiver::Capacity capacity = DatagramReceiver::Capacity()) = 0;
   // Create a new `Receiver` that can be used to receive datagrams. `capacity` specifies how much
   // space to allocate for the received message. The `DatagramPort` must outlive the `Receiver`.
 
-  virtual uint getPort() = 0;
+  virtual uint KJ_ASYNC_API getPort() = 0;
   // Gets the port number, if applicable (i.e. if listening on IP).  This is useful if you didn't
   // specify a port when constructing the NetworkAddress -- one will have been assigned
   // automatically.
 
-  virtual void getsockopt(int level, int option, void* value, uint* length);
-  virtual void setsockopt(int level, int option, const void* value, uint length);
+  virtual void KJ_ASYNC_API getsockopt(int level, int option, void* value, uint* length);
+  virtual void KJ_ASYNC_API setsockopt(int level, int option, const void* value, uint length);
   // Same as the methods of AsyncIoStream.
 };
 
 // =======================================================================================
 // Networks
 
-class NetworkAddress: private AsyncObject {
+class KJ_ASYNC_CLASS NetworkAddress: private AsyncObject {
   // Represents a remote address to which the application can connect.
 
 public:
-  virtual Promise<Own<AsyncIoStream>> connect() = 0;
+  virtual Promise<Own<AsyncIoStream>> KJ_ASYNC_API connect() = 0;
   // Make a new connection to this address.
   //
   // The address must not be a wildcard ("*").  If it is an IP address, it must have a port number.
 
-  virtual Promise<AuthenticatedStream> connectAuthenticated();
+  virtual Promise<AuthenticatedStream> KJ_ASYNC_API connectAuthenticated();
   // Connect to the address and return both the connection and information about the peer identity.
   // This is especially useful when using TLS, to get certificate details.
   //
@@ -587,27 +593,27 @@ public:
   // then uses a `NetworkPeerIdentity` wrapping a clone of this `NetworkAddress` -- which is not
   // particularly useful.
 
-  virtual Own<ConnectionReceiver> listen() = 0;
+  virtual Own<ConnectionReceiver> KJ_ASYNC_API listen() = 0;
   // Listen for incoming connections on this address.
   //
   // The address must be local.
 
-  virtual Own<DatagramPort> bindDatagramPort();
+  virtual Own<DatagramPort> KJ_ASYNC_API bindDatagramPort();
   // Open this address as a datagram (e.g. UDP) port.
   //
   // The address must be local.
 
-  virtual Own<NetworkAddress> clone() = 0;
+  virtual Own<NetworkAddress> KJ_ASYNC_API clone() = 0;
   // Returns an equivalent copy of this NetworkAddress.
 
-  virtual String toString() = 0;
+  virtual String KJ_ASYNC_API toString() = 0;
   // Produce a human-readable string which hopefully can be passed to Network::parseAddress()
   // to reproduce this address, although whether or not that works of course depends on the Network
   // implementation.  This should be called only to display the address to human users, who will
   // hopefully know what they are able to do with it.
 };
 
-class Network {
+class KJ_ASYNC_CLASS Network {
   // Factory for NetworkAddress instances, representing the network services offered by the
   // operating system.
   //
@@ -616,7 +622,8 @@ class Network {
   // NetworkAddress instances directly and work from there, if at all possible.
 
 public:
-  virtual Promise<Own<NetworkAddress>> parseAddress(StringPtr addr, uint portHint = 0) = 0;
+  virtual Promise<Own<NetworkAddress>> KJ_ASYNC_CLASS parseAddress(StringPtr addr,
+                                                                    uint portHint = 0) = 0;
   // Construct a network address from a user-provided string.  The format of the address
   // strings is not specified at the API level, and application code should make no assumptions
   // about them.  These strings should always be provided by humans, and said humans will know
@@ -628,10 +635,10 @@ public:
   // omitted, then the returned address will only support listen() and bindDatagramPort()
   // (not connect()), and an unused port will be chosen each time one of those methods is called.
 
-  virtual Own<NetworkAddress> getSockaddr(const void* sockaddr, uint len) = 0;
+  virtual Own<NetworkAddress> KJ_ASYNC_CLASS getSockaddr(const void* sockaddr, uint len) = 0;
   // Construct a network address from a legacy struct sockaddr.
 
-  virtual Own<Network> restrictPeers(
+  virtual Own<Network> KJ_ASYNC_CLASS restrictPeers(
       kj::ArrayPtr<const kj::StringPtr> allow,
       kj::ArrayPtr<const kj::StringPtr> deny = nullptr) KJ_WARN_UNUSED_RESULT = 0;
   // Constructs a new Network instance wrapping this one which restricts which peer addresses are
@@ -696,7 +703,7 @@ public:
 // =======================================================================================
 // I/O Provider
 
-class AsyncIoProvider {
+class KJ_ASYNC_API AsyncIoProvider {
   // Class which constructs asynchronous wrappers around the operating system's I/O facilities.
   //
   // Generally, the implementation of this interface must integrate closely with a particular
@@ -704,22 +711,22 @@ class AsyncIoProvider {
   // an AsyncIoProvider.
 
 public:
-  virtual OneWayPipe newOneWayPipe() = 0;
+  virtual OneWayPipe KJ_ASYNC_CLASS newOneWayPipe() = 0;
   // Creates an input/output stream pair representing the ends of a one-way pipe (e.g. created with
   // the pipe(2) system call).
 
-  virtual TwoWayPipe newTwoWayPipe() = 0;
+  virtual TwoWayPipe KJ_ASYNC_CLASS newTwoWayPipe() = 0;
   // Creates two AsyncIoStreams representing the two ends of a two-way pipe (e.g. created with
   // socketpair(2) system call).  Data written to one end can be read from the other.
 
-  virtual CapabilityPipe newCapabilityPipe();
+  virtual CapabilityPipe KJ_ASYNC_CLASS newCapabilityPipe();
   // Creates two AsyncCapabilityStreams representing the two ends of a two-way capability pipe.
   //
   // The default implementation throws an unimplemented exception. In particular this is not
   // implemented by the default AsyncIoProvider on Windows, since Windows lacks any sane way to
   // pass handles over a stream.
 
-  virtual Network& getNetwork() = 0;
+  virtual Network& KJ_ASYNC_CLASS getNetwork() = 0;
   // Creates a new `Network` instance representing the networks exposed by the operating system.
   //
   // DO NOT CALL THIS except at the highest levels of your code, ideally in the main() function.  If
@@ -740,18 +747,18 @@ public:
   // - Symbolic names:  "example.com", "example.com:80", "example.com:http", "1.2.3.4:http"
   // - Unix domain: "unix:/path/to/socket"
 
-  struct PipeThread {
+  struct KJ_ASYNC_CLASS PipeThread {
     // A combination of a thread and a two-way pipe that communicates with that thread.
     //
     // The fields are intentionally ordered so that the pipe will be destroyed (and therefore
     // disconnected) before the thread is destroyed (and therefore joined).  Thus if the thread
     // arranges to exit when it detects disconnect, destruction should be clean.
 
-    Own<Thread> thread;
-    Own<AsyncIoStream> pipe;
+    Own<Thread> KJ_ASYNC_API thread;
+    Own<AsyncIoStream> KJ_ASYNC_API pipe;
   };
 
-  virtual PipeThread newPipeThread(
+  virtual PipeThread KJ_ASYNC_API newPipeThread(
       Function<void(AsyncIoProvider&, AsyncIoStream&, WaitScope&)> startFunc) = 0;
   // Create a new thread and set up a two-way pipe (socketpair) which can be used to communicate
   // with it.  One end of the pipe is passed to the thread's start function and the other end of
@@ -761,7 +768,7 @@ public:
   // TODO(someday):  I'm not entirely comfortable with this interface.  It seems to be doing too
   //   much at once but I'm not sure how to cleanly break it down.
 
-  virtual Timer& getTimer() = 0;
+  virtual Timer& KJ_ASYNC_API getTimer() = 0;
   // Returns a `Timer` based on real time.  Time does not pass while event handlers are running --
   // it only updates when the event loop polls for system events.  This means that calling `now()`
   // on this timer does not require a system call.
@@ -770,7 +777,7 @@ public:
   // continues to count while the system is suspended.
 };
 
-class LowLevelAsyncIoProvider {
+class KJ_ASYNC_CLASS LowLevelAsyncIoProvider {
   // Similar to `AsyncIoProvider`, but represents a lower-level interface that may differ on
   // different operating systems.  You should prefer to use `AsyncIoProvider` over this interface
   // whenever possible, as `AsyncIoProvider` is portable and friendlier to dependency-injection.
@@ -824,23 +831,23 @@ public:
   // On Unix, any arbitrary file descriptor is supported.
 #endif
 
-  virtual Own<AsyncInputStream> wrapInputFd(Fd fd, uint flags = 0) = 0;
+  virtual Own<AsyncInputStream> KJ_ASYNC_API wrapInputFd(Fd fd, uint flags = 0) = 0;
   // Create an AsyncInputStream wrapping a file descriptor.
   //
   // `flags` is a bitwise-OR of the values of the `Flags` enum.
 
-  virtual Own<AsyncOutputStream> wrapOutputFd(Fd fd, uint flags = 0) = 0;
+  virtual Own<AsyncOutputStream> KJ_ASYNC_API wrapOutputFd(Fd fd, uint flags = 0) = 0;
   // Create an AsyncOutputStream wrapping a file descriptor.
   //
   // `flags` is a bitwise-OR of the values of the `Flags` enum.
 
-  virtual Own<AsyncIoStream> wrapSocketFd(Fd fd, uint flags = 0) = 0;
+  virtual Own<AsyncIoStream> KJ_ASYNC_API wrapSocketFd(Fd fd, uint flags = 0) = 0;
   // Create an AsyncIoStream wrapping a socket file descriptor.
   //
   // `flags` is a bitwise-OR of the values of the `Flags` enum.
 
 #if !_WIN32
-  virtual Own<AsyncCapabilityStream> wrapUnixSocketFd(Fd fd, uint flags = 0);
+  virtual Own<AsyncCapabilityStream> KJ_ASYNC_API wrapUnixSocketFd(Fd fd, uint flags = 0);
   // Like wrapSocketFd() but also support capability passing via SCM_RIGHTS. The socket must be
   // a Unix domain socket.
   //
@@ -848,25 +855,25 @@ public:
   // LowLevelAsyncIoProvider implementations written before this method was added.
 #endif
 
-  virtual Promise<Own<AsyncIoStream>> wrapConnectingSocketFd(
+  virtual Promise<Own<AsyncIoStream>> KJ_ASYNC_API wrapConnectingSocketFd(
       Fd fd, const struct sockaddr* addr, uint addrlen, uint flags = 0) = 0;
   // Create an AsyncIoStream wrapping a socket and initiate a connection to the given address.
   // The returned promise does not resolve until connection has completed.
   //
   // `flags` is a bitwise-OR of the values of the `Flags` enum.
 
-  class NetworkFilter {
+  class KJ_ASYNC_CLASS NetworkFilter {
   public:
-    virtual bool shouldAllow(const struct sockaddr* addr, uint addrlen) = 0;
+    virtual bool KJ_ASYNC_API shouldAllow(const struct sockaddr* addr, uint addrlen) = 0;
     // Returns true if incoming connections or datagrams from the given peer should be accepted.
     // If false, they will be dropped. This is used to implement kj::Network::restrictPeers().
 
-    static NetworkFilter& getAllAllowed();
+    static NetworkFilter& KJ_ASYNC_API getAllAllowed();
   };
 
-  virtual Own<ConnectionReceiver> wrapListenSocketFd(
+  virtual Own<ConnectionReceiver> KJ_ASYNC_API wrapListenSocketFd(
       Fd fd, NetworkFilter& filter, uint flags = 0) = 0;
-  inline Own<ConnectionReceiver> wrapListenSocketFd(Fd fd, uint flags = 0) {
+  inline Own<ConnectionReceiver> KJ_ASYNC_API wrapListenSocketFd(Fd fd, uint flags = 0) {
     return wrapListenSocketFd(fd, NetworkFilter::getAllAllowed(), flags);
   }
   // Create an AsyncIoStream wrapping a listen socket file descriptor.  This socket should already
@@ -874,12 +881,13 @@ public:
   //
   // `flags` is a bitwise-OR of the values of the `Flags` enum.
 
-  virtual Own<DatagramPort> wrapDatagramSocketFd(Fd fd, NetworkFilter& filter, uint flags = 0);
-  inline Own<DatagramPort> wrapDatagramSocketFd(Fd fd, uint flags = 0) {
+  virtual Own<DatagramPort> KJ_ASYNC_API wrapDatagramSocketFd(Fd fd, NetworkFilter& filter,
+                                                              uint flags = 0);
+  inline Own<DatagramPort> KJ_ASYNC_API wrapDatagramSocketFd(Fd fd, uint flags = 0) {
     return wrapDatagramSocketFd(fd, NetworkFilter::getAllAllowed(), flags);
   }
 
-  virtual Timer& getTimer() = 0;
+  virtual Timer& KJ_ASYNC_API getTimer() = 0;
   // Returns a `Timer` based on real time.  Time does not pass while event handlers are running --
   // it only updates when the event loop polls for system events.  This means that calling `now()`
   // on this timer does not require a system call.
@@ -887,19 +895,20 @@ public:
   // This timer is not affected by changes to the system date.  It is unspecified whether the timer
   // continues to count while the system is suspended.
 
-  Own<AsyncInputStream> wrapInputFd(OwnFd&& fd, uint flags = 0);
-  Own<AsyncOutputStream> wrapOutputFd(OwnFd&& fd, uint flags = 0);
-  Own<AsyncIoStream> wrapSocketFd(OwnFd&& fd, uint flags = 0);
+  Own<AsyncInputStream> KJ_ASYNC_API wrapInputFd(OwnFd&& fd, uint flags = 0);
+  Own<AsyncOutputStream> KJ_ASYNC_API wrapOutputFd(OwnFd&& fd, uint flags = 0);
+  Own<AsyncIoStream> KJ_ASYNC_API wrapSocketFd(OwnFd&& fd, uint flags = 0);
 #if !_WIN32
-  Own<AsyncCapabilityStream> wrapUnixSocketFd(OwnFd&& fd, uint flags = 0);
+  Own<AsyncCapabilityStream> KJ_ASYNC_API wrapUnixSocketFd(OwnFd&& fd, uint flags = 0);
 #endif
-  Promise<Own<AsyncIoStream>> wrapConnectingSocketFd(
+  Promise<Own<AsyncIoStream>> KJ_ASYNC_API wrapConnectingSocketFd(
       OwnFd&& fd, const struct sockaddr* addr, uint addrlen, uint flags = 0);
-  Own<ConnectionReceiver> wrapListenSocketFd(
+  Own<ConnectionReceiver> KJ_ASYNC_API wrapListenSocketFd(
       OwnFd&& fd, NetworkFilter& filter, uint flags = 0);
-  Own<ConnectionReceiver> wrapListenSocketFd(OwnFd&& fd, uint flags = 0);
-  Own<DatagramPort> wrapDatagramSocketFd(OwnFd&& fd, NetworkFilter& filter, uint flags = 0);
-  Own<DatagramPort> wrapDatagramSocketFd(OwnFd&& fd, uint flags = 0);
+  Own<ConnectionReceiver> KJ_ASYNC_API wrapListenSocketFd(OwnFd&& fd, uint flags = 0);
+  Own<DatagramPort> KJ_ASYNC_API wrapDatagramSocketFd(OwnFd&& fd, NetworkFilter& filter,
+                                                      uint flags = 0);
+  Own<DatagramPort> KJ_ASYNC_API wrapDatagramSocketFd(OwnFd&& fd, uint flags = 0);
   // Convenience wrappers which transfer ownership via AutoCloseFd (Unix) or AutoCloseHandle
   // (Windows). TAKE_OWNERSHIP will be implicitly added to `flags`.
 };
@@ -909,29 +918,29 @@ using Socketpair = Socketpair_<LowLevelAsyncIoProvider::OwnFd>;
 // We use a template to work around the fact that LowLevelAsyncIoProvider::OwnFd
 // is an incomplete type, without having to include the io.h header.
 
-Socketpair newOsSocketpair();
+Socketpair KJ_ASYNC_API newOsSocketpair();
 // Creates a socket pair, using socketpair(2) on Unix-like systems.
 // On Windows, which doesn't have a built-in socketpair(), a loopback
 // TCP connection is used.
 
-Own<AsyncIoProvider> newAsyncIoProvider(LowLevelAsyncIoProvider& lowLevel);
+Own<AsyncIoProvider> KJ_ASYNC_API newAsyncIoProvider(LowLevelAsyncIoProvider& lowLevel);
 // Make a new AsyncIoProvider wrapping a `LowLevelAsyncIoProvider`.
 
-struct AsyncIoContext {
-  Own<LowLevelAsyncIoProvider> lowLevelProvider;
-  Own<AsyncIoProvider> provider;
-  WaitScope& waitScope;
+struct KJ_ASYNC_CLASS AsyncIoContext {
+  Own<LowLevelAsyncIoProvider> KJ_ASYNC_API lowLevelProvider;
+  Own<AsyncIoProvider> KJ_ASYNC_API provider;
+  WaitScope& KJ_ASYNC_API waitScope;
 
 #if _WIN32
-  Win32EventPort& win32EventPort;
+  Win32EventPort& KJ_ASYNC_API win32EventPort;
 #else
-  UnixEventPort& unixEventPort;
+  UnixEventPort& KJ_ASYNC_API unixEventPort;
   // TEMPORARY: Direct access to underlying UnixEventPort, mainly for waiting on signals. This
   //   field will go away at some point when we have a chance to improve these interfaces.
 #endif
 };
 
-AsyncIoContext setupAsyncIo();
+AsyncIoContext KJ_ASYNC_API setupAsyncIo();
 // Convenience method which sets up the current thread with everything it needs to do async I/O.
 // The returned objects contain an `EventLoop` which is wrapping an appropriate `EventPort` for
 // doing I/O on the host system, so everything is ready for the thread to start making async calls
@@ -962,18 +971,18 @@ AsyncIoContext setupAsyncIo();
 // =======================================================================================
 // Convenience adapters.
 
-class CapabilityStreamConnectionReceiver final: public ConnectionReceiver {
+class KJ_ASYNC_CLASS CapabilityStreamConnectionReceiver final: public ConnectionReceiver {
   // Trivial wrapper which allows an AsyncCapabilityStream to act as a ConnectionReceiver. accept()
   // calls receiveStream().
 
 public:
-  CapabilityStreamConnectionReceiver(AsyncCapabilityStream& inner)
+  KJ_ASYNC_API CapabilityStreamConnectionReceiver(AsyncCapabilityStream& inner)
       : inner(inner) {}
 
-  Promise<Own<AsyncIoStream>> accept() override;
-  uint getPort() override;
+  Promise<Own<AsyncIoStream>> KJ_ASYNC_API accept() override;
+  uint KJ_ASYNC_API getPort() override;
 
-  Promise<AuthenticatedStream> acceptAuthenticated() override;
+  Promise<AuthenticatedStream> KJ_ASYNC_API acceptAuthenticated() override;
   // Always produces UnknownIdentity. Capability-based security patterns should not rely on
   // authenticating peers; the other end of the capability stream should only be given to
   // authorized parties in the first place.
@@ -982,7 +991,7 @@ private:
   AsyncCapabilityStream& inner;
 };
 
-class CapabilityStreamNetworkAddress final: public NetworkAddress {
+class KJ_ASYNC_CLASS CapabilityStreamNetworkAddress final: public NetworkAddress {
   // Trivial wrapper which allows an AsyncCapabilityStream to act as a NetworkAddress.
   //
   // connect() is implemented by calling provider.newCapabilityPipe(), sending one end over the
@@ -997,16 +1006,17 @@ class CapabilityStreamNetworkAddress final: public NetworkAddress {
   // string.
 
 public:
-  CapabilityStreamNetworkAddress(kj::Maybe<AsyncIoProvider&> provider, AsyncCapabilityStream& inner)
+  KJ_ASYNC_API CapabilityStreamNetworkAddress(kj::Maybe<AsyncIoProvider&> provider,
+                                              AsyncCapabilityStream& inner)
       : provider(provider), inner(inner) {}
 
-  Promise<Own<AsyncIoStream>> connect() override;
-  Own<ConnectionReceiver> listen() override;
+  Promise<Own<AsyncIoStream>> KJ_ASYNC_API connect() override;
+  Own<ConnectionReceiver> KJ_ASYNC_API listen() override;
 
-  Own<NetworkAddress> clone() override;
-  String toString() override;
+  Own<NetworkAddress> KJ_ASYNC_API clone() override;
+  String KJ_ASYNC_API toString() override;
 
-  Promise<AuthenticatedStream> connectAuthenticated() override;
+  Promise<AuthenticatedStream> KJ_ASYNC_API connectAuthenticated() override;
   // Always produces UnknownIdentity. Capability-based security patterns should not rely on
   // authenticating peers; the other end of the capability stream should only be given to
   // authorized parties in the first place.
@@ -1016,7 +1026,7 @@ private:
   AsyncCapabilityStream& inner;
 };
 
-class FileInputStream: public AsyncInputStream {
+class KJ_ASYNC_CLASS FileInputStream: public AsyncInputStream {
   // InputStream that reads from a disk file -- and enables sendfile() optimization.
   //
   // Reads are performed synchronously -- no actual attempt is made to use asynchronous file I/O.
@@ -1032,15 +1042,15 @@ class FileInputStream: public AsyncInputStream {
   // NOTE: As of this writing, sendfile() optimization is only implemented on Linux.
 
 public:
-  FileInputStream(const ReadableFile& file, uint64_t offset = 0)
+  KJ_ASYNC_API FileInputStream(const ReadableFile& file, uint64_t offset = 0)
       : file(file), offset(offset) {}
 
-  const ReadableFile& getUnderlyingFile() { return file; }
-  uint64_t getOffset() { return offset; }
-  void seek(uint64_t newOffset) { offset = newOffset; }
+  const ReadableFile& KJ_ASYNC_API getUnderlyingFile() { return file; }
+  uint64_t KJ_ASYNC_API getOffset() { return offset; }
+  void KJ_ASYNC_API seek(uint64_t newOffset) { offset = newOffset; }
 
-  Promise<size_t> tryRead(void* buffer, size_t minBytes, size_t maxBytes);
-  Maybe<uint64_t> tryGetLength();
+  Promise<size_t> KJ_ASYNC_API tryRead(void* buffer, size_t minBytes, size_t maxBytes);
+  Maybe<uint64_t> KJ_ASYNC_API tryGetLength();
 
   // (pumpTo() is not actually overridden here, but AsyncStreamFd's tryPumpFrom() will detect when
   // the source is a file.)
@@ -1050,7 +1060,7 @@ private:
   uint64_t offset;
 };
 
-class FileOutputStream: public AsyncOutputStream {
+class KJ_ASYNC_CLASS FileOutputStream: public AsyncOutputStream {
   // OutputStream that writes to a disk file.
   //
   // As with FileInputStream, calls are not actually async. Async would be even less useful here
@@ -1062,16 +1072,16 @@ class FileOutputStream: public AsyncOutputStream {
   // NOTE: As of this writing, splice() optimization is not implemented.
 
 public:
-  FileOutputStream(const File& file, uint64_t offset = 0)
+  KJ_ASYNC_API FileOutputStream(const File& file, uint64_t offset = 0)
       : file(file), offset(offset) {}
 
-  const File& getUnderlyingFile() { return file; }
-  uint64_t getOffset() { return offset; }
-  void seek(uint64_t newOffset) { offset = newOffset; }
+  const File& KJ_ASYNC_API getUnderlyingFile() { return file; }
+  uint64_t KJ_ASYNC_API getOffset() { return offset; }
+  void KJ_ASYNC_API seek(uint64_t newOffset) { offset = newOffset; }
 
-  Promise<void> write(const void* buffer, size_t size);
-  Promise<void> write(ArrayPtr<const ArrayPtr<const byte>> pieces);
-  Promise<void> whenWriteDisconnected();
+  Promise<void> KJ_ASYNC_API write(const void* buffer, size_t size);
+  Promise<void> KJ_ASYNC_API write(ArrayPtr<const ArrayPtr<const byte>> pieces);
+  Promise<void> KJ_ASYNC_API whenWriteDisconnected();
 
 private:
   const File& file;
@@ -1102,7 +1112,7 @@ inline ArrayPtr<const T> AncillaryMessage::asArray() const {
   return arrayPtr(reinterpret_cast<const T*>(data.begin()), data.size() / sizeof(T));
 }
 
-class SecureNetworkWrapper {
+class KJ_ASYNC_CLASS SecureNetworkWrapper {
   // Abstract interface for a class which implements a "secure" network as a wrapper around an
   // insecure one. "secure" means:
   // * Connections to a server will only succeed if it can be verified that the requested hostname
@@ -1120,34 +1130,37 @@ class SecureNetworkWrapper {
   // verified, there is no need to encrypt since unix sockets cannot be intercepted.
 
 public:
-  virtual kj::Promise<kj::Own<kj::AsyncIoStream>> wrapServer(kj::Own<kj::AsyncIoStream> stream) = 0;
+  virtual kj::Promise<kj::Own<kj::AsyncIoStream>> KJ_ASYNC_API wrapServer(
+      kj::Own<kj::AsyncIoStream> stream) = 0;
   // Act as the server side of a connection. The given stream is already connected to a client, but
   // no authentication has occurred. The returned stream represents the secure transport once
   // established.
 
-  virtual kj::Promise<kj::Own<kj::AsyncIoStream>> wrapClient(
+  virtual kj::Promise<kj::Own<kj::AsyncIoStream>> KJ_ASYNC_API wrapClient(
       kj::Own<kj::AsyncIoStream> stream, kj::StringPtr expectedServerHostname) = 0;
   // Act as the client side of a connection. The given stream is already connecetd to a server, but
   // no authentication has occurred. This method will verify that the server actually is the given
   // hostname, then return the stream representing a secure transport to that server.
 
-  virtual kj::Promise<kj::AuthenticatedStream> wrapServer(kj::AuthenticatedStream stream) = 0;
-  virtual kj::Promise<kj::AuthenticatedStream> wrapClient(
+  virtual kj::Promise<kj::AuthenticatedStream> KJ_ASYNC_API wrapServer(
+      kj::AuthenticatedStream stream) = 0;
+  virtual kj::Promise<kj::AuthenticatedStream> KJ_ASYNC_API wrapClient(
       kj::AuthenticatedStream stream, kj::StringPtr expectedServerHostname) = 0;
   // Same as above, but implementing kj::AuthenticatedStream, which provides PeerIdentity objects
   // with more details about the peer. The SecureNetworkWrapper will provide its own implementation
   // of PeerIdentity with the specific details it is able to authenticate.
 
-  virtual kj::Own<kj::ConnectionReceiver> wrapPort(kj::Own<kj::ConnectionReceiver> port) = 0;
+  virtual kj::Own<kj::ConnectionReceiver> KJ_ASYNC_API wrapPort(
+      kj::Own<kj::ConnectionReceiver> port) = 0;
   // Wrap a connection listener. This is equivalent to calling wrapServer() on every connection
   // received.
 
-  virtual kj::Own<kj::NetworkAddress> wrapAddress(
+  virtual kj::Own<kj::NetworkAddress> KJ_ASYNC_API wrapAddress(
       kj::Own<kj::NetworkAddress> address, kj::StringPtr expectedServerHostname) = 0;
   // Wrap a NetworkAddress. This is equivalent to calling `wrapClient()` on every connection
   // formed by calling `connect()` on the address.
 
-  virtual kj::Own<kj::Network> wrapNetwork(kj::Network& network) = 0;
+  virtual kj::Own<kj::Network> KJ_ASYNC_API wrapNetwork(kj::Network& network) = 0;
   // Wrap a whole `kj::Network`. This automatically wraps everything constructed using the network.
   // The network will only accept address strings that can be authenticated, and will automatically
   // authenticate servers against those addresses when connecting to them.

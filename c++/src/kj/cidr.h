@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "export-kj-async.h"
 #include "common.h"
 #include <cstdint>
 
@@ -31,21 +32,21 @@ struct sockaddr;
 
 namespace kj {
 
-class CidrRange {
+class KJ_ASYNC_CLASS CidrRange {
 public:
-  CidrRange(StringPtr pattern);
+  KJ_ASYNC_API CidrRange(StringPtr pattern);
 
-  static CidrRange inet4(ArrayPtr<const byte> bits, uint bitCount);
-  static CidrRange inet6(ArrayPtr<const uint16_t> prefix, ArrayPtr<const uint16_t> suffix,
-                         uint bitCount);
+  static CidrRange KJ_ASYNC_API inet4(ArrayPtr<const byte> bits, uint bitCount);
+  static CidrRange KJ_ASYNC_API inet6(
+      ArrayPtr<const uint16_t> prefix, ArrayPtr<const uint16_t> suffix, uint bitCount);
   // Zeros are inserted between `prefix` and `suffix` to extend the address to 128 bits.
 
-  uint getSpecificity() const { return bitCount; }
+  uint KJ_ASYNC_API getSpecificity() const { return bitCount; }
 
-  bool matches(const struct sockaddr* addr) const;
-  bool matchesFamily(int family) const;
+  bool KJ_ASYNC_API matches(const struct sockaddr* addr) const;
+  bool KJ_ASYNC_API matchesFamily(int family) const;
 
-  String toString() const;
+  String KJ_ASYNC_API toString() const;
 
 private:
   int family;

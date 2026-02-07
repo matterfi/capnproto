@@ -168,6 +168,7 @@ set(kj-async_sources
   timer.c++
 )
 set(kj-async_headers
+  export-kj-async.h
   async-prelude.h
   async.h
   async-inl.h
@@ -182,6 +183,20 @@ if(NOT CAPNP_LITE)
   add_library(kj-async ${kj-async_sources})
   add_library(CapnProto::kj-async ALIAS kj-async)
   target_link_libraries(kj-async PUBLIC kj)
+
+  get_target_property(KJ_ASYNC_TYPE kj-async TYPE)
+
+  if(KJ_ASYNC_TYPE STREQUAL "SHARED_LIBRARY")
+    set(KJ_ASYNC_EXPORT_MACRO "KJ_ASYNC_BUILD")
+    set(KJ_ASYNC_IMPORT_MACRO "")
+  else()
+    set(KJ_ASYNC_EXPORT_MACRO "KJ_ASYNC_STATIC_DEFINE")
+    set(KJ_ASYNC_IMPORT_MACRO "KJ_ASYNC_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(kj-async INTERFACE ${KJ_ASYNC_IMPORT_MACRO} PRIVATE ${KJ_ASYNC_EXPORT_MACRO})
+
   if(WITH_FIBERS)
     target_compile_definitions(kj-async PUBLIC KJ_USE_FIBERS)
     if(_WITH_LIBUCONTEXT)

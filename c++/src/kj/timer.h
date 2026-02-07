@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "export-kj-async.h"
 #include <kj/time.h>
 #include "async.h"
 
@@ -29,7 +30,7 @@ KJ_BEGIN_HEADER
 
 namespace kj {
 
-class Timer: public MonotonicClock {
+class KJ_ASYNC_CLASS Timer: public MonotonicClock {
   // Interface to time and timer functionality.
   //
   // Each `Timer` may have a different origin, and some `Timer`s may in fact tick at a different
@@ -50,15 +51,15 @@ class Timer: public MonotonicClock {
   // `systemPreciseMonotonicClock()` directly in this case.
 
 public:
-  virtual TimePoint now() const = 0;
+  virtual TimePoint KJ_ASYNC_API now() const = 0;
   // Returns the current value of a clock that moves steadily forward, independent of any
   // changes in the wall clock. The value is updated every time the event loop waits,
   // and is constant in-between waits.
 
-  virtual Promise<void> atTime(TimePoint time) = 0;
+  virtual Promise<void> KJ_ASYNC_API atTime(TimePoint time) = 0;
   // Returns a promise that returns as soon as now() >= time.
 
-  virtual Promise<void> afterDelay(Duration delay) = 0;
+  virtual Promise<void> KJ_ASYNC_API afterDelay(Duration delay) = 0;
   // Equivalent to atTime(now() + delay).
 
   template <typename T>
@@ -77,19 +78,19 @@ private:
   static kj::Exception makeTimeoutException();
 };
 
-class TimerImpl final: public Timer {
+class KJ_ASYNC_CLASS TimerImpl final: public Timer {
   // Implementation of Timer that expects an external caller -- usually, the EventPort
   // implementation -- to tell it when time has advanced.
 
 public:
-  TimerImpl(TimePoint startTime);
-  ~TimerImpl() noexcept(false);
+  KJ_ASYNC_API TimerImpl(TimePoint startTime);
+  KJ_ASYNC_API ~TimerImpl() noexcept(false);
 
-  Maybe<TimePoint> nextEvent();
+  Maybe<TimePoint> KJ_ASYNC_API nextEvent();
   // Returns the time at which the next scheduled timer event will occur, or null if no timer
   // events are scheduled.
 
-  Maybe<uint64_t> timeoutToNextEvent(TimePoint start, Duration unit, uint64_t max);
+  Maybe<uint64_t> KJ_ASYNC_API timeoutToNextEvent(TimePoint start, Duration unit, uint64_t max);
   // Convenience method which computes a timeout value to pass to an event-waiting system call to
   // cause it to time out when the next timer event occurs.
   //
@@ -105,13 +106,13 @@ public:
   //
   // Returns nullptr if there are no future events.
 
-  void advanceTo(TimePoint newTime);
+  void KJ_ASYNC_API advanceTo(TimePoint newTime);
   // Set the time to `time` and fire any at() events that have been passed.
 
   // implements Timer ----------------------------------------------------------
-  TimePoint now() const override;
-  Promise<void> atTime(TimePoint time) override;
-  Promise<void> afterDelay(Duration delay) override;
+  TimePoint KJ_ASYNC_API now() const override;
+  Promise<void> KJ_ASYNC_API atTime(TimePoint time) override;
+  Promise<void> KJ_ASYNC_API afterDelay(Duration delay) override;
 
 private:
   struct Impl;

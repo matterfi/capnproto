@@ -25,6 +25,7 @@
 #error "This file is Unix-specific. On Windows, include async-win32.h instead."
 #endif
 
+#include "export-kj-async.h"
 #include "async.h"
 #include "timer.h"
 #include <kj/vector.h>
@@ -65,7 +66,7 @@ struct timespec;
 
 namespace kj {
 
-class UnixEventPort: public EventPort {
+class KJ_ASYNC_CLASS UnixEventPort: public EventPort {
   // An EventPort implementation which can wait for events on file descriptors as well as signals.
   // This API only makes sense on Unix.
   //
@@ -90,14 +91,14 @@ class UnixEventPort: public EventPort {
   //   processes!
 
 public:
-  UnixEventPort();
+  KJ_ASYNC_API UnixEventPort();
 
-  ~UnixEventPort() noexcept(false);
+  KJ_ASYNC_API ~UnixEventPort() noexcept(false);
 
   class FdObserver;
   // Class that watches an fd for readability or writability. See definition below.
 
-  Promise<siginfo_t> onSignal(int signum);
+  Promise<siginfo_t> KJ_ASYNC_API onSignal(int signum);
   // When the given signal is delivered to this thread, return the corresponding siginfo_t.
   // The signal must have been captured using `captureSignal()`.
   //
@@ -117,7 +118,7 @@ public:
   //   KJ to fall back to a generic poll()-based implementation that is less efficient but handles
   //   thread-specific signals.
 
-  static void captureSignal(int signum);
+  static void KJ_ASYNC_API captureSignal(int signum);
   // Arranges for the given signal to be captured and handled via UnixEventPort, so that you may
   // then pass it to `onSignal()`.  This method is static because it registers a signal handler
   // which applies process-wide.  If any other threads exist in the process when `captureSignal()`
@@ -129,14 +130,14 @@ public:
   // To un-capture a signal, simply install a different signal handler and then un-block it from
   // the signal mask.
 
-  static void setReservedSignal(int signum);
+  static void KJ_ASYNC_API setReservedSignal(int signum);
   // Sets the signal number which `UnixEventPort` reserves for internal use.  If your application
   // needs to use SIGUSR1, call this at startup (before any calls to `captureSignal()` and before
   // constructing an `UnixEventPort`) to offer a different signal.
 
-  Timer& getTimer() { return timerImpl; }
+  Timer& KJ_ASYNC_API getTimer() { return timerImpl; }
 
-  Promise<int> onChildExit(Maybe<pid_t>& pid);
+  Promise<int> KJ_ASYNC_API onChildExit(Maybe<pid_t>& pid);
   // When the given child process exits, resolves to its wait status, as returned by wait(2). You
   // will need to use the WIFEXITED() etc. macros to interpret the status code.
   //
@@ -171,7 +172,7 @@ public:
   //   because the thread which used onChildExit() uses wait() to reap children, without specifying
   //   which child, and therefore it may inadvertently reap children created by other threads.
 
-  static void captureChildExit();
+  static void KJ_ASYNC_API captureChildExit();
   // Arranges for child process exit to be captured and handled via UnixEventPort, so that you may
   // call `onChildExit()`. Much like `captureSignal()`, this static method must be called early on
   // in program startup.
@@ -180,9 +181,9 @@ public:
   // `onSignal(SIGCHLD)` in your own code if you use `captureChildExit()`.
 
   // implements EventPort ------------------------------------------------------
-  bool wait() override;
-  bool poll() override;
-  void wake() const override;
+  bool KJ_ASYNC_API wait() override;
+  bool KJ_ASYNC_API poll() override;
+  void KJ_ASYNC_API wake() const override;
 
 private:
   class SignalPromiseAdapter;
@@ -237,7 +238,7 @@ private:
   static void ignoreSigpipe();
 };
 
-class UnixEventPort::FdObserver: private AsyncObject {
+class KJ_ASYNC_CLASS UnixEventPort::FdObserver: private AsyncObject {
   // Object which watches a file descriptor to determine when it is readable or writable.
   //
   // For listen sockets, "readable" means that there is a connection to accept(). For everything
@@ -260,15 +261,15 @@ public:
     OBSERVE_READ_WRITE = OBSERVE_READ | OBSERVE_WRITE
   };
 
-  FdObserver(UnixEventPort& eventPort, int fd, uint flags);
+  KJ_ASYNC_API FdObserver(UnixEventPort& eventPort, int fd, uint flags);
   // Begin watching the given file descriptor for readability. Only one ReadObserver may exist
   // for a given file descriptor at a time.
 
-  ~FdObserver() noexcept(false);
+  KJ_ASYNC_API ~FdObserver() noexcept(false);
 
   KJ_DISALLOW_COPY_AND_MOVE(FdObserver);
 
-  Promise<void> whenBecomesReadable();
+  Promise<void> KJ_ASYNC_API whenBecomesReadable();
   // Resolves the next time the file descriptor transitions from having no data to read to having
   // some data to read.
   //
@@ -293,7 +294,7 @@ public:
   // It is an error to call `whenBecomesReadable()` again when the promise returned previously
   // has not yet resolved. If you do this, the previous promise may throw an exception.
 
-  inline Maybe<bool> atEndHint() { return atEnd; }
+  inline Maybe<bool> KJ_ASYNC_API atEndHint() { return atEnd; }
   // Returns true if the event system has indicated that EOF has been received. There may still
   // be data in the read buffer, but once that is gone, there's nothing left.
   //
@@ -306,7 +307,7 @@ public:
   //
   // This hint may be useful as an optimization to avoid an unnecessary system call.
 
-  Promise<void> whenBecomesWritable();
+  Promise<void> KJ_ASYNC_API whenBecomesWritable();
   // Resolves the next time the file descriptor transitions from having no space available in the
   // write buffer to having some space available.
   //
@@ -327,7 +328,7 @@ public:
   // It is an error to call `whenBecomesWritable()` again when the promise returned previously
   // has not yet resolved. If you do this, the previous promise may throw an exception.
 
-  Promise<void> whenUrgentDataAvailable();
+  Promise<void> KJ_ASYNC_API whenUrgentDataAvailable();
   // Resolves the next time the file descriptor's read buffer contains "urgent" data.
   //
   // The conditions for availability of urgent data are specific to the file descriptor's
@@ -339,7 +340,7 @@ public:
   // WARNING: This has some known weird behavior on macOS. See
   //   https://github.com/capnproto/capnproto/issues/374.
 
-  Promise<void> whenWriteDisconnected();
+  Promise<void> KJ_ASYNC_API whenWriteDisconnected();
   // Resolves when poll() on the file descriptor reports POLLHUP or POLLERR.
 
 private:
