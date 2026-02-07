@@ -304,6 +304,7 @@ if(WITH_ZLIB)
     compat/gzip.c++
   )
   set(kj-gzip_headers
+    export-kj-gzip.h
     compat/gzip.h
   )
   if(NOT CAPNP_LITE)
@@ -312,6 +313,19 @@ if(WITH_ZLIB)
 
     target_compile_definitions(kj-gzip PRIVATE KJ_HAS_ZLIB)
     target_link_libraries(kj-gzip PUBLIC kj-async kj ZLIB::ZLIB)
+
+    get_target_property(KJ_GZIP_TYPE kj-gzip TYPE)
+
+    if(KJ_GZIP_TYPE STREQUAL "SHARED_LIBRARY")
+      set(KJ_GZIP_EXPORT_MACRO "KJ_GZIP_BUILD")
+      set(KJ_GZIP_IMPORT_MACRO "")
+    else()
+      set(KJ_GZIP_EXPORT_MACRO "KJ_GZIP_STATIC_DEFINE")
+      set(KJ_GZIP_IMPORT_MACRO "KJ_GZIP_STATIC_DEFINE")
+    endif()
+
+    #set symbol visibility macros
+    target_compile_definitions(kj-gzip INTERFACE ${KJ_GZIP_IMPORT_MACRO} PRIVATE ${KJ_GZIP_EXPORT_MACRO})
 
     # Ensure the library has a version set to match autotools build
     set_target_properties(kj-gzip PROPERTIES VERSION ${VERSION})
