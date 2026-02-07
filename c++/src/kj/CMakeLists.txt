@@ -265,6 +265,7 @@ if(WITH_OPENSSL)
     compat/tls.c++
   )
   set(kj-tls_headers
+    export-kj-tls.h
     compat/readiness-io.h
     compat/tls.h
   )
@@ -275,6 +276,19 @@ if(WITH_OPENSSL)
 
     target_compile_definitions(kj-tls PRIVATE KJ_HAS_OPENSSL)
     target_link_libraries(kj-tls PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+
+    get_target_property(KJ_TLS_TYPE kj-tls TYPE)
+
+    if(KJ_TLS_TYPE STREQUAL "SHARED_LIBRARY")
+      set(KJ_TLS_EXPORT_MACRO "KJ_TLS_BUILD")
+      set(KJ_TLS_IMPORT_MACRO "")
+    else()
+      set(KJ_TLS_EXPORT_MACRO "KJ_TLS_STATIC_DEFINE")
+      set(KJ_TLS_IMPORT_MACRO "KJ_TLS_STATIC_DEFINE")
+    endif()
+
+    #set symbol visibility macros
+    target_compile_definitions(kj-tls INTERFACE ${KJ_TLS_IMPORT_MACRO} PRIVATE ${KJ_TLS_EXPORT_MACRO})
 
     # Ensure the library has a version set to match autotools build
     set_target_properties(kj-tls PROPERTIES VERSION ${VERSION})
