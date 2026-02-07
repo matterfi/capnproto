@@ -225,6 +225,7 @@ set(kj-http_sources
   compat/http.c++
 )
 set(kj-http_headers
+  export-kj-http.h
   compat/url.h
   compat/http.h
 )
@@ -237,6 +238,20 @@ if(NOT CAPNP_LITE)
   else()
     target_link_libraries(kj-http PUBLIC kj-async kj)
   endif()
+
+  get_target_property(KJ_HTTP_TYPE kj-http TYPE)
+
+  if(KJ_HTTP_TYPE STREQUAL "SHARED_LIBRARY")
+    set(KJ_HTTP_EXPORT_MACRO "KJ_HTTP_BUILD")
+    set(KJ_HTTP_IMPORT_MACRO "")
+  else()
+    set(KJ_HTTP_EXPORT_MACRO "KJ_HTTP_STATIC_DEFINE")
+    set(KJ_HTTP_IMPORT_MACRO "KJ_HTTP_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(kj-http INTERFACE ${KJ_HTTP_IMPORT_MACRO} PRIVATE ${KJ_HTTP_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(kj-http PROPERTIES VERSION ${VERSION})
   install(TARGETS kj-http ${INSTALL_TARGETS_DEFAULT_ARGS})

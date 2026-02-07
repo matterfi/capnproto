@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <kj/export-kj-http.h>
 #include <kj/string.h>
 #include <kj/vector.h>
 #include <inttypes.h>
@@ -29,47 +30,47 @@ KJ_BEGIN_HEADER
 
 namespace kj {
 
-struct UrlOptions {
+struct KJ_HTTP_CLASS UrlOptions {
   // A bag of options that you can pass to Url::parse()/tryParse() to customize the parser's
   // behavior.
   //
   // A copy of this options struct will be stored in the parsed Url object, at which point it
   // controls the behavior of the serializer in Url::toString().
 
-  bool percentDecode = true;
+  bool KJ_HTTP_API percentDecode = true;
   // True if URL components should be automatically percent-decoded during parsing, and
   // percent-encoded during serialization.
 
-  bool allowEmpty = false;
+  bool KJ_HTTP_API allowEmpty = false;
   // Whether or not to allow empty path and query components when parsing; otherwise, they are
   // silently removed. In other words, setting this false causes consecutive slashes in the path or
   // consecutive ampersands in the query to be collapsed into one, whereas if true then they
   // produce empty components.
 };
 
-struct Url {
+struct KJ_HTTP_CLASS Url {
   // Represents a URL (or, more accurately, a URI, but whatever).
   //
   // Can be parsed from a string and composed back into a string.
 
-  String scheme;
+  String KJ_HTTP_API scheme;
   // E.g. "http", "https".
 
-  struct UserInfo {
-    String username;
-    Maybe<String> password;
+  struct KJ_HTTP_CLASS UserInfo {
+    String KJ_HTTP_API username;
+    Maybe<String> KJ_HTTP_API password;
   };
 
-  Maybe<UserInfo> userInfo;
+  Maybe<UserInfo> KJ_HTTP_API userInfo;
   // Username / password.
 
-  String host;
+  String KJ_HTTP_API host;
   // Hostname, including port if specified. We choose not to parse out the port because KJ's
   // network address parsing functions already accept addresses containing port numbers, and
   // because most web standards don't actually want to separate host and port.
 
-  Vector<String> path;
-  bool hasTrailingSlash = false;
+  Vector<String> KJ_HTTP_API path;
+  bool KJ_HTTP_API hasTrailingSlash = false;
   // Path, split on '/' characters. Note that the individual components of `path` could contain
   // '/' characters if they were percent-encoded in the original URL.
   //
@@ -77,11 +78,11 @@ struct Url {
   // toString() will throw. Note that parse() and parseRelative() automatically resolve such
   // components.
 
-  struct QueryParam {
-    String name;
-    String value;
+  struct KJ_HTTP_CLASS QueryParam {
+    String KJ_HTTP_API name;
+    String KJ_HTTP_API value;
   };
-  Vector<QueryParam> query;
+  Vector<QueryParam> KJ_HTTP_API query;
   // Query, e.g. from "?key=value&key2=value2". If a component of the query contains no '=' sign,
   // it will be parsed as a key with a null value, and later serialized with no '=' sign if you call
   // Url::toString().
@@ -92,29 +93,29 @@ struct Url {
   //     QueryParam { kj::str("name"), nullptr }      // Null-valued; will not have an '=' sign.
   //     QueryParam { kj::str("name"), kj::str("") }  // Empty-valued; WILL have an '=' sign.
 
-  Maybe<String> fragment;
+  Maybe<String> KJ_HTTP_API fragment;
   // The stuff after the '#' character (not including the '#' character itself), if present.
 
   using Options = UrlOptions;
-  Options options;
+  Options KJ_HTTP_API options;
 
   // ---------------------------------------------------------------------------
 
-  Url() = default;
-  Url(Url&&) = default;
-  ~Url() noexcept(false);
-  Url& operator=(Url&&) = default;
+  KJ_HTTP_API Url() = default;
+  KJ_HTTP_API Url(Url&&) = default;
+  KJ_HTTP_API ~Url() noexcept(false);
+  Url& KJ_HTTP_API operator=(Url&&) = default;
 
-  inline Url(String&& scheme, Maybe<UserInfo>&& userInfo, String&& host, Vector<String>&& path,
-             bool hasTrailingSlash, Vector<QueryParam>&& query, Maybe<String>&& fragment,
-             UrlOptions options)
+  inline KJ_HTTP_API Url(String&& scheme, Maybe<UserInfo>&& userInfo, String&& host, Vector<String>&& path,
+                    bool hasTrailingSlash, Vector<QueryParam>&& query, Maybe<String>&& fragment,
+                    UrlOptions options)
       : scheme(kj::mv(scheme)), userInfo(kj::mv(userInfo)), host(kj::mv(host)), path(kj::mv(path)),
         hasTrailingSlash(hasTrailingSlash), query(kj::mv(query)), fragment(kj::mv(fragment)),
         options(options) {}
   // This constructor makes brace initialization work in C++11 and C++20 -- but is technically not
   // needed in C++14 nor C++17. Go figure.
 
-  Url clone() const;
+  Url KJ_HTTP_API clone() const;
 
   enum Context {
     REMOTE_HREF,
@@ -134,15 +135,15 @@ struct Url {
     //   don't have an authority section.
   };
 
-  kj::String toString(Context context = REMOTE_HREF) const;
+  kj::String KJ_HTTP_API toString(Context context = REMOTE_HREF) const;
   // Convert the URL to a string.
 
-  static Url parse(StringPtr text, Context context = REMOTE_HREF, Options options = {});
-  static Maybe<Url> tryParse(StringPtr text, Context context = REMOTE_HREF, Options options = {});
+  static Url KJ_HTTP_API parse(StringPtr text, Context context = REMOTE_HREF, Options options = {});
+  static Maybe<Url> KJ_HTTP_API tryParse(StringPtr text, Context context = REMOTE_HREF, Options options = {});
   // Parse an absolute URL.
 
-  Url parseRelative(StringPtr relative) const;
-  Maybe<Url> tryParseRelative(StringPtr relative) const;
+  Url KJ_HTTP_API parseRelative(StringPtr relative) const;
+  Maybe<Url> KJ_HTTP_API tryParseRelative(StringPtr relative) const;
   // Parse a relative URL string with this URL as the base.
 };
 
