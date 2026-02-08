@@ -150,6 +150,7 @@ set(capnp-json_sources
   compat/json.capnp.c++
 )
 set(capnp-json_headers
+  export-capnp-json.h
   compat/json.h
   compat/json.capnp.h
 )
@@ -160,6 +161,20 @@ if(NOT CAPNP_LITE)
   add_library(capnp-json ${capnp-json_sources})
   add_library(CapnProto::capnp-json ALIAS capnp-json)
   target_link_libraries(capnp-json PUBLIC capnp kj-async kj)
+
+  get_target_property(CAPNP_JSON_TYPE capnp-json TYPE)
+
+  if(CAPNP_JSON_TYPE STREQUAL "SHARED_LIBRARY")
+    set(CAPNP_JSON_EXPORT_MACRO "CAPNP_JSON_BUILD")
+    set(CAPNP_JSON_IMPORT_MACRO "")
+  else()
+    set(CAPNP_JSON_EXPORT_MACRO "CAPNP_JSON_STATIC_DEFINE")
+    set(CAPNP_JSON_IMPORT_MACRO "CAPNP_JSON_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(capnp-json INTERFACE ${CAPNP_JSON_IMPORT_MACRO} PRIVATE ${CAPNP_JSON_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(capnp-json PROPERTIES VERSION ${VERSION})
   install(TARGETS capnp-json ${INSTALL_TARGETS_DEFAULT_ARGS})

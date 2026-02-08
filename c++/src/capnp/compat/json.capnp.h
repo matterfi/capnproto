@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <capnp/export-capnp-json.h>
 #include <capnp/generated-header-support.h>
 #include <kj/windows-sanity.h>
 #if !CAPNP_LITE
@@ -39,7 +40,7 @@ CAPNP_DECLARE_SCHEMA(a0a054dea32fd98c);
 namespace capnp {
 namespace json {
 
-struct Value {
+struct CAPNP_JSON_CLASS Value {
   Value() = delete;
 
   class Reader;
@@ -66,7 +67,7 @@ struct Value {
   };
 };
 
-struct Value::Field {
+struct CAPNP_JSON_CLASS Value::Field {
   Field() = delete;
 
   class Reader;
@@ -81,7 +82,7 @@ struct Value::Field {
   };
 };
 
-struct Value::Call {
+struct CAPNP_JSON_CLASS Value::Call {
   Call() = delete;
 
   class Reader;
@@ -96,7 +97,7 @@ struct Value::Call {
   };
 };
 
-struct FlattenOptions {
+struct CAPNP_JSON_CLASS FlattenOptions {
   FlattenOptions() = delete;
 
   class Reader;
@@ -111,7 +112,7 @@ struct FlattenOptions {
   };
 };
 
-struct DiscriminatorOptions {
+struct CAPNP_JSON_CLASS DiscriminatorOptions {
   DiscriminatorOptions() = delete;
 
   class Reader;
@@ -128,52 +129,52 @@ struct DiscriminatorOptions {
 
 // =======================================================================================
 
-class Value::Reader {
+class CAPNP_JSON_CLASS Value::Reader {
 public:
   typedef Value Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_JSON_API Reader() = default;
+  inline explicit CAPNP_JSON_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_JSON_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline bool isNull() const;
-  inline  ::capnp::Void getNull() const;
+  inline Which CAPNP_JSON_API which() const;
+  inline bool CAPNP_JSON_API isNull() const;
+  inline  ::capnp::Void CAPNP_JSON_API getNull() const;
 
-  inline bool isBoolean() const;
-  inline bool getBoolean() const;
+  inline bool CAPNP_JSON_API isBoolean() const;
+  inline bool CAPNP_JSON_API getBoolean() const;
 
-  inline bool isNumber() const;
-  inline double getNumber() const;
+  inline bool CAPNP_JSON_API isNumber() const;
+  inline double CAPNP_JSON_API getNumber() const;
 
-  inline bool isString() const;
-  inline bool hasString() const;
-  inline  ::capnp::Text::Reader getString() const;
+  inline bool CAPNP_JSON_API isString() const;
+  inline bool CAPNP_JSON_API hasString() const;
+  inline  ::capnp::Text::Reader CAPNP_JSON_API getString() const;
 
-  inline bool isArray() const;
-  inline bool hasArray() const;
-  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Reader getArray() const;
+  inline bool CAPNP_JSON_API isArray() const;
+  inline bool CAPNP_JSON_API hasArray() const;
+  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Reader CAPNP_JSON_API getArray() const;
 
-  inline bool isObject() const;
-  inline bool hasObject() const;
-  inline  ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>::Reader getObject() const;
+  inline bool CAPNP_JSON_API isObject() const;
+  inline bool CAPNP_JSON_API hasObject() const;
+  inline  ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>::Reader CAPNP_JSON_API getObject() const;
 
-  inline bool isCall() const;
-  inline bool hasCall() const;
-  inline  ::capnp::json::Value::Call::Reader getCall() const;
+  inline bool CAPNP_JSON_API isCall() const;
+  inline bool CAPNP_JSON_API hasCall() const;
+  inline  ::capnp::json::Value::Call::Reader CAPNP_JSON_API getCall() const;
 
-  inline bool isRaw() const;
-  inline bool hasRaw() const;
-  inline  ::capnp::Text::Reader getRaw() const;
+  inline bool CAPNP_JSON_API isRaw() const;
+  inline bool CAPNP_JSON_API hasRaw() const;
+  inline  ::capnp::Text::Reader CAPNP_JSON_API getRaw() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -187,74 +188,74 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Value::Builder {
+class CAPNP_JSON_CLASS Value::Builder {
 public:
   typedef Value Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_JSON_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_JSON_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_JSON_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_JSON_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_JSON_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline bool isNull();
-  inline  ::capnp::Void getNull();
-  inline void setNull( ::capnp::Void value = ::capnp::VOID);
+  inline Which CAPNP_JSON_API which();
+  inline bool CAPNP_JSON_API isNull();
+  inline  ::capnp::Void CAPNP_JSON_API getNull();
+  inline void CAPNP_JSON_API setNull( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isBoolean();
+  inline bool CAPNP_JSON_API isBoolean();
   inline bool getBoolean();
-  inline void setBoolean(bool value);
+  inline void CAPNP_JSON_API setBoolean(bool value);
 
-  inline bool isNumber();
+  inline bool CAPNP_JSON_API isNumber();
   inline double getNumber();
-  inline void setNumber(double value);
+  inline void CAPNP_JSON_API setNumber(double value);
 
-  inline bool isString();
-  inline bool hasString();
-  inline  ::capnp::Text::Builder getString();
-  inline void setString( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initString(unsigned int size);
-  inline void adoptString(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownString();
+  inline bool CAPNP_JSON_API isString();
+  inline bool CAPNP_JSON_API hasString();
+  inline  ::capnp::Text::Builder CAPNP_JSON_API getString();
+  inline void CAPNP_JSON_API setString( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_JSON_API initString(unsigned int size);
+  inline void CAPNP_JSON_API adoptString(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_JSON_API disownString();
 
-  inline bool isArray();
-  inline bool hasArray();
-  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Builder getArray();
-  inline void setArray( ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Builder initArray(unsigned int size);
-  inline void adoptArray(::capnp::Orphan< ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>> disownArray();
+  inline bool CAPNP_JSON_API isArray();
+  inline bool CAPNP_JSON_API hasArray();
+  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Builder CAPNP_JSON_API getArray();
+  inline void CAPNP_JSON_API setArray( ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Builder CAPNP_JSON_API initArray(unsigned int size);
+  inline void CAPNP_JSON_API adoptArray(::capnp::Orphan< ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>> CAPNP_JSON_API disownArray();
 
-  inline bool isObject();
-  inline bool hasObject();
-  inline  ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>::Builder getObject();
-  inline void setObject( ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>::Builder initObject(unsigned int size);
-  inline void adoptObject(::capnp::Orphan< ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>> disownObject();
+  inline bool CAPNP_JSON_API isObject();
+  inline bool CAPNP_JSON_API hasObject();
+  inline  ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>::Builder CAPNP_JSON_API getObject();
+  inline void CAPNP_JSON_API setObject( ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>::Builder CAPNP_JSON_API initObject(unsigned int size);
+  inline void CAPNP_JSON_API adoptObject(::capnp::Orphan< ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::json::Value::Field,  ::capnp::Kind::STRUCT>> CAPNP_JSON_API disownObject();
 
-  inline bool isCall();
-  inline bool hasCall();
-  inline  ::capnp::json::Value::Call::Builder getCall();
-  inline void setCall( ::capnp::json::Value::Call::Reader value);
-  inline  ::capnp::json::Value::Call::Builder initCall();
-  inline void adoptCall(::capnp::Orphan< ::capnp::json::Value::Call>&& value);
-  inline ::capnp::Orphan< ::capnp::json::Value::Call> disownCall();
+  inline bool CAPNP_JSON_API isCall();
+  inline bool CAPNP_JSON_API hasCall();
+  inline  ::capnp::json::Value::Call::Builder CAPNP_JSON_API getCall();
+  inline void CAPNP_JSON_API setCall( ::capnp::json::Value::Call::Reader value);
+  inline  ::capnp::json::Value::Call::Builder CAPNP_JSON_API initCall();
+  inline void CAPNP_JSON_API adoptCall(::capnp::Orphan< ::capnp::json::Value::Call>&& value);
+  inline ::capnp::Orphan< ::capnp::json::Value::Call> CAPNP_JSON_API disownCall();
 
-  inline bool isRaw();
-  inline bool hasRaw();
-  inline  ::capnp::Text::Builder getRaw();
-  inline void setRaw( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initRaw(unsigned int size);
-  inline void adoptRaw(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownRaw();
+  inline bool CAPNP_JSON_API isRaw();
+  inline bool CAPNP_JSON_API hasRaw();
+  inline  ::capnp::Text::Builder CAPNP_JSON_API getRaw();
+  inline void CAPNP_JSON_API setRaw( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_JSON_API initRaw(unsigned int size);
+  inline void CAPNP_JSON_API adoptRaw(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_JSON_API disownRaw();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -266,12 +267,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Value::Pipeline {
+class CAPNP_JSON_CLASS Value::Pipeline {
 public:
   typedef Value Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_JSON_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_JSON_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -282,28 +283,28 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Value::Field::Reader {
+class CAPNP_JSON_CLASS Value::Field::Reader {
 public:
   typedef Field Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_JSON_API Reader() = default;
+  inline explicit CAPNP_JSON_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_JSON_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName() const;
-  inline  ::capnp::Text::Reader getName() const;
+  inline bool CAPNP_JSON_API hasName() const;
+  inline  ::capnp::Text::Reader CAPNP_JSON_API getName() const;
 
-  inline bool hasValue() const;
-  inline  ::capnp::json::Value::Reader getValue() const;
+  inline bool CAPNP_JSON_API hasValue() const;
+  inline  ::capnp::json::Value::Reader CAPNP_JSON_API getValue() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -317,35 +318,35 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Value::Field::Builder {
+class CAPNP_JSON_CLASS Value::Field::Builder {
 public:
   typedef Field Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_JSON_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_JSON_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_JSON_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_JSON_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_JSON_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName();
-  inline  ::capnp::Text::Builder getName();
-  inline void setName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownName();
+  inline bool CAPNP_JSON_API hasName();
+  inline  ::capnp::Text::Builder CAPNP_JSON_API getName();
+  inline void CAPNP_JSON_API setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_JSON_API initName(unsigned int size);
+  inline void CAPNP_JSON_API adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_JSON_API disownName();
 
-  inline bool hasValue();
-  inline  ::capnp::json::Value::Builder getValue();
-  inline void setValue( ::capnp::json::Value::Reader value);
-  inline  ::capnp::json::Value::Builder initValue();
-  inline void adoptValue(::capnp::Orphan< ::capnp::json::Value>&& value);
-  inline ::capnp::Orphan< ::capnp::json::Value> disownValue();
+  inline bool CAPNP_JSON_API hasValue();
+  inline  ::capnp::json::Value::Builder CAPNP_JSON_API getValue();
+  inline void CAPNP_JSON_API setValue( ::capnp::json::Value::Reader value);
+  inline  ::capnp::json::Value::Builder CAPNP_JSON_API initValue();
+  inline void CAPNP_JSON_API adoptValue(::capnp::Orphan< ::capnp::json::Value>&& value);
+  inline ::capnp::Orphan< ::capnp::json::Value> CAPNP_JSON_API disownValue();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -357,15 +358,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class Value::Field::Pipeline {
+class CAPNP_JSON_CLASS Value::Field::Pipeline {
 public:
   typedef Field Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_JSON_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_JSON_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::json::Value::Pipeline getValue();
+  inline  ::capnp::json::Value::Pipeline CAPNP_JSON_API getValue();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -374,28 +375,28 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Value::Call::Reader {
+class CAPNP_JSON_CLASS Value::Call::Reader {
 public:
   typedef Call Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_JSON_API Reader() = default;
+  inline explicit CAPNP_JSON_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_JSON_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasFunction() const;
-  inline  ::capnp::Text::Reader getFunction() const;
+  inline bool CAPNP_JSON_API hasFunction() const;
+  inline  ::capnp::Text::Reader CAPNP_JSON_API getFunction() const;
 
-  inline bool hasParams() const;
-  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Reader getParams() const;
+  inline bool CAPNP_JSON_API hasParams() const;
+  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Reader CAPNP_JSON_API getParams() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -409,35 +410,35 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Value::Call::Builder {
+class CAPNP_JSON_CLASS Value::Call::Builder {
 public:
   typedef Call Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_JSON_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_JSON_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_JSON_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_JSON_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_JSON_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasFunction();
-  inline  ::capnp::Text::Builder getFunction();
-  inline void setFunction( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initFunction(unsigned int size);
-  inline void adoptFunction(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownFunction();
+  inline bool CAPNP_JSON_API hasFunction();
+  inline  ::capnp::Text::Builder CAPNP_JSON_API getFunction();
+  inline void CAPNP_JSON_API setFunction( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_JSON_API initFunction(unsigned int size);
+  inline void CAPNP_JSON_API adoptFunction(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_JSON_API disownFunction();
 
-  inline bool hasParams();
-  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Builder getParams();
-  inline void setParams( ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Builder initParams(unsigned int size);
-  inline void adoptParams(::capnp::Orphan< ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>> disownParams();
+  inline bool CAPNP_JSON_API hasParams();
+  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Builder CAPNP_JSON_API getParams();
+  inline void CAPNP_JSON_API setParams( ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>::Builder CAPNP_JSON_API initParams(unsigned int size);
+  inline void CAPNP_JSON_API adoptParams(::capnp::Orphan< ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::json::Value,  ::capnp::Kind::STRUCT>> CAPNP_JSON_API disownParams();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -449,12 +450,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Value::Call::Pipeline {
+class CAPNP_JSON_CLASS Value::Call::Pipeline {
 public:
   typedef Call Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_JSON_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_JSON_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -465,25 +466,25 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class FlattenOptions::Reader {
+class CAPNP_JSON_CLASS FlattenOptions::Reader {
 public:
   typedef FlattenOptions Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_JSON_API Reader() = default;
+  inline explicit CAPNP_JSON_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_JSON_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasPrefix() const;
-  inline  ::capnp::Text::Reader getPrefix() const;
+  inline bool CAPNP_JSON_API hasPrefix() const;
+  inline  ::capnp::Text::Reader CAPNP_JSON_API getPrefix() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -497,28 +498,28 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class FlattenOptions::Builder {
+class CAPNP_JSON_CLASS FlattenOptions::Builder {
 public:
   typedef FlattenOptions Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_JSON_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_JSON_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_JSON_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_JSON_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_JSON_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasPrefix();
-  inline  ::capnp::Text::Builder getPrefix();
-  inline void setPrefix( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initPrefix(unsigned int size);
-  inline void adoptPrefix(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownPrefix();
+  inline bool CAPNP_JSON_API hasPrefix();
+  inline  ::capnp::Text::Builder CAPNP_JSON_API getPrefix();
+  inline void CAPNP_JSON_API setPrefix( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_JSON_API initPrefix(unsigned int size);
+  inline void CAPNP_JSON_API adoptPrefix(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_JSON_API disownPrefix();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -530,12 +531,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class FlattenOptions::Pipeline {
+class CAPNP_JSON_CLASS FlattenOptions::Pipeline {
 public:
   typedef FlattenOptions Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_JSON_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_JSON_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -546,28 +547,28 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class DiscriminatorOptions::Reader {
+class CAPNP_JSON_CLASS DiscriminatorOptions::Reader {
 public:
   typedef DiscriminatorOptions Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_JSON_API Reader() = default;
+  inline explicit CAPNP_JSON_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_JSON_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName() const;
-  inline  ::capnp::Text::Reader getName() const;
+  inline bool CAPNP_JSON_API hasName() const;
+  inline  ::capnp::Text::Reader CAPNP_JSON_API getName() const;
 
-  inline bool hasValueName() const;
-  inline  ::capnp::Text::Reader getValueName() const;
+  inline bool CAPNP_JSON_API hasValueName() const;
+  inline  ::capnp::Text::Reader CAPNP_JSON_API getValueName() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -581,35 +582,35 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class DiscriminatorOptions::Builder {
+class CAPNP_JSON_CLASS DiscriminatorOptions::Builder {
 public:
   typedef DiscriminatorOptions Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_JSON_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_JSON_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_JSON_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_JSON_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_JSON_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_JSON_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName();
-  inline  ::capnp::Text::Builder getName();
-  inline void setName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownName();
+  inline bool CAPNP_JSON_API hasName();
+  inline  ::capnp::Text::Builder CAPNP_JSON_API getName();
+  inline void CAPNP_JSON_API setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_JSON_API initName(unsigned int size);
+  inline void CAPNP_JSON_API adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_JSON_API disownName();
 
-  inline bool hasValueName();
-  inline  ::capnp::Text::Builder getValueName();
-  inline void setValueName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initValueName(unsigned int size);
-  inline void adoptValueName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownValueName();
+  inline bool CAPNP_JSON_API hasValueName();
+  inline  ::capnp::Text::Builder CAPNP_JSON_API getValueName();
+  inline void CAPNP_JSON_API setValueName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_JSON_API initValueName(unsigned int size);
+  inline void CAPNP_JSON_API adoptValueName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_JSON_API disownValueName();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -621,12 +622,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class DiscriminatorOptions::Pipeline {
+class CAPNP_JSON_CLASS DiscriminatorOptions::Pipeline {
 public:
   typedef DiscriminatorOptions Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_JSON_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_JSON_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
