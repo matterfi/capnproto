@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include "export-capnp-rpc.h"
 #include <capnp/capability.h>
 #include "persistent.capnp.h"
 
@@ -75,26 +76,27 @@ public:
   virtual Capability::Client baseCreateFor(AnyStruct::Reader clientId) = 0;
 };
 
-class RpcSystemBase {
+class CAPNP_RPC_CLASS RpcSystemBase {
   // Non-template version of RpcSystem.  Ignore this class; see RpcSystem in rpc.h.
 
 public:
-  RpcSystemBase(VatNetworkBase& network, kj::Maybe<Capability::Client> bootstrapInterface);
-  RpcSystemBase(VatNetworkBase& network, BootstrapFactoryBase& bootstrapFactory);
-  RpcSystemBase(VatNetworkBase& network, SturdyRefRestorerBase& restorer);
-  RpcSystemBase(RpcSystemBase&& other) noexcept;
-  ~RpcSystemBase() noexcept(false);
+  CAPNP_RPC_API RpcSystemBase(VatNetworkBase& network,
+                              kj::Maybe<Capability::Client> bootstrapInterface);
+  CAPNP_RPC_API RpcSystemBase(VatNetworkBase& network, BootstrapFactoryBase& bootstrapFactory);
+  CAPNP_RPC_API RpcSystemBase(VatNetworkBase& network, SturdyRefRestorerBase& restorer);
+  CAPNP_RPC_API RpcSystemBase(RpcSystemBase&& other) noexcept;
+  CAPNP_RPC_API ~RpcSystemBase() noexcept(false);
 
-  void setTraceEncoder(kj::Function<kj::String(const kj::Exception&)> func);
+  void CAPNP_RPC_API setTraceEncoder(kj::Function<kj::String(const kj::Exception&)> func);
 
-  kj::Promise<void> run();
+  kj::Promise<void> CAPNP_RPC_API run();
 
 private:
   class Impl;
   kj::Own<Impl> impl;
 
-  Capability::Client baseBootstrap(AnyStruct::Reader vatId);
-  Capability::Client baseRestore(AnyStruct::Reader vatId, AnyPointer::Reader objectId);
+  Capability::Client CAPNP_RPC_API baseBootstrap(AnyStruct::Reader vatId);
+  Capability::Client CAPNP_RPC_API baseRestore(AnyStruct::Reader vatId, AnyPointer::Reader objectId);
   void baseSetFlowLimit(size_t words);
 
   template <typename>

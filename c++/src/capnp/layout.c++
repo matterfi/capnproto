@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 
 #define CAPNP_PRIVATE
+#include "export-capnp-rpc.h"
 #include "layout.h"
 #include <kj/debug.h>
 #include "arena.h"
@@ -38,7 +39,7 @@ static BrokenCapFactory* globalBrokenCapFactory = nullptr;
 // Horrible hack:  We need to be able to construct broken caps without any capability context,
 // but we can't have a link-time dependency on libcapnp-rpc.
 
-void setGlobalBrokenCapFactoryForLayoutCpp(BrokenCapFactory& factory) {
+void CAPNP_RPC_API setGlobalBrokenCapFactoryForLayoutCpp(BrokenCapFactory& factory) {
   // Called from capability.c++ when the capability API is used, to make sure that layout.c++
   // is ready for it.  May be called multiple times but always with the same value.
 #if __GNUC__ || defined(__clang__)

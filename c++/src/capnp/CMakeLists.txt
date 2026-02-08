@@ -105,6 +105,7 @@ set(capnp-rpc_sources
   ez-rpc.c++
 )
 set(capnp-rpc_headers
+  export-capnp-rpc.h
   rpc-prelude.h
   rpc.h
   rpc-twoparty.h
@@ -122,6 +123,20 @@ if(NOT CAPNP_LITE)
   add_library(capnp-rpc ${capnp-rpc_sources})
   add_library(CapnProto::capnp-rpc ALIAS capnp-rpc)
   target_link_libraries(capnp-rpc PUBLIC capnp kj-async kj)
+
+  get_target_property(CAPNP_RPC_TYPE capnp-rpc TYPE)
+
+  if(CAPNP_RPC_TYPE STREQUAL "SHARED_LIBRARY")
+    set(CAPNP_RPC_EXPORT_MACRO "CAPNP_RPC_BUILD")
+    set(CAPNP_RPC_IMPORT_MACRO "")
+  else()
+    set(CAPNP_RPC_EXPORT_MACRO "CAPNP_RPC_STATIC_DEFINE")
+    set(CAPNP_RPC_IMPORT_MACRO "CAPNP_RPC_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(capnp-rpc INTERFACE ${CAPNP_RPC_IMPORT_MACRO} PRIVATE ${CAPNP_RPC_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(capnp-rpc PROPERTIES VERSION ${VERSION})
   install(TARGETS capnp-rpc ${INSTALL_TARGETS_DEFAULT_ARGS})

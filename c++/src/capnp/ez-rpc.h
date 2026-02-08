@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-capnp-rpc.h"
 #include "rpc.h"
 #include <capnp/message.h>
 
@@ -34,7 +35,7 @@ namespace capnp {
 
 class EzRpcContext;
 
-class EzRpcClient {
+class CAPNP_RPC_CLASS EzRpcClient {
   // Super-simple interface for setting up a Cap'n Proto RPC client.  Example:
   //
   //     # Cap'n Proto schema
@@ -92,8 +93,8 @@ class EzRpcClient {
   // - `TwoPartyVatNetwork` in `capnp/rpc-twoparty.h`.
 
 public:
-  explicit EzRpcClient(kj::StringPtr serverAddress, uint defaultPort = 0,
-                       ReaderOptions readerOpts = ReaderOptions());
+  explicit CAPNP_RPC_API EzRpcClient(kj::StringPtr serverAddress, uint defaultPort = 0,
+                                 ReaderOptions readerOpts = ReaderOptions());
   // Construct a new EzRpcClient and connect to the given address.  The connection is formed in
   // the background -- if it fails, calls to capabilities returned by importCap() will fail with an
   // appropriate exception.
@@ -110,26 +111,26 @@ public:
   // your protocol to send large data blobs in multiple small chunks -- this is much better for
   // both security and performance. See `ReaderOptions` in `message.h` for more details.
 
-  EzRpcClient(const struct sockaddr* serverAddress, uint addrSize,
-              ReaderOptions readerOpts = ReaderOptions());
+  CAPNP_RPC_API EzRpcClient(const struct sockaddr* serverAddress, uint addrSize,
+                            ReaderOptions readerOpts = ReaderOptions());
   // Like the above constructor, but connects to an already-resolved socket address.  Any address
   // format supported by `kj::Network` in `kj/async-io.h` is accepted.
 
-  explicit EzRpcClient(int socketFd, ReaderOptions readerOpts = ReaderOptions());
+  explicit CAPNP_RPC_API EzRpcClient(int socketFd, ReaderOptions readerOpts = ReaderOptions());
   // Create a client on top of an already-connected socket.
   // `readerOpts` acts as in the first constructor.
 
-  ~EzRpcClient() noexcept(false);
+  CAPNP_RPC_API ~EzRpcClient() noexcept(false);
 
   template <typename Type>
   typename Type::Client getMain();
-  Capability::Client getMain();
+  Capability::Client CAPNP_RPC_API getMain();
   // Get the server's main (aka "bootstrap") interface.
 
   template <typename Type>
   typename Type::Client importCap(kj::StringPtr name) CAPNP_DEPRECATED(
       "Change your server to export a main interface, then use getMain() instead.");
-  Capability::Client importCap(kj::StringPtr name) CAPNP_DEPRECATED(
+  Capability::Client CAPNP_RPC_API importCap(kj::StringPtr name) CAPNP_DEPRECATED(
       "Change your server to export a main interface, then use getMain() instead.");
   // ** DEPRECATED **
   //
@@ -139,15 +140,15 @@ public:
   // Named interfaces are deprecated. The new preferred usage pattern is for the server to export
   // a "main" interface which itself has methods for getting any other interfaces.
 
-  kj::WaitScope& getWaitScope();
+  kj::WaitScope& CAPNP_RPC_API getWaitScope();
   // Get the `WaitScope` for the client's `EventLoop`, which allows you to synchronously wait on
   // promises.
 
-  kj::AsyncIoProvider& getIoProvider();
+  kj::AsyncIoProvider& CAPNP_RPC_API getIoProvider();
   // Get the underlying AsyncIoProvider set up by the RPC system.  This is useful if you want
   // to do some non-RPC I/O in asynchronous fashion.
 
-  kj::LowLevelAsyncIoProvider& getLowLevelIoProvider();
+  kj::LowLevelAsyncIoProvider& CAPNP_RPC_API getLowLevelIoProvider();
   // Get the underlying LowLevelAsyncIoProvider set up by the RPC system.  This is useful if you
   // want to do some non-RPC I/O in asynchronous fashion.
 
@@ -156,12 +157,12 @@ private:
   kj::Own<Impl> impl;
 };
 
-class EzRpcServer {
+class CAPNP_RPC_CLASS EzRpcServer {
   // The server counterpart to `EzRpcClient`.  See `EzRpcClient` for an example.
 
 public:
-  explicit EzRpcServer(Capability::Client mainInterface, kj::StringPtr bindAddress,
-                       uint defaultPort = 0, ReaderOptions readerOpts = ReaderOptions());
+  explicit CAPNP_RPC_API EzRpcServer(Capability::Client mainInterface, kj::StringPtr bindAddress,
+                                 uint defaultPort = 0, ReaderOptions readerOpts = ReaderOptions());
   // Construct a new `EzRpcServer` that binds to the given address.  An address of "*" means to
   // bind to all local addresses.
   //
@@ -182,49 +183,49 @@ public:
   // your protocol to send large data blobs in multiple small chunks -- this is much better for
   // both security and performance. See `ReaderOptions` in `message.h` for more details.
 
-  EzRpcServer(Capability::Client mainInterface, struct sockaddr* bindAddress, uint addrSize,
-              ReaderOptions readerOpts = ReaderOptions());
+  CAPNP_RPC_API EzRpcServer(Capability::Client mainInterface, struct sockaddr* bindAddress,
+                            uint addrSize, ReaderOptions readerOpts = ReaderOptions());
   // Like the above constructor, but binds to an already-resolved socket address.  Any address
   // format supported by `kj::Network` in `kj/async-io.h` is accepted.
 
-  EzRpcServer(Capability::Client mainInterface, int socketFd, uint port,
-              ReaderOptions readerOpts = ReaderOptions());
+  CAPNP_RPC_API EzRpcServer(Capability::Client mainInterface, int socketFd, uint port,
+                            ReaderOptions readerOpts = ReaderOptions());
   // Create a server on top of an already-listening socket (i.e. one on which accept() may be
   // called).  `port` is returned by `getPort()` -- it serves no other purpose.
   // `readerOpts` acts as in the other two above constructors.
 
-  explicit EzRpcServer(kj::StringPtr bindAddress, uint defaultPort = 0,
-                       ReaderOptions readerOpts = ReaderOptions())
+  explicit CAPNP_RPC_API EzRpcServer(kj::StringPtr bindAddress, uint defaultPort = 0,
+                                     ReaderOptions readerOpts = ReaderOptions())
       CAPNP_DEPRECATED("Please specify a main interface for your server.");
-  EzRpcServer(struct sockaddr* bindAddress, uint addrSize,
-              ReaderOptions readerOpts = ReaderOptions())
+  CAPNP_RPC_API EzRpcServer(struct sockaddr* bindAddress, uint addrSize,
+                            ReaderOptions readerOpts = ReaderOptions())
       CAPNP_DEPRECATED("Please specify a main interface for your server.");
-  EzRpcServer(int socketFd, uint port, ReaderOptions readerOpts = ReaderOptions())
+  CAPNP_RPC_API EzRpcServer(int socketFd, uint port, ReaderOptions readerOpts = ReaderOptions())
       CAPNP_DEPRECATED("Please specify a main interface for your server.");
 
-  ~EzRpcServer() noexcept(false);
+  CAPNP_RPC_API ~EzRpcServer() noexcept(false);
 
-  void exportCap(kj::StringPtr name, Capability::Client cap);
+  void CAPNP_RPC_API exportCap(kj::StringPtr name, Capability::Client cap);
   // Export a capability publicly under the given name, so that clients can import it.
   //
   // Keep in mind that you can implicitly convert `kj::Own<MyType::Server>&&` to
   // `Capability::Client`, so it's typical to pass something like
   // `kj::heap<MyImplementation>(<constructor params>)` as the second parameter.
 
-  kj::Promise<uint> getPort();
+  kj::Promise<uint> CAPNP_RPC_API getPort();
   // Get the IP port number on which this server is listening.  This promise won't resolve until
   // the server is actually listening.  If the address was not an IP address (e.g. it was a Unix
   // domain socket) then getPort() resolves to zero.
 
-  kj::WaitScope& getWaitScope();
+  kj::WaitScope& CAPNP_RPC_API getWaitScope();
   // Get the `WaitScope` for the client's `EventLoop`, which allows you to synchronously wait on
   // promises.
 
-  kj::AsyncIoProvider& getIoProvider();
+  kj::AsyncIoProvider& CAPNP_RPC_API getIoProvider();
   // Get the underlying AsyncIoProvider set up by the RPC system.  This is useful if you want
   // to do some non-RPC I/O in asynchronous fashion.
 
-  kj::LowLevelAsyncIoProvider& getLowLevelIoProvider();
+  kj::LowLevelAsyncIoProvider& CAPNP_RPC_API getLowLevelIoProvider();
   // Get the underlying LowLevelAsyncIoProvider set up by the RPC system.  This is useful if you
   // want to do some non-RPC I/O in asynchronous fashion.
 

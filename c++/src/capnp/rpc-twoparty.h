@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-capnp-rpc.h"
 #include "rpc.h"
 #include <capnp/message.h>
 #include <kj/async-io.h>
@@ -42,9 +43,9 @@ typedef VatNetwork<rpc::twoparty::VatId, rpc::twoparty::ProvisionId,
     rpc::twoparty::RecipientId, rpc::twoparty::ThirdPartyCapId, rpc::twoparty::JoinResult>
     TwoPartyVatNetworkBase;
 
-class TwoPartyVatNetwork: public TwoPartyVatNetworkBase,
-                          private TwoPartyVatNetworkBase::Connection,
-                          private RpcFlowController::WindowGetter {
+class CAPNP_RPC_CLASS TwoPartyVatNetwork: public TwoPartyVatNetworkBase,
+                                          private TwoPartyVatNetworkBase::Connection,
+                                          private RpcFlowController::WindowGetter {
   // A `VatNetwork` that consists of exactly two parties communicating over an arbitrary byte
   // stream.  This is used to implement the common case of a client/server network.
   //
@@ -52,18 +53,20 @@ class TwoPartyVatNetwork: public TwoPartyVatNetworkBase,
   // Use `TwoPartyVatNetwork` only if you need the advanced features.
 
 public:
-  TwoPartyVatNetwork(MessageStream& msgStream,
-                     rpc::twoparty::Side side, ReaderOptions receiveOptions = ReaderOptions(),
-                     const kj::MonotonicClock& clock = kj::systemCoarseMonotonicClock());
-  TwoPartyVatNetwork(MessageStream& msgStream, uint maxFdsPerMessage,
-                     rpc::twoparty::Side side, ReaderOptions receiveOptions = ReaderOptions(),
-                     const kj::MonotonicClock& clock = kj::systemCoarseMonotonicClock());
-  TwoPartyVatNetwork(kj::AsyncIoStream& stream, rpc::twoparty::Side side,
-                     ReaderOptions receiveOptions = ReaderOptions(),
-                     const kj::MonotonicClock& clock = kj::systemCoarseMonotonicClock());
-  TwoPartyVatNetwork(kj::AsyncCapabilityStream& stream, uint maxFdsPerMessage,
-                     rpc::twoparty::Side side, ReaderOptions receiveOptions = ReaderOptions(),
-                     const kj::MonotonicClock& clock = kj::systemCoarseMonotonicClock());
+  CAPNP_RPC_API TwoPartyVatNetwork(MessageStream& msgStream, rpc::twoparty::Side side,
+                               ReaderOptions receiveOptions = ReaderOptions(),
+                               const kj::MonotonicClock& clock = kj::systemCoarseMonotonicClock());
+  CAPNP_RPC_API TwoPartyVatNetwork(MessageStream& msgStream, uint maxFdsPerMessage,
+                               rpc::twoparty::Side side,
+                               ReaderOptions receiveOptions = ReaderOptions(),
+                               const kj::MonotonicClock& clock = kj::systemCoarseMonotonicClock());
+  CAPNP_RPC_API TwoPartyVatNetwork(kj::AsyncIoStream& stream, rpc::twoparty::Side side,
+                               ReaderOptions receiveOptions = ReaderOptions(),
+                               const kj::MonotonicClock& clock = kj::systemCoarseMonotonicClock());
+  CAPNP_RPC_API TwoPartyVatNetwork(kj::AsyncCapabilityStream& stream, uint maxFdsPerMessage,
+                               rpc::twoparty::Side side,
+                               ReaderOptions receiveOptions = ReaderOptions(),
+                               const kj::MonotonicClock& clock = kj::systemCoarseMonotonicClock());
   // To support FD passing, pass an AsyncCapabilityStream or a MessageStream which supports
   // fd passing, and `maxFdsPerMessage`, which specifies the maximum number of file descriptors
   // to accept from the peer in any one RPC message. It is important to keep maxFdsPerMessage
@@ -79,31 +82,31 @@ public:
   // clock is used for calculating the oldest queued message age, which is a useful metric for
   // detecting queue overload
 
-  ~TwoPartyVatNetwork() noexcept(false);
+  CAPNP_RPC_API ~TwoPartyVatNetwork() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(TwoPartyVatNetwork);
 
-  kj::Promise<void> onDisconnect() { return disconnectPromise.addBranch(); }
+  kj::Promise<void> CAPNP_RPC_API onDisconnect() { return disconnectPromise.addBranch(); }
   // Returns a promise that resolves when the peer disconnects.
 
-  rpc::twoparty::Side getSide() { return side; }
+  rpc::twoparty::Side CAPNP_RPC_API getSide() { return side; }
 
-  size_t getCurrentQueueSize() { return currentQueueSize; }
+  size_t CAPNP_RPC_API getCurrentQueueSize() { return currentQueueSize; }
   // Get the number of bytes worth of outgoing messages that are currently queued in memory waiting
   // to be sent on this connection. This may be useful for backpressure.
 
-  size_t getCurrentQueueCount() { return queuedMessages.size(); }
+  size_t CAPNP_RPC_API getCurrentQueueCount() { return queuedMessages.size(); }
   // Get the count of outgoing messages that are currently queued in memory waiting
   // to be sent on this connection. This may be useful for backpressure.
 
-  kj::Duration getOutgoingMessageWaitTime();
+  kj::Duration CAPNP_RPC_API getOutgoingMessageWaitTime();
   // Get how long the current outgoing message has been waiting to be sent on this connection.
   // Returns 0 if the queue is empty. This may be useful for backpressure.
 
   // implements VatNetwork -----------------------------------------------------
 
-  kj::Maybe<kj::Own<TwoPartyVatNetworkBase::Connection>> connect(
+  kj::Maybe<kj::Own<TwoPartyVatNetworkBase::Connection>> CAPNP_RPC_API connect(
       rpc::twoparty::VatId::Reader ref) override;
-  kj::Promise<kj::Own<TwoPartyVatNetworkBase::Connection>> accept() override;
+  kj::Promise<kj::Own<TwoPartyVatNetworkBase::Connection>> CAPNP_RPC_API accept() override;
 
 private:
   class OutgoingMessageImpl;
@@ -182,21 +185,21 @@ private:
   size_t getWindow() override;
 };
 
-class TwoPartyServer: private kj::TaskSet::ErrorHandler {
+class CAPNP_RPC_CLASS TwoPartyServer: private kj::TaskSet::ErrorHandler {
   // Convenience class which implements a simple server which accepts connections on a listener
   // socket and services them as two-party connections.
 
 public:
-  explicit TwoPartyServer(Capability::Client bootstrapInterface,
+  explicit CAPNP_RPC_API TwoPartyServer(Capability::Client bootstrapInterface,
       kj::Maybe<kj::Function<kj::String(const kj::Exception&)>> traceEncoder = nullptr);
   // `traceEncoder`, if provided, will be passed on to `rpcSystem.setTraceEncoder()`.
 
-  void accept(kj::Own<kj::AsyncIoStream>&& connection);
-  void accept(kj::Own<kj::AsyncCapabilityStream>&& connection, uint maxFdsPerMessage);
+  void CAPNP_RPC_API accept(kj::Own<kj::AsyncIoStream>&& connection);
+  void CAPNP_RPC_API accept(kj::Own<kj::AsyncCapabilityStream>&& connection, uint maxFdsPerMessage);
   // Accepts the connection for servicing.
 
-  kj::Promise<void> accept(kj::AsyncIoStream& connection) KJ_WARN_UNUSED_RESULT;
-  kj::Promise<void> accept(kj::AsyncCapabilityStream& connection, uint maxFdsPerMessage)
+  kj::Promise<void> CAPNP_RPC_API accept(kj::AsyncIoStream& connection) KJ_WARN_UNUSED_RESULT;
+  kj::Promise<void> CAPNP_RPC_API accept(kj::AsyncCapabilityStream& connection, uint maxFdsPerMessage)
       KJ_WARN_UNUSED_RESULT;
   // Accept connection without taking ownership. The returned promise resolves when the client
   // disconnects. Dropping the promise forcefully cancels the RPC protocol.
@@ -206,17 +209,17 @@ public:
   // is if your stream object becomes invalid outside some scope, so you want to make sure to
   // cancel all usage of it before that by cancelling the promise.
 
-  kj::Promise<void> listen(kj::ConnectionReceiver& listener);
+  kj::Promise<void> CAPNP_RPC_API listen(kj::ConnectionReceiver& listener);
   // Listens for connections on the given listener. The returned promise never resolves unless an
   // exception is thrown while trying to accept. You may discard the returned promise to cancel
   // listening.
 
-  kj::Promise<void> listenCapStreamReceiver(
+  kj::Promise<void> CAPNP_RPC_API listenCapStreamReceiver(
       kj::ConnectionReceiver& listener, uint maxFdsPerMessage);
   // Listen with support for FD transfers. `listener.accept()` must return instances of
   // AsyncCapabilityStream, otherwise this will crash.
 
-  kj::Promise<void> drain() { return tasks.onEmpty(); }
+  kj::Promise<void> CAPNP_RPC_API drain() { return tasks.onEmpty(); }
   // Resolves when all clients have disconnected.
   //
   // Only considers clients whose connections TwoPartyServer took ownership of.
@@ -231,29 +234,32 @@ private:
   void taskFailed(kj::Exception&& exception) override;
 };
 
-class TwoPartyClient {
+class CAPNP_RPC_CLASS TwoPartyClient {
   // Convenience class which implements a simple client.
 
 public:
-  explicit TwoPartyClient(kj::AsyncIoStream& connection);
-  explicit TwoPartyClient(kj::AsyncCapabilityStream& connection, uint maxFdsPerMessage);
-  TwoPartyClient(kj::AsyncIoStream& connection, Capability::Client bootstrapInterface,
-                 rpc::twoparty::Side side = rpc::twoparty::Side::CLIENT);
-  TwoPartyClient(kj::AsyncCapabilityStream& connection, uint maxFdsPerMessage,
-                 Capability::Client bootstrapInterface,
-                 rpc::twoparty::Side side = rpc::twoparty::Side::CLIENT);
+  explicit CAPNP_RPC_API TwoPartyClient(kj::AsyncIoStream& connection);
+  explicit CAPNP_RPC_API TwoPartyClient(kj::AsyncCapabilityStream& connection,
+                                        uint maxFdsPerMessage);
+  CAPNP_RPC_API TwoPartyClient(kj::AsyncIoStream& connection, Capability::Client bootstrapInterface,
+                               rpc::twoparty::Side side = rpc::twoparty::Side::CLIENT);
+  CAPNP_RPC_API TwoPartyClient(kj::AsyncCapabilityStream& connection, uint maxFdsPerMessage,
+                               Capability::Client bootstrapInterface,
+                               rpc::twoparty::Side side = rpc::twoparty::Side::CLIENT);
 
-  Capability::Client bootstrap();
+  Capability::Client CAPNP_RPC_API bootstrap();
   // Get the server's bootstrap interface.
 
-  inline kj::Promise<void> onDisconnect() { return network.onDisconnect(); }
+  inline kj::Promise<void> CAPNP_RPC_API onDisconnect() { return network.onDisconnect(); }
 
-  void setTraceEncoder(kj::Function<kj::String(const kj::Exception&)> func);
+  void CAPNP_RPC_API setTraceEncoder(kj::Function<kj::String(const kj::Exception&)> func);
   // Forwarded to rpcSystem.setTraceEncoder().
 
-  size_t getCurrentQueueSize() { return network.getCurrentQueueSize(); }
-  size_t getCurrentQueueCount() { return network.getCurrentQueueCount(); }
-  kj::Duration getOutgoingMessageWaitTime() { return network.getOutgoingMessageWaitTime(); }
+  size_t CAPNP_RPC_API getCurrentQueueSize() { return network.getCurrentQueueSize(); }
+  size_t CAPNP_RPC_API getCurrentQueueCount() { return network.getCurrentQueueCount(); }
+  kj::Duration CAPNP_RPC_API getOutgoingMessageWaitTime() {
+    return network.getOutgoingMessageWaitTime();
+  }
 
 private:
   TwoPartyVatNetwork network;
