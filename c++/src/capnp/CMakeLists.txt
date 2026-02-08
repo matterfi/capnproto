@@ -187,12 +187,27 @@ set(capnp-websocket_sources
   compat/websocket-rpc.c++
 )
 set(capnp-websocket_headers
+  export-capnp-websocket.h
   compat/websocket-rpc.h
 )
 if(NOT CAPNP_LITE)
   add_library(capnp-websocket ${capnp-websocket_sources})
   add_library(CapnProto::capnp-websocket ALIAS capnp-websocket)
   target_link_libraries(capnp-websocket PUBLIC capnp capnp-rpc kj-http kj-async kj)
+
+  get_target_property(CAPNP_WEBSOCKET_TYPE capnp-websocket TYPE)
+
+  if(CAPNP_WEBSOCKET_TYPE STREQUAL "SHARED_LIBRARY")
+    set(CAPNP_WEBSOCKET_EXPORT_MACRO "CAPNP_WEBSOCKET_BUILD")
+    set(CAPNP_WEBSOCKET_IMPORT_MACRO "")
+  else()
+    set(CAPNP_WEBSOCKET_EXPORT_MACRO "CAPNP_WEBSOCKET_STATIC_DEFINE")
+    set(CAPNP_WEBSOCKET_IMPORT_MACRO "CAPNP_WEBSOCKET_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(capnp-websocket INTERFACE ${CAPNP_WEBSOCKET_IMPORT_MACRO} PRIVATE ${CAPNP_WEBSOCKET_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(capnp-websocket PROPERTIES VERSION ${VERSION})
   install(TARGETS capnp-websocket ${INSTALL_TARGETS_DEFAULT_ARGS})
