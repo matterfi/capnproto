@@ -36,6 +36,7 @@
 // Please don't file a bug report telling us to change our enum naming style. You are at least
 // seven years too late.
 
+#include "export-capnp.h"
 #include <capnp/schema.capnp.h>
 #include <kj/hash.h>
 #include <kj/windows-sanity.h>  // work-around macro conflict with `VOID`
@@ -65,34 +66,35 @@ using SchemaType = typename SchemaType_<T>::Type;
 // SchemaType<T> is the type of T's schema, e.g. StructSchema if T is a struct.
 
 namespace _ {  // private
-extern const RawSchema NULL_SCHEMA;
-extern const RawSchema NULL_STRUCT_SCHEMA;
-extern const RawSchema NULL_ENUM_SCHEMA;
-extern const RawSchema NULL_INTERFACE_SCHEMA;
-extern const RawSchema NULL_CONST_SCHEMA;
+extern const RawSchema CAPNP_API NULL_SCHEMA;
+extern const RawSchema CAPNP_API NULL_STRUCT_SCHEMA;
+extern const RawSchema CAPNP_API NULL_ENUM_SCHEMA;
+extern const RawSchema CAPNP_API NULL_INTERFACE_SCHEMA;
+extern const RawSchema CAPNP_API NULL_CONST_SCHEMA;
 // The schema types default to these null (empty) schemas in case of error, especially when
 // exceptions are disabled.
 }  // namespace _ (private)
 
-class Schema {
+class CAPNP_CLASS Schema {
   // Convenience wrapper around capnp::schema::Node.
 
 public:
-  inline Schema(): raw(&_::NULL_SCHEMA.defaultBrand) {}
+  inline CAPNP_API Schema(): raw(&_::NULL_SCHEMA.defaultBrand) {}
 
   template <typename T>
   static inline SchemaType<T> from() { return SchemaType<T>::template fromImpl<T>(); }
   // Get the Schema for a particular compiled-in type.
 
-  schema::Node::Reader getProto() const;
+  schema::Node::Reader CAPNP_API getProto() const;
   // Get the underlying Cap'n Proto representation of the schema node.  (Note that this accessor
   // has performance comparable to accessors of struct-typed fields on Reader classes.)
 
-  kj::ArrayPtr<const word> asUncheckedMessage() const;
+  kj::ArrayPtr<const word> CAPNP_API asUncheckedMessage() const;
   // Get the encoded schema node content as a single message segment.  It is safe to read as an
   // unchecked message.
 
-  Schema getDependency(uint64_t id) const CAPNP_DEPRECATED("Does not handle generics correctly.");
+  Schema CAPNP_API getDependency(uint64_t id) const
+      CAPNP_DEPRECATED("Does not handle generics correctly.");
   // DEPRECATED: This method cannot correctly account for generic type parameter bindings that
   //   may apply to the dependency. Instead of using this method, use a method of the Schema API
   //   that corresponds to the exact kind of dependency. For example, to get a field type, use
@@ -116,34 +118,34 @@ public:
   //
   // To obtain schemas for those, you would need a SchemaLoader.
 
-  bool isBranded() const;
+  bool CAPNP_API isBranded() const;
   // Returns true if this schema represents a non-default parameterization of this type.
 
-  Schema getGeneric() const;
+  Schema CAPNP_API getGeneric() const;
   // Get the version of this schema with any brands removed.
 
   class BrandArgumentList;
-  BrandArgumentList getBrandArgumentsAtScope(uint64_t scopeId) const;
+  BrandArgumentList CAPNP_API getBrandArgumentsAtScope(uint64_t scopeId) const;
   // Gets the values bound to the brand parameters at the given scope.
 
-  kj::Array<uint64_t> getGenericScopeIds() const;
+  kj::Array<uint64_t> CAPNP_API getGenericScopeIds() const;
   // Returns the type IDs of all parent scopes that have generic parameters, to which this type is
   // subject.
 
-  StructSchema asStruct() const;
-  EnumSchema asEnum() const;
-  InterfaceSchema asInterface() const;
-  ConstSchema asConst() const;
+  StructSchema CAPNP_API asStruct() const;
+  EnumSchema CAPNP_API asEnum() const;
+  InterfaceSchema CAPNP_API asInterface() const;
+  ConstSchema CAPNP_API asConst() const;
   // Cast the Schema to a specific type.  Throws an exception if the type doesn't match.  Use
   // getProto() to determine type, e.g. getProto().isStruct().
 
-  inline bool operator==(const Schema& other) const { return raw == other.raw; }
-  inline bool operator!=(const Schema& other) const { return raw != other.raw; }
+  inline bool CAPNP_API operator==(const Schema& other) const { return raw == other.raw; }
+  inline bool CAPNP_API operator!=(const Schema& other) const { return raw != other.raw; }
   // Determine whether two Schemas are wrapping the exact same underlying data, by identity.  If
   // you want to check if two Schemas represent the same type (but possibly different versions of
   // it), compare their IDs instead.
 
-  inline uint hashCode() const { return kj::hashCode(raw); }
+  inline uint CAPNP_API hashCode() const { return kj::hashCode(raw); }
 
   template <typename T>
   void requireUsableAs() const;
@@ -153,10 +155,10 @@ public:
   // - This schema was loaded with SchemaLoader, the type ID matches typeId<T>(), and
   //   loadCompiledTypeAndDependencies<T>() was called on the SchemaLoader.
 
-  kj::StringPtr getShortDisplayName() const;
+  kj::StringPtr CAPNP_API getShortDisplayName() const;
   // Get the short version of the node's display name.
 
-  const kj::StringPtr getUnqualifiedName() const;
+  const kj::StringPtr CAPNP_API getUnqualifiedName() const;
   // Get the display name "nickname" of this node minus the prefix
 
 private:
@@ -201,9 +203,9 @@ private:
   friend kj::String _::enumString(uint16_t value, const _::RawBrandedSchema& schema);
 };
 
-kj::StringPtr KJ_STRINGIFY(const Schema& schema);
+kj::StringPtr CAPNP_API KJ_STRINGIFY(const Schema& schema);
 
-class Schema::BrandArgumentList {
+class CAPNP_CLASS Schema::BrandArgumentList {
   // A list of generic parameter bindings for parameters of some particular type. Note that since
   // parameters on an outer type apply to all inner types as well, a deeply-nested type can have
   // multiple BrandArgumentLists that apply to it.
@@ -214,14 +216,14 @@ class Schema::BrandArgumentList {
   // operator[] already does this for you; out-of-bounds access will safely return AnyPointer.
 
 public:
-  inline BrandArgumentList(): scopeId(0), size_(0), bindings(nullptr) {}
+  inline CAPNP_API BrandArgumentList(): scopeId(0), size_(0), bindings(nullptr) {}
 
-  inline uint size() const { return size_; }
-  Type operator[](uint index) const;
+  inline uint CAPNP_API size() const { return size_; }
+  Type CAPNP_API operator[](uint index) const;
 
   typedef _::IndexingIterator<const BrandArgumentList, Type> Iterator;
-  inline Iterator begin() const { return Iterator(this, 0); }
-  inline Iterator end() const { return Iterator(this, size()); }
+  inline Iterator CAPNP_API begin() const { return Iterator(this, 0); }
+  inline Iterator CAPNP_API end() const { return Iterator(this, size()); }
 
 private:
   uint64_t scopeId;
@@ -240,46 +242,46 @@ private:
 
 // -------------------------------------------------------------------
 
-class StructSchema: public Schema {
+class CAPNP_CLASS StructSchema: public Schema {
 public:
-  inline StructSchema(): Schema(&_::NULL_STRUCT_SCHEMA.defaultBrand) {}
+  inline CAPNP_API StructSchema(): Schema(&_::NULL_STRUCT_SCHEMA.defaultBrand) {}
 
   class Field;
   class FieldList;
   class FieldSubset;
 
-  FieldList getFields() const;
+  FieldList CAPNP_API getFields() const;
   // List top-level fields of this struct.  This list will contain top-level groups (including
   // named unions) but not the members of those groups.  The list does, however, contain the
   // members of the unnamed union, if there is one.
 
-  FieldSubset getUnionFields() const;
+  FieldSubset CAPNP_API getUnionFields() const;
   // If the field contains an unnamed union, get a list of fields in the union, ordered by
   // ordinal.  Since discriminant values are assigned sequentially by ordinal, you may index this
   // list by discriminant value.
 
-  FieldSubset getNonUnionFields() const;
+  FieldSubset CAPNP_API getNonUnionFields() const;
   // Get the fields of this struct which are not in an unnamed union, ordered by ordinal.
 
-  kj::Maybe<Field> findFieldByName(kj::StringPtr name) const;
+  kj::Maybe<Field> CAPNP_API findFieldByName(kj::StringPtr name) const;
   // Find the field with the given name, or return null if there is no such field.  If the struct
   // contains an unnamed union, then this will find fields of that union in addition to fields
   // of the outer struct, since they exist in the same namespace.  It will not, however, find
   // members of groups (including named unions) -- you must first look up the group itself,
   // then dig into its type.
 
-  Field getFieldByName(kj::StringPtr name) const;
+  Field CAPNP_API getFieldByName(kj::StringPtr name) const;
   // Like findFieldByName() but throws an exception on failure.
 
-  kj::Maybe<Field> getFieldByDiscriminant(uint16_t discriminant) const;
+  kj::Maybe<Field> CAPNP_API getFieldByDiscriminant(uint16_t discriminant) const;
   // Finds the field whose `discriminantValue` is equal to the given value, or returns null if
   // there is no such field.  (If the schema does not represent a union or a struct containing
   // an unnamed union, then this always returns null.)
 
-  bool isStreamResult() const;
+  bool CAPNP_API isStreamResult() const;
   // Convenience method to check if this is the result type of a streaming RPC method.
 
-  bool mayContainCapabilities() const { return raw->generic->mayContainCapabilities; }
+  bool CAPNP_API mayContainCapabilities() const { return raw->generic->mayContainCapabilities; }
   // Returns true if a struct of this type may transitively contain any capabilities. I.e., are
   // any of the fields an interface type, or a struct type that may in turn contain capabilities?
   //
@@ -307,21 +309,21 @@ private:
   friend class Type;
 };
 
-class StructSchema::Field {
+class CAPNP_CLASS StructSchema::Field {
 public:
-  Field() = default;
+  CAPNP_API Field() = default;
 
-  inline schema::Field::Reader getProto() const { return proto; }
-  inline StructSchema getContainingStruct() const { return parent; }
+  inline schema::Field::Reader CAPNP_API getProto() const { return proto; }
+  inline StructSchema CAPNP_API getContainingStruct() const { return parent; }
 
-  inline uint getIndex() const { return index; }
+  inline uint CAPNP_API getIndex() const { return index; }
   // Get the index of this field within the containing struct or union.
 
-  Type getType() const;
+  Type CAPNP_API getType() const;
   // Get the type of this field. Note that this is preferred over getProto().getType() as this
   // method will apply generics.
 
-  uint32_t getDefaultValueSchemaOffset() const;
+  uint32_t CAPNP_API getDefaultValueSchemaOffset() const;
   // For struct, list, and object fields, returns the offset, in words, within the first segment of
   // the struct's schema, where this field's default value pointer is located.  The schema is
   // always stored as a single-segment unchecked message, which in turn means that the default
@@ -341,9 +343,9 @@ public:
   //
   // If the above does not make sense, you probably don't need this method.
 
-  inline bool operator==(const Field& other) const;
-  inline bool operator!=(const Field& other) const { return !(*this == other); }
-  inline uint hashCode() const;
+  inline bool CAPNP_API operator==(const Field& other) const;
+  inline bool CAPNP_API operator!=(const Field& other) const { return !(*this == other); }
+  inline uint CAPNP_API hashCode() const;
 
 private:
   StructSchema parent;
@@ -356,18 +358,18 @@ private:
   friend class StructSchema;
 };
 
-kj::StringPtr KJ_STRINGIFY(const StructSchema::Field& field);
+kj::StringPtr CAPNP_API KJ_STRINGIFY(const StructSchema::Field& field);
 
-class StructSchema::FieldList {
+class CAPNP_CLASS StructSchema::FieldList {
 public:
-  FieldList() = default;  // empty list
+  CAPNP_API FieldList() = default;  // empty list
 
-  inline uint size() const { return list.size(); }
-  inline Field operator[](uint index) const { return Field(parent, index, list[index]); }
+  inline uint CAPNP_API size() const { return list.size(); }
+  inline Field CAPNP_API operator[](uint index) const { return Field(parent, index, list[index]); }
 
   typedef _::IndexingIterator<const FieldList, Field> Iterator;
-  inline Iterator begin() const { return Iterator(this, 0); }
-  inline Iterator end() const { return Iterator(this, size()); }
+  inline Iterator CAPNP_API begin() const { return Iterator(this, 0); }
+  inline Iterator CAPNP_API end() const { return Iterator(this, size()); }
 
 private:
   StructSchema parent;
@@ -379,18 +381,18 @@ private:
   friend class StructSchema;
 };
 
-class StructSchema::FieldSubset {
+class CAPNP_CLASS StructSchema::FieldSubset {
 public:
-  FieldSubset() = default;  // empty list
+  CAPNP_API FieldSubset() = default;  // empty list
 
-  inline uint size() const { return size_; }
-  inline Field operator[](uint index) const {
+  inline uint CAPNP_API size() const { return size_; }
+  inline Field CAPNP_API operator[](uint index) const {
     return Field(parent, indices[index], list[indices[index]]);
   }
 
   typedef _::IndexingIterator<const FieldSubset, Field> Iterator;
-  inline Iterator begin() const { return Iterator(this, 0); }
-  inline Iterator end() const { return Iterator(this, size()); }
+  inline Iterator CAPNP_API begin() const { return Iterator(this, 0); }
+  inline Iterator CAPNP_API end() const { return Iterator(this, size()); }
 
 private:
   StructSchema parent;
@@ -407,18 +409,18 @@ private:
 
 // -------------------------------------------------------------------
 
-class EnumSchema: public Schema {
+class CAPNP_CLASS EnumSchema: public Schema {
 public:
-  inline EnumSchema(): Schema(&_::NULL_ENUM_SCHEMA.defaultBrand) {}
+  inline CAPNP_API EnumSchema(): Schema(&_::NULL_ENUM_SCHEMA.defaultBrand) {}
 
   class Enumerant;
   class EnumerantList;
 
-  EnumerantList getEnumerants() const;
+  EnumerantList CAPNP_API getEnumerants() const;
 
-  kj::Maybe<Enumerant> findEnumerantByName(kj::StringPtr name) const;
+  kj::Maybe<Enumerant> CAPNP_API findEnumerantByName(kj::StringPtr name) const;
 
-  Enumerant getEnumerantByName(kj::StringPtr name) const;
+  Enumerant CAPNP_API getEnumerantByName(kj::StringPtr name) const;
   // Like findEnumerantByName() but throws an exception on failure.
 
 private:
@@ -430,19 +432,19 @@ private:
   friend class Type;
 };
 
-class EnumSchema::Enumerant {
+class CAPNP_CLASS EnumSchema::Enumerant {
 public:
   Enumerant() = default;
 
-  inline schema::Enumerant::Reader getProto() const { return proto; }
-  inline EnumSchema getContainingEnum() const { return parent; }
+  inline schema::Enumerant::Reader CAPNP_API getProto() const { return proto; }
+  inline EnumSchema CAPNP_API getContainingEnum() const { return parent; }
 
-  inline uint16_t getOrdinal() const { return ordinal; }
-  inline uint getIndex() const { return ordinal; }
+  inline uint16_t CAPNP_API getOrdinal() const { return ordinal; }
+  inline uint CAPNP_API getIndex() const { return ordinal; }
 
-  inline bool operator==(const Enumerant& other) const;
-  inline bool operator!=(const Enumerant& other) const { return !(*this == other); }
-  inline uint hashCode() const;
+  inline bool CAPNP_API operator==(const Enumerant& other) const;
+  inline bool CAPNP_API operator!=(const Enumerant& other) const { return !(*this == other); }
+  inline uint CAPNP_API hashCode() const;
 
 private:
   EnumSchema parent;
@@ -455,16 +457,18 @@ private:
   friend class EnumSchema;
 };
 
-class EnumSchema::EnumerantList {
+class CAPNP_CLASS EnumSchema::EnumerantList {
 public:
-  EnumerantList() = default;  // empty list
+  CAPNP_API EnumerantList() = default;  // empty list
 
-  inline uint size() const { return list.size(); }
-  inline Enumerant operator[](uint index) const { return Enumerant(parent, index, list[index]); }
+  inline uint CAPNP_API size() const { return list.size(); }
+  inline Enumerant CAPNP_API operator[](uint index) const {
+    return Enumerant(parent, index, list[index]);
+  }
 
   typedef _::IndexingIterator<const EnumerantList, Enumerant> Iterator;
-  inline Iterator begin() const { return Iterator(this, 0); }
-  inline Iterator end() const { return Iterator(this, size()); }
+  inline Iterator CAPNP_API begin() const { return Iterator(this, 0); }
+  inline Iterator CAPNP_API end() const { return Iterator(this, size()); }
 
 private:
   EnumSchema parent;
@@ -478,29 +482,29 @@ private:
 
 // -------------------------------------------------------------------
 
-class InterfaceSchema: public Schema {
+class CAPNP_CLASS InterfaceSchema: public Schema {
 public:
-  inline InterfaceSchema(): Schema(&_::NULL_INTERFACE_SCHEMA.defaultBrand) {}
+  inline CAPNP_API InterfaceSchema(): Schema(&_::NULL_INTERFACE_SCHEMA.defaultBrand) {}
 
   class Method;
   class MethodList;
 
-  MethodList getMethods() const;
+  MethodList CAPNP_API getMethods() const;
 
-  kj::Maybe<Method> findMethodByName(kj::StringPtr name) const;
+  kj::Maybe<Method> CAPNP_API findMethodByName(kj::StringPtr name) const;
 
-  Method getMethodByName(kj::StringPtr name) const;
+  Method CAPNP_API getMethodByName(kj::StringPtr name) const;
   // Like findMethodByName() but throws an exception on failure.
 
   class SuperclassList;
 
-  SuperclassList getSuperclasses() const;
+  SuperclassList CAPNP_API getSuperclasses() const;
   // Get the immediate superclasses of this type, after applying generics.
 
-  bool extends(InterfaceSchema other) const;
+  bool CAPNP_API extends(InterfaceSchema other) const;
   // Returns true if `other` is a superclass of this interface (including if `other == *this`).
 
-  kj::Maybe<InterfaceSchema> findSuperclass(uint64_t typeId) const;
+  kj::Maybe<InterfaceSchema> CAPNP_API findSuperclass(uint64_t typeId) const;
   // Find the superclass of this interface with the given type ID.  Returns null if the interface
   // extends no such type.
 
@@ -519,26 +523,26 @@ private:
   // search when the counter reaches a threshold.
 };
 
-class InterfaceSchema::Method {
+class CAPNP_CLASS InterfaceSchema::Method {
 public:
-  Method() = default;
+  CAPNP_API Method() = default;
 
-  inline schema::Method::Reader getProto() const { return proto; }
-  inline InterfaceSchema getContainingInterface() const { return parent; }
+  inline schema::Method::Reader CAPNP_API getProto() const { return proto; }
+  inline InterfaceSchema CAPNP_API getContainingInterface() const { return parent; }
 
-  inline uint16_t getOrdinal() const { return ordinal; }
-  inline uint getIndex() const { return ordinal; }
+  inline uint16_t CAPNP_API getOrdinal() const { return ordinal; }
+  inline uint CAPNP_API getIndex() const { return ordinal; }
 
-  bool isStreaming() const { return getResultType().isStreamResult(); }
+  bool CAPNP_API isStreaming() const { return getResultType().isStreamResult(); }
   // Check if this is a streaming method.
 
-  StructSchema getParamType() const;
-  StructSchema getResultType() const;
+  StructSchema CAPNP_API getParamType() const;
+  StructSchema CAPNP_API getResultType() const;
   // Get the parameter and result types, including substituting generic parameters.
 
-  inline bool operator==(const Method& other) const;
-  inline bool operator!=(const Method& other) const { return !(*this == other); }
-  inline uint hashCode() const;
+  inline bool CAPNP_API operator==(const Method& other) const;
+  inline bool CAPNP_API operator!=(const Method& other) const { return !(*this == other); }
+  inline uint CAPNP_API hashCode() const;
 
 private:
   InterfaceSchema parent;
@@ -554,14 +558,16 @@ private:
 
 class InterfaceSchema::MethodList {
 public:
-  MethodList() = default;  // empty list
+  CAPNP_API MethodList() = default;  // empty list
 
-  inline uint size() const { return list.size(); }
-  inline Method operator[](uint index) const { return Method(parent, index, list[index]); }
+  inline uint CAPNP_API size() const { return list.size(); }
+  inline Method CAPNP_API operator[](uint index) const {
+    return Method(parent, index, list[index]);
+  }
 
   typedef _::IndexingIterator<const MethodList, Method> Iterator;
-  inline Iterator begin() const { return Iterator(this, 0); }
-  inline Iterator end() const { return Iterator(this, size()); }
+  inline Iterator CAPNP_API begin() const { return Iterator(this, 0); }
+  inline Iterator CAPNP_API end() const { return Iterator(this, size()); }
 
 private:
   InterfaceSchema parent;
@@ -573,16 +579,16 @@ private:
   friend class InterfaceSchema;
 };
 
-class InterfaceSchema::SuperclassList {
+class CAPNP_CLASS InterfaceSchema::SuperclassList {
 public:
-  SuperclassList() = default;  // empty list
+  CAPNP_API SuperclassList() = default;  // empty list
 
-  inline uint size() const { return list.size(); }
-  InterfaceSchema operator[](uint index) const;
+  inline uint CAPNP_API size() const { return list.size(); }
+  InterfaceSchema CAPNP_API operator[](uint index) const;
 
   typedef _::IndexingIterator<const SuperclassList, InterfaceSchema> Iterator;
-  inline Iterator begin() const { return Iterator(this, 0); }
-  inline Iterator end() const { return Iterator(this, size()); }
+  inline Iterator CAPNP_API begin() const { return Iterator(this, 0); }
+  inline Iterator CAPNP_API end() const { return Iterator(this, size()); }
 
 private:
   InterfaceSchema parent;
@@ -596,13 +602,13 @@ private:
 
 // -------------------------------------------------------------------
 
-class ConstSchema: public Schema {
+class CAPNP_CLASS ConstSchema: public Schema {
   // Represents a constant declaration.
   //
   // `ConstSchema` can be implicitly cast to DynamicValue to read its value.
 
 public:
-  inline ConstSchema(): Schema(&_::NULL_CONST_SCHEMA.defaultBrand) {}
+  inline CAPNP_API ConstSchema(): Schema(&_::NULL_CONST_SCHEMA.defaultBrand) {}
 
   template <typename T>
   ReaderFor<T> as() const;
@@ -610,12 +616,12 @@ public:
   // to a DynamicValue and then calling its `as<T>()` method.  For dependency reasons, this method
   // is defined in <capnp/dynamic.h>, which you must #include explicitly.
 
-  uint32_t getValueSchemaOffset() const;
+  uint32_t CAPNP_API getValueSchemaOffset() const;
   // Much like StructSchema::Field::getDefaultValueSchemaOffset(), if the constant has pointer
   // type, this gets the offset from the beginning of the constant's schema node to a pointer
   // representing the constant value.
 
-  Type getType() const;
+  Type CAPNP_API getType() const;
 
 private:
   ConstSchema(Schema base): Schema(base) {}
@@ -624,79 +630,79 @@ private:
 
 // -------------------------------------------------------------------
 
-class Type {
+class CAPNP_CLASS Type {
 public:
   struct BrandParameter {
-    uint64_t scopeId;
-    uint index;
+    uint64_t CAPNP_API scopeId;
+    uint CAPNP_API index;
   };
-  struct ImplicitParameter {
-    uint index;
+  struct CAPNP_CLASS ImplicitParameter {
+    uint CAPNP_API index;
   };
 
-  inline Type();
-  inline Type(schema::Type::Which primitive);
-  inline Type(StructSchema schema);
-  inline Type(EnumSchema schema);
-  inline Type(InterfaceSchema schema);
-  inline Type(ListSchema schema);
-  inline Type(schema::Type::AnyPointer::Unconstrained::Which anyPointerKind);
-  inline Type(BrandParameter param);
-  inline Type(ImplicitParameter param);
+  inline CAPNP_API Type();
+  inline CAPNP_API Type(schema::Type::Which primitive);
+  inline CAPNP_API Type(StructSchema schema);
+  inline CAPNP_API Type(EnumSchema schema);
+  inline CAPNP_API Type(InterfaceSchema schema);
+  inline CAPNP_API Type(ListSchema schema);
+  inline CAPNP_API Type(schema::Type::AnyPointer::Unconstrained::Which anyPointerKind);
+  inline CAPNP_API Type(BrandParameter param);
+  inline CAPNP_API Type(ImplicitParameter param);
 
   template <typename T>
   inline static Type from();
   template <typename T>
   inline static Type from(T&& value);
 
-  inline schema::Type::Which which() const;
+  inline schema::Type::Which CAPNP_API which() const;
 
-  StructSchema asStruct() const;
-  EnumSchema asEnum() const;
-  InterfaceSchema asInterface() const;
-  ListSchema asList() const;
+  StructSchema CAPNP_API asStruct() const;
+  EnumSchema CAPNP_API asEnum() const;
+  InterfaceSchema CAPNP_API asInterface() const;
+  ListSchema CAPNP_API asList() const;
   // Each of these methods may only be called if which() returns the corresponding type.
 
-  kj::Maybe<BrandParameter> getBrandParameter() const;
+  kj::Maybe<BrandParameter> CAPNP_API getBrandParameter() const;
   // Only callable if which() returns ANY_POINTER. Returns null if the type is just a regular
   // AnyPointer and not a parameter.
 
-  kj::Maybe<ImplicitParameter> getImplicitParameter() const;
+  kj::Maybe<ImplicitParameter> CAPNP_API getImplicitParameter() const;
   // Only callable if which() returns ANY_POINTER. Returns null if the type is just a regular
   // AnyPointer and not a parameter. "Implicit parameters" refer to type parameters on methods.
 
-  inline schema::Type::AnyPointer::Unconstrained::Which whichAnyPointerKind() const;
+  inline schema::Type::AnyPointer::Unconstrained::Which CAPNP_API whichAnyPointerKind() const;
   // Only callable if which() returns ANY_POINTER.
 
-  inline bool isVoid() const;
-  inline bool isBool() const;
-  inline bool isInt8() const;
-  inline bool isInt16() const;
-  inline bool isInt32() const;
-  inline bool isInt64() const;
-  inline bool isUInt8() const;
-  inline bool isUInt16() const;
-  inline bool isUInt32() const;
-  inline bool isUInt64() const;
-  inline bool isFloat32() const;
-  inline bool isFloat64() const;
-  inline bool isText() const;
-  inline bool isData() const;
-  inline bool isList() const;
-  inline bool isEnum() const;
-  inline bool isStruct() const;
-  inline bool isInterface() const;
-  inline bool isAnyPointer() const;
+  inline bool CAPNP_API isVoid() const;
+  inline bool CAPNP_API isBool() const;
+  inline bool CAPNP_API isInt8() const;
+  inline bool CAPNP_API isInt16() const;
+  inline bool CAPNP_API isInt32() const;
+  inline bool CAPNP_API isInt64() const;
+  inline bool CAPNP_API isUInt8() const;
+  inline bool CAPNP_API isUInt16() const;
+  inline bool CAPNP_API isUInt32() const;
+  inline bool CAPNP_API isUInt64() const;
+  inline bool CAPNP_API isFloat32() const;
+  inline bool CAPNP_API isFloat64() const;
+  inline bool CAPNP_API isText() const;
+  inline bool CAPNP_API isData() const;
+  inline bool CAPNP_API isList() const;
+  inline bool CAPNP_API isEnum() const;
+  inline bool CAPNP_API isStruct() const;
+  inline bool CAPNP_API isInterface() const;
+  inline bool CAPNP_API isAnyPointer() const;
 
-  bool operator==(const Type& other) const;
-  inline bool operator!=(const Type& other) const { return !(*this == other); }
+  bool CAPNP_API operator==(const Type& other) const;
+  inline bool CAPNP_API operator!=(const Type& other) const { return !(*this == other); }
 
-  uint hashCode() const;
+  uint CAPNP_API hashCode() const;
 
-  inline Type wrapInList(uint depth = 1) const;
+  inline Type CAPNP_API wrapInList(uint depth = 1) const;
   // Return the Type formed by wrapping this type in List() `depth` times.
 
-  inline Type(schema::Type::Which derived, const _::RawBrandedSchema* schema);
+  inline CAPNP_API Type(schema::Type::Which derived, const _::RawBrandedSchema* schema);
   // For internal use.
 
 private:
@@ -737,22 +743,22 @@ private:
 
 // -------------------------------------------------------------------
 
-class ListSchema {
+class CAPNP_CLASS ListSchema {
   // ListSchema is a little different because list types are not described by schema nodes.  So,
   // ListSchema doesn't subclass Schema.
 
 public:
-  ListSchema() = default;
+  CAPNP_API ListSchema() = default;
 
-  static ListSchema of(schema::Type::Which primitiveType);
-  static ListSchema of(StructSchema elementType);
-  static ListSchema of(EnumSchema elementType);
-  static ListSchema of(InterfaceSchema elementType);
-  static ListSchema of(ListSchema elementType);
-  static ListSchema of(Type elementType);
+  static ListSchema CAPNP_API of(schema::Type::Which primitiveType);
+  static ListSchema CAPNP_API of(StructSchema elementType);
+  static ListSchema CAPNP_API of(EnumSchema elementType);
+  static ListSchema CAPNP_API of(InterfaceSchema elementType);
+  static ListSchema CAPNP_API of(ListSchema elementType);
+  static ListSchema CAPNP_API of(Type elementType);
   // Construct the schema for a list of the given type.
 
-  static ListSchema of(schema::Type::Reader elementType, Schema context)
+  static ListSchema CAPNP_API of(schema::Type::Reader elementType, Schema context)
       CAPNP_DEPRECATED("Does not handle generics correctly.");
   // DEPRECATED: This method cannot correctly account for generic type parameter bindings that
   //   may apply to the input type. Instead of using this method, use a method of the Schema API
@@ -762,22 +768,26 @@ public:
   // Construct from an element type schema.  Requires a context which can handle getDependency()
   // requests for any type ID found in the schema.
 
-  Type getElementType() const;
+  Type CAPNP_API getElementType() const;
 
-  inline schema::Type::Which whichElementType() const;
+  inline schema::Type::Which CAPNP_API whichElementType() const;
   // Get the element type's "which()".  ListSchema does not actually store a schema::Type::Reader
   // describing the element type, but if it did, this would be equivalent to calling
   // .getBody().which() on that type.
 
-  StructSchema getStructElementType() const;
-  EnumSchema getEnumElementType() const;
-  InterfaceSchema getInterfaceElementType() const;
-  ListSchema getListElementType() const;
+  StructSchema CAPNP_API getStructElementType() const;
+  EnumSchema CAPNP_API getEnumElementType() const;
+  InterfaceSchema CAPNP_API getInterfaceElementType() const;
+  ListSchema CAPNP_API getListElementType() const;
   // Get the schema for complex element types.  Each of these throws an exception if the element
   // type is not of the requested kind.
 
-  inline bool operator==(const ListSchema& other) const { return elementType == other.elementType; }
-  inline bool operator!=(const ListSchema& other) const { return elementType != other.elementType; }
+  inline bool CAPNP_API operator==(const ListSchema& other) const {
+    return elementType == other.elementType;
+  }
+  inline bool CAPNP_API operator!=(const ListSchema& other) const {
+    return elementType != other.elementType;
+  }
 
   template <typename T>
   void requireUsableAs() const;
@@ -801,20 +811,48 @@ private:
 // =======================================================================================
 // inline implementation
 
-template <> inline schema::Type::Which Schema::from<Void>() { return schema::Type::VOID; }
-template <> inline schema::Type::Which Schema::from<bool>() { return schema::Type::BOOL; }
-template <> inline schema::Type::Which Schema::from<int8_t>() { return schema::Type::INT8; }
-template <> inline schema::Type::Which Schema::from<int16_t>() { return schema::Type::INT16; }
-template <> inline schema::Type::Which Schema::from<int32_t>() { return schema::Type::INT32; }
-template <> inline schema::Type::Which Schema::from<int64_t>() { return schema::Type::INT64; }
-template <> inline schema::Type::Which Schema::from<uint8_t>() { return schema::Type::UINT8; }
-template <> inline schema::Type::Which Schema::from<uint16_t>() { return schema::Type::UINT16; }
-template <> inline schema::Type::Which Schema::from<uint32_t>() { return schema::Type::UINT32; }
-template <> inline schema::Type::Which Schema::from<uint64_t>() { return schema::Type::UINT64; }
-template <> inline schema::Type::Which Schema::from<float>() { return schema::Type::FLOAT32; }
-template <> inline schema::Type::Which Schema::from<double>() { return schema::Type::FLOAT64; }
-template <> inline schema::Type::Which Schema::from<Text>() { return schema::Type::TEXT; }
-template <> inline schema::Type::Which Schema::from<Data>() { return schema::Type::DATA; }
+template <> inline schema::Type::Which CAPNP_API Schema::from<Void>() {
+  return schema::Type::VOID;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<bool>() {
+  return schema::Type::BOOL;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<int8_t>() {
+  return schema::Type::INT8;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<int16_t>() {
+  return schema::Type::INT16;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<int32_t>() {
+  return schema::Type::INT32;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<int64_t>() {
+  return schema::Type::INT64;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<uint8_t>(){
+  return schema::Type::UINT8;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<uint16_t>() {
+  return schema::Type::UINT16;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<uint32_t>() {
+  return schema::Type::UINT32;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<uint64_t>() {
+  return schema::Type::UINT64;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<float>() {
+  return schema::Type::FLOAT32;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<double>() {
+  return schema::Type::FLOAT64;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<Text>() {
+  return schema::Type::TEXT;
+}
+template <> inline schema::Type::Which CAPNP_API Schema::from<Data>() {
+  return schema::Type::DATA;
+}
 
 inline Schema Schema::getDependency(uint64_t id) const {
   return getDependency(id, 0);

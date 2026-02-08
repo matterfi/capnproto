@@ -27,6 +27,7 @@ else()
 endif()
 
 set(capnp_headers
+  export-capnp.h
   c++.capnp.h
   common.h
   blob.h
@@ -71,6 +72,20 @@ target_include_directories(capnp INTERFACE
   $<BUILD_INTERFACE:${PARENT_DIR}>
   $<INSTALL_INTERFACE:include>
 )
+
+get_target_property(CAPNP_TYPE capnp TYPE)
+
+if(CAPNP_TYPE STREQUAL "SHARED_LIBRARY")
+  set(CAPNP_EXPORT_MACRO "CAPNP_BUILD")
+  set(CAPNP_IMPORT_MACRO "")
+else()
+  set(CAPNP_EXPORT_MACRO "CAPNP_STATIC_DEFINE")
+  set(CAPNP_IMPORT_MACRO "CAPNP_STATIC_DEFINE")
+endif()
+
+#set symbol visibility macros
+target_compile_definitions(capnp INTERFACE ${CAPNP_IMPORT_MACRO} PRIVATE ${CAPNP_EXPORT_MACRO})
+
 # Ensure the library has a version set to match autotools build
 set_target_properties(capnp PROPERTIES VERSION ${VERSION})
 install(TARGETS capnp ${INSTALL_TARGETS_DEFAULT_ARGS})

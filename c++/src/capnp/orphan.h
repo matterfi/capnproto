@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-capnp.h"
 #include "layout.h"
 
 CAPNP_BEGIN_HEADER
@@ -98,12 +99,12 @@ private:
   friend class MessageBuilder;
 };
 
-class Orphanage: private kj::DisallowConstCopy {
+class CAPNP_CLASS Orphanage: private kj::DisallowConstCopy {
   // Use to directly allocate Orphan objects, without having a parent object allocate and then
   // disown the object.
 
 public:
-  inline Orphanage(): arena(nullptr) {}
+  inline CAPNP_API Orphanage(): arena(nullptr) {}
 
   template <typename BuilderType>
   static Orphanage getForMessageContaining(BuilderType builder);
@@ -124,11 +125,11 @@ public:
   Orphan<RootType> newOrphan(uint size) const;
   // Allocate a new orphaned list or blob.
 
-  Orphan<DynamicStruct> newOrphan(StructSchema schema) const;
+  Orphan<DynamicStruct> CAPNP_API newOrphan(StructSchema schema) const;
   // Dynamically create an orphan struct with the given schema.  You must
   // #include <capnp/dynamic.h> to use this.
 
-  Orphan<DynamicList> newOrphan(ListSchema schema, uint size) const;
+  Orphan<DynamicList> CAPNP_API newOrphan(ListSchema schema, uint size) const;
   // Dynamically create an orphan list with the given schema.  You must #include <capnp/dynamic.h>
   // to use this.
 
@@ -150,7 +151,7 @@ public:
   // in which some new fields had been added to the struct, using `setWithCaveats()` would
   // truncate off those new fields.
 
-  Orphan<Data> referenceExternalData(Data::Reader data) const;
+  Orphan<Data> CAPNP_API referenceExternalData(Data::Reader data) const;
   // Creates an Orphan<Data> that points at an existing region of memory (e.g. from another message)
   // without copying it.  There are some SEVERE restrictions on how this can be used:
   // - The memory must remain valid until the `MessageBuilder` is destroyed (even if the orphan is
@@ -308,12 +309,12 @@ inline void Orphan<T>::truncate(uint size) {
 }
 
 template <>
-inline void Orphan<Text>::truncate(uint size) {
+inline void CAPNP_API Orphan<Text>::truncate(uint size) {
   builder.truncateText(bounded(size) * ELEMENTS);
 }
 
 template <>
-inline void Orphan<Data>::truncate(uint size) {
+inline void CAPNP_API Orphan<Data>::truncate(uint size) {
   builder.truncate(bounded(size) * ELEMENTS, ElementSize::BYTE);
 }
 
@@ -361,16 +362,16 @@ struct Orphanage::NewOrphanListImpl<List<T, Kind::STRUCT>> {
 };
 
 template <>
-struct Orphanage::NewOrphanListImpl<Text> {
-  static inline _::OrphanBuilder apply(
+struct CAPNP_CLASS Orphanage::NewOrphanListImpl<Text> {
+  static inline _::OrphanBuilder CAPNP_API apply(
       _::BuilderArena* arena, _::CapTableBuilder* capTable, uint size) {
     return _::OrphanBuilder::initText(arena, capTable, bounded(size) * BYTES);
   }
 };
 
 template <>
-struct Orphanage::NewOrphanListImpl<Data> {
-  static inline _::OrphanBuilder apply(
+struct CAPNP_CLASS Orphanage::NewOrphanListImpl<Data> {
+  static inline _::OrphanBuilder CAPNP_API apply(
       _::BuilderArena* arena, _::CapTableBuilder* capTable, uint size) {
     return _::OrphanBuilder::initData(arena, capTable, bounded(size) * BYTES);
   }
