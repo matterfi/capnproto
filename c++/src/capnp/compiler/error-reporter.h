@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <capnp/export-capnp-capnpc.h>
 #include <capnp/common.h>
 #include <kj/string.h>
 #include <kj/exception.h>
@@ -33,24 +34,25 @@ CAPNP_BEGIN_HEADER
 namespace capnp {
 namespace compiler {
 
-struct Resolution {
-  uint32_t startByte;
-  uint32_t endByte;
+struct CAPNP_CAPNPC_CLASS Resolution {
+  uint32_t CAPNP_CAPNPC_API startByte;
+  uint32_t CAPNP_CAPNPC_API endByte;
 
-  struct Type { uint64_t typeId; };
-  struct Member {
-    uint64_t parentTypeId;
-    uint16_t ordinal;
+  struct CAPNP_CAPNPC_CLASS Type { uint64_t CAPNP_CAPNPC_API typeId; };
+  struct CAPNP_CAPNPC_CLASS Member {
+    uint64_t CAPNP_CAPNPC_API parentTypeId;
+    uint16_t CAPNP_CAPNPC_API ordinal;
   };
 
-  kj::OneOf<Type, Member> target;
+  kj::OneOf<Type, Member> CAPNP_CAPNPC_API target;
 };
 
-class ErrorReporter {
+class CAPNP_CAPNPC_CLASS ErrorReporter {
   // Callback for reporting errors within a particular file.
 
 public:
-  virtual void addError(uint32_t startByte, uint32_t endByte, kj::StringPtr message) = 0;
+  virtual void CAPNP_CAPNPC_API addError(uint32_t startByte, uint32_t endByte,
+                                         kj::StringPtr message) = 0;
   // Report an error at the given location in the input text.  `startByte` and `endByte` indicate
   // the span of text that is erroneous.  They may be equal, in which case the parser was only
   // able to identify where the error begins, not where it ends.
@@ -63,13 +65,13 @@ public:
     addError(decl.getStartByte(), decl.getEndByte(), message);
   }
 
-  virtual bool hadErrors() = 0;
+  virtual bool CAPNP_CAPNPC_API hadErrors() = 0;
   // Return true if any errors have been reported, globally.  The main use case for this callback
   // is to inhibit the reporting of errors which may have been caused by previous errors, or to
   // allow the compiler to bail out entirely if it gets confused and thinks this could be because
   // of previous errors.
 
-  virtual void reportResolution(Resolution resolution) {};
+  virtual void CAPNP_CAPNPC_API reportResolution(Resolution resolution) {};
   // Report that an identifier parsed from the input resolved to a particular declaration. This may
   // be useful, for example, to implement a jump-to-definition in a code editor.
   //
@@ -77,33 +79,33 @@ public:
   // passed to all the right places to collect this information.
 };
 
-class GlobalErrorReporter {
+class CAPNP_CAPNPC_CLASS GlobalErrorReporter {
   // Callback for reporting errors in any file.
 
 public:
-  struct SourcePos {
-    uint byte;
-    uint line;
-    uint column;
+  struct CAPNP_CAPNPC_CLASS SourcePos {
+    uint CAPNP_CAPNPC_API byte;
+    uint CAPNP_CAPNPC_API line;
+    uint CAPNP_CAPNPC_API column;
   };
 
-  virtual void addError(const kj::ReadableDirectory& directory, kj::PathPtr path,
-                        SourcePos start, SourcePos end,
-                        kj::StringPtr message) = 0;
+  virtual void CAPNP_CAPNPC_API addError(const kj::ReadableDirectory& directory, kj::PathPtr path,
+                                         SourcePos start, SourcePos end,
+                                         kj::StringPtr message) = 0;
   // Report an error at the given location in the given file.
 
-  virtual bool hadErrors() = 0;
+  virtual bool CAPNP_CAPNPC_API hadErrors() = 0;
   // Return true if any errors have been reported, globally.  The main use case for this callback
   // is to inhibit the reporting of errors which may have been caused by previous errors, or to
   // allow the compiler to bail out entirely if it gets confused and thinks this could be because
   // of previous errors.
 };
 
-class LineBreakTable {
+class CAPNP_CAPNPC_CLASS LineBreakTable {
 public:
-  LineBreakTable(kj::ArrayPtr<const char> content);
+  CAPNP_CAPNPC_API LineBreakTable(kj::ArrayPtr<const char> content);
 
-  GlobalErrorReporter::SourcePos toSourcePos(uint32_t byteOffset) const;
+  GlobalErrorReporter::SourcePos CAPNP_CAPNPC_API toSourcePos(uint32_t byteOffset) const;
 
 private:
   kj::Vector<uint> lineBreaks;

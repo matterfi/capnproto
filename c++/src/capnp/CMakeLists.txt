@@ -229,9 +229,26 @@ set(capnpc_sources
   schema-parser.c++
   serialize-text.c++
 )
+set(capnpc_headers
+  export-capnp-capnpc.h
+)
 if(NOT CAPNP_LITE)
   add_library(capnpc ${capnpc_sources})
   target_link_libraries(capnpc PUBLIC capnp kj)
+
+  get_target_property(CAPNP_CAPNPC_TYPE capnpc TYPE)
+
+  if(CAPNP_CAPNPC_TYPE STREQUAL "SHARED_LIBRARY")
+    set(CAPNP_CAPNPC_EXPORT_MACRO "CAPNP_CAPNPC_BUILD")
+    set(CAPNP_CAPNPC_IMPORT_MACRO "")
+  else()
+    set(CAPNP_CAPNPC_EXPORT_MACRO "CAPNP_CAPNPC_STATIC_DEFINE")
+    set(CAPNP_CAPNPC_IMPORT_MACRO "CAPNP_CAPNPC_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(capnpc INTERFACE ${CAPNP_CAPNPC_IMPORT_MACRO} PRIVATE ${CAPNP_CAPNPC_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(capnpc PROPERTIES VERSION ${VERSION})
   install(TARGETS capnpc ${INSTALL_TARGETS_DEFAULT_ARGS})

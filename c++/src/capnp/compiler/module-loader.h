@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <capnp/export-capnp-capnpc.h>
 #include "compiler.h"
 #include "error-reporter.h"
 #include <kj/memory.h>
@@ -33,23 +34,23 @@ CAPNP_BEGIN_HEADER
 namespace capnp {
 namespace compiler {
 
-class ModuleLoader {
+class CAPNP_CAPNPC_CLASS ModuleLoader {
 public:
-  explicit ModuleLoader(GlobalErrorReporter& errorReporter);
+  explicit CAPNP_CAPNPC_API ModuleLoader(GlobalErrorReporter& errorReporter);
   // Create a ModuleLoader that reports error messages to the given reporter.
 
   KJ_DISALLOW_COPY_AND_MOVE(ModuleLoader);
 
-  ~ModuleLoader() noexcept(false);
+  CAPNP_CAPNPC_API ~ModuleLoader() noexcept(false);
 
-  void addImportPath(const kj::ReadableDirectory& dir);
+  void CAPNP_CAPNPC_API addImportPath(const kj::ReadableDirectory& dir);
   // Add a directory to the list of paths that is searched for imports that start with a '/'.
 
-  kj::Maybe<Module&> loadModule(const kj::ReadableDirectory& dir, kj::PathPtr path);
+  kj::Maybe<Module&> CAPNP_CAPNPC_API loadModule(const kj::ReadableDirectory& dir, kj::PathPtr path);
   // Tries to load a module with the given path inside the given directory. Returns nullptr if the
   // file doesn't exist.
 
-  void setFileIdsRequired(bool value);
+  void CAPNP_CAPNPC_API setFileIdsRequired(bool value);
   // Same as SchemaParser::setFileIdsRequired(). If set false, files will not be required to have
   // a top-level file ID; if missing a random one will be assigned.
 

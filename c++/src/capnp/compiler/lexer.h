@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <capnp/export-capnp-capnpc.h>
 #include <capnp/compiler/lexer.capnp.h>
 #include <kj/parse/common.h>
 #include <kj/arena.h>
@@ -31,9 +32,10 @@ CAPNP_BEGIN_HEADER
 namespace capnp {
 namespace compiler {
 
-bool lex(kj::ArrayPtr<const char> input, LexedStatements::Builder result,
-         ErrorReporter& errorReporter);
-bool lex(kj::ArrayPtr<const char> input, LexedTokens::Builder result, ErrorReporter& errorReporter);
+bool CAPNP_CAPNPC_API lex(kj::ArrayPtr<const char> input, LexedStatements::Builder result,
+                   ErrorReporter& errorReporter);
+bool CAPNP_CAPNPC_API lex(kj::ArrayPtr<const char> input, LexedTokens::Builder result,
+                   ErrorReporter& errorReporter);
 // Lex the given source code, placing the results in `result`.  Returns true if there
 // were no errors, false if there were.  Even when errors are present, the file may have partial
 // content which can be fed into later stages of parsing in order to find more errors.
