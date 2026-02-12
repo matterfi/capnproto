@@ -125,3 +125,20 @@ function(CAPNP_GENERATE_CPP SOURCES HEADERS)
   set(${SOURCES} ${${SOURCES}} PARENT_SCOPE)
   set(${HEADERS} ${${HEADERS}} PARENT_SCOPE)
 endfunction()
+
+macro(capnp_set_rpath)
+  if(APPLE)
+    set(basePoint @loader_path)
+  else()
+    set(basePoint $ORIGIN)
+  endif()
+
+  file(
+    RELATIVE_PATH
+    relDir
+    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}
+  )
+
+  set(CMAKE_INSTALL_RPATH ${basePoint} ${basePoint}/${relDir})
+endmacro()
