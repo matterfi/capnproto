@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "export-capnp.h"
 #include <capnp/generated-header-support.h>
 #include <kj/windows-sanity.h>
 
@@ -51,7 +52,7 @@ CAPNP_DECLARE_SCHEMA(c863cd16969ee7fc);
 CAPNP_DECLARE_SCHEMA(ce23dcd2d7b00c9b);
 CAPNP_DECLARE_SCHEMA(f1c8950dab257542);
 CAPNP_DECLARE_SCHEMA(d1958f7dba521926);
-enum class ElementSize_d1958f7dba521926: uint16_t {
+enum class CAPNP_CLASS ElementSize_d1958f7dba521926: uint16_t {
   EMPTY,
   BIT,
   BYTE,
@@ -76,7 +77,7 @@ CAPNP_DECLARE_SCHEMA(fc69d5e1d630a151);
 namespace capnp {
 namespace schema {
 
-struct Node {
+struct CAPNP_CLASS Node {
   Node() = delete;
 
   class Reader;
@@ -107,7 +108,7 @@ struct Node {
   };
 };
 
-struct Node::Parameter {
+struct CAPNP_CLASS Node::Parameter {
   Parameter() = delete;
 
   class Reader;
@@ -122,7 +123,7 @@ struct Node::Parameter {
   };
 };
 
-struct Node::NestedNode {
+struct CAPNP_CLASS Node::NestedNode {
   NestedNode() = delete;
 
   class Reader;
@@ -137,7 +138,7 @@ struct Node::NestedNode {
   };
 };
 
-struct Node::SourceInfo {
+struct CAPNP_CLASS Node::SourceInfo {
   SourceInfo() = delete;
 
   class Reader;
@@ -153,7 +154,7 @@ struct Node::SourceInfo {
   };
 };
 
-struct Node::SourceInfo::Member {
+struct CAPNP_CLASS Node::SourceInfo::Member {
   Member() = delete;
 
   class Reader;
@@ -168,7 +169,7 @@ struct Node::SourceInfo::Member {
   };
 };
 
-struct Node::Struct {
+struct CAPNP_CLASS Node::Struct {
   Struct() = delete;
 
   class Reader;
@@ -183,7 +184,7 @@ struct Node::Struct {
   };
 };
 
-struct Node::Enum {
+struct CAPNP_CLASS Node::Enum {
   Enum() = delete;
 
   class Reader;
@@ -198,7 +199,7 @@ struct Node::Enum {
   };
 };
 
-struct Node::Interface {
+struct CAPNP_CLASS Node::Interface {
   Interface() = delete;
 
   class Reader;
@@ -213,7 +214,7 @@ struct Node::Interface {
   };
 };
 
-struct Node::Const {
+struct CAPNP_CLASS Node::Const {
   Const() = delete;
 
   class Reader;
@@ -228,7 +229,7 @@ struct Node::Const {
   };
 };
 
-struct Node::Annotation {
+struct CAPNP_CLASS Node::Annotation {
   Annotation() = delete;
 
   class Reader;
@@ -243,7 +244,7 @@ struct Node::Annotation {
   };
 };
 
-struct Field {
+struct CAPNP_CLASS Field {
   Field() = delete;
 
   class Reader;
@@ -266,7 +267,7 @@ struct Field {
   };
 };
 
-struct Field::Slot {
+struct CAPNP_CLASS Field::Slot {
   Slot() = delete;
 
   class Reader;
@@ -281,7 +282,7 @@ struct Field::Slot {
   };
 };
 
-struct Field::Group {
+struct CAPNP_CLASS Field::Group {
   Group() = delete;
 
   class Reader;
@@ -296,7 +297,7 @@ struct Field::Group {
   };
 };
 
-struct Field::Ordinal {
+struct CAPNP_CLASS Field::Ordinal {
   Ordinal() = delete;
 
   class Reader;
@@ -315,7 +316,7 @@ struct Field::Ordinal {
   };
 };
 
-struct Enumerant {
+struct CAPNP_CLASS Enumerant {
   Enumerant() = delete;
 
   class Reader;
@@ -330,7 +331,7 @@ struct Enumerant {
   };
 };
 
-struct Superclass {
+struct CAPNP_CLASS Superclass {
   Superclass() = delete;
 
   class Reader;
@@ -345,7 +346,7 @@ struct Superclass {
   };
 };
 
-struct Method {
+struct CAPNP_CLASS Method {
   Method() = delete;
 
   class Reader;
@@ -360,7 +361,7 @@ struct Method {
   };
 };
 
-struct Type {
+struct CAPNP_CLASS Type {
   Type() = delete;
 
   class Reader;
@@ -401,7 +402,7 @@ struct Type {
   };
 };
 
-struct Type::List {
+struct CAPNP_CLASS Type::List {
   List() = delete;
 
   class Reader;
@@ -431,7 +432,7 @@ struct Type::Enum {
   };
 };
 
-struct Type::Struct {
+struct CAPNP_CLASS Type::Struct {
   Struct() = delete;
 
   class Reader;
@@ -446,7 +447,7 @@ struct Type::Struct {
   };
 };
 
-struct Type::Interface {
+struct CAPNP_CLASS Type::Interface {
   Interface() = delete;
 
   class Reader;
@@ -461,7 +462,7 @@ struct Type::Interface {
   };
 };
 
-struct Type::AnyPointer {
+struct CAPNP_CLASS Type::AnyPointer {
   AnyPointer() = delete;
 
   class Reader;
@@ -484,7 +485,7 @@ struct Type::AnyPointer {
   };
 };
 
-struct Type::AnyPointer::Unconstrained {
+struct CAPNP_CLASS Type::AnyPointer::Unconstrained {
   Unconstrained() = delete;
 
   class Reader;
@@ -505,7 +506,7 @@ struct Type::AnyPointer::Unconstrained {
   };
 };
 
-struct Type::AnyPointer::Parameter {
+struct CAPNP_CLASS Type::AnyPointer::Parameter {
   Parameter() = delete;
 
   class Reader;
@@ -520,7 +521,7 @@ struct Type::AnyPointer::Parameter {
   };
 };
 
-struct Type::AnyPointer::ImplicitMethodParameter {
+struct CAPNP_CLASS Type::AnyPointer::ImplicitMethodParameter {
   ImplicitMethodParameter() = delete;
 
   class Reader;
@@ -535,7 +536,7 @@ struct Type::AnyPointer::ImplicitMethodParameter {
   };
 };
 
-struct Brand {
+struct CAPNP_CLASS Brand {
   Brand() = delete;
 
   class Reader;
@@ -552,7 +553,7 @@ struct Brand {
   };
 };
 
-struct Brand::Scope {
+struct CAPNP_CLASS Brand::Scope {
   Scope() = delete;
 
   class Reader;
@@ -571,7 +572,7 @@ struct Brand::Scope {
   };
 };
 
-struct Brand::Binding {
+struct CAPNP_CLASS Brand::Binding {
   Binding() = delete;
 
   class Reader;
@@ -590,7 +591,7 @@ struct Brand::Binding {
   };
 };
 
-struct Value {
+struct CAPNP_CLASS Value {
   Value() = delete;
 
   class Reader;
@@ -626,7 +627,7 @@ struct Value {
   };
 };
 
-struct Annotation {
+struct CAPNP_CLASS Annotation {
   Annotation() = delete;
 
   class Reader;
@@ -643,7 +644,7 @@ struct Annotation {
 
 typedef ::capnp::schemas::ElementSize_d1958f7dba521926 ElementSize;
 
-struct CapnpVersion {
+struct CAPNP_CLASS CapnpVersion {
   CapnpVersion() = delete;
 
   class Reader;
@@ -658,7 +659,7 @@ struct CapnpVersion {
   };
 };
 
-struct CodeGeneratorRequest {
+struct CAPNP_CLASS CodeGeneratorRequest {
   CodeGeneratorRequest() = delete;
 
   class Reader;
@@ -674,7 +675,7 @@ struct CodeGeneratorRequest {
   };
 };
 
-struct CodeGeneratorRequest::RequestedFile {
+struct CAPNP_CLASS CodeGeneratorRequest::RequestedFile {
   RequestedFile() = delete;
 
   class Reader;
@@ -691,7 +692,7 @@ struct CodeGeneratorRequest::RequestedFile {
   };
 };
 
-struct CodeGeneratorRequest::RequestedFile::Import {
+struct CAPNP_CLASS CodeGeneratorRequest::RequestedFile::Import {
   Import() = delete;
 
   class Reader;
@@ -706,7 +707,7 @@ struct CodeGeneratorRequest::RequestedFile::Import {
   };
 };
 
-struct CodeGeneratorRequest::RequestedFile::FileSourceInfo {
+struct CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo {
   FileSourceInfo() = delete;
 
   class Reader;
@@ -722,7 +723,7 @@ struct CodeGeneratorRequest::RequestedFile::FileSourceInfo {
   };
 };
 
-struct CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier {
+struct CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier {
   Identifier() = delete;
 
   class Reader;
@@ -742,7 +743,7 @@ struct CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier {
   };
 };
 
-struct CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Member {
+struct CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Member {
   Member() = delete;
 
   class Reader;
@@ -759,65 +760,65 @@ struct CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Member {
 
 // =======================================================================================
 
-class Node::Reader {
+class CAPNP_CLASS Node::Reader {
 public:
   typedef Node Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline  ::uint64_t getId() const;
+  inline Which CAPNP_API which() const;
+  inline  ::uint64_t CAPNP_API getId() const;
 
-  inline bool hasDisplayName() const;
-  inline  ::capnp::Text::Reader getDisplayName() const;
+  inline bool CAPNP_API hasDisplayName() const;
+  inline  ::capnp::Text::Reader CAPNP_API getDisplayName() const;
 
-  inline  ::uint32_t getDisplayNamePrefixLength() const;
+  inline  ::uint32_t CAPNP_API getDisplayNamePrefixLength() const;
 
-  inline  ::uint64_t getScopeId() const;
+  inline  ::uint64_t CAPNP_API getScopeId() const;
 
-  inline bool hasNestedNodes() const;
-  inline  ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>::Reader getNestedNodes() const;
+  inline bool CAPNP_API hasNestedNodes() const;
+  inline  ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getNestedNodes() const;
 
-  inline bool hasAnnotations() const;
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader getAnnotations() const;
+  inline bool CAPNP_API hasAnnotations() const;
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getAnnotations() const;
 
-  inline bool isFile() const;
-  inline  ::capnp::Void getFile() const;
+  inline bool CAPNP_API isFile() const;
+  inline  ::capnp::Void CAPNP_API getFile() const;
 
-  inline bool isStruct() const;
-  inline typename Struct::Reader getStruct() const;
+  inline bool CAPNP_API isStruct() const;
+  inline typename Struct::Reader CAPNP_API getStruct() const;
 
-  inline bool isEnum() const;
-  inline typename Enum::Reader getEnum() const;
+  inline bool CAPNP_API isEnum() const;
+  inline typename Enum::Reader CAPNP_API getEnum() const;
 
-  inline bool isInterface() const;
-  inline typename Interface::Reader getInterface() const;
+  inline bool CAPNP_API isInterface() const;
+  inline typename Interface::Reader CAPNP_API getInterface() const;
 
-  inline bool isConst() const;
-  inline typename Const::Reader getConst() const;
+  inline bool CAPNP_API isConst() const;
+  inline typename Const::Reader CAPNP_API getConst() const;
 
-  inline bool isAnnotation() const;
-  inline typename Annotation::Reader getAnnotation() const;
+  inline bool CAPNP_API isAnnotation() const;
+  inline typename Annotation::Reader CAPNP_API getAnnotation() const;
 
-  inline bool hasParameters() const;
-  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Reader getParameters() const;
+  inline bool CAPNP_API hasParameters() const;
+  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getParameters() const;
 
-  inline bool getIsGeneric() const;
+  inline bool CAPNP_API getIsGeneric() const;
 
-  inline  ::uint32_t getStartByte() const;
+  inline  ::uint32_t CAPNP_API getStartByte() const;
 
-  inline  ::uint32_t getEndByte() const;
+  inline  ::uint32_t CAPNP_API getEndByte() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -831,92 +832,92 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::Builder {
+class CAPNP_CLASS Node::Builder {
 public:
   typedef Node Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline operator CAPNP_API Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline  ::uint64_t getId();
-  inline void setId( ::uint64_t value);
+  inline Which CAPNP_API which();
+  inline  ::uint64_t CAPNP_API getId();
+  inline void CAPNP_API setId( ::uint64_t value);
 
-  inline bool hasDisplayName();
-  inline  ::capnp::Text::Builder getDisplayName();
-  inline void setDisplayName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initDisplayName(unsigned int size);
-  inline void adoptDisplayName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownDisplayName();
+  inline bool CAPNP_API hasDisplayName();
+  inline  ::capnp::Text::Builder CAPNP_API getDisplayName();
+  inline void CAPNP_API setDisplayName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initDisplayName(unsigned int size);
+  inline void CAPNP_API adoptDisplayName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownDisplayName();
 
-  inline  ::uint32_t getDisplayNamePrefixLength();
-  inline void setDisplayNamePrefixLength( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getDisplayNamePrefixLength();
+  inline void CAPNP_API setDisplayNamePrefixLength( ::uint32_t value);
 
-  inline  ::uint64_t getScopeId();
-  inline void setScopeId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getScopeId();
+  inline void CAPNP_API setScopeId( ::uint64_t value);
 
-  inline bool hasNestedNodes();
-  inline  ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>::Builder getNestedNodes();
-  inline void setNestedNodes( ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>::Builder initNestedNodes(unsigned int size);
-  inline void adoptNestedNodes(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>> disownNestedNodes();
+  inline bool CAPNP_API hasNestedNodes();
+  inline  ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getNestedNodes();
+  inline void CAPNP_API setNestedNodes( ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initNestedNodes(unsigned int size);
+  inline void CAPNP_API adoptNestedNodes(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::NestedNode,  ::capnp::Kind::STRUCT>> CAPNP_API disownNestedNodes();
 
-  inline bool hasAnnotations();
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder getAnnotations();
-  inline void setAnnotations( ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder initAnnotations(unsigned int size);
-  inline void adoptAnnotations(::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>> disownAnnotations();
+  inline bool CAPNP_API hasAnnotations();
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getAnnotations();
+  inline void CAPNP_API setAnnotations( ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initAnnotations(unsigned int size);
+  inline void CAPNP_API adoptAnnotations(::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>> CAPNP_API disownAnnotations();
 
-  inline bool isFile();
-  inline  ::capnp::Void getFile();
-  inline void setFile( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isFile();
+  inline  ::capnp::Void CAPNP_API getFile();
+  inline void CAPNP_API setFile( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isStruct();
-  inline typename Struct::Builder getStruct();
-  inline typename Struct::Builder initStruct();
+  inline bool CAPNP_API isStruct();
+  inline typename Struct::Builder CAPNP_API getStruct();
+  inline typename Struct::Builder CAPNP_API initStruct();
 
-  inline bool isEnum();
-  inline typename Enum::Builder getEnum();
-  inline typename Enum::Builder initEnum();
+  inline bool CAPNP_API isEnum();
+  inline typename Enum::Builder CAPNP_API getEnum();
+  inline typename Enum::Builder CAPNP_API initEnum();
 
-  inline bool isInterface();
-  inline typename Interface::Builder getInterface();
-  inline typename Interface::Builder initInterface();
+  inline bool CAPNP_API isInterface();
+  inline typename Interface::Builder CAPNP_API getInterface();
+  inline typename Interface::Builder CAPNP_API initInterface();
 
-  inline bool isConst();
-  inline typename Const::Builder getConst();
-  inline typename Const::Builder initConst();
+  inline bool CAPNP_API isConst();
+  inline typename Const::Builder CAPNP_API getConst();
+  inline typename Const::Builder CAPNP_API initConst();
 
-  inline bool isAnnotation();
-  inline typename Annotation::Builder getAnnotation();
-  inline typename Annotation::Builder initAnnotation();
+  inline bool CAPNP_API isAnnotation();
+  inline typename Annotation::Builder CAPNP_API getAnnotation();
+  inline typename Annotation::Builder CAPNP_API initAnnotation();
 
-  inline bool hasParameters();
-  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Builder getParameters();
-  inline void setParameters( ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Builder initParameters(unsigned int size);
-  inline void adoptParameters(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>> disownParameters();
+  inline bool CAPNP_API hasParameters();
+  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getParameters();
+  inline void CAPNP_API setParameters( ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initParameters(unsigned int size);
+  inline void CAPNP_API adoptParameters(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>> CAPNP_API disownParameters();
 
-  inline bool getIsGeneric();
-  inline void setIsGeneric(bool value);
+  inline bool CAPNP_API getIsGeneric();
+  inline void CAPNP_API setIsGeneric(bool value);
 
-  inline  ::uint32_t getStartByte();
-  inline void setStartByte( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getStartByte();
+  inline void CAPNP_API setStartByte( ::uint32_t value);
 
-  inline  ::uint32_t getEndByte();
-  inline void setEndByte( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getEndByte();
+  inline void CAPNP_API setEndByte( ::uint32_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -928,12 +929,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::Pipeline {
+class CAPNP_CLASS Node::Pipeline {
 public:
   typedef Node Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -944,25 +945,25 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Node::Parameter::Reader {
+class CAPNP_CLASS Node::Parameter::Reader {
 public:
   typedef Parameter Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName() const;
-  inline  ::capnp::Text::Reader getName() const;
+  inline bool CAPNP_API hasName() const;
+  inline  ::capnp::Text::Reader CAPNP_API getName() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -976,28 +977,28 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::Parameter::Builder {
+class CAPNP_CLASS Node::Parameter::Builder {
 public:
   typedef Parameter Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName();
-  inline  ::capnp::Text::Builder getName();
-  inline void setName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownName();
+  inline bool CAPNP_API hasName();
+  inline  ::capnp::Text::Builder CAPNP_API getName();
+  inline void CAPNP_API setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initName(unsigned int size);
+  inline void CAPNP_API adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownName();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1009,12 +1010,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::Parameter::Pipeline {
+class CAPNP_CLASS Node::Parameter::Pipeline {
 public:
   typedef Parameter Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1025,27 +1026,27 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Node::NestedNode::Reader {
+class CAPNP_CLASS Node::NestedNode::Reader {
 public:
   typedef NestedNode Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName() const;
-  inline  ::capnp::Text::Reader getName() const;
+  inline bool CAPNP_API hasName() const;
+  inline  ::capnp::Text::Reader CAPNP_API getName() const;
 
-  inline  ::uint64_t getId() const;
+  inline  ::uint64_t CAPNP_API getId() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1059,31 +1060,31 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::NestedNode::Builder {
+class CAPNP_CLASS Node::NestedNode::Builder {
 public:
   typedef NestedNode Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName();
-  inline  ::capnp::Text::Builder getName();
-  inline void setName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownName();
+  inline bool CAPNP_API hasName();
+  inline  ::capnp::Text::Builder CAPNP_API getName();
+  inline void CAPNP_API setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initName(unsigned int size);
+  inline void CAPNP_API adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownName();
 
-  inline  ::uint64_t getId();
-  inline void setId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getId();
+  inline void CAPNP_API setId( ::uint64_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1095,12 +1096,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::NestedNode::Pipeline {
+class CAPNP_CLASS Node::NestedNode::Pipeline {
 public:
   typedef NestedNode Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1111,34 +1112,34 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Node::SourceInfo::Reader {
+class CAPNP_CLASS Node::SourceInfo::Reader {
 public:
   typedef SourceInfo Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId() const;
+  inline  ::uint64_t CAPNP_API getId() const;
 
-  inline bool hasDocComment() const;
-  inline  ::capnp::Text::Reader getDocComment() const;
+  inline bool CAPNP_API hasDocComment() const;
+  inline  ::capnp::Text::Reader CAPNP_API getDocComment() const;
 
-  inline bool hasMembers() const;
-  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>::Reader getMembers() const;
+  inline bool CAPNP_API hasMembers() const;
+  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getMembers() const;
 
-  inline  ::uint32_t getStartByte() const;
+  inline  ::uint32_t CAPNP_API getStartByte() const;
 
-  inline  ::uint32_t getEndByte() const;
+  inline  ::uint32_t CAPNP_API getEndByte() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1152,44 +1153,44 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::SourceInfo::Builder {
+class CAPNP_CLASS Node::SourceInfo::Builder {
 public:
   typedef SourceInfo Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId();
-  inline void setId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getId();
+  inline void CAPNP_API setId( ::uint64_t value);
 
-  inline bool hasDocComment();
-  inline  ::capnp::Text::Builder getDocComment();
-  inline void setDocComment( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initDocComment(unsigned int size);
-  inline void adoptDocComment(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownDocComment();
+  inline bool CAPNP_API hasDocComment();
+  inline  ::capnp::Text::Builder CAPNP_API getDocComment();
+  inline void CAPNP_API setDocComment( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initDocComment(unsigned int size);
+  inline void CAPNP_API adoptDocComment(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownDocComment();
 
-  inline bool hasMembers();
-  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>::Builder getMembers();
-  inline void setMembers( ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>::Builder initMembers(unsigned int size);
-  inline void adoptMembers(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>> disownMembers();
+  inline bool CAPNP_API hasMembers();
+  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getMembers();
+  inline void CAPNP_API setMembers( ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initMembers(unsigned int size);
+  inline void CAPNP_API adoptMembers(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::SourceInfo::Member,  ::capnp::Kind::STRUCT>> CAPNP_API disownMembers();
 
-  inline  ::uint32_t getStartByte();
-  inline void setStartByte( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getStartByte();
+  inline void CAPNP_API setStartByte( ::uint32_t value);
 
-  inline  ::uint32_t getEndByte();
-  inline void setEndByte( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getEndByte();
+  inline void CAPNP_API setEndByte( ::uint32_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1201,12 +1202,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::SourceInfo::Pipeline {
+class CAPNP_CLASS Node::SourceInfo::Pipeline {
 public:
   typedef SourceInfo Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1217,32 +1218,32 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Node::SourceInfo::Member::Reader {
+class CAPNP_CLASS Node::SourceInfo::Member::Reader {
 public:
   typedef Member Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasDocComment() const;
-  inline  ::capnp::Text::Reader getDocComment() const;
+  inline bool CAPNP_API hasDocComment() const;
+  inline  ::capnp::Text::Reader CAPNP_API getDocComment() const;
 
-  inline  ::uint32_t getStartByte() const;
+  inline  ::uint32_t CAPNP_API getStartByte() const;
 
-  inline  ::uint32_t getEndByte() const;
+  inline  ::uint32_t CAPNP_API getEndByte() const;
 
-  inline bool hasTypeId() const;
-  inline  ::capnp::Text::Reader getTypeId() const;
+  inline bool CAPNP_API hasTypeId() const;
+  inline  ::capnp::Text::Reader CAPNP_API getTypeId() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1256,41 +1257,41 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::SourceInfo::Member::Builder {
+class CAPNP_CLASS Node::SourceInfo::Member::Builder {
 public:
   typedef Member Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasDocComment();
-  inline  ::capnp::Text::Builder getDocComment();
-  inline void setDocComment( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initDocComment(unsigned int size);
-  inline void adoptDocComment(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownDocComment();
+  inline bool CAPNP_API hasDocComment();
+  inline  ::capnp::Text::Builder CAPNP_API getDocComment();
+  inline void CAPNP_API setDocComment( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initDocComment(unsigned int size);
+  inline void CAPNP_API adoptDocComment(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownDocComment();
 
-  inline  ::uint32_t getStartByte();
-  inline void setStartByte( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getStartByte();
+  inline void CAPNP_API setStartByte( ::uint32_t value);
 
-  inline  ::uint32_t getEndByte();
-  inline void setEndByte( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getEndByte();
+  inline void CAPNP_API setEndByte( ::uint32_t value);
 
-  inline bool hasTypeId();
-  inline  ::capnp::Text::Builder getTypeId();
-  inline void setTypeId( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initTypeId(unsigned int size);
-  inline void adoptTypeId(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownTypeId();
+  inline bool CAPNP_API hasTypeId();
+  inline  ::capnp::Text::Builder CAPNP_API getTypeId();
+  inline void CAPNP_API setTypeId( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initTypeId(unsigned int size);
+  inline void CAPNP_API adoptTypeId(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownTypeId();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1302,12 +1303,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::SourceInfo::Member::Pipeline {
+class CAPNP_CLASS Node::SourceInfo::Member::Pipeline {
 public:
   typedef Member Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1318,37 +1319,37 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Node::Struct::Reader {
+class CAPNP_CLASS Node::Struct::Reader {
 public:
   typedef Struct Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint16_t getDataWordCount() const;
+  inline  ::uint16_t CAPNP_API getDataWordCount() const;
 
-  inline  ::uint16_t getPointerCount() const;
+  inline  ::uint16_t CAPNP_API getPointerCount() const;
 
-  inline  ::capnp::schema::ElementSize getPreferredListEncoding() const;
+  inline  ::capnp::schema::ElementSize CAPNP_API getPreferredListEncoding() const;
 
-  inline bool getIsGroup() const;
+  inline bool CAPNP_API getIsGroup() const;
 
-  inline  ::uint16_t getDiscriminantCount() const;
+  inline  ::uint16_t CAPNP_API getDiscriminantCount() const;
 
-  inline  ::uint32_t getDiscriminantOffset() const;
+  inline  ::uint32_t CAPNP_API getDiscriminantOffset() const;
 
-  inline bool hasFields() const;
-  inline  ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>::Reader getFields() const;
+  inline bool CAPNP_API hasFields() const;
+  inline  ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getFields() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1362,46 +1363,46 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::Struct::Builder {
+class CAPNP_CLASS Node::Struct::Builder {
 public:
   typedef Struct Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint16_t getDataWordCount();
-  inline void setDataWordCount( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getDataWordCount();
+  inline void CAPNP_API setDataWordCount( ::uint16_t value);
 
-  inline  ::uint16_t getPointerCount();
-  inline void setPointerCount( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getPointerCount();
+  inline void CAPNP_API setPointerCount( ::uint16_t value);
 
-  inline  ::capnp::schema::ElementSize getPreferredListEncoding();
-  inline void setPreferredListEncoding( ::capnp::schema::ElementSize value);
+  inline  ::capnp::schema::ElementSize CAPNP_API getPreferredListEncoding();
+  inline void CAPNP_API setPreferredListEncoding( ::capnp::schema::ElementSize value);
 
-  inline bool getIsGroup();
-  inline void setIsGroup(bool value);
+  inline bool CAPNP_API getIsGroup();
+  inline void CAPNP_API setIsGroup(bool value);
 
-  inline  ::uint16_t getDiscriminantCount();
-  inline void setDiscriminantCount( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getDiscriminantCount();
+  inline void CAPNP_API setDiscriminantCount( ::uint16_t value);
 
-  inline  ::uint32_t getDiscriminantOffset();
-  inline void setDiscriminantOffset( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getDiscriminantOffset();
+  inline void CAPNP_API setDiscriminantOffset( ::uint32_t value);
 
-  inline bool hasFields();
-  inline  ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>::Builder getFields();
-  inline void setFields( ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>::Builder initFields(unsigned int size);
-  inline void adoptFields(::capnp::Orphan< ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>> disownFields();
+  inline bool CAPNP_API hasFields();
+  inline  ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getFields();
+  inline void CAPNP_API setFields( ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initFields(unsigned int size);
+  inline void CAPNP_API adoptFields(::capnp::Orphan< ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Field,  ::capnp::Kind::STRUCT>> CAPNP_API disownFields();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1413,12 +1414,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::Struct::Pipeline {
+class CAPNP_CLASS Node::Struct::Pipeline {
 public:
   typedef Struct Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1429,25 +1430,25 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Node::Enum::Reader {
+class CAPNP_CLASS Node::Enum::Reader {
 public:
   typedef Enum Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasEnumerants() const;
-  inline  ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>::Reader getEnumerants() const;
+  inline bool CAPNP_API hasEnumerants() const;
+  inline  ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getEnumerants() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1461,28 +1462,28 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::Enum::Builder {
+class CAPNP_CLASS Node::Enum::Builder {
 public:
   typedef Enum Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasEnumerants();
-  inline  ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>::Builder getEnumerants();
-  inline void setEnumerants( ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>::Builder initEnumerants(unsigned int size);
-  inline void adoptEnumerants(::capnp::Orphan< ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>> disownEnumerants();
+  inline bool CAPNP_API hasEnumerants();
+  inline  ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getEnumerants();
+  inline void CAPNP_API setEnumerants( ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initEnumerants(unsigned int size);
+  inline void CAPNP_API adoptEnumerants(::capnp::Orphan< ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Enumerant,  ::capnp::Kind::STRUCT>> CAPNP_API disownEnumerants();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1494,12 +1495,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::Enum::Pipeline {
+class CAPNP_CLASS Node::Enum::Pipeline {
 public:
   typedef Enum Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1510,28 +1511,28 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Node::Interface::Reader {
+class CAPNP_CLASS Node::Interface::Reader {
 public:
   typedef Interface Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasMethods() const;
-  inline  ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>::Reader getMethods() const;
+  inline bool CAPNP_API hasMethods() const;
+  inline  ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getMethods() const;
 
-  inline bool hasSuperclasses() const;
-  inline  ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>::Reader getSuperclasses() const;
+  inline bool CAPNP_API hasSuperclasses() const;
+  inline  ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getSuperclasses() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1545,35 +1546,35 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::Interface::Builder {
+class CAPNP_CLASS Node::Interface::Builder {
 public:
   typedef Interface Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasMethods();
-  inline  ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>::Builder getMethods();
-  inline void setMethods( ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>::Builder initMethods(unsigned int size);
-  inline void adoptMethods(::capnp::Orphan< ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>> disownMethods();
+  inline bool CAPNP_API hasMethods();
+  inline  ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getMethods();
+  inline void CAPNP_API setMethods( ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initMethods(unsigned int size);
+  inline void CAPNP_API adoptMethods(::capnp::Orphan< ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Method,  ::capnp::Kind::STRUCT>> CAPNP_API disownMethods();
 
-  inline bool hasSuperclasses();
-  inline  ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>::Builder getSuperclasses();
-  inline void setSuperclasses( ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>::Builder initSuperclasses(unsigned int size);
-  inline void adoptSuperclasses(::capnp::Orphan< ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>> disownSuperclasses();
+  inline bool CAPNP_API hasSuperclasses();
+  inline  ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getSuperclasses();
+  inline void CAPNP_API setSuperclasses( ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initSuperclasses(unsigned int size);
+  inline void CAPNP_API adoptSuperclasses(::capnp::Orphan< ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Superclass,  ::capnp::Kind::STRUCT>> CAPNP_API disownSuperclasses();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1585,12 +1586,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::Interface::Pipeline {
+class CAPNP_CLASS Node::Interface::Pipeline {
 public:
   typedef Interface Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1601,28 +1602,28 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Node::Const::Reader {
+class CAPNP_CLASS Node::Const::Reader {
 public:
   typedef Const Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasType() const;
-  inline  ::capnp::schema::Type::Reader getType() const;
+  inline bool CAPNP_API hasType() const;
+  inline  ::capnp::schema::Type::Reader CAPNP_API getType() const;
 
-  inline bool hasValue() const;
-  inline  ::capnp::schema::Value::Reader getValue() const;
+  inline bool CAPNP_API hasValue() const;
+  inline  ::capnp::schema::Value::Reader CAPNP_API getValue() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1636,35 +1637,35 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::Const::Builder {
+class CAPNP_CLASS Node::Const::Builder {
 public:
   typedef Const Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasType();
-  inline  ::capnp::schema::Type::Builder getType();
-  inline void setType( ::capnp::schema::Type::Reader value);
-  inline  ::capnp::schema::Type::Builder initType();
-  inline void adoptType(::capnp::Orphan< ::capnp::schema::Type>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Type> disownType();
+  inline bool CAPNP_API hasType();
+  inline  ::capnp::schema::Type::Builder CAPNP_API getType();
+  inline void CAPNP_API setType( ::capnp::schema::Type::Reader value);
+  inline  ::capnp::schema::Type::Builder CAPNP_API initType();
+  inline void CAPNP_API adoptType(::capnp::Orphan< ::capnp::schema::Type>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Type> CAPNP_API disownType();
 
-  inline bool hasValue();
-  inline  ::capnp::schema::Value::Builder getValue();
-  inline void setValue( ::capnp::schema::Value::Reader value);
-  inline  ::capnp::schema::Value::Builder initValue();
-  inline void adoptValue(::capnp::Orphan< ::capnp::schema::Value>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Value> disownValue();
+  inline bool CAPNP_API hasValue();
+  inline  ::capnp::schema::Value::Builder CAPNP_API getValue();
+  inline void CAPNP_API setValue( ::capnp::schema::Value::Reader value);
+  inline  ::capnp::schema::Value::Builder CAPNP_API initValue();
+  inline void CAPNP_API adoptValue(::capnp::Orphan< ::capnp::schema::Value>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Value> CAPNP_API disownValue();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1676,16 +1677,16 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::Const::Pipeline {
+class CAPNP_CLASS Node::Const::Pipeline {
 public:
   typedef Const Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Type::Pipeline getType();
-  inline  ::capnp::schema::Value::Pipeline getValue();
+  inline  ::capnp::schema::Type::Pipeline CAPNP_API getType();
+  inline  ::capnp::schema::Value::Pipeline CAPNP_API getValue();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -1694,49 +1695,49 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Node::Annotation::Reader {
+class CAPNP_CLASS Node::Annotation::Reader {
 public:
   typedef Annotation Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasType() const;
-  inline  ::capnp::schema::Type::Reader getType() const;
+  inline bool CAPNP_API hasType() const;
+  inline  ::capnp::schema::Type::Reader CAPNP_API getType() const;
 
-  inline bool getTargetsFile() const;
+  inline bool CAPNP_API getTargetsFile() const;
 
-  inline bool getTargetsConst() const;
+  inline bool CAPNP_API getTargetsConst() const;
 
-  inline bool getTargetsEnum() const;
+  inline bool CAPNP_API getTargetsEnum() const;
 
-  inline bool getTargetsEnumerant() const;
+  inline bool CAPNP_API getTargetsEnumerant() const;
 
-  inline bool getTargetsStruct() const;
+  inline bool CAPNP_API getTargetsStruct() const;
 
-  inline bool getTargetsField() const;
+  inline bool CAPNP_API getTargetsField() const;
 
-  inline bool getTargetsUnion() const;
+  inline bool CAPNP_API getTargetsUnion() const;
 
-  inline bool getTargetsGroup() const;
+  inline bool CAPNP_API getTargetsGroup() const;
 
-  inline bool getTargetsInterface() const;
+  inline bool CAPNP_API getTargetsInterface() const;
 
-  inline bool getTargetsMethod() const;
+  inline bool CAPNP_API getTargetsMethod() const;
 
-  inline bool getTargetsParam() const;
+  inline bool CAPNP_API getTargetsParam() const;
 
-  inline bool getTargetsAnnotation() const;
+  inline bool CAPNP_API getTargetsAnnotation() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1750,64 +1751,64 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Node::Annotation::Builder {
+class CAPNP_CLASS Node::Annotation::Builder {
 public:
   typedef Annotation Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_APItotalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasType();
-  inline  ::capnp::schema::Type::Builder getType();
-  inline void setType( ::capnp::schema::Type::Reader value);
-  inline  ::capnp::schema::Type::Builder initType();
-  inline void adoptType(::capnp::Orphan< ::capnp::schema::Type>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Type> disownType();
+  inline bool CAPNP_API hasType();
+  inline  ::capnp::schema::Type::Builder CAPNP_API getType();
+  inline void CAPNP_API setType( ::capnp::schema::Type::Reader value);
+  inline  ::capnp::schema::Type::Builder CAPNP_API initType();
+  inline void CAPNP_API adoptType(::capnp::Orphan< ::capnp::schema::Type>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Type> CAPNP_API disownType();
 
-  inline bool getTargetsFile();
-  inline void setTargetsFile(bool value);
+  inline bool CAPNP_API getTargetsFile();
+  inline void CAPNP_API setTargetsFile(bool value);
 
-  inline bool getTargetsConst();
-  inline void setTargetsConst(bool value);
+  inline bool CAPNP_API getTargetsConst();
+  inline void CAPNP_API setTargetsConst(bool value);
 
-  inline bool getTargetsEnum();
-  inline void setTargetsEnum(bool value);
+  inline bool CAPNP_API getTargetsEnum();
+  inline void CAPNP_API setTargetsEnum(bool value);
 
-  inline bool getTargetsEnumerant();
-  inline void setTargetsEnumerant(bool value);
+  inline bool CAPNP_API getTargetsEnumerant();
+  inline void CAPNP_API setTargetsEnumerant(bool value);
 
-  inline bool getTargetsStruct();
-  inline void setTargetsStruct(bool value);
+  inline bool CAPNP_API getTargetsStruct();
+  inline void CAPNP_API setTargetsStruct(bool value);
 
-  inline bool getTargetsField();
-  inline void setTargetsField(bool value);
+  inline bool CAPNP_API getTargetsField();
+  inline void CAPNP_API setTargetsField(bool value);
 
-  inline bool getTargetsUnion();
-  inline void setTargetsUnion(bool value);
+  inline bool CAPNP_API getTargetsUnion();
+  inline void CAPNP_API setTargetsUnion(bool value);
 
-  inline bool getTargetsGroup();
-  inline void setTargetsGroup(bool value);
+  inline bool CAPNP_API getTargetsGroup();
+  inline void CAPNP_API setTargetsGroup(bool value);
 
-  inline bool getTargetsInterface();
-  inline void setTargetsInterface(bool value);
+  inline bool CAPNP_API getTargetsInterface();
+  inline void CAPNP_API setTargetsInterface(bool value);
 
-  inline bool getTargetsMethod();
-  inline void setTargetsMethod(bool value);
+  inline bool CAPNP_API getTargetsMethod();
+  inline void CAPNP_API setTargetsMethod(bool value);
 
-  inline bool getTargetsParam();
-  inline void setTargetsParam(bool value);
+  inline bool CAPNP_API getTargetsParam();
+  inline void CAPNP_API setTargetsParam(bool value);
 
-  inline bool getTargetsAnnotation();
-  inline void setTargetsAnnotation(bool value);
+  inline bool CAPNP_API getTargetsAnnotation();
+  inline void CAPNP_API setTargetsAnnotation(bool value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1819,15 +1820,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class Node::Annotation::Pipeline {
+class CAPNP_CLASS Node::Annotation::Pipeline {
 public:
   typedef Annotation Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Type::Pipeline getType();
+  inline  ::capnp::schema::Type::Pipeline CAPNP_API getType();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -1836,41 +1837,41 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Field::Reader {
+class CAPNP_CLASS Field::Reader {
 public:
   typedef Field Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline bool hasName() const;
-  inline  ::capnp::Text::Reader getName() const;
+  inline Which CAPNP_API which() const;
+  inline bool CAPNP_API hasName() const;
+  inline  ::capnp::Text::Reader CAPNP_API getName() const;
 
-  inline  ::uint16_t getCodeOrder() const;
+  inline  ::uint16_t CAPNP_API getCodeOrder() const;
 
-  inline bool hasAnnotations() const;
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader getAnnotations() const;
+  inline bool CAPNP_API hasAnnotations() const;
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getAnnotations() const;
 
-  inline  ::uint16_t getDiscriminantValue() const;
+  inline  ::uint16_t CAPNP_API getDiscriminantValue() const;
 
-  inline bool isSlot() const;
-  inline typename Slot::Reader getSlot() const;
+  inline bool CAPNP_API isSlot() const;
+  inline typename Slot::Reader CAPNP_API getSlot() const;
 
-  inline bool isGroup() const;
-  inline typename Group::Reader getGroup() const;
+  inline bool CAPNP_API isGroup() const;
+  inline typename Group::Reader CAPNP_API getGroup() const;
 
-  inline typename Ordinal::Reader getOrdinal() const;
+  inline typename Ordinal::Reader CAPNP_API getOrdinal() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1884,53 +1885,53 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Field::Builder {
+class CAPNP_CLASS Field::Builder {
 public:
   typedef Field Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline bool hasName();
-  inline  ::capnp::Text::Builder getName();
-  inline void setName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownName();
+  inline Which CAPNP_API which();
+  inline bool CAPNP_API hasName();
+  inline  ::capnp::Text::Builder CAPNP_API getName();
+  inline void CAPNP_API setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initName(unsigned int size);
+  inline void CAPNP_API adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownName();
 
-  inline  ::uint16_t getCodeOrder();
-  inline void setCodeOrder( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getCodeOrder();
+  inline void CAPNP_API setCodeOrder( ::uint16_t value);
 
-  inline bool hasAnnotations();
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder getAnnotations();
-  inline void setAnnotations( ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder initAnnotations(unsigned int size);
-  inline void adoptAnnotations(::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>> disownAnnotations();
+  inline bool CAPNP_API hasAnnotations();
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getAnnotations();
+  inline void CAPNP_API setAnnotations( ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initAnnotations(unsigned int size);
+  inline void CAPNP_API adoptAnnotations(::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>> CAPNP_API disownAnnotations();
 
-  inline  ::uint16_t getDiscriminantValue();
-  inline void setDiscriminantValue( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getDiscriminantValue();
+  inline void CAPNP_API setDiscriminantValue( ::uint16_t value);
 
-  inline bool isSlot();
-  inline typename Slot::Builder getSlot();
-  inline typename Slot::Builder initSlot();
+  inline bool CAPNP_API isSlot();
+  inline typename Slot::Builder CAPNP_API getSlot();
+  inline typename Slot::Builder CAPNP_API initSlot();
 
-  inline bool isGroup();
-  inline typename Group::Builder getGroup();
-  inline typename Group::Builder initGroup();
+  inline bool CAPNP_API isGroup();
+  inline typename Group::Builder CAPNP_API getGroup();
+  inline typename Group::Builder CAPNP_API initGroup();
 
-  inline typename Ordinal::Builder getOrdinal();
-  inline typename Ordinal::Builder initOrdinal();
+  inline typename Ordinal::Builder CAPNP_API getOrdinal();
+  inline typename Ordinal::Builder CAPNP_API initOrdinal();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1942,15 +1943,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class Field::Pipeline {
+class CAPNP_CLASS Field::Pipeline {
 public:
   typedef Field Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline typename Ordinal::Pipeline getOrdinal();
+  inline typename Ordinal::Pipeline CAPNP_API getOrdinal();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -1959,32 +1960,32 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Field::Slot::Reader {
+class CAPNP_CLASS Field::Slot::Reader {
 public:
   typedef Slot Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t getOffset() const;
+  inline  ::uint32_t CAPNP_API getOffset() const;
 
-  inline bool hasType() const;
-  inline  ::capnp::schema::Type::Reader getType() const;
+  inline bool CAPNP_API hasType() const;
+  inline  ::capnp::schema::Type::Reader CAPNP_API getType() const;
 
-  inline bool hasDefaultValue() const;
-  inline  ::capnp::schema::Value::Reader getDefaultValue() const;
+  inline bool CAPNP_API hasDefaultValue() const;
+  inline  ::capnp::schema::Value::Reader CAPNP_API getDefaultValue() const;
 
-  inline bool getHadExplicitDefault() const;
+  inline bool CAPNP_API getHadExplicitDefault() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1998,41 +1999,41 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Field::Slot::Builder {
+class CAPNP_CLASS Field::Slot::Builder {
 public:
   typedef Slot Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t getOffset();
-  inline void setOffset( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getOffset();
+  inline void CAPNP_API setOffset( ::uint32_t value);
 
-  inline bool hasType();
-  inline  ::capnp::schema::Type::Builder getType();
-  inline void setType( ::capnp::schema::Type::Reader value);
-  inline  ::capnp::schema::Type::Builder initType();
-  inline void adoptType(::capnp::Orphan< ::capnp::schema::Type>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Type> disownType();
+  inline bool CAPNP_API hasType();
+  inline  ::capnp::schema::Type::Builder CAPNP_API getType();
+  inline void CAPNP_API setType( ::capnp::schema::Type::Reader value);
+  inline  ::capnp::schema::Type::Builder CAPNP_API initType();
+  inline void CAPNP_API adoptType(::capnp::Orphan< ::capnp::schema::Type>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Type> CAPNP_API disownType();
 
-  inline bool hasDefaultValue();
-  inline  ::capnp::schema::Value::Builder getDefaultValue();
-  inline void setDefaultValue( ::capnp::schema::Value::Reader value);
-  inline  ::capnp::schema::Value::Builder initDefaultValue();
-  inline void adoptDefaultValue(::capnp::Orphan< ::capnp::schema::Value>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Value> disownDefaultValue();
+  inline bool CAPNP_API hasDefaultValue();
+  inline  ::capnp::schema::Value::Builder CAPNP_API getDefaultValue();
+  inline void CAPNP_API setDefaultValue( ::capnp::schema::Value::Reader value);
+  inline  ::capnp::schema::Value::Builder CAPNP_API initDefaultValue();
+  inline void CAPNP_API adoptDefaultValue(::capnp::Orphan< ::capnp::schema::Value>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Value> CAPNP_API disownDefaultValue();
 
-  inline bool getHadExplicitDefault();
-  inline void setHadExplicitDefault(bool value);
+  inline bool CAPNP_API getHadExplicitDefault();
+  inline void CAPNP_API setHadExplicitDefault(bool value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2044,16 +2045,16 @@ private:
 };
 
 #if !CAPNP_LITE
-class Field::Slot::Pipeline {
+class CAPNP_CLASS Field::Slot::Pipeline {
 public:
   typedef Slot Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Type::Pipeline getType();
-  inline  ::capnp::schema::Value::Pipeline getDefaultValue();
+  inline  ::capnp::schema::Type::Pipeline CAPNP_API getType();
+  inline  ::capnp::schema::Value::Pipeline CAPNP_API getDefaultValue();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -2062,24 +2063,24 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Field::Group::Reader {
+class CAPNP_CLASS Field::Group::Reader {
 public:
   typedef Group Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getTypeId() const;
+  inline  ::uint64_t CAPNP_API getTypeId() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2093,24 +2094,24 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Field::Group::Builder {
+class CAPNP_CLASS Field::Group::Builder {
 public:
   typedef Group Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getTypeId();
-  inline void setTypeId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getTypeId();
+  inline void CAPNP_API setTypeId( ::uint64_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2122,12 +2123,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Field::Group::Pipeline {
+class CAPNP_CLASS Field::Group::Pipeline {
 public:
   typedef Group Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -2138,29 +2139,29 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Field::Ordinal::Reader {
+class CAPNP_CLASS Field::Ordinal::Reader {
 public:
   typedef Ordinal Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline bool isImplicit() const;
-  inline  ::capnp::Void getImplicit() const;
+  inline Which CAPNP_API which() const;
+  inline bool CAPNP_API isImplicit() const;
+  inline  ::capnp::Void CAPNP_API getImplicit() const;
 
-  inline bool isExplicit() const;
-  inline  ::uint16_t getExplicit() const;
+  inline bool CAPNP_API isExplicit() const;
+  inline  ::uint16_t CAPNP_API getExplicit() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2174,30 +2175,30 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Field::Ordinal::Builder {
+class CAPNP_CLASS Field::Ordinal::Builder {
 public:
   typedef Ordinal Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline bool isImplicit();
-  inline  ::capnp::Void getImplicit();
-  inline void setImplicit( ::capnp::Void value = ::capnp::VOID);
+  inline Which CAPNP_API which();
+  inline bool CAPNP_API isImplicit();
+  inline  ::capnp::Void CAPNP_API getImplicit();
+  inline void CAPNP_API setImplicit( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isExplicit();
-  inline  ::uint16_t getExplicit();
-  inline void setExplicit( ::uint16_t value);
+  inline bool CAPNP_API isExplicit();
+  inline  ::uint16_t CAPNP_API getExplicit();
+  inline void CAPNP_API setExplicit( ::uint16_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2209,12 +2210,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Field::Ordinal::Pipeline {
+class CAPNP_CLASS Field::Ordinal::Pipeline {
 public:
   typedef Ordinal Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -2225,30 +2226,30 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Enumerant::Reader {
+class CAPNP_CLASS Enumerant::Reader {
 public:
   typedef Enumerant Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName() const;
-  inline  ::capnp::Text::Reader getName() const;
+  inline bool CAPNP_API hasName() const;
+  inline  ::capnp::Text::Reader CAPNP_API getName() const;
 
-  inline  ::uint16_t getCodeOrder() const;
+  inline  ::uint16_t CAPNP_API getCodeOrder() const;
 
-  inline bool hasAnnotations() const;
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader getAnnotations() const;
+  inline bool CAPNP_API hasAnnotations() const;
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getAnnotations() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2262,38 +2263,38 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Enumerant::Builder {
+class CAPNP_CLASS Enumerant::Builder {
 public:
   typedef Enumerant Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName();
-  inline  ::capnp::Text::Builder getName();
-  inline void setName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownName();
+  inline bool CAPNP_API hasName();
+  inline  ::capnp::Text::Builder CAPNP_API getName();
+  inline void CAPNP_API setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initName(unsigned int size);
+  inline void CAPNP_API adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownName();
 
-  inline  ::uint16_t getCodeOrder();
-  inline void setCodeOrder( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getCodeOrder();
+  inline void CAPNP_API setCodeOrder( ::uint16_t value);
 
-  inline bool hasAnnotations();
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder getAnnotations();
-  inline void setAnnotations( ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder initAnnotations(unsigned int size);
-  inline void adoptAnnotations(::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>> disownAnnotations();
+  inline bool CAPNP_API hasAnnotations();
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getAnnotations();
+  inline void CAPNP_API setAnnotations( ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initAnnotations(unsigned int size);
+  inline void CAPNP_API adoptAnnotations(::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>> CAPNP_API disownAnnotations();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2305,12 +2306,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Enumerant::Pipeline {
+class CAPNP_CLASS Enumerant::Pipeline {
 public:
   typedef Enumerant Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -2321,27 +2322,27 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Superclass::Reader {
+class CAPNP_CLASS Superclass::Reader {
 public:
   typedef Superclass Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId() const;
+  inline  ::uint64_t CAPNP_API getId() const;
 
-  inline bool hasBrand() const;
-  inline  ::capnp::schema::Brand::Reader getBrand() const;
+  inline bool CAPNP_API hasBrand() const;
+  inline  ::capnp::schema::Brand::Reader CAPNP_API getBrand() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2355,31 +2356,31 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Superclass::Builder {
+class CAPNP_CLASS Superclass::Builder {
 public:
   typedef Superclass Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId();
-  inline void setId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getId();
+  inline void CAPNP_API setId( ::uint64_t value);
 
-  inline bool hasBrand();
-  inline  ::capnp::schema::Brand::Builder getBrand();
-  inline void setBrand( ::capnp::schema::Brand::Reader value);
-  inline  ::capnp::schema::Brand::Builder initBrand();
-  inline void adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Brand> disownBrand();
+  inline bool CAPNP_API hasBrand();
+  inline  ::capnp::schema::Brand::Builder CAPNP_API getBrand();
+  inline void CAPNP_API setBrand( ::capnp::schema::Brand::Reader value);
+  inline  ::capnp::schema::Brand::Builder CAPNP_API initBrand();
+  inline void CAPNP_API adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Brand> CAPNP_API disownBrand();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2391,15 +2392,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class Superclass::Pipeline {
+class CAPNP_CLASS Superclass::Pipeline {
 public:
   typedef Superclass Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Brand::Pipeline getBrand();
+  inline  ::capnp::schema::Brand::Pipeline CAPNP_API getBrand();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -2408,43 +2409,43 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Method::Reader {
+class CAPNP_CLASS Method::Reader {
 public:
   typedef Method Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName() const;
-  inline  ::capnp::Text::Reader getName() const;
+  inline bool CAPNP_API hasName() const;
+  inline  ::capnp::Text::Reader CAPNP_API getName() const;
 
-  inline  ::uint16_t getCodeOrder() const;
+  inline  ::uint16_t CAPNP_API getCodeOrder() const;
 
-  inline  ::uint64_t getParamStructType() const;
+  inline  ::uint64_t CAPNP_API getParamStructType() const;
 
-  inline  ::uint64_t getResultStructType() const;
+  inline  ::uint64_t CAPNP_API getResultStructType() const;
 
-  inline bool hasAnnotations() const;
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader getAnnotations() const;
+  inline bool CAPNP_API hasAnnotations() const;
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getAnnotations() const;
 
-  inline bool hasParamBrand() const;
-  inline  ::capnp::schema::Brand::Reader getParamBrand() const;
+  inline bool CAPNP_API hasParamBrand() const;
+  inline  ::capnp::schema::Brand::Reader CAPNP_API getParamBrand() const;
 
-  inline bool hasResultBrand() const;
-  inline  ::capnp::schema::Brand::Reader getResultBrand() const;
+  inline bool CAPNP_API hasResultBrand() const;
+  inline  ::capnp::schema::Brand::Reader CAPNP_API getResultBrand() const;
 
-  inline bool hasImplicitParameters() const;
-  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Reader getImplicitParameters() const;
+  inline bool CAPNP_API hasImplicitParameters() const;
+  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getImplicitParameters() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2458,65 +2459,65 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Method::Builder {
+class CAPNP_CLASS Method::Builder {
 public:
   typedef Method Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasName();
-  inline  ::capnp::Text::Builder getName();
-  inline void setName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownName();
+  inline bool CAPNP_API hasName();
+  inline  ::capnp::Text::Builder CAPNP_API getName();
+  inline void CAPNP_API setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initName(unsigned int size);
+  inline void CAPNP_API adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownName();
 
-  inline  ::uint16_t getCodeOrder();
-  inline void setCodeOrder( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getCodeOrder();
+  inline void CAPNP_API setCodeOrder( ::uint16_t value);
 
-  inline  ::uint64_t getParamStructType();
-  inline void setParamStructType( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getParamStructType();
+  inline void CAPNP_API setParamStructType( ::uint64_t value);
 
   inline  ::uint64_t getResultStructType();
-  inline void setResultStructType( ::uint64_t value);
+  inline void CAPNP_API setResultStructType( ::uint64_t value);
 
-  inline bool hasAnnotations();
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder getAnnotations();
-  inline void setAnnotations( ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder initAnnotations(unsigned int size);
-  inline void adoptAnnotations(::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>> disownAnnotations();
+  inline bool CAPNP_API hasAnnotations();
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getAnnotations();
+  inline void CAPNP_API setAnnotations( ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initAnnotations(unsigned int size);
+  inline void CAPNP_API adoptAnnotations(::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Annotation,  ::capnp::Kind::STRUCT>> CAPNP_API disownAnnotations();
 
-  inline bool hasParamBrand();
-  inline  ::capnp::schema::Brand::Builder getParamBrand();
-  inline void setParamBrand( ::capnp::schema::Brand::Reader value);
-  inline  ::capnp::schema::Brand::Builder initParamBrand();
-  inline void adoptParamBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
+  inline bool CAPNP_API hasParamBrand();
+  inline  ::capnp::schema::Brand::Builder CAPNP_API getParamBrand();
+  inline void CAPNP_API setParamBrand( ::capnp::schema::Brand::Reader value);
+  inline  ::capnp::schema::Brand::Builder CAPNP_API initParamBrand();
+  inline void CAPNP_API adoptParamBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
   inline ::capnp::Orphan< ::capnp::schema::Brand> disownParamBrand();
 
-  inline bool hasResultBrand();
-  inline  ::capnp::schema::Brand::Builder getResultBrand();
-  inline void setResultBrand( ::capnp::schema::Brand::Reader value);
-  inline  ::capnp::schema::Brand::Builder initResultBrand();
-  inline void adoptResultBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Brand> disownResultBrand();
+  inline bool CAPNP_API hasResultBrand();
+  inline  ::capnp::schema::Brand::Builder CAPNP_API getResultBrand();
+  inline void CAPNP_API setResultBrand( ::capnp::schema::Brand::Reader value);
+  inline  ::capnp::schema::Brand::Builder CAPNP_API initResultBrand();
+  inline void CAPNP_API adoptResultBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Brand> CAPNP_API disownResultBrand();
 
-  inline bool hasImplicitParameters();
-  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Builder getImplicitParameters();
-  inline void setImplicitParameters( ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Builder initImplicitParameters(unsigned int size);
-  inline void adoptImplicitParameters(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>> disownImplicitParameters();
+  inline bool CAPNP_API hasImplicitParameters();
+  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getImplicitParameters();
+  inline void CAPNP_API setImplicitParameters( ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initImplicitParameters(unsigned int size);
+  inline void CAPNP_API adoptImplicitParameters(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::Parameter,  ::capnp::Kind::STRUCT>> CAPNP_API disownImplicitParameters();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2528,16 +2529,16 @@ private:
 };
 
 #if !CAPNP_LITE
-class Method::Pipeline {
+class CAPNP_CLASS Method::Pipeline {
 public:
   typedef Method Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Brand::Pipeline getParamBrand();
-  inline  ::capnp::schema::Brand::Pipeline getResultBrand();
+  inline  ::capnp::schema::Brand::Pipeline CAPNP_API getParamBrand();
+  inline  ::capnp::schema::Brand::Pipeline CAPNP_API getResultBrand();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -2546,80 +2547,80 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Type::Reader {
+class CAPNP_CLASS Type::Reader {
 public:
   typedef Type Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline bool isVoid() const;
-  inline  ::capnp::Void getVoid() const;
+  inline Which CAPNP_API which() const;
+  inline bool CAPNP_API isVoid() const;
+  inline  ::capnp::Void CAPNP_API getVoid() const;
 
-  inline bool isBool() const;
-  inline  ::capnp::Void getBool() const;
+  inline bool CAPNP_API isBool() const;
+  inline  ::capnp::Void CAPNP_API getBool() const;
 
-  inline bool isInt8() const;
-  inline  ::capnp::Void getInt8() const;
+  inline bool CAPNP_API isInt8() const;
+  inline  ::capnp::Void CAPNP_API getInt8() const;
 
-  inline bool isInt16() const;
-  inline  ::capnp::Void getInt16() const;
+  inline bool CAPNP_API isInt16() const;
+  inline  ::capnp::Void CAPNP_API getInt16() const;
 
-  inline bool isInt32() const;
-  inline  ::capnp::Void getInt32() const;
+  inline bool CAPNP_API isInt32() const;
+  inline  ::capnp::Void CAPNP_API getInt32() const;
 
-  inline bool isInt64() const;
-  inline  ::capnp::Void getInt64() const;
+  inline bool CAPNP_API isInt64() const;
+  inline  ::capnp::Void CAPNP_API getInt64() const;
 
-  inline bool isUint8() const;
-  inline  ::capnp::Void getUint8() const;
+  inline bool CAPNP_API isUint8() const;
+  inline  ::capnp::Void CAPNP_API getUint8() const;
 
-  inline bool isUint16() const;
-  inline  ::capnp::Void getUint16() const;
+  inline bool CAPNP_API isUint16() const;
+  inline  ::capnp::Void CAPNP_API getUint16() const;
 
-  inline bool isUint32() const;
-  inline  ::capnp::Void getUint32() const;
+  inline bool CAPNP_API isUint32() const;
+  inline  ::capnp::Void CAPNP_API getUint32() const;
 
-  inline bool isUint64() const;
-  inline  ::capnp::Void getUint64() const;
+  inline bool CAPNP_API isUint64() const;
+  inline  ::capnp::Void CAPNP_API getUint64() const;
 
-  inline bool isFloat32() const;
-  inline  ::capnp::Void getFloat32() const;
+  inline bool CAPNP_API isFloat32() const;
+  inline  ::capnp::Void CAPNP_API getFloat32() const;
 
-  inline bool isFloat64() const;
-  inline  ::capnp::Void getFloat64() const;
+  inline bool CAPNP_API isFloat64() const;
+  inline  ::capnp::Void CAPNP_API getFloat64() const;
 
-  inline bool isText() const;
-  inline  ::capnp::Void getText() const;
+  inline bool CAPNP_API isText() const;
+  inline  ::capnp::Void CAPNP_API getText() const;
 
-  inline bool isData() const;
-  inline  ::capnp::Void getData() const;
+  inline bool CAPNP_API isData() const;
+  inline  ::capnp::Void CAPNP_API getData() const;
 
-  inline bool isList() const;
-  inline typename List::Reader getList() const;
+  inline bool CAPNP_API isList() const;
+  inline typename List::Reader CAPNP_API getList() const;
 
-  inline bool isEnum() const;
-  inline typename Enum::Reader getEnum() const;
+  inline bool CAPNP_API isEnum() const;
+  inline typename Enum::Reader CAPNP_API getEnum() const;
 
-  inline bool isStruct() const;
-  inline typename Struct::Reader getStruct() const;
+  inline bool CAPNP_API isStruct() const;
+  inline typename Struct::Reader CAPNP_API getStruct() const;
 
-  inline bool isInterface() const;
-  inline typename Interface::Reader getInterface() const;
+  inline bool CAPNP_API isInterface() const;
+  inline typename Interface::Reader CAPNP_API getInterface() const;
 
-  inline bool isAnyPointer() const;
-  inline typename AnyPointer::Reader getAnyPointer() const;
+  inline bool CAPNP_API isAnyPointer() const;
+  inline typename AnyPointer::Reader CAPNP_API getAnyPointer() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2633,98 +2634,98 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Type::Builder {
+class CAPNP_CLASS Type::Builder {
 public:
   typedef Type Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline bool isVoid();
-  inline  ::capnp::Void getVoid();
-  inline void setVoid( ::capnp::Void value = ::capnp::VOID);
+  inline Which CAPNP_API which();
+  inline bool CAPNP_API isVoid();
+  inline  ::capnp::Void CAPNP_API getVoid();
+  inline void CAPNP_API setVoid( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isBool();
-  inline  ::capnp::Void getBool();
-  inline void setBool( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isBool();
+  inline  ::capnp::Void CAPNP_API getBool();
+  inline void CAPNP_API setBool( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isInt8();
-  inline  ::capnp::Void getInt8();
-  inline void setInt8( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isInt8();
+  inline  ::capnp::Void CAPNP_API getInt8();
+  inline void CAPNP_API setInt8( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isInt16();
-  inline  ::capnp::Void getInt16();
-  inline void setInt16( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isInt16();
+  inline  ::capnp::Void CAPNP_API getInt16();
+  inline void CAPNP_API setInt16( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isInt32();
-  inline  ::capnp::Void getInt32();
-  inline void setInt32( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isInt32();
+  inline  ::capnp::Void CAPNP_API getInt32();
+  inline void CAPNP_API setInt32( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isInt64();
-  inline  ::capnp::Void getInt64();
-  inline void setInt64( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isInt64();
+  inline  ::capnp::Void CAPNP_API getInt64();
+  inline void CAPNP_API setInt64( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isUint8();
-  inline  ::capnp::Void getUint8();
-  inline void setUint8( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isUint8();
+  inline  ::capnp::Void CAPNP_API getUint8();
+  inline void CAPNP_API setUint8( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isUint16();
-  inline  ::capnp::Void getUint16();
-  inline void setUint16( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isUint16();
+  inline  ::capnp::Void CAPNP_API getUint16();
+  inline void CAPNP_API setUint16( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isUint32();
-  inline  ::capnp::Void getUint32();
-  inline void setUint32( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isUint32();
+  inline  ::capnp::Void CAPNP_API getUint32();
+  inline void CAPNP_API setUint32( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isUint64();
-  inline  ::capnp::Void getUint64();
-  inline void setUint64( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isUint64();
+  inline  ::capnp::Void CAPNP_API getUint64();
+  inline void CAPNP_API setUint64( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isFloat32();
-  inline  ::capnp::Void getFloat32();
-  inline void setFloat32( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isFloat32();
+  inline  ::capnp::Void CAPNP_API getFloat32();
+  inline void CAPNP_API setFloat32( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isFloat64();
-  inline  ::capnp::Void getFloat64();
-  inline void setFloat64( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isFloat64();
+  inline  ::capnp::Void CAPNP_API getFloat64();
+  inline void CAPNP_API setFloat64( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isText();
-  inline  ::capnp::Void getText();
-  inline void setText( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isText();
+  inline  ::capnp::Void CAPNP_API getText();
+  inline void CAPNP_API setText( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isData();
-  inline  ::capnp::Void getData();
-  inline void setData( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isData();
+  inline  ::capnp::Void CAPNP_API getData();
+  inline void CAPNP_API setData( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isList();
-  inline typename List::Builder getList();
-  inline typename List::Builder initList();
+  inline bool CAPNP_API isList();
+  inline typename List::Builder CAPNP_API getList();
+  inline typename List::Builder CAPNP_API initList();
 
-  inline bool isEnum();
-  inline typename Enum::Builder getEnum();
-  inline typename Enum::Builder initEnum();
+  inline bool CAPNP_API isEnum();
+  inline typename Enum::Builder CAPNP_API getEnum();
+  inline typename Enum::Builder CAPNP_API initEnum();
 
-  inline bool isStruct();
-  inline typename Struct::Builder getStruct();
-  inline typename Struct::Builder initStruct();
+  inline bool CAPNP_API isStruct();
+  inline typename Struct::Builder CAPNP_API getStruct();
+  inline typename Struct::Builder CAPNP_API initStruct();
 
-  inline bool isInterface();
-  inline typename Interface::Builder getInterface();
-  inline typename Interface::Builder initInterface();
+  inline bool CAPNP_API isInterface();
+  inline typename Interface::Builder CAPNP_API getInterface();
+  inline typename Interface::Builder CAPNP_API initInterface();
 
-  inline bool isAnyPointer();
-  inline typename AnyPointer::Builder getAnyPointer();
-  inline typename AnyPointer::Builder initAnyPointer();
+  inline bool CAPNP_API isAnyPointer();
+  inline typename AnyPointer::Builder CAPNP_API getAnyPointer();
+  inline typename AnyPointer::Builder CAPNP_API initAnyPointer();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2736,12 +2737,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Type::Pipeline {
+class CAPNP_CLASS Type::Pipeline {
 public:
   typedef Type Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -2752,25 +2753,25 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Type::List::Reader {
+class CAPNP_CLASS Type::List::Reader {
 public:
   typedef List Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasElementType() const;
-  inline  ::capnp::schema::Type::Reader getElementType() const;
+  inline bool CAPNP_API hasElementType() const;
+  inline  ::capnp::schema::Type::Reader CAPNP_API getElementType() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2784,28 +2785,28 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Type::List::Builder {
+class CAPNP_CLASS Type::List::Builder {
 public:
   typedef List Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasElementType();
-  inline  ::capnp::schema::Type::Builder getElementType();
-  inline void setElementType( ::capnp::schema::Type::Reader value);
-  inline  ::capnp::schema::Type::Builder initElementType();
-  inline void adoptElementType(::capnp::Orphan< ::capnp::schema::Type>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Type> disownElementType();
+  inline bool CAPNP_API hasElementType();
+  inline  ::capnp::schema::Type::Builder CAPNP_API getElementType();
+  inline void CAPNP_API setElementType( ::capnp::schema::Type::Reader value);
+  inline  ::capnp::schema::Type::Builder CAPNP_API initElementType();
+  inline void CAPNP_API adoptElementType(::capnp::Orphan< ::capnp::schema::Type>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Type> CAPNP_API disownElementType();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2817,15 +2818,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class Type::List::Pipeline {
+class CAPNP_CLASS Type::List::Pipeline {
 public:
   typedef List Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Type::Pipeline getElementType();
+  inline  ::capnp::schema::Type::Pipeline CAPNP_API getElementType();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -2834,27 +2835,27 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Type::Enum::Reader {
+class CAPNP_CLASS Type::Enum::Reader {
 public:
   typedef Enum Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getTypeId() const;
+  inline  ::uint64_t CAPNP_API getTypeId() const;
 
-  inline bool hasBrand() const;
-  inline  ::capnp::schema::Brand::Reader getBrand() const;
+  inline bool CAPNP_API hasBrand() const;
+  inline  ::capnp::schema::Brand::Reader CAPNP_API getBrand() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2868,31 +2869,31 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Type::Enum::Builder {
+class CAPNP_CLASS Type::Enum::Builder {
 public:
   typedef Enum Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getTypeId();
-  inline void setTypeId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getTypeId();
+  inline void CAPNP_API setTypeId( ::uint64_t value);
 
-  inline bool hasBrand();
-  inline  ::capnp::schema::Brand::Builder getBrand();
-  inline void setBrand( ::capnp::schema::Brand::Reader value);
-  inline  ::capnp::schema::Brand::Builder initBrand();
-  inline void adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Brand> disownBrand();
+  inline bool CAPNP_API hasBrand();
+  inline  ::capnp::schema::Brand::Builder CAPNP_API getBrand();
+  inline void CAPNP_API setBrand( ::capnp::schema::Brand::Reader value);
+  inline  ::capnp::schema::Brand::Builder CAPNP_API initBrand();
+  inline void CAPNP_API adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Brand> CAPNP_API disownBrand();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2904,15 +2905,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class Type::Enum::Pipeline {
+class CAPNP_CLASS Type::Enum::Pipeline {
 public:
   typedef Enum Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Brand::Pipeline getBrand();
+  inline  ::capnp::schema::Brand::Pipeline CAPNP_API getBrand();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -2921,27 +2922,27 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Type::Struct::Reader {
+class CAPNP_CLASS Type::Struct::Reader {
 public:
   typedef Struct Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getTypeId() const;
+  inline  ::uint64_t CAPNP_API getTypeId() const;
 
-  inline bool hasBrand() const;
-  inline  ::capnp::schema::Brand::Reader getBrand() const;
+  inline bool CAPNP_API hasBrand() const;
+  inline  ::capnp::schema::Brand::Reader CAPNP_API getBrand() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2955,31 +2956,31 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Type::Struct::Builder {
+class CAPNP_CLASS Type::Struct::Builder {
 public:
   typedef Struct Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getTypeId();
-  inline void setTypeId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getTypeId();
+  inline void CAPNP_API setTypeId( ::uint64_t value);
 
-  inline bool hasBrand();
-  inline  ::capnp::schema::Brand::Builder getBrand();
-  inline void setBrand( ::capnp::schema::Brand::Reader value);
-  inline  ::capnp::schema::Brand::Builder initBrand();
-  inline void adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Brand> disownBrand();
+  inline bool CAPNP_API hasBrand();
+  inline  ::capnp::schema::Brand::Builder CAPNP_API getBrand();
+  inline void CAPNP_API setBrand( ::capnp::schema::Brand::Reader value);
+  inline  ::capnp::schema::Brand::Builder CAPNP_API initBrand();
+  inline void CAPNP_API adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Brand> CAPNP_API disownBrand();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2991,15 +2992,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class Type::Struct::Pipeline {
+class CAPNP_CLASS Type::Struct::Pipeline {
 public:
   typedef Struct Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Brand::Pipeline getBrand();
+  inline  ::capnp::schema::Brand::Pipeline CAPNP_API getBrand();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -3008,27 +3009,27 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Type::Interface::Reader {
+class CAPNP_CLASS Type::Interface::Reader {
 public:
   typedef Interface Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getTypeId() const;
+  inline  ::uint64_t CAPNP_API getTypeId() const;
 
-  inline bool hasBrand() const;
-  inline  ::capnp::schema::Brand::Reader getBrand() const;
+  inline bool CAPNP_API hasBrand() const;
+  inline  ::capnp::schema::Brand::Reader CAPNP_API getBrand() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3042,31 +3043,31 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Type::Interface::Builder {
+class CAPNP_CLASS Type::Interface::Builder {
 public:
   typedef Interface Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getTypeId();
-  inline void setTypeId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getTypeId();
+  inline void CAPNP_API setTypeId( ::uint64_t value);
 
-  inline bool hasBrand();
-  inline  ::capnp::schema::Brand::Builder getBrand();
-  inline void setBrand( ::capnp::schema::Brand::Reader value);
-  inline  ::capnp::schema::Brand::Builder initBrand();
-  inline void adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Brand> disownBrand();
+  inline bool CAPNP_API hasBrand();
+  inline  ::capnp::schema::Brand::Builder CAPNP_API getBrand();
+  inline void CAPNP_API setBrand( ::capnp::schema::Brand::Reader value);
+  inline  ::capnp::schema::Brand::Builder CAPNP_API initBrand();
+  inline void CAPNP_API adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Brand> CAPNP_API disownBrand();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -3078,15 +3079,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class Type::Interface::Pipeline {
+class CAPNP_CLASS Type::Interface::Pipeline {
 public:
   typedef Interface Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Brand::Pipeline getBrand();
+  inline  ::capnp::schema::Brand::Pipeline CAPNP_API getBrand();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -3095,32 +3096,32 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Type::AnyPointer::Reader {
+class CAPNP_CLASS Type::AnyPointer::Reader {
 public:
   typedef AnyPointer Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline bool isUnconstrained() const;
-  inline typename Unconstrained::Reader getUnconstrained() const;
+  inline Which CAPNP_API which() const;
+  inline bool CAPNP_API isUnconstrained() const;
+  inline typename Unconstrained::Reader CAPNP_API getUnconstrained() const;
 
-  inline bool isParameter() const;
-  inline typename Parameter::Reader getParameter() const;
+  inline bool CAPNP_API isParameter() const;
+  inline typename Parameter::Reader CAPNP_API getParameter() const;
 
-  inline bool isImplicitMethodParameter() const;
-  inline typename ImplicitMethodParameter::Reader getImplicitMethodParameter() const;
+  inline bool CAPNP_API isImplicitMethodParameter() const;
+  inline typename ImplicitMethodParameter::Reader CAPNP_API getImplicitMethodParameter() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3134,34 +3135,34 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Type::AnyPointer::Builder {
+class CAPNP_CLASS Type::AnyPointer::Builder {
 public:
   typedef AnyPointer Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline bool isUnconstrained();
-  inline typename Unconstrained::Builder getUnconstrained();
-  inline typename Unconstrained::Builder initUnconstrained();
+  inline Which CAPNP_API which();
+  inline bool CAPNP_API isUnconstrained();
+  inline typename Unconstrained::Builder CAPNP_API getUnconstrained();
+  inline typename Unconstrained::Builder CAPNP_API initUnconstrained();
 
-  inline bool isParameter();
-  inline typename Parameter::Builder getParameter();
-  inline typename Parameter::Builder initParameter();
+  inline bool CAPNP_API isParameter();
+  inline typename Parameter::Builder CAPNP_API getParameter();
+  inline typename Parameter::Builder CAPNP_API initParameter();
 
-  inline bool isImplicitMethodParameter();
-  inline typename ImplicitMethodParameter::Builder getImplicitMethodParameter();
-  inline typename ImplicitMethodParameter::Builder initImplicitMethodParameter();
+  inline bool CAPNP_API isImplicitMethodParameter();
+  inline typename ImplicitMethodParameter::Builder CAPNP_API getImplicitMethodParameter();
+  inline typename ImplicitMethodParameter::Builder CAPNP_API initImplicitMethodParameter();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -3173,12 +3174,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Type::AnyPointer::Pipeline {
+class CAPNP_CLASS Type::AnyPointer::Pipeline {
 public:
   typedef AnyPointer Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -3189,35 +3190,35 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Type::AnyPointer::Unconstrained::Reader {
+class CAPNP_CLASS Type::AnyPointer::Unconstrained::Reader {
 public:
   typedef Unconstrained Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline bool isAnyKind() const;
-  inline  ::capnp::Void getAnyKind() const;
+  inline Which CAPNP_API which() const;
+  inline bool CAPNP_API isAnyKind() const;
+  inline  ::capnp::Void CAPNP_API getAnyKind() const;
 
-  inline bool isStruct() const;
-  inline  ::capnp::Void getStruct() const;
+  inline bool CAPNP_API isStruct() const;
+  inline  ::capnp::Void CAPNP_API getStruct() const;
 
-  inline bool isList() const;
-  inline  ::capnp::Void getList() const;
+  inline bool CAPNP_API isList() const;
+  inline  ::capnp::Void CAPNP_API getList() const;
 
-  inline bool isCapability() const;
-  inline  ::capnp::Void getCapability() const;
+  inline bool CAPNP_API isCapability() const;
+  inline  ::capnp::Void CAPNP_API getCapability() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3231,38 +3232,38 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Type::AnyPointer::Unconstrained::Builder {
+class CAPNP_CLASS Type::AnyPointer::Unconstrained::Builder {
 public:
   typedef Unconstrained Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline bool isAnyKind();
-  inline  ::capnp::Void getAnyKind();
-  inline void setAnyKind( ::capnp::Void value = ::capnp::VOID);
+  inline Which CAPNP_API which();
+  inline bool CAPNP_API isAnyKind();
+  inline  ::capnp::Void CAPNP_API getAnyKind();
+  inline void CAPNP_API setAnyKind( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isStruct();
-  inline  ::capnp::Void getStruct();
-  inline void setStruct( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isStruct();
+  inline  ::capnp::Void CAPNP_API getStruct();
+  inline void CAPNP_API setStruct( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isList();
-  inline  ::capnp::Void getList();
-  inline void setList( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isList();
+  inline  ::capnp::Void CAPNP_API getList();
+  inline void CAPNP_API setList( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isCapability();
-  inline  ::capnp::Void getCapability();
-  inline void setCapability( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isCapability();
+  inline  ::capnp::Void CAPNP_API getCapability();
+  inline void CAPNP_API setCapability( ::capnp::Void value = ::capnp::VOID);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -3274,12 +3275,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Type::AnyPointer::Unconstrained::Pipeline {
+class CAPNP_CLASS Type::AnyPointer::Unconstrained::Pipeline {
 public:
   typedef Unconstrained Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -3290,26 +3291,26 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Type::AnyPointer::Parameter::Reader {
+class CAPNP_CLASS Type::AnyPointer::Parameter::Reader {
 public:
   typedef Parameter Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getScopeId() const;
+  inline  ::uint64_t CAPNP_API getScopeId() const;
 
-  inline  ::uint16_t getParameterIndex() const;
+  inline  ::uint16_t CAPNP_API getParameterIndex() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3323,27 +3324,27 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Type::AnyPointer::Parameter::Builder {
+class CAPNP_CLASS Type::AnyPointer::Parameter::Builder {
 public:
   typedef Parameter Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getScopeId();
-  inline void setScopeId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getScopeId();
+  inline void CAPNP_API setScopeId( ::uint64_t value);
 
-  inline  ::uint16_t getParameterIndex();
-  inline void setParameterIndex( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getParameterIndex();
+  inline void CAPNP_API setParameterIndex( ::uint16_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -3355,12 +3356,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Type::AnyPointer::Parameter::Pipeline {
+class CAPNP_CLASS Type::AnyPointer::Parameter::Pipeline {
 public:
   typedef Parameter Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -3371,24 +3372,24 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Type::AnyPointer::ImplicitMethodParameter::Reader {
+class CAPNP_CLASS Type::AnyPointer::ImplicitMethodParameter::Reader {
 public:
   typedef ImplicitMethodParameter Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint16_t getParameterIndex() const;
+  inline  ::uint16_t CAPNP_API getParameterIndex() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3402,24 +3403,24 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Type::AnyPointer::ImplicitMethodParameter::Builder {
+class CAPNP_CLASS Type::AnyPointer::ImplicitMethodParameter::Builder {
 public:
   typedef ImplicitMethodParameter Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint16_t getParameterIndex();
-  inline void setParameterIndex( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getParameterIndex();
+  inline void CAPNP_API setParameterIndex( ::uint16_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -3431,12 +3432,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Type::AnyPointer::ImplicitMethodParameter::Pipeline {
+class CAPNP_CLASS Type::AnyPointer::ImplicitMethodParameter::Pipeline {
 public:
   typedef ImplicitMethodParameter Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -3447,25 +3448,25 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Brand::Reader {
+class CAPNP_CLASS Brand::Reader {
 public:
   typedef Brand Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasScopes() const;
-  inline  ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>::Reader getScopes() const;
+  inline bool CAPNP_API hasScopes() const;
+  inline  ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getScopes() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3479,28 +3480,28 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Brand::Builder {
+class CAPNP_CLASS Brand::Builder {
 public:
   typedef Brand Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasScopes();
-  inline  ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>::Builder getScopes();
-  inline void setScopes( ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>::Builder initScopes(unsigned int size);
-  inline void adoptScopes(::capnp::Orphan< ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>> disownScopes();
+  inline bool CAPNP_API hasScopes();
+  inline  ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getScopes();
+  inline void CAPNP_API setScopes( ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initScopes(unsigned int size);
+  inline void CAPNP_API adoptScopes(::capnp::Orphan< ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Brand::Scope,  ::capnp::Kind::STRUCT>> CAPNP_API disownScopes();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -3512,12 +3513,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Brand::Pipeline {
+class CAPNP_CLASS Brand::Pipeline {
 public:
   typedef Brand Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -3528,32 +3529,32 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Brand::Scope::Reader {
+class CAPNP_CLASS Brand::Scope::Reader {
 public:
   typedef Scope Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline  ::uint64_t getScopeId() const;
+  inline Which CAPNP_API which() const;
+  inline  ::uint64_t CAPNP_API getScopeId() const;
 
-  inline bool isBind() const;
-  inline bool hasBind() const;
-  inline  ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>::Reader getBind() const;
+  inline bool CAPNP_API isBind() const;
+  inline bool CAPNP_API hasBind() const;
+  inline  ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getBind() const;
 
-  inline bool isInherit() const;
-  inline  ::capnp::Void getInherit() const;
+  inline bool CAPNP_API isInherit() const;
+  inline  ::capnp::Void CAPNP_API getInherit() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3567,37 +3568,37 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Brand::Scope::Builder {
+class CAPNP_CLASS Brand::Scope::Builder {
 public:
   typedef Scope Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline  ::uint64_t getScopeId();
-  inline void setScopeId( ::uint64_t value);
+  inline Which CAPNP_API which();
+  inline  ::uint64_t CAPNP_API getScopeId();
+  inline void CAPNP_API setScopeId( ::uint64_t value);
 
-  inline bool isBind();
-  inline bool hasBind();
-  inline  ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>::Builder getBind();
-  inline void setBind( ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>::Builder initBind(unsigned int size);
-  inline void adoptBind(::capnp::Orphan< ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>> disownBind();
+  inline bool CAPNP_API isBind();
+  inline bool CAPNP_API hasBind();
+  inline  ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getBind();
+  inline void CAPNP_API setBind( ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initBind(unsigned int size);
+  inline void CAPNP_API adoptBind(::capnp::Orphan< ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Brand::Binding,  ::capnp::Kind::STRUCT>> CAPNP_API disownBind();
 
-  inline bool isInherit();
-  inline  ::capnp::Void getInherit();
-  inline void setInherit( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isInherit();
+  inline  ::capnp::Void CAPNP_API getInherit();
+  inline void CAPNP_API setInherit( ::capnp::Void value = ::capnp::VOID);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -3609,12 +3610,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Brand::Scope::Pipeline {
+class CAPNP_CLASS Brand::Scope::Pipeline {
 public:
   typedef Scope Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -3625,30 +3626,30 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Brand::Binding::Reader {
+class CAPNP_CLASS Brand::Binding::Reader {
 public:
   typedef Binding Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline bool isUnbound() const;
-  inline  ::capnp::Void getUnbound() const;
+  inline Which CAPNP_API which() const;
+  inline bool CAPNP_API isUnbound() const;
+  inline  ::capnp::Void CAPNP_API getUnbound() const;
 
-  inline bool isType() const;
-  inline bool hasType() const;
-  inline  ::capnp::schema::Type::Reader getType() const;
+  inline bool CAPNP_API isType() const;
+  inline bool CAPNP_API hasType() const;
+  inline  ::capnp::schema::Type::Reader CAPNP_API getType() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3662,34 +3663,34 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Brand::Binding::Builder {
+class CAPNP_CLASS Brand::Binding::Builder {
 public:
   typedef Binding Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline bool isUnbound();
-  inline  ::capnp::Void getUnbound();
-  inline void setUnbound( ::capnp::Void value = ::capnp::VOID);
+  inline Which CAPNP_API which();
+  inline bool CAPNP_API isUnbound();
+  inline  ::capnp::Void CAPNP_API getUnbound();
+  inline void CAPNP_API setUnbound( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isType();
-  inline bool hasType();
-  inline  ::capnp::schema::Type::Builder getType();
-  inline void setType( ::capnp::schema::Type::Reader value);
-  inline  ::capnp::schema::Type::Builder initType();
-  inline void adoptType(::capnp::Orphan< ::capnp::schema::Type>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Type> disownType();
+  inline bool CAPNP_API isType();
+  inline bool CAPNP_API hasType();
+  inline  ::capnp::schema::Type::Builder CAPNP_API getType();
+  inline void CAPNP_API setType( ::capnp::schema::Type::Reader value);
+  inline  ::capnp::schema::Type::Builder CAPNP_API initType();
+  inline void CAPNP_API adoptType(::capnp::Orphan< ::capnp::schema::Type>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Type> CAPNP_API disownType();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -3701,12 +3702,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Brand::Binding::Pipeline {
+class CAPNP_CLASS Brand::Binding::Pipeline {
 public:
   typedef Binding Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -3717,85 +3718,85 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Value::Reader {
+class CAPNP_CLASS Value::Reader {
 public:
   typedef Value Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline bool isVoid() const;
-  inline  ::capnp::Void getVoid() const;
+  inline Which CAPNP_API which() const;
+  inline bool CAPNP_API isVoid() const;
+  inline  ::capnp::Void CAPNP_API getVoid() const;
 
-  inline bool isBool() const;
-  inline bool getBool() const;
+  inline bool CAPNP_API isBool() const;
+  inline bool CAPNP_API getBool() const;
 
-  inline bool isInt8() const;
-  inline  ::int8_t getInt8() const;
+  inline bool CAPNP_API isInt8() const;
+  inline  ::int8_t CAPNP_API getInt8() const;
 
-  inline bool isInt16() const;
-  inline  ::int16_t getInt16() const;
+  inline bool CAPNP_API isInt16() const;
+  inline  ::int16_t CAPNP_API getInt16() const;
 
-  inline bool isInt32() const;
-  inline  ::int32_t getInt32() const;
+  inline bool CAPNP_API isInt32() const;
+  inline  ::int32_t CAPNP_API getInt32() const;
 
-  inline bool isInt64() const;
-  inline  ::int64_t getInt64() const;
+  inline bool CAPNP_API isInt64() const;
+  inline  ::int64_t CAPNP_API getInt64() const;
 
-  inline bool isUint8() const;
-  inline  ::uint8_t getUint8() const;
+  inline bool CAPNP_API isUint8() const;
+  inline  ::uint8_t CAPNP_API getUint8() const;
 
-  inline bool isUint16() const;
-  inline  ::uint16_t getUint16() const;
+  inline bool CAPNP_API isUint16() const;
+  inline  ::uint16_t CAPNP_API getUint16() const;
 
-  inline bool isUint32() const;
-  inline  ::uint32_t getUint32() const;
+  inline bool CAPNP_API isUint32() const;
+  inline  ::uint32_t CAPNP_API getUint32() const;
 
-  inline bool isUint64() const;
-  inline  ::uint64_t getUint64() const;
+  inline bool CAPNP_API isUint64() const;
+  inline  ::uint64_t CAPNP_API getUint64() const;
 
-  inline bool isFloat32() const;
-  inline float getFloat32() const;
+  inline bool CAPNP_API isFloat32() const;
+  inline float CAPNP_API getFloat32() const;
 
-  inline bool isFloat64() const;
-  inline double getFloat64() const;
+  inline bool CAPNP_API isFloat64() const;
+  inline double CAPNP_API getFloat64() const;
 
-  inline bool isText() const;
-  inline bool hasText() const;
-  inline  ::capnp::Text::Reader getText() const;
+  inline bool CAPNP_API isText() const;
+  inline bool CAPNP_API hasText() const;
+  inline  ::capnp::Text::Reader CAPNP_API getText() const;
 
-  inline bool isData() const;
-  inline bool hasData() const;
-  inline  ::capnp::Data::Reader getData() const;
+  inline bool CAPNP_API isData() const;
+  inline bool CAPNP_API hasData() const;
+  inline  ::capnp::Data::Reader CAPNP_API getData() const;
 
-  inline bool isList() const;
-  inline bool hasList() const;
-  inline ::capnp::AnyPointer::Reader getList() const;
+  inline bool CAPNP_API isList() const;
+  inline bool CAPNP_API hasList() const;
+  inline ::capnp::AnyPointer::Reader CAPNP_API getList() const;
 
-  inline bool isEnum() const;
-  inline  ::uint16_t getEnum() const;
+  inline bool CAPNP_API isEnum() const;
+  inline  ::uint16_t CAPNP_API getEnum() const;
 
-  inline bool isStruct() const;
-  inline bool hasStruct() const;
-  inline ::capnp::AnyPointer::Reader getStruct() const;
+  inline bool CAPNP_API isStruct() const;
+  inline bool CAPNP_API hasStruct() const;
+  inline ::capnp::AnyPointer::Reader CAPNP_API getStruct() const;
 
-  inline bool isInterface() const;
-  inline  ::capnp::Void getInterface() const;
+  inline bool CAPNP_API isInterface() const;
+  inline  ::capnp::Void CAPNP_API getInterface() const;
 
-  inline bool isAnyPointer() const;
-  inline bool hasAnyPointer() const;
-  inline ::capnp::AnyPointer::Reader getAnyPointer() const;
+  inline bool CAPNP_API isAnyPointer() const;
+  inline bool CAPNP_API hasAnyPointer() const;
+  inline ::capnp::AnyPointer::Reader CAPNP_API getAnyPointer() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3809,109 +3810,109 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Value::Builder {
+class CAPNP_CLASS Value::Builder {
 public:
   typedef Value Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline bool isVoid();
-  inline  ::capnp::Void getVoid();
-  inline void setVoid( ::capnp::Void value = ::capnp::VOID);
+  inline Which CAPNP_API which();
+  inline bool CAPNP_API isVoid();
+  inline  ::capnp::Void CAPNP_API getVoid();
+  inline void CAPNP_API setVoid( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isBool();
-  inline bool getBool();
-  inline void setBool(bool value);
+  inline bool CAPNP_API isBool();
+  inline bool CAPNP_API getBool();
+  inline void CAPNP_API setBool(bool value);
 
-  inline bool isInt8();
-  inline  ::int8_t getInt8();
-  inline void setInt8( ::int8_t value);
+  inline bool CAPNP_API isInt8();
+  inline  ::int8_t CAPNP_API getInt8();
+  inline void CAPNP_API setInt8( ::int8_t value);
 
-  inline bool isInt16();
-  inline  ::int16_t getInt16();
-  inline void setInt16( ::int16_t value);
+  inline bool CAPNP_API isInt16();
+  inline  ::int16_t CAPNP_API getInt16();
+  inline void CAPNP_API setInt16( ::int16_t value);
 
-  inline bool isInt32();
-  inline  ::int32_t getInt32();
-  inline void setInt32( ::int32_t value);
+  inline bool CAPNP_API isInt32();
+  inline  ::int32_t CAPNP_API getInt32();
+  inline void CAPNP_API setInt32( ::int32_t value);
 
-  inline bool isInt64();
-  inline  ::int64_t getInt64();
-  inline void setInt64( ::int64_t value);
+  inline bool CAPNP_API isInt64();
+  inline  ::int64_t CAPNP_API getInt64();
+  inline void CAPNP_API setInt64( ::int64_t value);
 
-  inline bool isUint8();
-  inline  ::uint8_t getUint8();
-  inline void setUint8( ::uint8_t value);
+  inline bool CAPNP_API isUint8();
+  inline  ::uint8_t CAPNP_API getUint8();
+  inline void CAPNP_API setUint8( ::uint8_t value);
 
-  inline bool isUint16();
-  inline  ::uint16_t getUint16();
-  inline void setUint16( ::uint16_t value);
+  inline bool CAPNP_API isUint16();
+  inline  ::uint16_t CAPNP_API getUint16();
+  inline void CAPNP_API setUint16( ::uint16_t value);
 
-  inline bool isUint32();
-  inline  ::uint32_t getUint32();
-  inline void setUint32( ::uint32_t value);
+  inline bool CAPNP_API isUint32();
+  inline  ::uint32_t CAPNP_API getUint32();
+  inline void CAPNP_API setUint32( ::uint32_t value);
 
-  inline bool isUint64();
-  inline  ::uint64_t getUint64();
-  inline void setUint64( ::uint64_t value);
+  inline bool CAPNP_API isUint64();
+  inline  ::uint64_t CAPNP_API getUint64();
+  inline void CAPNP_API setUint64( ::uint64_t value);
 
-  inline bool isFloat32();
-  inline float getFloat32();
-  inline void setFloat32(float value);
+  inline bool CAPNP_API isFloat32();
+  inline float CAPNP_API getFloat32();
+  inline void CAPNP_API setFloat32(float value);
 
-  inline bool isFloat64();
-  inline double getFloat64();
-  inline void setFloat64(double value);
+  inline bool CAPNP_API isFloat64();
+  inline double CAPNP_API getFloat64();
+  inline void CAPNP_API setFloat64(double value);
 
-  inline bool isText();
-  inline bool hasText();
-  inline  ::capnp::Text::Builder getText();
-  inline void setText( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initText(unsigned int size);
-  inline void adoptText(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownText();
+  inline bool CAPNP_API isText();
+  inline bool CAPNP_API hasText();
+  inline  ::capnp::Text::Builder CAPNP_API getText();
+  inline void CAPNP_API setText( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initText(unsigned int size);
+  inline void CAPNP_API adoptText(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownText();
 
-  inline bool isData();
-  inline bool hasData();
-  inline  ::capnp::Data::Builder getData();
-  inline void setData( ::capnp::Data::Reader value);
-  inline  ::capnp::Data::Builder initData(unsigned int size);
-  inline void adoptData(::capnp::Orphan< ::capnp::Data>&& value);
-  inline ::capnp::Orphan< ::capnp::Data> disownData();
+  inline bool CAPNP_API isData();
+  inline bool CAPNP_API hasData();
+  inline  ::capnp::Data::Builder CAPNP_API getData();
+  inline void CAPNP_API setData( ::capnp::Data::Reader value);
+  inline  ::capnp::Data::Builder CAPNP_API initData(unsigned int size);
+  inline void CAPNP_API adoptData(::capnp::Orphan< ::capnp::Data>&& value);
+  inline ::capnp::Orphan< ::capnp::Data> CAPNP_API disownData();
 
-  inline bool isList();
-  inline bool hasList();
-  inline ::capnp::AnyPointer::Builder getList();
-  inline ::capnp::AnyPointer::Builder initList();
+  inline bool CAPNP_API isList();
+  inline bool CAPNP_API hasList();
+  inline ::capnp::AnyPointer::Builder CAPNP_API getList();
+  inline ::capnp::AnyPointer::Builder CAPNP_API initList();
 
-  inline bool isEnum();
-  inline  ::uint16_t getEnum();
-  inline void setEnum( ::uint16_t value);
+  inline bool CAPNP_API isEnum();
+  inline  ::uint16_t CAPNP_API getEnum();
+  inline void CAPNP_API setEnum( ::uint16_t value);
 
-  inline bool isStruct();
-  inline bool hasStruct();
-  inline ::capnp::AnyPointer::Builder getStruct();
-  inline ::capnp::AnyPointer::Builder initStruct();
+  inline bool CAPNP_API isStruct();
+  inline bool CAPNP_API hasStruct();
+  inline ::capnp::AnyPointer::Builder CAPNP_API getStruct();
+  inline ::capnp::AnyPointer::Builder CAPNP_API initStruct();
 
-  inline bool isInterface();
-  inline  ::capnp::Void getInterface();
-  inline void setInterface( ::capnp::Void value = ::capnp::VOID);
+  inline bool CAPNP_API isInterface();
+  inline  ::capnp::Void CAPNP_API getInterface();
+  inline void CAPNP_API setInterface( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool isAnyPointer();
-  inline bool hasAnyPointer();
-  inline ::capnp::AnyPointer::Builder getAnyPointer();
-  inline ::capnp::AnyPointer::Builder initAnyPointer();
+  inline bool CAPNP_API isAnyPointer();
+  inline bool CAPNP_API hasAnyPointer();
+  inline ::capnp::AnyPointer::Builder CAPNP_API getAnyPointer();
+  inline ::capnp::AnyPointer::Builder CAPNP_API initAnyPointer();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -3923,12 +3924,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class Value::Pipeline {
+class CAPNP_CLASS Value::Pipeline {
 public:
   typedef Value Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -3939,30 +3940,30 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class Annotation::Reader {
+class CAPNP_CLASS Annotation::Reader {
 public:
   typedef Annotation Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId() const;
+  inline  ::uint64_t CAPNP_API getId() const;
 
-  inline bool hasValue() const;
-  inline  ::capnp::schema::Value::Reader getValue() const;
+  inline bool CAPNP_API hasValue() const;
+  inline  ::capnp::schema::Value::Reader CAPNP_API getValue() const;
 
-  inline bool hasBrand() const;
-  inline  ::capnp::schema::Brand::Reader getBrand() const;
+  inline bool CAPNP_API hasBrand() const;
+  inline  ::capnp::schema::Brand::Reader CAPNP_API getBrand() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -3976,38 +3977,38 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class Annotation::Builder {
+class CAPNP_CLASS Annotation::Builder {
 public:
   typedef Annotation Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId();
-  inline void setId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getId();
+  inline void CAPNP_API setId( ::uint64_t value);
 
-  inline bool hasValue();
-  inline  ::capnp::schema::Value::Builder getValue();
-  inline void setValue( ::capnp::schema::Value::Reader value);
-  inline  ::capnp::schema::Value::Builder initValue();
-  inline void adoptValue(::capnp::Orphan< ::capnp::schema::Value>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Value> disownValue();
+  inline bool CAPNP_API hasValue();
+  inline  ::capnp::schema::Value::Builder CAPNP_API getValue();
+  inline void CAPNP_API setValue( ::capnp::schema::Value::Reader value);
+  inline  ::capnp::schema::Value::Builder CAPNP_API initValue();
+  inline void CAPNP_API adoptValue(::capnp::Orphan< ::capnp::schema::Value>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Value> CAPNP_API disownValue();
 
-  inline bool hasBrand();
-  inline  ::capnp::schema::Brand::Builder getBrand();
-  inline void setBrand( ::capnp::schema::Brand::Reader value);
-  inline  ::capnp::schema::Brand::Builder initBrand();
-  inline void adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::Brand> disownBrand();
+  inline bool CAPNP_API hasBrand();
+  inline  ::capnp::schema::Brand::Builder CAPNP_API getBrand();
+  inline void CAPNP_API setBrand( ::capnp::schema::Brand::Reader value);
+  inline  ::capnp::schema::Brand::Builder CAPNP_API initBrand();
+  inline void CAPNP_API adoptBrand(::capnp::Orphan< ::capnp::schema::Brand>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::Brand> CAPNP_API disownBrand();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -4019,16 +4020,16 @@ private:
 };
 
 #if !CAPNP_LITE
-class Annotation::Pipeline {
+class CAPNP_CLASS Annotation::Pipeline {
 public:
   typedef Annotation Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::Value::Pipeline getValue();
-  inline  ::capnp::schema::Brand::Pipeline getBrand();
+  inline  ::capnp::schema::Value::Pipeline CAPNP_API getValue();
+  inline  ::capnp::schema::Brand::Pipeline CAPNP_API getBrand();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -4037,28 +4038,28 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class CapnpVersion::Reader {
+class CAPNP_CLASS CapnpVersion::Reader {
 public:
   typedef CapnpVersion Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint16_t getMajor() const;
+  inline  ::uint16_t CAPNP_API getMajor() const;
 
-  inline  ::uint8_t getMinor() const;
+  inline  ::uint8_t CAPNP_API getMinor() const;
 
-  inline  ::uint8_t getMicro() const;
+  inline  ::uint8_t CAPNP_API getMicro() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -4072,30 +4073,30 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class CapnpVersion::Builder {
+class CAPNP_CLASS CapnpVersion::Builder {
 public:
   typedef CapnpVersion Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint16_t getMajor();
-  inline void setMajor( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getMajor();
+  inline void CAPNP_API setMajor( ::uint16_t value);
 
-  inline  ::uint8_t getMinor();
-  inline void setMinor( ::uint8_t value);
+  inline  ::uint8_t CAPNP_API getMinor();
+  inline void CAPNP_API setMinor( ::uint8_t value);
 
-  inline  ::uint8_t getMicro();
-  inline void setMicro( ::uint8_t value);
+  inline  ::uint8_t CAPNP_API getMicro();
+  inline void CAPNP_API setMicro( ::uint8_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -4107,12 +4108,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class CapnpVersion::Pipeline {
+class CAPNP_CLASS CapnpVersion::Pipeline {
 public:
   typedef CapnpVersion Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -4123,34 +4124,34 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class CodeGeneratorRequest::Reader {
+class CAPNP_CLASS CodeGeneratorRequest::Reader {
 public:
   typedef CodeGeneratorRequest Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasNodes() const;
-  inline  ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>::Reader getNodes() const;
+  inline bool CAPNP_API hasNodes() const;
+  inline  ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getNodes() const;
 
-  inline bool hasRequestedFiles() const;
-  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>::Reader getRequestedFiles() const;
+  inline bool CAPNP_API hasRequestedFiles() const;
+  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getRequestedFiles() const;
 
-  inline bool hasCapnpVersion() const;
-  inline  ::capnp::schema::CapnpVersion::Reader getCapnpVersion() const;
+  inline bool CAPNP_API hasCapnpVersion() const;
+  inline  ::capnp::schema::CapnpVersion::Reader CAPNP_API getCapnpVersion() const;
 
-  inline bool hasSourceInfo() const;
-  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>::Reader getSourceInfo() const;
+  inline bool CAPNP_API hasSourceInfo() const;
+  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getSourceInfo() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -4164,49 +4165,49 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class CodeGeneratorRequest::Builder {
+class CAPNP_CLASS CodeGeneratorRequest::Builder {
 public:
   typedef CodeGeneratorRequest Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasNodes();
-  inline  ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>::Builder getNodes();
-  inline void setNodes( ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>::Builder initNodes(unsigned int size);
-  inline void adoptNodes(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>> disownNodes();
+  inline bool CAPNP_API hasNodes();
+  inline  ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getNodes();
+  inline void CAPNP_API setNodes( ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initNodes(unsigned int size);
+  inline void CAPNP_API adoptNodes(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node,  ::capnp::Kind::STRUCT>> CAPNP_API disownNodes();
 
-  inline bool hasRequestedFiles();
-  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>::Builder getRequestedFiles();
-  inline void setRequestedFiles( ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>::Builder initRequestedFiles(unsigned int size);
-  inline void adoptRequestedFiles(::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>> disownRequestedFiles();
+  inline bool CAPNP_API hasRequestedFiles();
+  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getRequestedFiles();
+  inline void CAPNP_API setRequestedFiles( ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initRequestedFiles(unsigned int size);
+  inline void CAPNP_API adoptRequestedFiles(::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile,  ::capnp::Kind::STRUCT>> CAPNP_API disownRequestedFiles();
 
-  inline bool hasCapnpVersion();
-  inline  ::capnp::schema::CapnpVersion::Builder getCapnpVersion();
-  inline void setCapnpVersion( ::capnp::schema::CapnpVersion::Reader value);
-  inline  ::capnp::schema::CapnpVersion::Builder initCapnpVersion();
-  inline void adoptCapnpVersion(::capnp::Orphan< ::capnp::schema::CapnpVersion>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::CapnpVersion> disownCapnpVersion();
+  inline bool CAPNP_API hasCapnpVersion();
+  inline  ::capnp::schema::CapnpVersion::Builder CAPNP_API getCapnpVersion();
+  inline void CAPNP_API setCapnpVersion( ::capnp::schema::CapnpVersion::Reader value);
+  inline  ::capnp::schema::CapnpVersion::Builder CAPNP_API initCapnpVersion();
+  inline void CAPNP_API adoptCapnpVersion(::capnp::Orphan< ::capnp::schema::CapnpVersion>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::CapnpVersion> CAPNP_API disownCapnpVersion();
 
-  inline bool hasSourceInfo();
-  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>::Builder getSourceInfo();
-  inline void setSourceInfo( ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>::Builder initSourceInfo(unsigned int size);
-  inline void adoptSourceInfo(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>> disownSourceInfo();
+  inline bool CAPNP_API hasSourceInfo();
+  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getSourceInfo();
+  inline void CAPNP_API setSourceInfo( ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initSourceInfo(unsigned int size);
+  inline void CAPNP_API adoptSourceInfo(::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::Node::SourceInfo,  ::capnp::Kind::STRUCT>> CAPNP_API disownSourceInfo();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -4218,15 +4219,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class CodeGeneratorRequest::Pipeline {
+class CAPNP_CLASS CodeGeneratorRequest::Pipeline {
 public:
   typedef CodeGeneratorRequest Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::CapnpVersion::Pipeline getCapnpVersion();
+  inline  ::capnp::schema::CapnpVersion::Pipeline CAPNP_API getCapnpVersion();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -4235,33 +4236,33 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class CodeGeneratorRequest::RequestedFile::Reader {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::Reader {
 public:
   typedef RequestedFile Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId() const;
+  inline  ::uint64_t CAPNP_API getId() const;
 
-  inline bool hasFilename() const;
-  inline  ::capnp::Text::Reader getFilename() const;
+  inline bool CAPNP_API hasFilename() const;
+  inline  ::capnp::Text::Reader CAPNP_API getFilename() const;
 
-  inline bool hasImports() const;
-  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>::Reader getImports() const;
+  inline bool CAPNP_API hasImports() const;
+  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getImports() const;
 
-  inline bool hasFileSourceInfo() const;
-  inline  ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Reader getFileSourceInfo() const;
+  inline bool CAPNP_API hasFileSourceInfo() const;
+  inline  ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Reader CAPNP_API getFileSourceInfo() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -4275,45 +4276,45 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class CodeGeneratorRequest::RequestedFile::Builder {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::Builder {
 public:
   typedef RequestedFile Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId();
-  inline void setId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getId();
+  inline void CAPNP_API setId( ::uint64_t value);
 
-  inline bool hasFilename();
-  inline  ::capnp::Text::Builder getFilename();
-  inline void setFilename( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initFilename(unsigned int size);
-  inline void adoptFilename(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownFilename();
+  inline bool CAPNP_API hasFilename();
+  inline  ::capnp::Text::Builder CAPNP_API getFilename();
+  inline void CAPNP_API setFilename( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initFilename(unsigned int size);
+  inline void CAPNP_API adoptFilename(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownFilename();
 
-  inline bool hasImports();
-  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>::Builder getImports();
-  inline void setImports( ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>::Builder initImports(unsigned int size);
-  inline void adoptImports(::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>> disownImports();
+  inline bool CAPNP_API hasImports();
+  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getImports();
+  inline void CAPNP_API setImports( ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initImports(unsigned int size);
+  inline void CAPNP_API adoptImports(::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::Import,  ::capnp::Kind::STRUCT>> CAPNP_API disownImports();
 
-  inline bool hasFileSourceInfo();
-  inline  ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Builder getFileSourceInfo();
-  inline void setFileSourceInfo( ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Reader value);
-  inline  ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Builder initFileSourceInfo();
-  inline void adoptFileSourceInfo(::capnp::Orphan< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo>&& value);
-  inline ::capnp::Orphan< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo> disownFileSourceInfo();
+  inline bool CAPNP_API hasFileSourceInfo();
+  inline  ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Builder CAPNP_API getFileSourceInfo();
+  inline void CAPNP_API setFileSourceInfo( ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Reader value);
+  inline  ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Builder CAPNP_API initFileSourceInfo();
+  inline void CAPNP_API adoptFileSourceInfo(::capnp::Orphan< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo>&& value);
+  inline ::capnp::Orphan< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo> CAPNP_API disownFileSourceInfo();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -4325,15 +4326,15 @@ private:
 };
 
 #if !CAPNP_LITE
-class CodeGeneratorRequest::RequestedFile::Pipeline {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::Pipeline {
 public:
   typedef RequestedFile Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Pipeline getFileSourceInfo();
+  inline  ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Pipeline CAPNP_API getFileSourceInfo();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -4342,27 +4343,27 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class CodeGeneratorRequest::RequestedFile::Import::Reader {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::Import::Reader {
 public:
   typedef Import Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId() const;
+  inline  ::uint64_t CAPNP_API getId() const;
 
-  inline bool hasName() const;
-  inline  ::capnp::Text::Reader getName() const;
+  inline bool CAPNP_API hasName() const;
+  inline  ::capnp::Text::Reader CAPNP_API getName() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -4376,31 +4377,31 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class CodeGeneratorRequest::RequestedFile::Import::Builder {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::Import::Builder {
 public:
   typedef Import Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getId();
-  inline void setId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getId();
+  inline void CAPNP_API setId( ::uint64_t value);
 
-  inline bool hasName();
-  inline  ::capnp::Text::Builder getName();
-  inline void setName( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initName(unsigned int size);
-  inline void adoptName(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownName();
+  inline bool CAPNP_API hasName();
+  inline  ::capnp::Text::Builder CAPNP_API getName();
+  inline void CAPNP_API setName( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder CAPNP_API initName(unsigned int size);
+  inline void CAPNP_API adoptName(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> CAPNP_API disownName();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -4412,12 +4413,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class CodeGeneratorRequest::RequestedFile::Import::Pipeline {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::Import::Pipeline {
 public:
   typedef Import Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -4428,25 +4429,25 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class CodeGeneratorRequest::RequestedFile::FileSourceInfo::Reader {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Reader {
 public:
   typedef FileSourceInfo Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasIdentifiers() const;
-  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>::Reader getIdentifiers() const;
+  inline bool CAPNP_API hasIdentifiers() const;
+  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>::Reader CAPNP_API getIdentifiers() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -4460,28 +4461,28 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class CodeGeneratorRequest::RequestedFile::FileSourceInfo::Builder {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Builder {
 public:
   typedef FileSourceInfo Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasIdentifiers();
-  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>::Builder getIdentifiers();
-  inline void setIdentifiers( ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>::Builder initIdentifiers(unsigned int size);
-  inline void adoptIdentifiers(::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>> disownIdentifiers();
+  inline bool CAPNP_API hasIdentifiers();
+  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>::Builder CAPNP_API getIdentifiers();
+  inline void CAPNP_API setIdentifiers( ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>::Reader value);
+  inline  ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>::Builder CAPNP_API initIdentifiers(unsigned int size);
+  inline void CAPNP_API adoptIdentifiers(::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>>&& value);
+  inline ::capnp::Orphan< ::capnp::List< ::capnp::schema::CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier,  ::capnp::Kind::STRUCT>> CAPNP_API disownIdentifiers();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -4493,12 +4494,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class CodeGeneratorRequest::RequestedFile::FileSourceInfo::Pipeline {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Pipeline {
 public:
   typedef FileSourceInfo Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -4509,33 +4510,33 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Reader {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Reader {
 public:
   typedef Identifier Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which which() const;
-  inline  ::uint32_t getStartByte() const;
+  inline Which CAPNP_API which() const;
+  inline  ::uint32_t CAPNP_API getStartByte() const;
 
-  inline  ::uint32_t getEndByte() const;
+  inline  ::uint32_t CAPNP_API getEndByte() const;
 
-  inline bool isTypeId() const;
-  inline  ::uint64_t getTypeId() const;
+  inline bool CAPNP_API isTypeId() const;
+  inline  ::uint64_t CAPNP_API getTypeId() const;
 
-  inline bool isMember() const;
-  inline typename Member::Reader getMember() const;
+  inline bool CAPNP_API isMember() const;
+  inline typename Member::Reader CAPNP_API getMember() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -4549,36 +4550,36 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Builder {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Builder {
 public:
   typedef Identifier Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which which();
-  inline  ::uint32_t getStartByte();
-  inline void setStartByte( ::uint32_t value);
+  inline Which CAPNP_API which();
+  inline  ::uint32_t CAPNP_API getStartByte();
+  inline void CAPNP_API setStartByte( ::uint32_t value);
 
-  inline  ::uint32_t getEndByte();
-  inline void setEndByte( ::uint32_t value);
+  inline  ::uint32_t CAPNP_API getEndByte();
+  inline void CAPNP_API setEndByte( ::uint32_t value);
 
-  inline bool isTypeId();
-  inline  ::uint64_t getTypeId();
-  inline void setTypeId( ::uint64_t value);
+  inline bool CAPNP_API isTypeId();
+  inline  ::uint64_t CAPNP_API getTypeId();
+  inline void CAPNP_API setTypeId( ::uint64_t value);
 
-  inline bool isMember();
-  inline typename Member::Builder getMember();
-  inline typename Member::Builder initMember();
+  inline bool CAPNP_API isMember();
+  inline typename Member::Builder CAPNP_API getMember();
+  inline typename Member::Builder CAPNP_API initMember();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -4590,12 +4591,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Pipeline {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Pipeline {
 public:
   typedef Identifier Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -4606,26 +4607,26 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Member::Reader {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Member::Reader {
 public:
   typedef Member Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getParentTypeId() const;
+  inline  ::uint64_t CAPNP_API getParentTypeId() const;
 
-  inline  ::uint16_t getOrdinal() const;
+  inline  ::uint16_t CAPNP_API getOrdinal() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -4639,27 +4640,27 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Member::Builder {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Member::Builder {
 public:
   typedef Member Builds;
 
-  Builder() = delete;  // Deleted to discourage incorrect usage.
-                       // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  CAPNP_API Builder() = delete;  // Deleted to discourage incorrect usage.
+                                 // You can explicitly initialize to nullptr instead.
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint64_t getParentTypeId();
-  inline void setParentTypeId( ::uint64_t value);
+  inline  ::uint64_t CAPNP_API getParentTypeId();
+  inline void CAPNP_API setParentTypeId( ::uint64_t value);
 
-  inline  ::uint16_t getOrdinal();
-  inline void setOrdinal( ::uint16_t value);
+  inline  ::uint16_t CAPNP_API getOrdinal();
+  inline void CAPNP_API setOrdinal( ::uint16_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -4671,12 +4672,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Member::Pipeline {
+class CAPNP_CLASS CodeGeneratorRequest::RequestedFile::FileSourceInfo::Identifier::Member::Pipeline {
 public:
   typedef Member Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:

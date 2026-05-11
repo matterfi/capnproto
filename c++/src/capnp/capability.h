@@ -25,6 +25,7 @@
 #error "RPC APIs, including this header, are not available in lite mode."
 #endif
 
+#include "export-capnp.h"
 #include <kj/async.h>
 #include <kj/vector.h>
 #include "raw-schema.h"
@@ -75,20 +76,20 @@ class CapabilityServerSetBase;
 struct PipelineBuilderPair;
 }  // namespace _ (private)
 
-struct Capability {
+struct CAPNP_CLASS Capability {
   // A capability without type-safe methods.  Typed capability clients wrap `Client` and typed
   // capability servers subclass `Server` to dispatch to the regular, typed methods.
 
   class Client;
   class Server;
 
-  struct _capnpPrivate {
+  struct CAPNP_CLASS _capnpPrivate {
     struct IsInterface;
-    static constexpr uint64_t typeId = 0x3;
-    static constexpr Kind kind = Kind::INTERFACE;
-    static constexpr _::RawSchema const* schema = &_::NULL_INTERFACE_SCHEMA;
+    static constexpr uint64_t CAPNP_API typeId = 0x3;
+    static constexpr Kind CAPNP_API kind = Kind::INTERFACE;
+    static constexpr _::RawSchema const* CAPNP_API schema = &_::NULL_INTERFACE_SCHEMA;
 
-    static const _::RawBrandedSchema* brand() {
+    static const _::RawBrandedSchema* CAPNP_API brand() {
       return &_::NULL_INTERFACE_SCHEMA.defaultBrand;
     }
   };
@@ -187,14 +188,14 @@ private:
   friend class ResponseHook;
 };
 
-class Capability::Client {
+class CAPNP_CLASS Capability::Client {
   // Base type for capability clients.
 
 public:
   typedef Capability Reads;
   typedef Capability Calls;
 
-  Client(decltype(nullptr));
+  CAPNP_API Client(decltype(nullptr));
   // If you need to declare a Client before you have anything to assign to it (perhaps because
   // the assignment is going to occur in an if/else scope), you can start by initializing it to
   // `nullptr`.  The resulting client is not meant to be called and throws exceptions from all
@@ -210,19 +211,19 @@ public:
   // Make a client from a promise for a future client.  The resulting client queues calls until the
   // promise resolves.
 
-  Client(kj::Exception&& exception);
+  CAPNP_API Client(kj::Exception&& exception);
   // Make a broken client that throws the given exception from all calls.
 
-  Client(Client& other);
-  Client& operator=(Client& other);
+  CAPNP_API Client(Client& other);
+  Client& CAPNP_API operator=(Client& other);
   // Copies by reference counting.  Warning:  This refcounting is not thread-safe.  All copies of
   // the client must remain in one thread.
 
-  Client(Client&&) = default;
-  Client& operator=(Client&&) = default;
+  CAPNP_API Client(Client&&) = default;
+  Client& CAPNP_API operator=(Client&&) = default;
   // Move constructor avoids reference counting.
 
-  explicit Client(kj::Own<ClientHook>&& hook);
+  explicit CAPNP_API Client(kj::Own<ClientHook>&& hook);
   // For use by the RPC implementation:  Wrap a ClientHook.
 
   template <typename T>
@@ -238,19 +239,19 @@ public:
   typename T::Client castAs(InterfaceSchema schema);
   // Dynamic version.  `T` must be `DynamicCapability`, and you must `#include <capnp/dynamic.h>`.
 
-  kj::Promise<void> whenResolved();
+  kj::Promise<void> CAPNP_API whenResolved();
   // If the capability is actually only a promise, the returned promise resolves once the
   // capability itself has resolved to its final destination (or propagates the exception if
   // the capability promise is rejected).  This is mainly useful for error-checking in the case
   // where no calls are being made.  There is no reason to wait for this before making calls; if
   // the capability does not resolve, the call results will propagate the error.
 
-  struct CallHints {
-    bool noPromisePipelining = false;
+  struct CAPNP_CLASS CallHints {
+    bool CAPNP_API noPromisePipelining = false;
     // Hints that the pipeline part of the VoidPromiseAndPipeline won't be used, so it can be
     // a bogus object.
 
-    bool onlyPromisePipeline = false;
+    bool CAPNP_API onlyPromisePipeline = false;
     // Hints that the promise part of the VoidPromiseAndPipeline won't be used, so it can be a
     // bogus promise.
     //
@@ -261,13 +262,13 @@ public:
     // only pipelining even when `send()` is called, or it might not.
   };
 
-  Request<AnyPointer, AnyPointer> typelessRequest(
+  Request<AnyPointer, AnyPointer> CAPNP_API typelessRequest(
       uint64_t interfaceId, uint16_t methodId,
       kj::Maybe<MessageSize> sizeHint, CallHints hints);
   // Make a request without knowing the types of the params or results. You specify the type ID
   // and method number manually.
 
-  kj::Promise<kj::Maybe<int>> getFd();
+  kj::Promise<kj::Maybe<int>> CAPNP_API getFd();
   // If the capability's server implemented Capability::Server::getFd() returning non-null, and all
   // RPC links between the client and server support FD passing, returns a file descriptor pointing
   // to the same underlying file description as the server did. Returns null if the server provided
@@ -283,7 +284,7 @@ public:
   // TODO(someday):  method(s) for Join
 
 protected:
-  Client() = default;
+  CAPNP_API Client() = default;
 
   template <typename Params, typename Results>
   Request<Params, Results> newCall(uint64_t interfaceId, uint16_t methodId,
@@ -295,7 +296,7 @@ protected:
 private:
   kj::Own<ClientHook> hook;
 
-  static kj::Own<ClientHook> makeLocalClient(kj::Own<Capability::Server>&& server);
+  static kj::Own<ClientHook> CAPNP_API makeLocalClient(kj::Own<Capability::Server>&& server);
   static kj::Own<ClientHook> makeRevocableLocalClient(Capability::Server& server);
   static void revokeLocalClient(ClientHook& hook);
   static void revokeLocalClient(ClientHook& hook, kj::Exception&& reason);
@@ -473,7 +474,7 @@ private:
   friend class CallContextHook;
 };
 
-class Capability::Server {
+class CAPNP_CLASS Capability::Server {
   // Objects implementing a Cap'n Proto interface must subclass this.  Typically, such objects
   // will instead subclass a typed Server interface which will take care of implementing
   // dispatchCall().
@@ -481,16 +482,16 @@ class Capability::Server {
 public:
   typedef Capability Serves;
 
-  struct DispatchCallResult {
-    kj::Promise<void> promise;
+  struct CAPNP_CLASS DispatchCallResult {
+    kj::Promise<void> CAPNP_API promise;
     // Promise for completion of the call.
 
-    bool isStreaming;
+    bool CAPNP_API isStreaming;
     // If true, this method was declared as `-> stream;`. No other calls should be permitted until
     // this call finishes, and if this call throws an exception, all future calls will throw the
     // same exception.
 
-    bool allowCancellation = false;
+    bool CAPNP_API allowCancellation = false;
     // If true, the call can be canceled normally. If false, the immediate caller is responsible
     // for ensuring that cancellation is prevented and that `context` remains valid until the
     // call completes normally.
@@ -498,18 +499,18 @@ public:
     // See the `allowCancellation` annotation defined in `c++.capnp`.
   };
 
-  virtual DispatchCallResult dispatchCall(uint64_t interfaceId, uint16_t methodId,
-                                          CallContext<AnyPointer, AnyPointer> context) = 0;
+  virtual DispatchCallResult CAPNP_API dispatchCall(uint64_t interfaceId, uint16_t methodId,
+      CallContext<AnyPointer, AnyPointer> context) = 0;
   // Call the given method.  `params` is the input struct, and should be released as soon as it
   // is no longer needed.  `context` may be used to allocate the output struct and other call
   // logistics.
 
-  virtual kj::Maybe<int> getFd() { return nullptr; }
+  virtual kj::Maybe<int> CAPNP_API getFd() { return nullptr; }
   // If this capability is backed by a file descriptor that is safe to directly expose to clients,
   // returns that FD. When FD passing has been enabled in the RPC layer, this FD may be sent to
   // other processes along with the capability.
 
-  virtual kj::Maybe<kj::Promise<Capability::Client>> shortenPath();
+  virtual kj::Maybe<kj::Promise<Capability::Client>> CAPNP_API shortenPath();
   // If this returns non-null, then it is a promise which, when resolved, points to a new
   // capability to which future calls can be sent. Use this in cases where an object implementation
   // might discover a more-optimized path some time after it starts.
@@ -530,7 +531,7 @@ public:
   //   a proxy.
 
 protected:
-  inline Capability::Client thisCap();
+  inline Capability::Client CAPNP_API thisCap();
   // Get a capability pointing to this object, much like the `this` keyword.
   //
   // The effect of this method is undefined if:
@@ -548,12 +549,13 @@ protected:
   template <typename Params>
   StreamingCallContext<Params> internalGetTypedStreamingContext(
       CallContext<AnyPointer, AnyPointer> typeless);
-  DispatchCallResult internalUnimplemented(const char* actualInterfaceName,
-                                           uint64_t requestedTypeId);
-  DispatchCallResult internalUnimplemented(const char* interfaceName,
-                                           uint64_t typeId, uint16_t methodId);
-  kj::Promise<void> internalUnimplemented(const char* interfaceName, const char* methodName,
-                                          uint64_t typeId, uint16_t methodId);
+  DispatchCallResult CAPNP_API internalUnimplemented(const char* actualInterfaceName,
+                                                     uint64_t requestedTypeId);
+  DispatchCallResult CAPNP_API internalUnimplemented(const char* interfaceName,
+                                                     uint64_t typeId, uint16_t methodId);
+  kj::Promise<void> CAPNP_API internalUnimplemented(const char* interfaceName,
+                                                    const char* methodName,
+                                                    uint64_t typeId, uint16_t methodId);
 
 private:
   ClientHook* thisHook = nullptr;
@@ -623,7 +625,7 @@ private:
 
 // =======================================================================================
 
-class ReaderCapabilityTable: private _::CapTableReader {
+class CAPNP_CLASS ReaderCapabilityTable: private _::CapTableReader {
   // Class which imbues Readers with the ability to read capabilities.
   //
   // In Cap'n Proto format, the encoding of a capability pointer is simply an integer index into
@@ -638,7 +640,7 @@ class ReaderCapabilityTable: private _::CapTableReader {
   // Note that when using Cap'n Proto's RPC system, this is handled automatically.
 
 public:
-  explicit ReaderCapabilityTable(kj::Array<kj::Maybe<kj::Own<ClientHook>>> table);
+  explicit CAPNP_API ReaderCapabilityTable(kj::Array<kj::Maybe<kj::Own<ClientHook>>> table);
   KJ_DISALLOW_COPY_AND_MOVE(ReaderCapabilityTable);
 
   template <typename T>
@@ -652,17 +654,17 @@ private:
   kj::Maybe<kj::Own<ClientHook>> extractCap(uint index) override;
 };
 
-class BuilderCapabilityTable: private _::CapTableBuilder {
+class CAPNP_CLASS BuilderCapabilityTable: private _::CapTableBuilder {
   // Class which imbues Builders with the ability to read and write capabilities.
   //
   // This is much like ReaderCapabilityTable, except for builders. The table starts out empty,
   // but capabilities can be added to it over time.
 
 public:
-  BuilderCapabilityTable();
+  CAPNP_API BuilderCapabilityTable();
   KJ_DISALLOW_COPY_AND_MOVE(BuilderCapabilityTable);
 
-  inline kj::ArrayPtr<kj::Maybe<kj::Own<ClientHook>>> getTable() { return table; }
+  inline kj::ArrayPtr<kj::Maybe<kj::Own<ClientHook>>> CAPNP_API getTable() { return table; }
 
   template <typename T>
   T imbue(T builder);
@@ -681,10 +683,10 @@ private:
 
 namespace _ {  // private
 
-class CapabilityServerSetBase {
+class CAPNP_CLASS CapabilityServerSetBase {
 public:
-  Capability::Client addInternal(kj::Own<Capability::Server>&& server, void* ptr);
-  kj::Promise<void*> getLocalServerInternal(Capability::Client& client);
+  Capability::Client CAPNP_API addInternal(kj::Own<Capability::Server>&& server, void* ptr);
+  kj::Promise<void*> CAPNP_API getLocalServerInternal(Capability::Client& client);
 };
 
 }  // namespace _ (private)
@@ -722,20 +724,20 @@ public:
 // Hook interfaces which must be implemented by the RPC system.  Applications never call these
 // directly; the RPC system implements them and the types defined earlier in this file wrap them.
 
-class RequestHook {
+class CAPNP_CLASS RequestHook {
   // Hook interface implemented by RPC system representing a request being built.
 
 public:
-  virtual RemotePromise<AnyPointer> send() = 0;
+  virtual RemotePromise<AnyPointer> CAPNP_API send() = 0;
   // Send the call and return a promise for the result.
 
-  virtual kj::Promise<void> sendStreaming() = 0;
+  virtual kj::Promise<void> CAPNP_API sendStreaming() = 0;
   // Send a streaming call.
 
-  virtual AnyPointer::Pipeline sendForPipeline() = 0;
+  virtual AnyPointer::Pipeline CAPNP_API sendForPipeline() = 0;
   // Send a call for pipelining purposes only.
 
-  virtual const void* getBrand() = 0;
+  virtual const void* CAPNP_API getBrand() = 0;
   // Returns a void* that identifies who made this request.  This can be used by an RPC adapter to
   // discover when tail call is going to be sent over its own connection and therefore can be
   // optimized into a remote tail call.
@@ -746,14 +748,14 @@ public:
   }
 };
 
-class ResponseHook {
+class CAPNP_CLASS ResponseHook {
   // Hook interface implemented by RPC system representing a response.
   //
   // At present this class has no methods.  It exists only for garbage collection -- when the
   // ResponseHook is destroyed, the results can be freed.
 
 public:
-  virtual ~ResponseHook() noexcept(false);
+  virtual CAPNP_API ~ResponseHook() noexcept(false);
   // Just here to make sure the type is dynamic.
 
   template <typename T>
@@ -764,25 +766,26 @@ public:
 
 // class PipelineHook is declared in any.h because it is needed there.
 
-class ClientHook {
+class CAPNP_CLASS ClientHook {
 public:
-  ClientHook();
+  CAPNP_API ClientHook();
 
   using CallHints = Capability::Client::CallHints;
 
-  virtual Request<AnyPointer, AnyPointer> newCall(
+  virtual Request<AnyPointer, AnyPointer> CAPNP_API newCall(
       uint64_t interfaceId, uint16_t methodId, kj::Maybe<MessageSize> sizeHint,
       CallHints hints) = 0;
   // Start a new call, allowing the client to allocate request/response objects as it sees fit.
   // This version is used when calls are made from application code in the local process.
 
-  struct VoidPromiseAndPipeline {
-    kj::Promise<void> promise;
-    kj::Own<PipelineHook> pipeline;
+  struct CAPNP_CLASS VoidPromiseAndPipeline {
+    kj::Promise<void> CAPNP_API promise;
+    kj::Own<PipelineHook> CAPNP_API pipeline;
   };
 
-  virtual VoidPromiseAndPipeline call(uint64_t interfaceId, uint16_t methodId,
-                                      kj::Own<CallContextHook>&& context, CallHints hints) = 0;
+  virtual VoidPromiseAndPipeline CAPNP_API call(uint64_t interfaceId, uint16_t methodId,
+                                                kj::Own<CallContextHook>&& context,
+                                                CallHints hints) = 0;
   // Call the object, but the caller controls allocation of the request/response objects.  If the
   // callee insists on allocating these objects itself, it must make a copy.  This version is used
   // when calls come in over the network via an RPC system.  Note that even if the returned
@@ -793,7 +796,7 @@ public:
   // later turn of the event loop. Otherwise, application code may call back and affect the
   // callee's state in an unexpected way.
 
-  virtual kj::Maybe<ClientHook&> getResolved() = 0;
+  virtual kj::Maybe<ClientHook&> CAPNP_API getResolved() = 0;
   // If this ClientHook is a promise that has already resolved, returns the inner, resolved version
   // of the capability.  The caller may permanently replace this client with the resolved one if
   // desired.  Returns null if the client isn't a promise or hasn't resolved yet -- use
@@ -806,7 +809,7 @@ public:
   // This "only one resolution" policy is necessary for the RPC system to implement embargoes
   // properly.
 
-  virtual kj::Maybe<kj::Promise<kj::Own<ClientHook>>> whenMoreResolved() = 0;
+  virtual kj::Maybe<kj::Promise<kj::Own<ClientHook>>> CAPNP_API whenMoreResolved() = 0;
   // If this client is a settled reference (not a promise), return nullptr.  Otherwise, return a
   // promise that eventually resolves to a new client that is closer to being the final, settled
   // client (i.e. the value eventually returned by `getResolved()`).  Calling this repeatedly
@@ -815,63 +818,66 @@ public:
   // Once the promise resolves, `getResolved()` must return exactly the same `ClientHook` as the
   // one this Promise resolved to.
 
-  kj::Promise<void> whenResolved();
+  kj::Promise<void> CAPNP_API whenResolved();
   // Repeatedly calls whenMoreResolved() until it returns nullptr.
 
-  virtual kj::Own<ClientHook> addRef() = 0;
+  virtual kj::Own<ClientHook> CAPNP_API addRef() = 0;
   // Return a new reference to the same capability.
 
-  virtual const void* getBrand() = 0;
+  virtual const void* CAPNP_API getBrand() = 0;
   // Returns a void* that identifies who made this client.  This can be used by an RPC adapter to
   // discover when a capability it needs to marshal is one that it created in the first place, and
   // therefore it can transfer the capability without proxying.
 
-  static const uint NULL_CAPABILITY_BRAND;
-  static const uint BROKEN_CAPABILITY_BRAND;
+  static const uint CAPNP_API NULL_CAPABILITY_BRAND;
+  static const uint CAPNP_API BROKEN_CAPABILITY_BRAND;
   // Values are irrelevant; used for pointers.
 
-  inline bool isNull() { return getBrand() == &NULL_CAPABILITY_BRAND; }
+  inline bool CAPNP_API isNull() { return getBrand() == &NULL_CAPABILITY_BRAND; }
   // Returns true if the capability was created as a result of assigning a Client to null or by
   // reading a null pointer out of a Cap'n Proto message.
 
-  inline bool isError() { return getBrand() == &BROKEN_CAPABILITY_BRAND; }
+  inline bool CAPNP_API isError() { return getBrand() == &BROKEN_CAPABILITY_BRAND; }
   // Returns true if the capability was created by newBrokenCap().
 
-  virtual kj::Maybe<int> getFd() = 0;
+  virtual kj::Maybe<int> CAPNP_API getFd() = 0;
   // Implements Capability::Client::getFd(). If this returns null but whenMoreResolved() returns
   // non-null, then Capability::Client::getFd() waits for resolution and tries again.
 
-  static kj::Own<ClientHook> from(Capability::Client client) { return kj::mv(client.hook); }
+  static kj::Own<ClientHook> CAPNP_API from(Capability::Client client) {
+    return kj::mv(client.hook);
+  }
 };
 
-class RevocableClientHook: public ClientHook {
+class CAPNP_CLASS RevocableClientHook: public ClientHook {
 public:
-  virtual void revoke() = 0;
-  virtual void revoke(kj::Exception&& reason) = 0;
+  virtual void CAPNP_API revoke() = 0;
+  virtual void CAPNP_API revoke(kj::Exception&& reason) = 0;
 };
 
-class CallContextHook {
+class CAPNP_CLASS CallContextHook {
   // Hook interface implemented by RPC system to manage a call on the server side.  See
   // CallContext<T>.
 
 public:
-  virtual AnyPointer::Reader getParams() = 0;
-  virtual void releaseParams() = 0;
-  virtual AnyPointer::Builder getResults(kj::Maybe<MessageSize> sizeHint) = 0;
-  virtual kj::Promise<void> tailCall(kj::Own<RequestHook>&& request) = 0;
+  virtual AnyPointer::Reader CAPNP_API getParams() = 0;
+  virtual void CAPNP_API releaseParams() = 0;
+  virtual AnyPointer::Builder CAPNP_API getResults(kj::Maybe<MessageSize> sizeHint) = 0;
+  virtual kj::Promise<void> CAPNP_API tailCall(kj::Own<RequestHook>&& request) = 0;
 
-  virtual void setPipeline(kj::Own<PipelineHook>&& pipeline) = 0;
+  virtual void CAPNP_API setPipeline(kj::Own<PipelineHook>&& pipeline) = 0;
 
-  virtual kj::Promise<AnyPointer::Pipeline> onTailCall() = 0;
+  virtual kj::Promise<AnyPointer::Pipeline> CAPNP_API onTailCall() = 0;
   // If `tailCall()` is called, resolves to the PipelineHook from the tail call.  An
   // implementation of `ClientHook::call()` is allowed to call this at most once.
 
-  virtual ClientHook::VoidPromiseAndPipeline directTailCall(kj::Own<RequestHook>&& request) = 0;
+  virtual ClientHook::VoidPromiseAndPipeline CAPNP_API directTailCall(
+      kj::Own<RequestHook>&& request) = 0;
   // Call this when you would otherwise call onTailCall() immediately followed by tailCall().
   // Implementations of tailCall() should typically call directTailCall() and then fulfill the
   // promise fulfiller for onTailCall() with the returned pipeline.
 
-  virtual kj::Own<CallContextHook> addRef() = 0;
+  virtual kj::Own<CallContextHook> CAPNP_API addRef() = 0;
 
   template <typename Params, typename Results>
   static CallContextHook& from(CallContext<Params, Results>& context) { return *context.hook; }
@@ -879,27 +885,28 @@ public:
   static CallContextHook& from(StreamingCallContext<Params>& context) { return *context.hook; }
 };
 
-kj::Own<ClientHook> newLocalPromiseClient(kj::Promise<kj::Own<ClientHook>>&& promise);
+kj::Own<ClientHook> CAPNP_API newLocalPromiseClient(kj::Promise<kj::Own<ClientHook>>&& promise);
 // Returns a ClientHook that queues up calls until `promise` resolves, then forwards them to
 // the new client.  This hook's `getResolved()` and `whenMoreResolved()` methods will reflect the
 // redirection to the eventual replacement client.
 
-kj::Own<PipelineHook> newLocalPromisePipeline(kj::Promise<kj::Own<PipelineHook>>&& promise);
+kj::Own<PipelineHook> CAPNP_API newLocalPromisePipeline(
+    kj::Promise<kj::Own<PipelineHook>>&& promise);
 // Returns a PipelineHook that queues up calls until `promise` resolves, then forwards them to
 // the new pipeline.
 
-kj::Own<ClientHook> newBrokenCap(kj::StringPtr reason);
-kj::Own<ClientHook> newBrokenCap(kj::Exception&& reason);
+kj::Own<ClientHook> CAPNP_API newBrokenCap(kj::StringPtr reason);
+kj::Own<ClientHook> CAPNP_API newBrokenCap(kj::Exception&& reason);
 // Helper function that creates a capability which simply throws exceptions when called.
 
-kj::Own<PipelineHook> newBrokenPipeline(kj::Exception&& reason);
+kj::Own<PipelineHook> CAPNP_API newBrokenPipeline(kj::Exception&& reason);
 // Helper function that creates a pipeline which simply throws exceptions when called.
 
-Request<AnyPointer, AnyPointer> newBrokenRequest(
+Request<AnyPointer, AnyPointer> CAPNP_API newBrokenRequest(
     kj::Exception&& reason, kj::Maybe<MessageSize> sizeHint);
 // Helper function that creates a Request object that simply throws exceptions when sent.
 
-kj::Own<PipelineHook> getDisabledPipeline();
+kj::Own<PipelineHook> CAPNP_API getDisabledPipeline();
 // Gets a PipelineHook appropriate to use when CallHints::noPromisePipelining is true. This will
 // throw from all calls. This does not actually allocate the object; a static global object is
 // returned with a null disposer.
@@ -1223,12 +1230,12 @@ void RevocableServer<T>::revoke(kj::Exception&& exception) {
 
 namespace _ { // private
 
-struct PipelineBuilderPair {
-  AnyPointer::Builder root;
-  kj::Own<PipelineHook> hook;
+struct CAPNP_CLASS PipelineBuilderPair {
+  AnyPointer::Builder CAPNP_API root;
+  kj::Own<PipelineHook> CAPNP_API hook;
 };
 
-PipelineBuilderPair newPipelineBuilder(uint firstSegmentWords);
+PipelineBuilderPair CAPNP_API newPipelineBuilder(uint firstSegmentWords);
 
 }  // namespace _ (private)
 

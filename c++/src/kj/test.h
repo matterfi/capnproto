@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj-test.h"
 #include "debug.h"
 #include "vector.h"
 #include "function.h"
@@ -32,12 +33,12 @@ namespace kj {
 
 class TestRunner;
 
-class TestCase {
+class KJ_TEST_CLASS TestCase {
 public:
-  TestCase(const char* file, uint line, const char* description);
-  ~TestCase();
+  KJ_TEST_API TestCase(const char* file, uint line, const char* description);
+  KJ_TEST_API ~TestCase();
 
-  virtual void run() = 0;
+  virtual void KJ_TEST_API run() = 0;
 
 protected:
   template <typename Func>
@@ -170,34 +171,34 @@ private:
 
 namespace _ {  // private
 
-bool hasSubstring(kj::StringPtr haystack, kj::StringPtr needle);
+bool KJ_TEST_API hasSubstring(kj::StringPtr haystack, kj::StringPtr needle);
 
 #if KJ_NO_EXCEPTIONS
-bool expectFatalThrow(Maybe<Exception::Type> type, Maybe<StringPtr> message,
-                      Function<void()> code);
+bool KJ_TEST_API expectFatalThrow(Maybe<Exception::Type> type, Maybe<StringPtr> message,
+                             Function<void()> code);
 // Expects that the given code will throw a fatal exception matching the given type and/or message.
 // Since exceptions are disabled, the test will fork() and run in a subprocess. On Windows, where
 // fork() is not available, this always returns true.
 #endif
 
-bool expectExit(Maybe<int> statusCode, FunctionParam<void()> code) noexcept;
+bool KJ_TEST_API expectExit(Maybe<int> statusCode, FunctionParam<void()> code) noexcept;
 // Expects that the given code will exit with a given statusCode.
 // The test will fork() and run in a subprocess. On Windows, where fork() is not available,
 // this always returns true.
 
-bool expectSignal(Maybe<int> signal, FunctionParam<void()> code) noexcept;
+bool KJ_TEST_API expectSignal(Maybe<int> signal, FunctionParam<void()> code) noexcept;
 // Expects that the given code will trigger a signal.
 // The test will fork() and run in a subprocess. On Windows, where fork() is not available,
 // this always returns true.
 // Resets signal handlers to default prior to running the code in the child process.
 
-class LogExpectation: public ExceptionCallback {
+class KJ_TEST_CLASS LogExpectation: public ExceptionCallback {
 public:
-  LogExpectation(LogSeverity severity, StringPtr substring);
-  ~LogExpectation();
+  KJ_TEST_API LogExpectation(LogSeverity severity, StringPtr substring);
+  KJ_TEST_API ~LogExpectation();
 
-  void logMessage(LogSeverity severity, const char* file, int line, int contextDepth,
-                  String&& text) override;
+  void KJ_TEST_API logMessage(LogSeverity severity, const char* file, int line, int contextDepth,
+                         String&& text) override;
 
 private:
   LogSeverity severity;
@@ -206,16 +207,16 @@ private:
   UnwindDetector unwindDetector;
 };
 
-class GlobFilter {
+class KJ_TEST_CLASS GlobFilter {
   // Implements glob filters for the --filter flag.
   //
   // Exposed in header only for testing.
 
 public:
-  explicit GlobFilter(const char* pattern);
-  explicit GlobFilter(ArrayPtr<const char> pattern);
+  explicit KJ_TEST_API GlobFilter(const char* pattern);
+  explicit KJ_TEST_API GlobFilter(ArrayPtr<const char> pattern);
 
-  bool matches(StringPtr name);
+  bool KJ_TEST_API matches(StringPtr name);
 
 private:
   String pattern;

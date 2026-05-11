@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-capnp.h"
 #include "layout.h"
 #include "pointer-helpers.h"
 #include "orphan.h"
@@ -41,14 +42,14 @@ class PipelineHook;
 struct PipelineOp;
 struct AnyPointer;
 
-struct AnyList {
+struct CAPNP_CLASS AnyList {
   AnyList() = delete;
 
   class Reader;
   class Builder;
 };
 
-struct AnyStruct {
+struct CAPNP_CLASS AnyStruct {
   AnyStruct() = delete;
 
   class Reader;
@@ -57,7 +58,7 @@ struct AnyStruct {
 };
 
 template<>
-struct List<AnyStruct, Kind::OTHER> {
+struct CAPNP_CLASS List<AnyStruct, Kind::OTHER> {
   List() = delete;
 
   class Reader;
@@ -73,40 +74,42 @@ template <> struct Kind_<AnyList> { static constexpr Kind kind = Kind::OTHER; };
 // =======================================================================================
 // AnyPointer!
 
-enum class Equality {
+enum class CAPNP_CLASS Equality {
   NOT_EQUAL,
   EQUAL,
   UNKNOWN_CONTAINS_CAPS
 };
 
-kj::StringPtr KJ_STRINGIFY(Equality res);
+kj::StringPtr CAPNP_API KJ_STRINGIFY(Equality res);
 
-struct AnyPointer {
+struct CAPNP_CLASS AnyPointer {
   // Reader/Builder for the `AnyPointer` field type, i.e. a pointer that can point to an arbitrary
   // object.
 
   AnyPointer() = delete;
 
-  class Reader {
+  class CAPNP_CLASS Reader {
   public:
     typedef AnyPointer Reads;
 
-    Reader() = default;
-    inline Reader(_::PointerReader reader): reader(reader) {}
+    CAPNP_API Reader() = default;
+    inline CAPNP_API Reader(_::PointerReader reader): reader(reader) {}
 
-    inline MessageSize targetSize() const;
+    inline MessageSize CAPNP_API targetSize() const;
     // Get the total size of the target object and all its children.
 
-    inline PointerType getPointerType() const;
+    inline PointerType CAPNP_API getPointerType() const;
 
-    inline bool isNull() const { return getPointerType() == PointerType::NULL_; }
-    inline bool isStruct() const { return getPointerType() == PointerType::STRUCT; }
-    inline bool isList() const { return getPointerType() == PointerType::LIST; }
-    inline bool isCapability() const { return getPointerType() == PointerType::CAPABILITY; }
+    inline bool CAPNP_API isNull() const { return getPointerType() == PointerType::NULL_; }
+    inline bool CAPNP_API isStruct() const { return getPointerType() == PointerType::STRUCT; }
+    inline bool CAPNP_API isList() const { return getPointerType() == PointerType::LIST; }
+    inline bool CAPNP_API isCapability() const {
+      return getPointerType() == PointerType::CAPABILITY;
+    }
 
-    Equality equals(AnyPointer::Reader right) const;
-    bool operator==(AnyPointer::Reader right) const;
-    inline bool operator!=(AnyPointer::Reader right) const {
+    Equality CAPNP_API equals(AnyPointer::Reader right) const;
+    bool CAPNP_API operator==(AnyPointer::Reader right) const;
+    inline bool CAPNP_API operator!=(AnyPointer::Reader right) const {
       return !(*this == right);
     }
 
@@ -127,7 +130,7 @@ struct AnyPointer {
     // Only valid for T = DynamicCapability.  Requires `#include <capnp/dynamic.h>`.
 
 #if !CAPNP_LITE
-    kj::Own<ClientHook> getPipelinedCap(kj::ArrayPtr<const PipelineOp> ops) const;
+    kj::Own<ClientHook> CAPNP_API getPipelinedCap(kj::ArrayPtr<const PipelineOp> ops) const;
     // Used by RPC system to implement pipelining.  Applications generally shouldn't use this
     // directly.
 #endif  // !CAPNP_LITE
@@ -140,35 +143,35 @@ struct AnyPointer {
     friend struct _::PointerHelpers<AnyPointer>;
   };
 
-  class Builder {
+  class CAPNP_CLASS Builder {
   public:
     typedef AnyPointer Builds;
 
-    Builder() = delete;
-    inline Builder(decltype(nullptr)) {}
-    inline Builder(_::PointerBuilder builder): builder(builder) {}
+    CAPNP_API Builder() = delete;
+    inline CAPNP_API Builder(decltype(nullptr)) {}
+    inline CAPNP_API Builder(_::PointerBuilder builder): builder(builder) {}
 
-    inline MessageSize targetSize() const;
+    inline MessageSize CAPNP_API targetSize() const;
     // Get the total size of the target object and all its children.
 
-    inline PointerType getPointerType();
+    inline PointerType CAPNP_API getPointerType();
 
-    inline bool isNull() { return getPointerType() == PointerType::NULL_; }
-    inline bool isStruct() { return getPointerType() == PointerType::STRUCT; }
-    inline bool isList() { return getPointerType() == PointerType::LIST; }
-    inline bool isCapability() { return getPointerType() == PointerType::CAPABILITY; }
+    inline bool CAPNP_API isNull() { return getPointerType() == PointerType::NULL_; }
+    inline bool CAPNP_API isStruct() { return getPointerType() == PointerType::STRUCT; }
+    inline bool CAPNP_API isList() { return getPointerType() == PointerType::LIST; }
+    inline bool CAPNP_API isCapability() { return getPointerType() == PointerType::CAPABILITY; }
 
-    inline Equality equals(AnyPointer::Reader right) const {
+    inline Equality CAPNP_API equals(AnyPointer::Reader right) const {
       return asReader().equals(right);
     }
-    inline bool operator==(AnyPointer::Reader right) const {
+    inline bool CAPNP_API operator==(AnyPointer::Reader right) const {
       return asReader() == right;
     }
-    inline bool operator!=(AnyPointer::Reader right) const {
+    inline bool CAPNP_API operator!=(AnyPointer::Reader right) const {
       return !(*this == right);
     }
 
-    inline void clear();
+    inline void CAPNP_API clear();
     // Set to null.
 
     template <typename T>
@@ -203,13 +206,14 @@ struct AnyPointer {
     inline BuilderFor<T> initAs(ListSchema schema, uint elementCount);
     // Only valid for T = DynamicList.  Requires `#include <capnp/dynamic.h>`.
 
-    inline AnyList::Builder initAsAnyList(ElementSize elementSize, uint elementCount);
+    inline AnyList::Builder CAPNP_API initAsAnyList(ElementSize elementSize, uint elementCount);
     // Note: Does not accept INLINE_COMPOSITE for elementSize.
 
-    inline List<AnyStruct>::Builder initAsListOfAnyStruct(
+    inline List<AnyStruct>::Builder CAPNP_API initAsListOfAnyStruct(
         uint16_t dataWordCount, uint16_t pointerCount, uint elementCount);
 
-    inline AnyStruct::Builder initAsAnyStruct(uint16_t dataWordCount, uint16_t pointerCount);
+    inline AnyStruct::Builder CAPNP_API initAsAnyStruct(uint16_t dataWordCount,
+                                                        uint16_t pointerCount);
 
     template <typename T>
     inline void setAs(ReaderFor<T> value);
@@ -223,10 +227,10 @@ struct AnyPointer {
     template <typename T>
     inline void setCanonicalAs(ReaderFor<T> value);
 
-    inline void set(Reader value) { builder.copyFrom(value.reader); }
+    inline void CAPNP_API set(Reader value) { builder.copyFrom(value.reader); }
     // Set to a copy of another AnyPointer.
 
-    inline void setCanonical(Reader value) { builder.copyFrom(value.reader, true); }
+    inline void CAPNP_API setCanonical(Reader value) { builder.copyFrom(value.reader, true); }
 
     template <typename T>
     inline void adopt(Orphan<T>&& orphan);
@@ -249,11 +253,11 @@ struct AnyPointer {
     inline Orphan<T> disownAs(InterfaceSchema schema);
     // Only valid for T = DynamicCapability.  Requires `#include <capnp/dynamic.h>`.
 
-    inline Orphan<AnyPointer> disown();
+    inline Orphan<AnyPointer> CAPNP_API disown();
     // Disown without a type.
 
-    inline Reader asReader() const { return Reader(builder.asReader()); }
-    inline operator Reader() const { return Reader(builder.asReader()); }
+    inline Reader CAPNP_API asReader() const { return Reader(builder.asReader()); }
+    inline CAPNP_API operator Reader() const { return Reader(builder.asReader()); }
 
   private:
     _::PointerBuilder builder;
@@ -263,25 +267,25 @@ struct AnyPointer {
   };
 
 #if !CAPNP_LITE
-  class Pipeline {
+  class CAPNP_CLASS Pipeline {
   public:
     typedef AnyPointer Pipelines;
 
-    inline Pipeline(decltype(nullptr)) {}
-    inline explicit Pipeline(kj::Own<PipelineHook>&& hook): hook(kj::mv(hook)) {}
+    inline CAPNP_API Pipeline(decltype(nullptr)) {}
+    inline explicit CAPNP_API Pipeline(kj::Own<PipelineHook>&& hook): hook(kj::mv(hook)) {}
 
-    Pipeline noop();
+    Pipeline CAPNP_API noop();
     // Just make a copy.
 
-    Pipeline getPointerField(uint16_t pointerIndex);
+    Pipeline CAPNP_API getPointerField(uint16_t pointerIndex);
     // Deprecated. In the future, we should use .asAnyStruct.getPointerField.
 
-    inline AnyStruct::Pipeline asAnyStruct();
+    inline AnyStruct::Pipeline CAPNP_API asAnyStruct();
 
-    kj::Own<ClientHook> asCap();
+    kj::Own<ClientHook> CAPNP_API asCap();
     // Expect that the result is a capability and construct a pipelined version of it now.
 
-    inline kj::Own<PipelineHook> releasePipelineHook() { return kj::mv(hook); }
+    inline kj::Own<PipelineHook> CAPNP_API releasePipelineHook() { return kj::mv(hook); }
     // For use by RPC implementations.
 
     template <typename T, typename = kj::EnableIf<CAPNP_KIND(FromClient<T>) == Kind::INTERFACE>>
@@ -302,17 +306,17 @@ struct AnyPointer {
 };
 
 template <>
-class Orphan<AnyPointer> {
+class CAPNP_CLASS Orphan<AnyPointer> {
   // An orphaned object of unknown type.
 
 public:
-  Orphan() = default;
+  CAPNP_API Orphan() = default;
   KJ_DISALLOW_COPY(Orphan);
-  Orphan(Orphan&&) = default;
-  inline Orphan(_::OrphanBuilder&& builder)
+  CAPNP_API Orphan(Orphan&&) = default;
+  inline CAPNP_API Orphan(_::OrphanBuilder&& builder)
       : builder(kj::mv(builder)) {}
 
-  Orphan& operator=(Orphan&&) = default;
+  Orphan& CAPNP_API operator=(Orphan&&) = default;
 
   template <typename T>
   inline Orphan(Orphan<T>&& other): builder(kj::mv(other.builder)) {}
@@ -351,8 +355,8 @@ public:
   inline Orphan<T> releaseAs(InterfaceSchema schema);
   // Down-cast the orphan to a specific type.
 
-  inline bool operator==(decltype(nullptr)) const { return builder == nullptr; }
-  inline bool operator!=(decltype(nullptr)) const { return builder != nullptr; }
+  inline bool CAPNP_API operator==(decltype(nullptr)) const { return builder == nullptr; }
+  inline bool CAPNP_API operator!=(decltype(nullptr)) const { return builder != nullptr; }
 
 private:
   _::OrphanBuilder builder;
@@ -366,8 +370,8 @@ private:
 };
 
 template <Kind k> struct AnyTypeFor_;
-template <> struct AnyTypeFor_<Kind::STRUCT> { typedef AnyStruct Type; };
-template <> struct AnyTypeFor_<Kind::LIST> { typedef AnyList Type; };
+template <> struct CAPNP_CLASS AnyTypeFor_<Kind::STRUCT> { typedef AnyStruct Type; };
+template <> struct CAPNP_CLASS AnyTypeFor_<Kind::LIST> { typedef AnyList Type; };
 
 template <typename T>
 using AnyTypeFor = typename AnyTypeFor_<CAPNP_KIND(T)>::Type;
@@ -384,30 +388,30 @@ inline BuilderFor<AnyTypeFor<FromBuilder<T>>> toAny(T&& value) {
 }
 
 template <>
-struct List<AnyPointer, Kind::OTHER> {
+struct CAPNP_CLASS List<AnyPointer, Kind::OTHER> {
   // Note: This cannot be used for a list of structs, since such lists are not encoded as pointer
   //   lists! Use List<AnyStruct>.
 
   List() = delete;
 
-  class Reader {
+  class CAPNP_CLASS Reader {
   public:
     typedef List<AnyPointer> Reads;
 
-    inline Reader(): reader(ElementSize::POINTER) {}
-    inline explicit Reader(_::ListReader reader): reader(reader) {}
+    inline CAPNP_API Reader(): reader(ElementSize::POINTER) {}
+    inline explicit CAPNP_API Reader(_::ListReader reader): reader(reader) {}
 
-    inline uint size() const { return unbound(reader.size() / ELEMENTS); }
-    inline AnyPointer::Reader operator[](uint index) const {
+    inline uint CAPNP_API size() const { return unbound(reader.size() / ELEMENTS); }
+    inline AnyPointer::Reader CAPNP_API operator[](uint index) const {
       KJ_IREQUIRE(index < size());
       return AnyPointer::Reader(reader.getPointerElement(bounded(index) * ELEMENTS));
     }
 
     typedef _::IndexingIterator<const Reader, typename AnyPointer::Reader> Iterator;
-    inline Iterator begin() const { return Iterator(this, 0); }
-    inline Iterator end() const { return Iterator(this, size()); }
+    inline Iterator CAPNP_API begin() const { return Iterator(this, 0); }
+    inline Iterator CAPNP_API end() const { return Iterator(this, size()); }
 
-    inline MessageSize totalSize() const {
+    inline MessageSize CAPNP_API totalSize() const {
       return reader.totalSize().asPublic();
     }
 
@@ -422,26 +426,26 @@ struct List<AnyPointer, Kind::OTHER> {
     friend struct ToDynamic_;
   };
 
-  class Builder {
+  class CAPNP_CLASS Builder {
   public:
     typedef List<AnyPointer> Builds;
 
     Builder() = delete;
-    inline Builder(decltype(nullptr)): builder(ElementSize::POINTER) {}
-    inline explicit Builder(_::ListBuilder builder): builder(builder) {}
+    inline CAPNP_API Builder(decltype(nullptr)): builder(ElementSize::POINTER) {}
+    inline explicit CAPNP_API Builder(_::ListBuilder builder): builder(builder) {}
 
-    inline operator Reader() const { return Reader(builder.asReader()); }
-    inline Reader asReader() const { return Reader(builder.asReader()); }
+    inline CAPNP_API operator Reader() const { return Reader(builder.asReader()); }
+    inline Reader CAPNP_API asReader() const { return Reader(builder.asReader()); }
 
-    inline uint size() const { return unbound(builder.size() / ELEMENTS); }
-    inline AnyPointer::Builder operator[](uint index) {
+    inline uint CAPNP_API size() const { return unbound(builder.size() / ELEMENTS); }
+    inline AnyPointer::Builder CAPNP_API operator[](uint index) {
       KJ_IREQUIRE(index < size());
       return AnyPointer::Builder(builder.getPointerElement(bounded(index) * ELEMENTS));
     }
 
     typedef _::IndexingIterator<Builder, typename AnyPointer::Builder> Iterator;
-    inline Iterator begin() { return Iterator(this, 0); }
-    inline Iterator end() { return Iterator(this, size()); }
+    inline Iterator CAPNP_API begin() { return Iterator(this, 0); }
+    inline Iterator CAPNP_API end() { return Iterator(this, size()); }
 
   private:
     _::ListBuilder builder;
@@ -453,7 +457,7 @@ struct List<AnyPointer, Kind::OTHER> {
   };
 };
 
-class AnyStruct::Reader {
+class CAPNP_CLASS AnyStruct::Reader {
 public:
   typedef AnyStruct Reads;
 
@@ -478,7 +482,7 @@ public:
   }
 
   Equality equals(AnyStruct::Reader right) const;
-  bool operator==(AnyStruct::Reader right) const;
+  bool CAPNP_API operator==(AnyStruct::Reader right) const;
   inline bool operator!=(AnyStruct::Reader right) const {
     return !(*this == right);
   }
@@ -501,7 +505,7 @@ private:
   friend class Orphanage;
 };
 
-class AnyStruct::Builder {
+class CAPNP_CLASS AnyStruct::Builder {
 public:
   typedef AnyStruct Builds;
 
@@ -551,7 +555,7 @@ private:
 };
 
 #if !CAPNP_LITE
-class AnyStruct::Pipeline {
+class CAPNP_CLASS AnyStruct::Pipeline {
 public:
   inline Pipeline(decltype(nullptr)): typeless(nullptr) {}
   inline explicit Pipeline(AnyPointer::Pipeline&& typeless)
@@ -571,7 +575,7 @@ private:
 };
 #endif  // !CAPNP_LITE
 
-class List<AnyStruct, Kind::OTHER>::Reader {
+class CAPNP_CLASS List<AnyStruct, Kind::OTHER>::Reader {
 public:
   typedef List<AnyStruct> Reads;
 
@@ -603,7 +607,7 @@ private:
   friend struct ToDynamic_;
 };
 
-class List<AnyStruct, Kind::OTHER>::Builder {
+class CAPNP_CLASS List<AnyStruct, Kind::OTHER>::Builder {
 public:
   typedef List<AnyStruct> Builds;
 
@@ -633,7 +637,7 @@ private:
   friend struct ToDynamic_;
 };
 
-class AnyList::Reader {
+class CAPNP_CLASS AnyList::Reader {
 public:
   typedef AnyList Reads;
 
@@ -651,8 +655,8 @@ public:
 
   inline kj::ArrayPtr<const byte> getRawBytes() const { return _reader.asRawBytes(); }
 
-  Equality equals(AnyList::Reader right) const;
-  bool operator==(AnyList::Reader right) const;
+  Equality CAPNP_API equals(AnyList::Reader right) const;
+  bool CAPNP_API operator==(AnyList::Reader right) const;
   inline bool operator!=(AnyList::Reader right) const {
     return !(*this == right);
   }
@@ -673,7 +677,7 @@ private:
   friend class Orphanage;
 };
 
-class AnyList::Builder {
+class CAPNP_CLASS AnyList::Builder {
 public:
   typedef AnyList Builds;
 
@@ -719,7 +723,7 @@ private:
 
 #if !CAPNP_LITE
 
-struct PipelineOp {
+struct CAPNP_CLASS PipelineOp {
   // Corresponds to rpc.capnp's PromisedAnswer.Op.
 
   enum Type {
@@ -757,7 +761,7 @@ inline bool operator!=(const PipelineOp& a, const PipelineOp& b) {
   return !(a == b);
 }
 
-class PipelineHook {
+class CAPNP_CLASS PipelineHook {
   // Represents a currently-running call, and implements pipelined requests on its result.
 
 public:
@@ -767,7 +771,7 @@ public:
   virtual kj::Own<ClientHook> getPipelinedCap(kj::ArrayPtr<const PipelineOp> ops) = 0;
   // Extract a promised Capability from the results.
 
-  virtual kj::Own<ClientHook> getPipelinedCap(kj::Array<PipelineOp>&& ops);
+  virtual kj::Own<ClientHook> CAPNP_API getPipelinedCap(kj::Array<PipelineOp>&& ops);
   // Version of getPipelinedCap() passing the array by move.  May avoid a copy in some cases.
   // Default implementation just calls the other version.
 
@@ -875,49 +879,57 @@ inline Orphan<AnyPointer> AnyPointer::Builder::disown() {
   return Orphan<AnyPointer>(builder.disown());
 }
 
-template <> struct ReaderFor_ <AnyPointer, Kind::OTHER> { typedef AnyPointer::Reader Type; };
-template <> struct BuilderFor_<AnyPointer, Kind::OTHER> { typedef AnyPointer::Builder Type; };
-template <> struct ReaderFor_ <AnyStruct, Kind::OTHER> { typedef AnyStruct::Reader Type; };
-template <> struct BuilderFor_<AnyStruct, Kind::OTHER> { typedef AnyStruct::Builder Type; };
+template <> struct CAPNP_CLASS ReaderFor_ <AnyPointer, Kind::OTHER> {
+  typedef AnyPointer::Reader Type;
+};
+template <> struct CAPNP_CLASS BuilderFor_<AnyPointer, Kind::OTHER> {
+  typedef AnyPointer::Builder Type;
+};
+template <> struct CAPNP_CLASS ReaderFor_ <AnyStruct, Kind::OTHER> {
+  typedef AnyStruct::Reader Type;
+};
+template <> struct CAPNP_CLASS BuilderFor_<AnyStruct, Kind::OTHER> {
+  typedef AnyStruct::Builder Type;
+};
 
 template <>
-struct Orphanage::GetInnerReader<AnyPointer, Kind::OTHER> {
-  static inline _::PointerReader apply(const AnyPointer::Reader& t) {
+struct CAPNP_CLASS Orphanage::GetInnerReader<AnyPointer, Kind::OTHER> {
+  static inline _::PointerReader CAPNP_API apply(const AnyPointer::Reader& t) {
     return t.reader;
   }
 };
 
 template <>
-struct Orphanage::GetInnerBuilder<AnyPointer, Kind::OTHER> {
-  static inline _::PointerBuilder apply(AnyPointer::Builder& t) {
+struct CAPNP_CLASS Orphanage::GetInnerBuilder<AnyPointer, Kind::OTHER> {
+  static inline _::PointerBuilder CAPNP_API apply(AnyPointer::Builder& t) {
     return t.builder;
   }
 };
 
 template <>
-struct Orphanage::GetInnerReader<AnyStruct, Kind::OTHER> {
-  static inline _::StructReader apply(const AnyStruct::Reader& t) {
+struct CAPNP_CLASS Orphanage::GetInnerReader<AnyStruct, Kind::OTHER> {
+  static inline _::StructReader CAPNP_API apply(const AnyStruct::Reader& t) {
     return t._reader;
   }
 };
 
 template <>
-struct Orphanage::GetInnerBuilder<AnyStruct, Kind::OTHER> {
-  static inline _::StructBuilder apply(AnyStruct::Builder& t) {
+struct CAPNP_CLASS Orphanage::GetInnerBuilder<AnyStruct, Kind::OTHER> {
+  static inline _::StructBuilder CAPNP_API apply(AnyStruct::Builder& t) {
     return t._builder;
   }
 };
 
 template <>
-struct Orphanage::GetInnerReader<AnyList, Kind::OTHER> {
-  static inline _::ListReader apply(const AnyList::Reader& t) {
+struct CAPNP_CLASS Orphanage::GetInnerReader<AnyList, Kind::OTHER> {
+  static inline _::ListReader CAPNP_API apply(const AnyList::Reader& t) {
     return t._reader;
   }
 };
 
 template <>
-struct Orphanage::GetInnerBuilder<AnyList, Kind::OTHER> {
-  static inline _::ListBuilder apply(AnyList::Builder& t) {
+struct CAPNP_CLASS Orphanage::GetInnerBuilder<AnyList, Kind::OTHER> {
+  static inline _::ListBuilder CAPNP_API apply(AnyList::Builder& t) {
     return t._builder;
   }
 };
@@ -938,32 +950,32 @@ inline Orphan<T> Orphan<AnyPointer>::releaseAs() {
 // Using AnyPointer as the template type should work...
 
 template <>
-inline typename AnyPointer::Reader AnyPointer::Reader::getAs<AnyPointer>() const {
+inline typename AnyPointer::Reader CAPNP_API AnyPointer::Reader::getAs<AnyPointer>() const {
   return *this;
 }
 template <>
-inline typename AnyPointer::Builder AnyPointer::Builder::getAs<AnyPointer>() {
+inline typename AnyPointer::Builder CAPNP_API AnyPointer::Builder::getAs<AnyPointer>() {
   return *this;
 }
 template <>
-inline typename AnyPointer::Builder AnyPointer::Builder::initAs<AnyPointer>() {
+inline typename AnyPointer::Builder CAPNP_API AnyPointer::Builder::initAs<AnyPointer>() {
   clear();
   return *this;
 }
 template <>
-inline void AnyPointer::Builder::setAs<AnyPointer>(AnyPointer::Reader value) {
+inline void CAPNP_API AnyPointer::Builder::setAs<AnyPointer>(AnyPointer::Reader value) {
   return builder.copyFrom(value.reader);
 }
 template <>
-inline void AnyPointer::Builder::adopt<AnyPointer>(Orphan<AnyPointer>&& orphan) {
+inline void CAPNP_API AnyPointer::Builder::adopt<AnyPointer>(Orphan<AnyPointer>&& orphan) {
   builder.adopt(kj::mv(orphan.builder));
 }
 template <>
-inline Orphan<AnyPointer> AnyPointer::Builder::disownAs<AnyPointer>() {
+inline Orphan<AnyPointer> CAPNP_API AnyPointer::Builder::disownAs<AnyPointer>() {
   return Orphan<AnyPointer>(builder.disown());
 }
 template <>
-inline Orphan<AnyPointer> Orphan<AnyPointer>::releaseAs() {
+inline Orphan<AnyPointer> CAPNP_API Orphan<AnyPointer>::releaseAs() {
   return kj::mv(*this);
 }
 
@@ -1095,21 +1107,21 @@ struct OrphanGetImpl<AnyList, Kind::OTHER> {
 #if !CAPNP_LITE
 
 template <typename T>
-struct PipelineHook::FromImpl {
-  static inline kj::Own<PipelineHook> apply(typename T::Pipeline&& pipeline) {
+struct CAPNP_CLASS PipelineHook::FromImpl {
+  static inline kj::Own<PipelineHook> CAPNP_API apply(typename T::Pipeline&& pipeline) {
     return from(kj::mv(pipeline._typeless));
   }
-  static inline PipelineHook& apply(typename T::Pipeline& pipeline) {
+  static inline PipelineHook& CAPNP_API apply(typename T::Pipeline& pipeline) {
     return from(pipeline._typeless);
   }
 };
 
 template <>
-struct PipelineHook::FromImpl<AnyPointer> {
-  static inline kj::Own<PipelineHook> apply(AnyPointer::Pipeline&& pipeline) {
+struct CAPNP_CLASS PipelineHook::FromImpl<AnyPointer> {
+  static inline kj::Own<PipelineHook> CAPNP_API apply(AnyPointer::Pipeline&& pipeline) {
     return kj::mv(pipeline.hook);
   }
-  static inline PipelineHook& apply(AnyPointer::Pipeline& pipeline) {
+  static inline PipelineHook& CAPNP_API apply(AnyPointer::Pipeline& pipeline) {
     return *pipeline.hook;
   }
 };

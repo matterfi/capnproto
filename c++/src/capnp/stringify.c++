@@ -19,6 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#include "export-capnp.h"
 #include "dynamic.h"
 #include <kj/debug.h>
 #include <kj/vector.h>
@@ -230,16 +231,20 @@ kj::StringTree stringify(DynamicValue::Reader value) {
 
 }  // namespace
 
-kj::StringTree prettyPrint(DynamicStruct::Reader value) {
+kj::StringTree CAPNP_API prettyPrint(DynamicStruct::Reader value) {
   return print(value, schema::Type::STRUCT, Indent(true), BARE);
 }
 
-kj::StringTree prettyPrint(DynamicList::Reader value) {
+kj::StringTree CAPNP_API prettyPrint(DynamicList::Reader value) {
   return print(value, schema::Type::LIST, Indent(true), BARE);
 }
 
-kj::StringTree prettyPrint(DynamicStruct::Builder value) { return prettyPrint(value.asReader()); }
-kj::StringTree prettyPrint(DynamicList::Builder value) { return prettyPrint(value.asReader()); }
+kj::StringTree CAPNP_API prettyPrint(DynamicStruct::Builder value) {
+  return prettyPrint(value.asReader());
+}
+kj::StringTree CAPNP_API prettyPrint(DynamicList::Builder value) {
+  return prettyPrint(value.asReader());
+}
 
 kj::StringTree KJ_STRINGIFY(const DynamicValue::Reader& value) { return stringify(value); }
 kj::StringTree KJ_STRINGIFY(const DynamicValue::Builder& value) { return stringify(value.asReader()); }

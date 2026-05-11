@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "common.h"
 
 KJ_BEGIN_HEADER
@@ -35,10 +36,10 @@ class ListIterator;
 
 namespace _ {  // (private)
 
-KJ_NORETURN(void throwDoubleAdd());
-KJ_NORETURN(void throwRemovedNotPresent());
-KJ_NORETURN(void throwRemovedWrongList());
-KJ_NORETURN(void throwDestroyedWhileInList());
+KJ_NORETURN(void KJ_API throwDoubleAdd());
+KJ_NORETURN(void KJ_API throwRemovedNotPresent());
+KJ_NORETURN(void KJ_API throwRemovedWrongList());
+KJ_NORETURN(void KJ_API throwDestroyedWhileInList());
 
 }  // namespace _ (private)
 

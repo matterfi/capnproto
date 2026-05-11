@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include "../export-kj.h"
 #include "common.h"
 #include "../string.h"
 #include <inttypes.h>
@@ -36,9 +37,9 @@ namespace parse {
 // =======================================================================================
 // Exact char/string.
 
-class ExactString_ {
+class KJ_CLASS ExactString_ {
 public:
-  constexpr inline ExactString_(const char* str): str(str) {}
+  constexpr inline KJ_API ExactString_(const char* str): str(str) {}
 
   template <typename Input>
   Maybe<Tuple<>> operator()(Input& input) const {
@@ -57,7 +58,7 @@ private:
   const char* str;
 };
 
-constexpr inline ExactString_ exactString(const char* str) {
+constexpr inline ExactString_ KJ_API exactString(const char* str) {
   return ExactString_(str);
 }
 
@@ -71,44 +72,44 @@ constexpr ExactlyConst_<char, c> exactChar() {
 // =======================================================================================
 // Char ranges / sets
 
-class CharGroup_ {
+class KJ_CLASS CharGroup_ {
 public:
   constexpr inline CharGroup_(): bits{0, 0, 0, 0} {}
 
-  constexpr inline CharGroup_ orRange(unsigned char first, unsigned char last) const {
+  constexpr inline CharGroup_ KJ_API orRange(unsigned char first, unsigned char last) const {
     return CharGroup_(bits[0] | (oneBits(last +   1) & ~oneBits(first      )),
                       bits[1] | (oneBits(last -  63) & ~oneBits(first -  64)),
                       bits[2] | (oneBits(last - 127) & ~oneBits(first - 128)),
                       bits[3] | (oneBits(last - 191) & ~oneBits(first - 192)));
   }
 
-  constexpr inline CharGroup_ orAny(const char* chars) const {
+  constexpr inline CharGroup_ KJ_API orAny(const char* chars) const {
     return *chars == 0 ? *this : orChar(*chars).orAny(chars + 1);
   }
 
-  constexpr inline CharGroup_ orChar(unsigned char c) const {
+  constexpr inline CharGroup_ KJ_API orChar(unsigned char c) const {
     return CharGroup_(bits[0] | bit(c),
                       bits[1] | bit(c - 64),
                       bits[2] | bit(c - 128),
                       bits[3] | bit(c - 256));
   }
 
-  constexpr inline CharGroup_ orGroup(CharGroup_ other) const {
+  constexpr inline CharGroup_ KJ_API orGroup(CharGroup_ other) const {
     return CharGroup_(bits[0] | other.bits[0],
                       bits[1] | other.bits[1],
                       bits[2] | other.bits[2],
                       bits[3] | other.bits[3]);
   }
 
-  constexpr inline CharGroup_ invert() const {
+  constexpr inline CharGroup_ KJ_API invert() const {
     return CharGroup_(~bits[0], ~bits[1], ~bits[2], ~bits[3]);
   }
 
-  constexpr inline bool contains(unsigned char c) const {
+  constexpr inline bool KJ_API contains(unsigned char c) const {
     return (bits[c / 64] & (1ll << (c % 64))) != 0;
   }
 
-  inline bool containsAll(ArrayPtr<const char> text) const {
+  inline bool KJ_API containsAll(ArrayPtr<const char> text) const {
     for (char c: text) {
       if (!contains(c)) return false;
     }
@@ -141,7 +142,7 @@ private:
   }
 };
 
-constexpr inline CharGroup_ charRange(char first, char last) {
+constexpr inline CharGroup_ KJ_API charRange(char first, char last) {
   // Create a parser which accepts any character in the range from `first` to `last`, inclusive.
   // For example: `charRange('a', 'z')` matches all lower-case letters.  The parser's result is the
   // character matched.
@@ -163,7 +164,7 @@ constexpr inline CharGroup_ charRange(char first, char last) {
 //   this horrible, horrible hack makes things work. This is awful, but it's better than nothing.
 //   Hopefully, MSVC will get fixed soon and we'll be able to remove this.
 #else
-constexpr inline CharGroup_ anyOfChars(const char* chars) {
+constexpr inline CharGroup_ KJ_API anyOfChars(const char* chars) {
   // Returns a parser that accepts any of the characters in the given string (which should usually
   // be a literal).  The returned parser is of the same type as returned by `charRange()` -- see
   // that function for more info.
@@ -194,19 +195,19 @@ constexpr inline auto charsToString(SubParser&& subParser)
 // =======================================================================================
 // Basic character classes.
 
-constexpr auto alpha = charRange('a', 'z').orRange('A', 'Z');
-constexpr auto digit = charRange('0', '9');
-constexpr auto alphaNumeric = alpha.orGroup(digit);
-constexpr auto nameStart = alpha.orChar('_');
-constexpr auto nameChar = alphaNumeric.orChar('_');
-constexpr auto hexDigit = charRange('0', '9').orRange('a', 'f').orRange('A', 'F');
-constexpr auto octDigit = charRange('0', '7');
-constexpr auto whitespaceChar = anyOfChars(" \f\n\r\t\v");
-constexpr auto controlChar = charRange(0, 0x1f).invert().orGroup(whitespaceChar).invert();
+constexpr auto KJ_API alpha = charRange('a', 'z').orRange('A', 'Z');
+constexpr auto KJ_API digit = charRange('0', '9');
+constexpr auto KJ_API alphaNumeric = alpha.orGroup(digit);
+constexpr auto KJ_API nameStart = alpha.orChar('_');
+constexpr auto KJ_API nameChar = alphaNumeric.orChar('_');
+constexpr auto KJ_API hexDigit = charRange('0', '9').orRange('a', 'f').orRange('A', 'F');
+constexpr auto KJ_API octDigit = charRange('0', '7');
+constexpr auto KJ_API whitespaceChar = anyOfChars(" \f\n\r\t\v");
+constexpr auto KJ_API controlChar = charRange(0, 0x1f).invert().orGroup(whitespaceChar).invert();
 
-constexpr auto whitespace = many(anyOfChars(" \f\n\r\t\v"));
+constexpr auto KJ_API whitespace = many(anyOfChars(" \f\n\r\t\v"));
 
-constexpr auto discardWhitespace = discard(many(discard(anyOfChars(" \f\n\r\t\v"))));
+constexpr auto KJ_API discardWhitespace = discard(many(discard(anyOfChars(" \f\n\r\t\v"))));
 // Like discard(whitespace) but avoids some memory allocation.
 
 // =======================================================================================
@@ -226,7 +227,8 @@ struct IdentifierToString {
 
 }  // namespace _ (private)
 
-constexpr auto identifier = transform(sequence(nameStart, many(nameChar)), _::IdentifierToString());
+constexpr auto KJ_API identifier = transform(sequence(nameStart, many(nameChar)),
+                                             _::IdentifierToString());
 // Parses an identifier (e.g. a C variable name).
 
 // =======================================================================================
@@ -257,7 +259,7 @@ struct ParseInteger {
 
 }  // namespace _ (private)
 
-constexpr auto integer = sequence(
+constexpr auto KJ_API integer = sequence(
     oneOf(
       transform(sequence(exactChar<'0'>(), exactChar<'x'>(), oneOrMore(hexDigit)), _::ParseInteger<16>()),
       transform(sequence(exactChar<'0'>(), many(octDigit)), _::ParseInteger<8>()),
@@ -269,15 +271,15 @@ constexpr auto integer = sequence(
 
 namespace _ {  // private
 
-struct ParseFloat {
-  double operator()(const Array<char>& digits,
-                    const Maybe<Array<char>>& fraction,
-                    const Maybe<Tuple<Maybe<char>, Array<char>>>& exponent) const;
+struct KJ_CLASS ParseFloat {
+  double KJ_API operator()(const Array<char>& digits,
+                           const Maybe<Array<char>>& fraction,
+                           const Maybe<Tuple<Maybe<char>, Array<char>>>& exponent) const;
 };
 
 }  // namespace _ (private)
 
-constexpr auto number = transform(
+constexpr auto KJ_API number = transform(
     sequence(
         oneOrMore(digit),
         optional(sequence(exactChar<'.'>(), many(digit))),
@@ -332,7 +334,7 @@ struct ParseOctEscape {
 
 }  // namespace _ (private)
 
-constexpr auto escapeSequence =
+constexpr auto KJ_API escapeSequence =
     sequence(exactChar<'\\'>(), oneOf(
         transform(anyOfChars("abfnrtv'\"\\\?"), _::InterpretEscape()),
         transform(sequence(exactChar<'x'>(), hexDigit, hexDigit), _::ParseHexEscape()),
@@ -341,19 +343,19 @@ constexpr auto escapeSequence =
 // A parser that parses a C-string-style escape sequence (starting with a backslash).  Returns
 // a char.
 
-constexpr auto doubleQuotedString = charsToString(sequence(
+constexpr auto KJ_API doubleQuotedString = charsToString(sequence(
     exactChar<'\"'>(),
     many(oneOf(anyOfChars("\\\n\"").invert(), escapeSequence)),
     exactChar<'\"'>()));
 // Parses a C-style double-quoted string.
 
-constexpr auto singleQuotedString = charsToString(sequence(
+constexpr auto KJ_API singleQuotedString = charsToString(sequence(
     exactChar<'\''>(),
     many(oneOf(anyOfChars("\\\n\'").invert(), escapeSequence)),
     exactChar<'\''>()));
 // Parses a C-style single-quoted string.
 
-constexpr auto doubleQuotedHexBinary = sequence(
+constexpr auto KJ_API doubleQuotedHexBinary = sequence(
     exactChar<'0'>(), exactChar<'x'>(), exactChar<'\"'>(),
     oneOrMore(transform(sequence(discardWhitespace, hexDigit, hexDigit), _::ParseHexByte())),
     discardWhitespace,

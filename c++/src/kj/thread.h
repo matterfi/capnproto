@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "common.h"
 #include "function.h"
 #include "exception.h"
@@ -29,23 +30,23 @@ KJ_BEGIN_HEADER
 
 namespace kj {
 
-class Thread {
+class KJ_CLASS Thread {
   // A thread!  Pass a lambda to the constructor, and it runs in the thread.  The destructor joins
   // the thread.  If the function throws an exception, it is rethrown from the thread's destructor
   // (if not unwinding from another exception).
 
 public:
-  explicit Thread(Function<void()> func);
+  explicit KJ_API Thread(Function<void()> func);
   KJ_DISALLOW_COPY_AND_MOVE(Thread);
 
-  ~Thread() noexcept(false);
+  KJ_API ~Thread() noexcept(false);
 
 #if !_WIN32
-  void sendSignal(int signo);
+  void KJ_API sendSignal(int signo);
   // Send a Unix signal to the given thread, using pthread_kill or an equivalent.
 #endif
 
-  void detach();
+  void KJ_API detach();
   // Don't join the thread in ~Thread().
 
 private:

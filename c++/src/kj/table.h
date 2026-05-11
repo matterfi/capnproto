@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "common.h"
 #include "tuple.h"
 #include "vector.h"
@@ -378,7 +379,7 @@ class TreeIndex;
 
 namespace _ {  // private
 
-KJ_NORETURN(void throwDuplicateTableRow());
+KJ_NORETURN(void KJ_API throwDuplicateTableRow());
 
 template <typename Dst, typename Src, typename = decltype(instance<Src>().size())>
 inline void tryReserveSize(Dst& dst, Src&& src) { dst.reserve(dst.size() + src.size()); }
@@ -855,7 +856,7 @@ size_t Table<Row, Indexes...>::eraseAllImpl(Collection&& collection) {
 
 namespace _ {  // private
 
-void logHashTableInconsistency();
+void KJ_API logHashTableInconsistency();
 
 struct HashBucket {
   uint hash;
@@ -891,9 +892,9 @@ inline size_t probeHash(const kj::Array<HashBucket>& buckets, size_t i) {
   }
 }
 
-kj::Array<HashBucket> rehash(kj::ArrayPtr<const HashBucket> oldBuckets, size_t targetSize);
+kj::Array<HashBucket> KJ_API rehash(kj::ArrayPtr<const HashBucket> oldBuckets, size_t targetSize);
 
-uint chooseBucket(uint hash, uint count);
+uint KJ_API chooseBucket(uint hash, uint count);
 
 }  // namespace _ (private)
 
@@ -1058,7 +1059,7 @@ inline void azero(T* ptr, size_t size) { memset(ptr, 0, size * sizeof(T)); }
 //
 // TODO(cleanup): These are generally useful, put them somewhere.
 
-class BTreeImpl {
+class KJ_CLASS BTreeImpl {
 public:
   class Iterator;
   class MaybeUint;
@@ -1084,8 +1085,8 @@ public:
     // Returns true if the key comes after the value in the given row.
   };
 
-  BTreeImpl();
-  ~BTreeImpl() noexcept(false);
+  KJ_API BTreeImpl();
+  KJ_API ~BTreeImpl() noexcept(false);
 
   KJ_DISALLOW_COPY(BTreeImpl);
   BTreeImpl(BTreeImpl&& other);
@@ -1095,7 +1096,7 @@ public:
 
   void reserve(size_t size);
 
-  void clear();
+  void KJ_API clear();
 
   Iterator begin() const;
   Iterator end() const;
@@ -1103,10 +1104,10 @@ public:
   Iterator search(const SearchKey& searchKey) const;
   // Find the "first" row (in sorted order) for which searchKey.isAfter(rowNumber) returns true.
 
-  Iterator insert(const SearchKey& searchKey);
+  Iterator KJ_API insert(const SearchKey& searchKey);
   // Like search() but ensures that there is room in the leaf node to insert a new row.
 
-  void erase(uint row, const SearchKey& searchKey);
+  void KJ_API erase(uint row, const SearchKey& searchKey);
   // Erase the given row number from the tree. searchKey.isAfter() returns true for the given row
   // and all rows after it.
 
@@ -1552,52 +1553,52 @@ private:
 // -----------------------------------------------------------------------------
 // Insertion order index
 
-class InsertionOrderIndex {
+class KJ_CLASS InsertionOrderIndex {
   // Table index which allows iterating over elements in order of insertion. This index cannot
   // be used for Table::find(), but can be used for Table::ordered().
 
   struct Link;
 public:
-  InsertionOrderIndex();
+  KJ_API InsertionOrderIndex();
   InsertionOrderIndex(const InsertionOrderIndex&) = delete;
   InsertionOrderIndex& operator=(const InsertionOrderIndex&) = delete;
-  InsertionOrderIndex(InsertionOrderIndex&& other);
+  KJ_API InsertionOrderIndex(InsertionOrderIndex&& other);
   InsertionOrderIndex& operator=(InsertionOrderIndex&& other);
-  ~InsertionOrderIndex() noexcept(false);
+  KJ_API ~InsertionOrderIndex() noexcept(false);
 
-  class Iterator {
+  class KJ_CLASS Iterator {
   public:
-    Iterator(const Link* links, uint pos)
+    KJ_API Iterator(const Link* links, uint pos)
         : links(links), pos(pos) {}
 
-    inline size_t operator*() const {
+    inline size_t KJ_API operator*() const {
       KJ_TABLE_IREQUIRE(pos != 0, "can't dereference end() iterator");
       return pos - 1;
     };
 
-    inline Iterator& operator++() {
+    inline Iterator& KJ_API operator++() {
       pos = links[pos].next;
       return *this;
     }
-    inline Iterator operator++(int) {
+    inline Iterator KJ_API operator++(int) {
       Iterator result = *this;
       ++*this;
       return result;
     }
-    inline Iterator& operator--() {
+    inline Iterator& KJ_API operator--() {
       pos = links[pos].prev;
       return *this;
     }
-    inline Iterator operator--(int) {
+    inline Iterator KJ_API operator--(int) {
       Iterator result = *this;
       --*this;
       return result;
     }
 
-    inline bool operator==(const Iterator& other) const {
+    inline bool KJ_API operator==(const Iterator& other) const {
       return pos == other.pos;
     }
-    inline bool operator!=(const Iterator& other) const {
+    inline bool KJ_API operator!=(const Iterator& other) const {
       return pos != other.pos;
     }
 
@@ -1609,10 +1610,10 @@ public:
   template <typename Row>
   Row& keyForRow(Row& row) const { return row; }
 
-  void reserve(size_t size);
-  void clear();
-  inline Iterator begin() const { return Iterator(links, links[0].next); }
-  inline Iterator end() const { return Iterator(links, 0); }
+  void KJ_API reserve(size_t size);
+  void KJ_API clear();
+  inline Iterator KJ_API begin() const { return Iterator(links, links[0].next); }
+  inline Iterator KJ_API end() const { return Iterator(links, 0); }
 
   template <typename Row>
   kj::Maybe<size_t> insert(kj::ArrayPtr<Row> table, size_t pos, const Row& row) {
@@ -1640,9 +1641,9 @@ private:
   // links[0] is special: links[0].next points to the first link, links[0].prev points to the last.
   // links[n+1] corresponds to row n.
 
-  kj::Maybe<size_t> insertImpl(size_t pos);
-  void eraseImpl(size_t pos);
-  void moveImpl(size_t oldPos, size_t newPos);
+  kj::Maybe<size_t> KJ_API insertImpl(size_t pos);
+  void KJ_API eraseImpl(size_t pos);
+  void KJ_API moveImpl(size_t oldPos, size_t newPos);
 
   static const Link EMPTY_LINK;
 };

@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <capnp/export-capnp-capnpc.h>
 #include <capnp/compiler/grammar.capnp.h>
 #include <capnp/compiler/lexer.capnp.h>
 #include <kj/parse/common.h>
@@ -32,37 +33,38 @@ CAPNP_BEGIN_HEADER
 namespace capnp {
 namespace compiler {
 
-void parseFile(List<Statement>::Reader statements, ParsedFile::Builder result,
-               ErrorReporter& errorReporter, bool requiresId);
+void CAPNP_CAPNPC_API parseFile(List<Statement>::Reader statements, ParsedFile::Builder result,
+                                ErrorReporter& errorReporter, bool requiresId);
 // Parse a list of statements to build a ParsedFile.
 //
 // If any errors are reported, then the output is not usable.  However, it may be passed on through
 // later stages of compilation in order to detect additional errors.
 
-uint64_t generateRandomId();
+uint64_t CAPNP_CAPNPC_API generateRandomId();
 // Generate a new random unique ID.  This lives here mostly for lack of a better location.
 
-uint64_t generateChildId(uint64_t parentId, kj::StringPtr childName);
+uint64_t CAPNP_CAPNPC_API generateChildId(uint64_t parentId, kj::StringPtr childName);
 // Generate the ID for a child node given its parent ID and name.
 
-uint64_t generateGroupId(uint64_t parentId, uint16_t groupIndex);
+uint64_t CAPNP_CAPNPC_API generateGroupId(uint64_t parentId, uint16_t groupIndex);
 // Generate the ID for a group within a struct.
 
-uint64_t generateMethodParamsId(uint64_t parentId, uint16_t methodOrdinal, bool isResults);
+uint64_t CAPNP_CAPNPC_API generateMethodParamsId(uint64_t parentId, uint16_t methodOrdinal,
+                                                 bool isResults);
 // Generate the ID for a struct representing method params / results.
 //
 // TODO(cleanup):  Move generate*Id() somewhere more sensible.
 
-class CapnpParser {
+class CAPNP_CAPNPC_CLASS CapnpParser {
   // Advanced parser interface.  This interface exposes the inner parsers so that you can embed
   // them into your own parsers.
 
 public:
-  CapnpParser(Orphanage orphanage, ErrorReporter& errorReporter);
+  CAPNP_CAPNPC_API CapnpParser(Orphanage orphanage, ErrorReporter& errorReporter);
   // `orphanage` is used to allocate Cap'n Proto message objects in the result.  `inputStart` is
   // a pointer to the beginning of the input, used to compute byte offsets.
 
-  ~CapnpParser() noexcept(false);
+  CAPNP_CAPNPC_API ~CapnpParser() noexcept(false);
 
   KJ_DISALLOW_COPY_AND_MOVE(CapnpParser);
 
@@ -72,68 +74,68 @@ public:
   using Parser = kj::parse::ParserRef<ParserInput, Output>;
   using DeclParser = Parser<DeclParserResult>;
 
-  kj::Maybe<Orphan<Declaration>> parseStatement(
+  kj::Maybe<Orphan<Declaration>> CAPNP_CAPNPC_API parseStatement(
       Statement::Reader statement, const DeclParser& parser);
   // Parse a statement using the given parser.  In addition to parsing the token sequence itself,
   // this takes care of parsing the block (if any) and copying over the doc comment (if any).
 
-  struct DeclParserResult {
+  struct CAPNP_CAPNPC_CLASS DeclParserResult {
     // DeclParser parses a sequence of tokens representing just the "line" part of the statement --
     // i.e. everything up to the semicolon or opening curly brace.
     //
     // Use `parseStatement()` to avoid having to deal with this struct.
 
-    Orphan<Declaration> decl;
+    Orphan<Declaration> CAPNP_CAPNPC_API decl;
     // The decl parsed so far.  The decl's `docComment` and `nestedDecls` are both empty at this
     // point.
 
-    kj::Maybe<DeclParser> memberParser;
+    kj::Maybe<DeclParser> CAPNP_CAPNPC_API memberParser;
     // If null, the statement should not have a block.  If non-null, the statement should have a
     // block containing statements parseable by this parser.
 
-    DeclParserResult(Orphan<Declaration>&& decl, const DeclParser& memberParser)
+    CAPNP_CAPNPC_API DeclParserResult(Orphan<Declaration>&& decl, const DeclParser& memberParser)
         : decl(kj::mv(decl)), memberParser(memberParser) {}
-    explicit DeclParserResult(Orphan<Declaration>&& decl)
+    explicit CAPNP_CAPNPC_API DeclParserResult(Orphan<Declaration>&& decl)
         : decl(kj::mv(decl)), memberParser(nullptr) {}
   };
 
-  struct Parsers {
-    DeclParser genericDecl;
+  struct CAPNP_CAPNPC_CLASS Parsers {
+    DeclParser CAPNP_CAPNPC_API genericDecl;
     // Parser that matches any declaration type except those that have ordinals (since they are
     // context-dependent).
 
-    DeclParser fileLevelDecl;
-    DeclParser enumLevelDecl;
-    DeclParser structLevelDecl;
-    DeclParser interfaceLevelDecl;
+    DeclParser CAPNP_CAPNPC_API fileLevelDecl;
+    DeclParser CAPNP_CAPNPC_API enumLevelDecl;
+    DeclParser CAPNP_CAPNPC_API structLevelDecl;
+    DeclParser CAPNP_CAPNPC_API interfaceLevelDecl;
     // Parsers that match genericDecl *and* the ordinal-based declaration types valid in the given
     // contexts.  Note that these may match declarations that are not actually allowed in the given
     // contexts, as long as the grammar is unambiguous.  E.g. nested types are not allowed in
     // enums, but they'll be accepted by enumLevelDecl.  A later stage of compilation should report
     // these as errors.
 
-    Parser<Orphan<Expression>> expression;
-    Parser<Orphan<Declaration::AnnotationApplication>> annotation;
-    Parser<Orphan<LocatedInteger>> uid;
-    Parser<Orphan<LocatedInteger>> ordinal;
-    Parser<Orphan<Declaration::Param>> param;
+    Parser<Orphan<Expression>> CAPNP_CAPNPC_API expression;
+    Parser<Orphan<Declaration::AnnotationApplication>> CAPNP_CAPNPC_API annotation;
+    Parser<Orphan<LocatedInteger>> CAPNP_CAPNPC_API uid;
+    Parser<Orphan<LocatedInteger>> CAPNP_CAPNPC_API ordinal;
+    Parser<Orphan<Declaration::Param>> CAPNP_CAPNPC_API param;
 
-    DeclParser usingDecl;
-    DeclParser constDecl;
-    DeclParser enumDecl;
-    DeclParser enumerantDecl;
-    DeclParser structDecl;
-    DeclParser fieldDecl;
-    DeclParser unionDecl;
-    DeclParser groupDecl;
-    DeclParser interfaceDecl;
-    DeclParser methodDecl;
-    DeclParser paramDecl;
-    DeclParser annotationDecl;
+    DeclParser CAPNP_CAPNPC_API usingDecl;
+    DeclParser CAPNP_CAPNPC_API constDecl;
+    DeclParser CAPNP_CAPNPC_API enumDecl;
+    DeclParser CAPNP_CAPNPC_API enumerantDecl;
+    DeclParser CAPNP_CAPNPC_API structDecl;
+    DeclParser CAPNP_CAPNPC_API fieldDecl;
+    DeclParser CAPNP_CAPNPC_API unionDecl;
+    DeclParser CAPNP_CAPNPC_API groupDecl;
+    DeclParser CAPNP_CAPNPC_API interfaceDecl;
+    DeclParser CAPNP_CAPNPC_API methodDecl;
+    DeclParser CAPNP_CAPNPC_API paramDecl;
+    DeclParser CAPNP_CAPNPC_API annotationDecl;
     // Parsers for individual declaration types.
   };
 
-  const Parsers& getParsers() { return parsers; }
+  const Parsers& CAPNP_CAPNPC_API getParsers() { return parsers; }
 
 private:
   Orphanage orphanage;
@@ -142,7 +144,7 @@ private:
   Parsers parsers;
 };
 
-kj::String expressionString(Expression::Reader name);
+kj::String CAPNP_CAPNPC_API expressionString(Expression::Reader name);
 // Stringify the expression as code.
 
 }  // namespace compiler

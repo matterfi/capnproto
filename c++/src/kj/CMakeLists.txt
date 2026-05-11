@@ -37,6 +37,7 @@ else()
 endif()
 
 set(kj_headers
+  export-kj.h
   common.h
   units.h
   memory.h
@@ -96,8 +97,20 @@ if(NOT CAPNP_BUILDS_WITHOUT_LIBATOMIC)
   target_link_libraries(kj PUBLIC atomic)
 endif()
 
+get_target_property(KJ_TYPE kj TYPE)
+
+if(KJ_TYPE STREQUAL "SHARED_LIBRARY")
+  set(KJ_EXPORT_MACRO "KJ_BUILD")
+  set(KJ_IMPORT_MACRO "")
+else()
+  set(KJ_EXPORT_MACRO "KJ_STATIC_DEFINE")
+  set(KJ_IMPORT_MACRO "KJ_STATIC_DEFINE")
+endif()
+
 #make sure the lite flag propagates to all users (internal + external) of this library
 target_compile_definitions(kj PUBLIC ${CAPNP_LITE_FLAG})
+#set symbol visibility macros
+target_compile_definitions(kj INTERFACE ${KJ_IMPORT_MACRO} PRIVATE ${KJ_EXPORT_MACRO})
 #make sure external consumers don't need to manually set the include dirs
 get_filename_component(PARENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 target_include_directories(kj PUBLIC
@@ -115,6 +128,7 @@ set(kj-test_sources
   test.c++
 )
 set(kj-test_headers
+  export-kj-test.h
   test.h
 )
 set(kj-test-compat_headers
@@ -123,6 +137,20 @@ set(kj-test-compat_headers
 add_library(kj-test ${kj-test_sources})
 add_library(CapnProto::kj-test ALIAS kj-test)
 target_link_libraries(kj-test PUBLIC kj)
+
+get_target_property(KJ_TEST_TYPE kj-test TYPE)
+
+if(KJ_TEST_TYPE STREQUAL "SHARED_LIBRARY")
+  set(KJ_TEST_EXPORT_MACRO "KJ_TEST_BUILD")
+  set(KJ_TEST_IMPORT_MACRO "")
+else()
+  set(KJ_TEST_EXPORT_MACRO "KJ_TEST_STATIC_DEFINE")
+  set(KJ_TEST_IMPORT_MACRO "KJ_TEST_STATIC_DEFINE")
+endif()
+
+#set symbol visibility macros
+target_compile_definitions(kj-test INTERFACE ${KJ_TEST_IMPORT_MACRO} PRIVATE ${KJ_TEST_EXPORT_MACRO})
+
 # Ensure the library has a version set to match autotools build
 set_target_properties(kj-test PROPERTIES VERSION ${VERSION})
 install(TARGETS kj-test ${INSTALL_TARGETS_DEFAULT_ARGS})
@@ -140,6 +168,7 @@ set(kj-async_sources
   timer.c++
 )
 set(kj-async_headers
+  export-kj-async.h
   async-prelude.h
   async.h
   async-inl.h
@@ -154,6 +183,20 @@ if(NOT CAPNP_LITE)
   add_library(kj-async ${kj-async_sources})
   add_library(CapnProto::kj-async ALIAS kj-async)
   target_link_libraries(kj-async PUBLIC kj)
+
+  get_target_property(KJ_ASYNC_TYPE kj-async TYPE)
+
+  if(KJ_ASYNC_TYPE STREQUAL "SHARED_LIBRARY")
+    set(KJ_ASYNC_EXPORT_MACRO "KJ_ASYNC_BUILD")
+    set(KJ_ASYNC_IMPORT_MACRO "")
+  else()
+    set(KJ_ASYNC_EXPORT_MACRO "KJ_ASYNC_STATIC_DEFINE")
+    set(KJ_ASYNC_IMPORT_MACRO "KJ_ASYNC_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(kj-async INTERFACE ${KJ_ASYNC_IMPORT_MACRO} PRIVATE ${KJ_ASYNC_EXPORT_MACRO})
+
   if(WITH_FIBERS)
     target_compile_definitions(kj-async PUBLIC KJ_USE_FIBERS)
     if(_WITH_LIBUCONTEXT)
@@ -182,6 +225,7 @@ set(kj-http_sources
   compat/http.c++
 )
 set(kj-http_headers
+  export-kj-http.h
   compat/url.h
   compat/http.h
 )
@@ -194,6 +238,20 @@ if(NOT CAPNP_LITE)
   else()
     target_link_libraries(kj-http PUBLIC kj-async kj)
   endif()
+
+  get_target_property(KJ_HTTP_TYPE kj-http TYPE)
+
+  if(KJ_HTTP_TYPE STREQUAL "SHARED_LIBRARY")
+    set(KJ_HTTP_EXPORT_MACRO "KJ_HTTP_BUILD")
+    set(KJ_HTTP_IMPORT_MACRO "")
+  else()
+    set(KJ_HTTP_EXPORT_MACRO "KJ_HTTP_STATIC_DEFINE")
+    set(KJ_HTTP_IMPORT_MACRO "KJ_HTTP_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(kj-http INTERFACE ${KJ_HTTP_IMPORT_MACRO} PRIVATE ${KJ_HTTP_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(kj-http PROPERTIES VERSION ${VERSION})
   install(TARGETS kj-http ${INSTALL_TARGETS_DEFAULT_ARGS})
@@ -207,6 +265,7 @@ if(WITH_OPENSSL)
     compat/tls.c++
   )
   set(kj-tls_headers
+    export-kj-tls.h
     compat/readiness-io.h
     compat/tls.h
   )
@@ -217,6 +276,19 @@ if(WITH_OPENSSL)
 
     target_compile_definitions(kj-tls PRIVATE KJ_HAS_OPENSSL)
     target_link_libraries(kj-tls PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+
+    get_target_property(KJ_TLS_TYPE kj-tls TYPE)
+
+    if(KJ_TLS_TYPE STREQUAL "SHARED_LIBRARY")
+      set(KJ_TLS_EXPORT_MACRO "KJ_TLS_BUILD")
+      set(KJ_TLS_IMPORT_MACRO "")
+    else()
+      set(KJ_TLS_EXPORT_MACRO "KJ_TLS_STATIC_DEFINE")
+      set(KJ_TLS_IMPORT_MACRO "KJ_TLS_STATIC_DEFINE")
+    endif()
+
+    #set symbol visibility macros
+    target_compile_definitions(kj-tls INTERFACE ${KJ_TLS_IMPORT_MACRO} PRIVATE ${KJ_TLS_EXPORT_MACRO})
 
     # Ensure the library has a version set to match autotools build
     set_target_properties(kj-tls PROPERTIES VERSION ${VERSION})
@@ -232,6 +304,7 @@ if(WITH_ZLIB)
     compat/gzip.c++
   )
   set(kj-gzip_headers
+    export-kj-gzip.h
     compat/gzip.h
   )
   if(NOT CAPNP_LITE)
@@ -240,6 +313,19 @@ if(WITH_ZLIB)
 
     target_compile_definitions(kj-gzip PRIVATE KJ_HAS_ZLIB)
     target_link_libraries(kj-gzip PUBLIC kj-async kj ZLIB::ZLIB)
+
+    get_target_property(KJ_GZIP_TYPE kj-gzip TYPE)
+
+    if(KJ_GZIP_TYPE STREQUAL "SHARED_LIBRARY")
+      set(KJ_GZIP_EXPORT_MACRO "KJ_GZIP_BUILD")
+      set(KJ_GZIP_IMPORT_MACRO "")
+    else()
+      set(KJ_GZIP_EXPORT_MACRO "KJ_GZIP_STATIC_DEFINE")
+      set(KJ_GZIP_IMPORT_MACRO "KJ_GZIP_STATIC_DEFINE")
+    endif()
+
+    #set symbol visibility macros
+    target_compile_definitions(kj-gzip INTERFACE ${KJ_GZIP_IMPORT_MACRO} PRIVATE ${KJ_GZIP_EXPORT_MACRO})
 
     # Ensure the library has a version set to match autotools build
     set_target_properties(kj-gzip PROPERTIES VERSION ${VERSION})

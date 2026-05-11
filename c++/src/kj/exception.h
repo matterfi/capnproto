@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "memory.h"
 #include "array.h"
 #include "string.h"
@@ -33,14 +34,14 @@ namespace kj {
 class ExceptionImpl;
 template <typename T> class Function;
 
-class Exception {
+class KJ_CLASS Exception {
   // Exception thrown in case of fatal errors.
   //
   // Actually, a subclass of this which also implements std::exception will be thrown, but we hide
   // that fact from the interface to avoid #including <exception>.
 
 public:
-  enum class Type {
+  enum class KJ_CLASS Type {
     // What kind of failure?
 
     FAILED = 0,
@@ -68,41 +69,41 @@ public:
     // - Update Cap'n Proto's RPC protocol's Exception.Type enum.
   };
 
-  Exception(Type type, const char* file, int line, String description = nullptr) noexcept;
-  Exception(Type type, String file, int line, String description = nullptr) noexcept;
-  Exception(const Exception& other) noexcept;
-  Exception(Exception&& other) = default;
-  ~Exception() noexcept;
+  KJ_API Exception(Type type, const char* file, int line, String description = nullptr) noexcept;
+  KJ_API Exception(Type type, String file, int line, String description = nullptr) noexcept;
+  KJ_API Exception(const Exception& other) noexcept;
+  KJ_API Exception(Exception&& other) = default;
+  KJ_API ~Exception() noexcept;
 
-  const char* getFile() const { return file; }
-  int getLine() const { return line; }
-  Type getType() const { return type; }
-  StringPtr getDescription() const { return description; }
-  ArrayPtr<void* const> getStackTrace() const { return arrayPtr(trace, traceCount); }
+  const char* KJ_API getFile() const { return file; }
+  int KJ_API getLine() const { return line; }
+  Type KJ_API getType() const { return type; }
+  StringPtr KJ_API getDescription() const { return description; }
+  ArrayPtr<void* const> KJ_API getStackTrace() const { return arrayPtr(trace, traceCount); }
 
-  void setDescription(kj::String&& desc) { description = kj::mv(desc); }
+  void KJ_API setDescription(kj::String&& desc) { description = kj::mv(desc); }
 
-  StringPtr getRemoteTrace() const { return remoteTrace; }
-  void setRemoteTrace(kj::String&& value) { remoteTrace = kj::mv(value); }
+  StringPtr KJ_API getRemoteTrace() const { return remoteTrace; }
+  void KJ_API setRemoteTrace(kj::String&& value) { remoteTrace = kj::mv(value); }
   // Additional stack trace data originating from a remote server. If present, then
   // `getStackTrace()` only traces up until entry into the RPC system, and the remote trace
   // contains any trace information returned over the wire. This string is human-readable but the
   // format is otherwise unspecified.
 
-  struct Context {
+  struct KJ_CLASS Context {
     // Describes a bit about what was going on when the exception was thrown.
 
-    const char* file;
-    int line;
-    String description;
-    Maybe<Own<Context>> next;
+    const char* KJ_API file;
+    int KJ_API line;
+    String KJ_API description;
+    Maybe<Own<Context>> KJ_API next;
 
-    Context(const char* file, int line, String&& description, Maybe<Own<Context>>&& next)
+    KJ_API Context(const char* file, int line, String&& description, Maybe<Own<Context>>&& next)
         : file(file), line(line), description(mv(description)), next(mv(next)) {}
-    Context(const Context& other) noexcept;
+    KJ_API Context(const Context& other) noexcept;
   };
 
-  inline Maybe<const Context&> getContext() const {
+  inline Maybe<const Context&> KJ_API getContext() const {
     KJ_IF_MAYBE(c, context) {
       return **c;
     } else {
@@ -110,27 +111,27 @@ public:
     }
   }
 
-  void wrapContext(const char* file, int line, String&& description);
+  void KJ_API wrapContext(const char* file, int line, String&& description);
   // Wraps the context in a new node.  This becomes the head node returned by getContext() -- it
   // is expected that contexts will be added in reverse order as the exception passes up the
   // callback stack.
 
-  KJ_NOINLINE void extendTrace(uint ignoreCount, uint limit = kj::maxValue);
+  KJ_NOINLINE void KJ_API extendTrace(uint ignoreCount, uint limit = kj::maxValue);
   // Append the current stack trace to the exception's trace, ignoring the first `ignoreCount`
   // frames (see `getStackTrace()` for discussion of `ignoreCount`).
   //
   // If `limit` is set, limit the number of frames added to the given number.
 
-  KJ_NOINLINE void truncateCommonTrace();
+  KJ_NOINLINE void KJ_API truncateCommonTrace();
   // Remove the part of the stack trace which the exception shares with the caller of this method.
   // This is used by the async library to remove the async infrastructure from the stack trace
   // before replacing it with the async trace.
 
-  void addTrace(void* ptr);
+  void KJ_API addTrace(void* ptr);
   // Append the given pointer to the backtrace, if it is not already full. This is used by the
   // async library to trace through the promise chain that led to the exception.
 
-  KJ_NOINLINE void addTraceHere();
+  KJ_NOINLINE void KJ_API addTraceHere();
   // Adds the location that called this method to the stack trace.
 
 private:
@@ -160,18 +161,18 @@ private:
   friend class ExceptionImpl;
 };
 
-struct CanceledException { };
+struct KJ_CLASS CanceledException { };
 // This exception is thrown to force-unwind a stack in order to immediately cancel whatever that
 // stack was doing. It is used in the implementation of fibers in particular. Application code
 // should almost never catch this exception, unless you need to modify stack unwinding for some
 // reason. kj::runCatchingExceptions() does not catch it.
 
-StringPtr KJ_STRINGIFY(Exception::Type type);
-String KJ_STRINGIFY(const Exception& e);
+StringPtr KJ_API KJ_STRINGIFY(Exception::Type type);
+String KJ_API KJ_STRINGIFY(const Exception& e);
 
 // =======================================================================================
 
-enum class LogSeverity {
+enum class KJ_CLASS LogSeverity {
   INFO,      // Information describing what the code is up to, which users may request to see
              // with a flag like `--verbose`.  Does not indicate a problem.  Not printed by
              // default; you must call setLogLevel(INFO) to enable.
@@ -183,9 +184,9 @@ enum class LogSeverity {
   // Make sure to update the stringifier if you add a new severity level.
 };
 
-StringPtr KJ_STRINGIFY(LogSeverity severity);
+StringPtr KJ_API KJ_STRINGIFY(LogSeverity severity);
 
-class ExceptionCallback {
+class KJ_CLASS KJ_CLASS ExceptionCallback {
   // If you don't like C++ exceptions, you may implement and register an ExceptionCallback in order
   // to perform your own exception handling.  For example, a reasonable thing to do is to have
   // onRecoverableException() set a flag indicating that an error occurred, and then check for that
@@ -199,11 +200,11 @@ class ExceptionCallback {
   // occurs.
 
 public:
-  ExceptionCallback();
+  KJ_API ExceptionCallback();
   KJ_DISALLOW_COPY_AND_MOVE(ExceptionCallback);
-  virtual ~ExceptionCallback() noexcept(false);
+  virtual KJ_API ~ExceptionCallback() noexcept(false);
 
-  virtual void onRecoverableException(Exception&& exception);
+  virtual void KJ_API onRecoverableException(Exception&& exception);
   // Called when an exception has been raised, but the calling code has the ability to continue by
   // producing garbage output.  This method _should_ throw the exception, but is allowed to simply
   // return if garbage output is acceptable.
@@ -211,7 +212,7 @@ public:
   // The global default implementation throws an exception unless the library was compiled with
   // -fno-exceptions, in which case it logs an error and returns.
 
-  virtual void onFatalException(Exception&& exception);
+  virtual void KJ_API onFatalException(Exception&& exception);
   // Called when an exception has been raised and the calling code cannot continue.  If this method
   // returns normally, abort() will be called.  The method must throw the exception to avoid
   // aborting.
@@ -219,14 +220,14 @@ public:
   // The global default implementation throws an exception unless the library was compiled with
   // -fno-exceptions, in which case it logs an error and returns.
 
-  virtual void logMessage(LogSeverity severity, const char* file, int line, int contextDepth,
+  virtual void KJ_API logMessage(LogSeverity severity, const char* file, int line, int contextDepth,
                           String&& text);
   // Called when something wants to log some debug text.  `contextDepth` indicates how many levels
   // of context the message passed through; it may make sense to indent the message accordingly.
   //
   // The global default implementation writes the text to stderr.
 
-  enum class StackTraceMode {
+  enum class KJ_CLASS StackTraceMode {
     FULL,
     // Stringifying a stack trace will attempt to determine source file and line numbers. This may
     // be expensive. For example, on Linux, this shells out to `addr2line`.
@@ -246,16 +247,16 @@ public:
     // from this setting. (But exceptions should be rare...)
   };
 
-  virtual StackTraceMode stackTraceMode();
+  virtual StackTraceMode KJ_API stackTraceMode();
   // Returns the current preferred stack trace mode.
 
-  virtual Function<void(Function<void()>)> getThreadInitializer();
+  virtual Function<void(Function<void()>)> KJ_API getThreadInitializer();
   // Called just before a new thread is spawned using kj::Thread. Returns a function which should
   // be invoked inside the new thread to initialize the thread's ExceptionCallback. The initializer
   // function itself receives, as its parameter, the thread's main function, which it must call.
 
 protected:
-  ExceptionCallback& next;
+  ExceptionCallback& KJ_API next;
 
 private:
   ExceptionCallback(ExceptionCallback& next);
@@ -266,14 +267,15 @@ private:
   friend class Thread;
 };
 
-ExceptionCallback& getExceptionCallback();
+ExceptionCallback& KJ_API getExceptionCallback();
 // Returns the current exception callback.
 
-KJ_NOINLINE KJ_NORETURN(void throwFatalException(kj::Exception&& exception, uint ignoreCount = 0));
+KJ_NOINLINE KJ_NORETURN(void KJ_API throwFatalException(kj::Exception&& exception,
+                                                        uint ignoreCount = 0));
 // Invoke the exception callback to throw the given fatal exception.  If the exception callback
 // returns, abort.
 
-KJ_NOINLINE void throwRecoverableException(kj::Exception&& exception, uint ignoreCount = 0);
+KJ_NOINLINE void KJ_API throwRecoverableException(kj::Exception&& exception, uint ignoreCount = 0);
 // Invoke the exception callback to throw the given recoverable exception.  If the exception
 // callback returns, return normally.
 
@@ -292,7 +294,7 @@ Maybe<Exception> runCatchingExceptions(Func&& func);
 
 #if !KJ_NO_EXCEPTIONS
 
-kj::Exception getCaughtExceptionAsKj();
+kj::Exception KJ_API getCaughtExceptionAsKj();
 // Call from the catch block of a try/catch to get a `kj::Exception` representing the exception
 // that was caught, the same way that `kj::runCatchingExceptions` would when catching an exception.
 // This is sometimes useful if `runCatchingExceptions()` doesn't quite fit your use case. You can
@@ -304,7 +306,7 @@ kj::Exception getCaughtExceptionAsKj();
 
 #endif  // !KJ_NO_EXCEPTIONS
 
-class UnwindDetector {
+class KJ_CLASS UnwindDetector {
   // Utility for detecting when a destructor is called due to unwind.  Useful for:
   // - Avoiding throwing exceptions in this case, which would terminate the program.
   // - Detecting whether to commit or roll back a transaction.
@@ -315,9 +317,9 @@ class UnwindDetector {
   // unwind is taking place.  This is usually the desired behavior.
 
 public:
-  UnwindDetector();
+  KJ_API UnwindDetector();
 
-  bool isUnwinding() const;
+  bool KJ_API isUnwinding() const;
   // Returns true if the current thread is in a stack unwind that it wasn't in at the time the
   // object was constructed.
 
@@ -331,7 +333,7 @@ private:
   uint uncaughtCount;
 
 #if !KJ_NO_EXCEPTIONS
-  void catchThrownExceptionAsSecondaryFault() const;
+  void KJ_API catchThrownExceptionAsSecondaryFault() const;
 #endif
 };
 
@@ -406,7 +408,7 @@ void UnwindDetector::catchExceptionsIfUnwinding(Func&& func) const {
 
 // =======================================================================================
 
-KJ_NOINLINE ArrayPtr<void* const> getStackTrace(ArrayPtr<void*> space, uint ignoreCount);
+KJ_NOINLINE ArrayPtr<void* const> KJ_API getStackTrace(ArrayPtr<void*> space, uint ignoreCount);
 // Attempt to get the current stack trace, returning a list of pointers to instructions. The
 // returned array is a slice of `space`. Provide a larger `space` to get a deeper stack trace.
 // If the platform doesn't support stack traces, returns an empty array.
@@ -419,12 +421,12 @@ KJ_NOINLINE ArrayPtr<void* const> getStackTrace(ArrayPtr<void*> space, uint igno
 // is never exactly equal to `space.begin()` due to this effect, even if `ignoreCount` is zero
 // since `getStackTrace()` needs to ignore its own internal frames).
 
-String stringifyStackTrace(ArrayPtr<void* const>);
+String KJ_API stringifyStackTrace(ArrayPtr<void* const>);
 // Convert the stack trace to a string with file names and line numbers. This may involve executing
 // suprocesses.
 
-String stringifyStackTraceAddresses(ArrayPtr<void* const> trace);
-StringPtr stringifyStackTraceAddresses(ArrayPtr<void* const> trace, ArrayPtr<char> scratch);
+String KJ_API stringifyStackTraceAddresses(ArrayPtr<void* const> trace);
+StringPtr KJ_API stringifyStackTraceAddresses(ArrayPtr<void* const> trace, ArrayPtr<char> scratch);
 // Construct a string containing just enough information about a stack trace to be able to convert
 // it to file and line numbers later using offline tools. This produces a sequence of
 // space-separated code location identifiers. Each identifier may be an absolute address
@@ -432,22 +434,22 @@ StringPtr stringifyStackTraceAddresses(ArrayPtr<void* const> trace, ArrayPtr<cha
 // latter case is preferred when ASLR is in effect and has loaded different modules at different
 // addresses.
 
-String getStackTrace();
+String KJ_API getStackTrace();
 // Get a stack trace right now and stringify it. Useful for debugging.
 
-void printStackTraceOnCrash();
+void KJ_API printStackTraceOnCrash();
 // Registers signal handlers on common "crash" signals like SIGSEGV that will (attempt to) print
 // a stack trace. You should call this as early as possible on program startup. Programs using
 // KJ_MAIN get this automatically.
 
-void resetCrashHandlers();
+void KJ_API resetCrashHandlers();
 // Resets all signal handlers set by printStackTraceOnCrash().
 
-kj::StringPtr trimSourceFilename(kj::StringPtr filename);
+kj::StringPtr KJ_API trimSourceFilename(kj::StringPtr filename);
 // Given a source code file name, trim off noisy prefixes like "src/" or
 // "/ekam-provider/canonical/".
 
-kj::String getCaughtExceptionType();
+kj::String KJ_API getCaughtExceptionType();
 // Utility function which attempts to return the human-readable type name of the exception
 // currently being thrown. This can be called inside a catch block, including a catch (...) block,
 // for the purpose of error logging. This function is best-effort; on some platforms it may simply
@@ -455,7 +457,7 @@ kj::String getCaughtExceptionType();
 
 #if !KJ_NO_EXCEPTIONS
 
-class InFlightExceptionIterator {
+class KJ_CLASS InFlightExceptionIterator {
   // A class that can be used to iterate over exceptions that are in-flight in the current thread,
   // meaning they are either uncaught, or caught by a catch block that is current executing.
   //
@@ -468,9 +470,9 @@ class InFlightExceptionIterator {
   // This class is safe to use in a signal handler.
 
 public:
-  InFlightExceptionIterator();
+  KJ_API InFlightExceptionIterator();
 
-  Maybe<const Exception&> next();
+  Maybe<const Exception&> KJ_API next();
 
 private:
   const Exception* ptr;
@@ -478,7 +480,7 @@ private:
 
 #endif  // !KJ_NO_EXCEPTIONS
 
-kj::Exception getDestructionReason(void* traceSeparator,
+kj::Exception KJ_API getDestructionReason(void* traceSeparator,
     kj::Exception::Type defaultType, const char* defaultFile, int defaultLine,
     kj::StringPtr defaultDescription);
 // Returns an exception that attempts to capture why a destructor has been invoked. If a KJ
@@ -488,14 +490,14 @@ kj::Exception getDestructionReason(void* traceSeparator,
 // stack trace; this should be a pointer to some dummy symbol which acts as a separator between the
 // original stack trace and any new trace frames added later.
 
-kj::ArrayPtr<void* const> computeRelativeTrace(
+kj::ArrayPtr<void* const> KJ_API computeRelativeTrace(
     kj::ArrayPtr<void* const> trace, kj::ArrayPtr<void* const> relativeTo);
 // Given two traces expected to have started from the same root, try to find the part of `trace`
 // that is different from `relativeTo`, considering that either or both traces might be truncated.
 //
 // This is useful for debugging, when reporting several related traces at once.
 
-void requireOnStack(void* ptr, kj::StringPtr description);
+void KJ_API requireOnStack(void* ptr, kj::StringPtr description);
 // Throw an exception if `ptr` does not appear to point to something near the top of the stack.
 // Used as a safety check for types that must be stack-allocated, like ExceptionCallback.
 

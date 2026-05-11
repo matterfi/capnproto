@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj-async.h"
 #include "async-prelude.h"
 #include <kj/exception.h>
 #include <kj/refcount.h>
@@ -65,7 +66,7 @@ using PromiseForResult = _::ReducePromises<_::ReturnType<Func, T>>;
 
 // =======================================================================================
 
-class AsyncObject {
+class KJ_ASYNC_CLASS AsyncObject {
   // You may optionally inherit privately from this to indicate that the type is a KJ async object,
   // meaning it deals with KJ async I/O making it tied to a specific thread and event loop. This
   // enables some additional debug checks, but does not otherwise have any effect on behavior as
@@ -75,13 +76,13 @@ class AsyncObject {
   // size to the derived class.)
 
 public:
-  ~AsyncObject();
+  KJ_ASYNC_API ~AsyncObject();
 
 private:
-  KJ_NORETURN(static void failed() noexcept);
+  KJ_NORETURN(static void KJ_ASYNC_API failed() noexcept);
 };
 
-class DisallowAsyncDestructorsScope {
+class KJ_ASYNC_CLASS DisallowAsyncDestructorsScope {
   // Create this type on the stack in order to specify that during its scope, no KJ async objects
   // should be destroyed. If AsyncObject's destructor is called in this scope, the process will
   // crash with std::terminate().
@@ -91,8 +92,8 @@ class DisallowAsyncDestructorsScope {
   // the object contains any async objects, which are not legal to pass across threads.
 
 public:
-  explicit DisallowAsyncDestructorsScope(kj::StringPtr reason);
-  ~DisallowAsyncDestructorsScope();
+  explicit KJ_ASYNC_API DisallowAsyncDestructorsScope(kj::StringPtr reason);
+  KJ_ASYNC_API ~DisallowAsyncDestructorsScope();
   KJ_DISALLOW_COPY_AND_MOVE(DisallowAsyncDestructorsScope);
 
 private:
@@ -102,12 +103,12 @@ private:
   friend class AsyncObject;
 };
 
-class AllowAsyncDestructorsScope {
+class KJ_ASYNC_CLASS AllowAsyncDestructorsScope {
   // Negates the effect of DisallowAsyncDestructorsScope.
 
 public:
-  AllowAsyncDestructorsScope();
-  ~AllowAsyncDestructorsScope();
+  KJ_ASYNC_API AllowAsyncDestructorsScope();
+  KJ_ASYNC_API ~AllowAsyncDestructorsScope();
   KJ_DISALLOW_COPY_AND_MOVE(AllowAsyncDestructorsScope);
 
 private:
@@ -409,11 +410,11 @@ private:
   friend class EventLoop;
 };
 
-constexpr _::ReadyNow READY_NOW = _::ReadyNow();
+constexpr _::ReadyNow KJ_ASYNC_API READY_NOW = _::ReadyNow();
 // Use this when you need a Promise<void> that is already fulfilled -- this value can be implicitly
 // cast to `Promise<void>`.
 
-constexpr _::NeverDone NEVER_DONE = _::NeverDone();
+constexpr _::NeverDone KJ_ASYNC_API NEVER_DONE = _::NeverDone();
 // The opposite of `READY_NOW`, return this when the promise should never resolve.  This can be
 // implicitly converted to any promise type.  You may also call `NEVER_DONE.wait()` to wait
 // forever (useful for servers).
@@ -466,8 +467,8 @@ PromiseForResult<Func, void> evalLast(Func&& func) KJ_WARN_UNUSED_RESULT;
 // callback enqueues new events, then latter callbacks will not execute until those events are
 // drained.
 
-ArrayPtr<void* const> getAsyncTrace(ArrayPtr<void*> space);
-kj::String getAsyncTrace();
+ArrayPtr<void* const> KJ_ASYNC_API getAsyncTrace(ArrayPtr<void*> space);
+kj::String KJ_ASYNC_API getAsyncTrace();
 // If the event loop is currently running in this thread, get a trace back through the promise
 // chain leading to the currently-executing event. The format is the same as kj::getStackTrace()
 // from exception.c++.
@@ -500,21 +501,21 @@ PromiseForResult<Func, WaitScope&> startFiber(
 //
 // In short, when performance matters, you should try to avoid creating fibers very frequently.
 
-class FiberPool final {
+class KJ_ASYNC_CLASS FiberPool final {
   // A freelist pool of fibers with a set stack size. This improves CPU usage with fibers at
   // the expense of memory usage. Fibers in this pool will always use the max amount of memory
   // used until the pool is destroyed.
 
 public:
-  explicit FiberPool(size_t stackSize);
-  ~FiberPool() noexcept(false);
+  explicit KJ_ASYNC_API FiberPool(size_t stackSize);
+  KJ_ASYNC_API ~FiberPool() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(FiberPool);
 
-  void setMaxFreelist(size_t count);
+  void KJ_ASYNC_API setMaxFreelist(size_t count);
   // Set the maximum number of stacks to add to the freelist. If the freelist is full, stacks will
   // be deleted rather than returned to the freelist.
 
-  void useCoreLocalFreelists();
+  void KJ_ASYNC_API useCoreLocalFreelists();
   // EXPERIMENTAL: Call to tell FiberPool to try to use core-local stack freelists, which
   //   in theory should increase L1/L2 cache efficacy for freelisted stacks. In practice, as of
   //   this writing, no performance advantage has yet been demonstrated. Note that currently this
@@ -529,7 +530,7 @@ public:
   // using `.then()`. This is often much easier to write and read, and may even be significantly
   // faster if it allows the use of stack allocation rather than heap allocation.
 
-  void runSynchronously(kj::FunctionParam<void()> func) const;
+  void KJ_ASYNC_API runSynchronously(kj::FunctionParam<void()> func) const;
   // Use one of the stacks in the pool to synchronously execute func(), returning the result that
   // func() returns. This is not the usual use case for fibers, but can be a nice optimization
   // in programs that have many threads that mostly only need small stacks, but occasionally need
@@ -543,7 +544,7 @@ public:
   // TODO(someday): If func() returns a value, return it from runSynchronously? Current use case
   //   doesn't need it.
 
-  size_t getFreelistSize() const;
+  size_t KJ_ASYNC_API getFreelistSize() const;
   // Get the number of stacks currently in the freelist. Does not count stacks that are active.
 
 private:
@@ -722,12 +723,12 @@ auto coCapture(Functor&& f) {
 // =======================================================================================
 // Advanced promise construction
 
-class PromiseRejector: private AsyncObject {
+class KJ_ASYNC_CLASS PromiseRejector: private AsyncObject {
   // Superclass of PromiseFulfiller containing the non-typed methods. Useful when you only really
   // need to be able to reject a promise, and you need to operate on fulfillers of different types.
 public:
-  virtual void reject(Exception&& exception) = 0;
-  virtual bool isWaiting() = 0;
+  virtual void KJ_ASYNC_API reject(Exception&& exception) = 0;
+  virtual bool KJ_ASYNC_API isWaiting() = 0;
 };
 
 template <typename T>
@@ -755,16 +756,16 @@ public:
 };
 
 template <>
-class PromiseFulfiller<void>: public PromiseRejector {
+class KJ_ASYNC_CLASS PromiseFulfiller<void>: public PromiseRejector {
   // Specialization of PromiseFulfiller for void promises.  See PromiseFulfiller<T>.
 
 public:
-  virtual void fulfill(_::Void&& value = _::Void()) = 0;
+  virtual void KJ_ASYNC_API fulfill(_::Void&& value = _::Void()) = 0;
   // Call with zero parameters.  The parameter is a dummy that only exists so that subclasses don't
   // have to specialize for <void>.
 
-  virtual void reject(Exception&& exception) = 0;
-  virtual bool isWaiting() = 0;
+  virtual void KJ_ASYNC_API reject(Exception&& exception) = 0;
+  virtual bool KJ_ASYNC_API isWaiting() = 0;
 
   template <typename Func>
   bool rejectIfThrows(Func&& func);
@@ -830,18 +831,20 @@ private:
 };
 
 template <>
-class CrossThreadPromiseFulfiller<void>: public kj::PromiseFulfiller<void> {
+class KJ_ASYNC_CLASS CrossThreadPromiseFulfiller<void>: public kj::PromiseFulfiller<void> {
   // Specialization of CrossThreadPromiseFulfiller for void promises.  See
   // CrossThreadPromiseFulfiller<T>.
 
 public:
-  virtual void fulfill(_::Void&& value = _::Void()) const = 0;
-  virtual void reject(Exception&& exception) const = 0;
-  virtual bool isWaiting() const = 0;
+  virtual void KJ_ASYNC_API fulfill(_::Void&& value = _::Void()) const = 0;
+  virtual void KJ_ASYNC_API reject(Exception&& exception) const = 0;
+  virtual bool KJ_ASYNC_API isWaiting() const = 0;
 
-  void fulfill(_::Void&& value) override { return constThis()->fulfill(kj::mv(value)); }
-  void reject(Exception&& exception) override { return constThis()->reject(kj::mv(exception)); }
-  bool isWaiting() override { return constThis()->isWaiting(); }
+  void KJ_ASYNC_API fulfill(_::Void&& value) override { return constThis()->fulfill(kj::mv(value)); }
+  void KJ_ASYNC_API reject(Exception&& exception) override {
+    return constThis()->reject(kj::mv(exception));
+  }
+  bool KJ_ASYNC_API isWaiting() override { return constThis()->isWaiting(); }
 
 private:
   const CrossThreadPromiseFulfiller* constThis() { return this; }
@@ -863,7 +866,7 @@ PromiseCrossThreadFulfillerPair<T> newPromiseAndCrossThreadFulfiller();
 // =======================================================================================
 // Canceler
 
-class Canceler: private AsyncObject {
+class KJ_ASYNC_CLASS Canceler: private AsyncObject {
   // A Canceler can wrap some set of Promises and then forcefully cancel them on-demand, or
   // implicitly when the Canceler is destroyed.
   //
@@ -887,8 +890,8 @@ class Canceler: private AsyncObject {
   // might cause segfaults. Thus, it is safer to use a Canceler.
 
 public:
-  inline Canceler() {}
-  ~Canceler() noexcept(false);
+  inline KJ_ASYNC_API Canceler() {}
+  KJ_ASYNC_API ~Canceler() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(Canceler);
 
   template <typename T>
@@ -896,25 +899,25 @@ public:
     return newAdaptedPromise<T, AdapterImpl<T>>(*this, kj::mv(promise));
   }
 
-  void cancel(StringPtr cancelReason);
-  void cancel(const Exception& exception);
+  void KJ_ASYNC_API cancel(StringPtr cancelReason);
+  void KJ_ASYNC_API cancel(const Exception& exception);
   // Cancel all previously-wrapped promises that have not already completed, causing them to throw
   // the given exception. If you provide just a description message instead of an exception, then
   // an exception object will be constructed from it -- but only if there are requests to cancel.
 
-  void release();
+  void KJ_ASYNC_API release();
   // Releases previously-wrapped promises, so that they will not be canceled regardless of what
   // happens to this Canceler.
 
-  bool isEmpty() const { return list == nullptr; }
+  bool KJ_ASYNC_API isEmpty() const { return list == nullptr; }
   // Indicates if any previously-wrapped promises are still executing. (If this returns true, then
   // cancel() would be a no-op.)
 
 private:
-  class AdapterBase {
+  class KJ_ASYNC_CLASS AdapterBase {
   public:
-    AdapterBase(Canceler& canceler);
-    ~AdapterBase() noexcept(false);
+    KJ_ASYNC_API AdapterBase(Canceler& canceler);
+    KJ_ASYNC_API ~AdapterBase() noexcept(false);
 
     virtual void cancel(Exception&& e) = 0;
 
@@ -952,10 +955,10 @@ private:
 };
 
 template <>
-class Canceler::AdapterImpl<void>: public AdapterBase {
+class KJ_ASYNC_CLASS Canceler::AdapterImpl<void>: public AdapterBase {
 public:
-  AdapterImpl(kj::PromiseFulfiller<void>& fulfiller,
-              Canceler& canceler, kj::Promise<void> inner);
+  KJ_ASYNC_API AdapterImpl(kj::PromiseFulfiller<void>& fulfiller,
+                     Canceler& canceler, kj::Promise<void> inner);
   void cancel(kj::Exception&& e) override;
   // These must be defined in async.c++ to prevent translation units compiled by MSVC from trying to
   // link with symbols defined in async.c++ merely because they included async.h.
@@ -968,7 +971,7 @@ private:
 // =======================================================================================
 // TaskSet
 
-class TaskSet: private AsyncObject {
+class KJ_ASYNC_CLASS TaskSet: private AsyncObject {
   // Holds a collection of Promise<void>s and ensures that each executes to completion.  Memory
   // associated with each promise is automatically freed when the promise completes.  Destroying
   // the TaskSet itself automatically cancels all unfinished promises.
@@ -980,30 +983,30 @@ class TaskSet: private AsyncObject {
   // and everything the daemon is doing is canceled.
 
 public:
-  class ErrorHandler {
+  class KJ_ASYNC_CLASS ErrorHandler {
   public:
-    virtual void taskFailed(kj::Exception&& exception) = 0;
+    virtual void KJ_ASYNC_API taskFailed(kj::Exception&& exception) = 0;
   };
 
-  TaskSet(ErrorHandler& errorHandler, SourceLocation location = {});
+  KJ_ASYNC_API TaskSet(ErrorHandler& errorHandler, SourceLocation location = {});
   // `errorHandler` will be executed any time a task throws an exception, and will execute within
   // the given EventLoop.
 
-  ~TaskSet() noexcept(false);
+  KJ_ASYNC_API ~TaskSet() noexcept(false);
 
-  void add(Promise<void>&& promise);
+  void KJ_ASYNC_API add(Promise<void>&& promise);
 
-  kj::String trace();
+  kj::String KJ_ASYNC_API trace();
   // Return debug info about all promises currently in the TaskSet.
 
-  bool isEmpty() { return tasks == nullptr; }
+  bool KJ_ASYNC_API isEmpty() { return tasks == nullptr; }
   // Check if any tasks are running.
 
-  Promise<void> onEmpty();
+  Promise<void> KJ_ASYNC_API onEmpty();
   // Returns a promise that fulfills the next time the TaskSet is empty. Only one such promise can
   // exist at a time.
 
-  void clear();
+  void KJ_ASYNC_API clear();
   // Cancel all tasks.
   //
   // As always, it is not safe to cancel the task that is currently running, so you could not call
@@ -1025,7 +1028,7 @@ private:
 // =======================================================================================
 // Cross-thread execution.
 
-class Executor {
+class KJ_ASYNC_CLASS Executor {
   // Executes code on another thread's event loop.
   //
   // Use `kj::getCurrentThreadExecutor()` to get an executor that schedules calls on the current
@@ -1033,10 +1036,10 @@ class Executor {
   // back to this one.
 
 public:
-  Executor(EventLoop& loop, Badge<EventLoop>);
-  ~Executor() noexcept(false);
+  KJ_ASYNC_API Executor(EventLoop& loop, Badge<EventLoop>);
+  KJ_ASYNC_API ~Executor() noexcept(false);
 
-  virtual kj::Own<const Executor> addRef() const = 0;
+  virtual kj::Own<const Executor> KJ_ASYNC_API addRef() const = 0;
   // Add a reference to this Executor. The Executor will not be destroyed until all references are
   // dropped. This uses atomic refcounting for thread-safety.
   //
@@ -1047,7 +1050,7 @@ public:
   // If the target event loop has exited, then `execute{Async,Sync}` will throw DISCONNECTED
   // exceptions.
 
-  bool isLive() const;
+  bool KJ_ASYNC_API isLive() const;
   // Returns true if the remote event loop still exists, false if it has been destroyed. In the
   // latter case, `execute{Async,Sync}()` will definitely throw. Of course, if this returns true,
   // it could still change to false at any moment, and `execute{Async,Sync}()` could still throw as
@@ -1132,14 +1135,14 @@ private:
   EventLoop& getLoop() const;
 };
 
-const Executor& getCurrentThreadExecutor();
+const Executor& KJ_ASYNC_API getCurrentThreadExecutor();
 // Get the executor for the current thread's event loop. This reference can then be passed to other
 // threads.
 
 // =======================================================================================
 // The EventLoop class
 
-class EventPort {
+class KJ_ASYNC_CLASS EventPort {
   // Interfaces between an `EventLoop` and events originating from outside of the loop's thread.
   // All such events come in through the `EventPort` implementation.
   //
@@ -1148,7 +1151,7 @@ class EventPort {
   // framework, allowing the two to coexist in a single thread.
 
 public:
-  virtual bool wait() = 0;
+  virtual bool KJ_ASYNC_API wait() = 0;
   // Wait for an external event to arrive, sleeping if necessary.  Once at least one event has
   // arrived, queue it to the event loop (e.g. by fulfilling a promise) and return.
   //
@@ -1162,7 +1165,7 @@ public:
   // no previous call to wait `wait()` nor `poll()` has returned true since `wake()` was last
   // called.)
 
-  virtual bool poll() = 0;
+  virtual bool KJ_ASYNC_API poll() = 0;
   // Check if any external events have arrived, but do not sleep.  If any events have arrived,
   // add them to the event queue (e.g. by fulfilling promises) before returning.
   //
@@ -1173,13 +1176,13 @@ public:
   // no previous call to wait `wait()` nor `poll()` has returned true since `wake()` was last
   // called.)
 
-  virtual void setRunnable(bool runnable);
+  virtual void KJ_ASYNC_API setRunnable(bool runnable);
   // Called to notify the `EventPort` when the `EventLoop` has work to do; specifically when it
   // transitions from empty -> runnable or runnable -> empty.  This is typically useful when
   // integrating with an external event loop; if the loop is currently runnable then you should
   // arrange to call run() on it soon.  The default implementation does nothing.
 
-  virtual void wake() const;
+  virtual void KJ_ASYNC_API wake() const;
   // Wake up the EventPort's thread from another thread.
   //
   // Unlike all other methods on this interface, `wake()` may be called from another thread, hence
@@ -1191,7 +1194,7 @@ public:
   // The default implementation throws an UNIMPLEMENTED exception.
 };
 
-class EventLoop {
+class KJ_ASYNC_CLASS EventLoop {
   // Represents a queue of events being executed in a loop.  Most code won't interact with
   // EventLoop directly, but instead use `Promise`s to interact with it indirectly.  See the
   // documentation for `Promise`.
@@ -1224,23 +1227,23 @@ class EventLoop {
   // than allocate an `EventLoop` directly.
 
 public:
-  EventLoop();
+  KJ_ASYNC_API EventLoop();
   // Construct an `EventLoop` which does not receive external events at all.
 
-  explicit EventLoop(EventPort& port);
+  explicit KJ_ASYNC_API EventLoop(EventPort& port);
   // Construct an `EventLoop` which receives external events through the given `EventPort`.
 
-  ~EventLoop() noexcept(false);
+  KJ_ASYNC_API ~EventLoop() noexcept(false);
 
-  void run(uint maxTurnCount = maxValue);
+  void KJ_ASYNC_API run(uint maxTurnCount = maxValue);
   // Run the event loop for `maxTurnCount` turns or until there is nothing left to be done,
   // whichever comes first.  This never calls the `EventPort`'s `sleep()` or `poll()`.  It will
   // call the `EventPort`'s `setRunnable(false)` if the queue becomes empty.
 
-  bool isRunnable();
+  bool KJ_ASYNC_API isRunnable();
   // Returns true if run() would currently do anything, or false if the queue is empty.
 
-  const Executor& getExecutor();
+  const Executor& KJ_ASYNC_API getExecutor();
   // Returns an Executor that can be used to schedule events on this EventLoop from another thread.
   //
   // Use the global function kj::getCurrentThreadExecutor() to get the current thread's EventLoop's
@@ -1294,7 +1297,7 @@ private:
   friend ArrayPtr<void* const> getAsyncTrace(ArrayPtr<void*> space);
 };
 
-class WaitScope {
+class KJ_ASYNC_CLASS WaitScope {
   // Represents a scope in which asynchronous programming can occur.  A `WaitScope` should usually
   // be allocated on the stack and serves two purposes:
   // * While the `WaitScope` exists, its `EventLoop` is registered as the current loop for the
@@ -1304,24 +1307,26 @@ class WaitScope {
   //   promise to complete.  See `Promise::wait()` for an extended discussion.
 
 public:
-  inline explicit WaitScope(EventLoop& loop): loop(loop) { loop.enterScope(); }
-  inline ~WaitScope() { if (fiber == nullptr) loop.leaveScope(); }
+  inline explicit KJ_ASYNC_API WaitScope(EventLoop& loop): loop(loop) { loop.enterScope(); }
+  inline KJ_ASYNC_API ~WaitScope() { if (fiber == nullptr) loop.leaveScope(); }
   KJ_DISALLOW_COPY_AND_MOVE(WaitScope);
 
-  uint poll(uint maxTurnCount = maxValue);
+  uint KJ_ASYNC_API poll(uint maxTurnCount = maxValue);
   // Pumps the event queue and polls for I/O until there's nothing left to do (without blocking) or
   // the maximum turn count has been reached. Returns the number of events popped off the event
   // queue.
   //
   // Not supported in fibers.
 
-  void setBusyPollInterval(uint count) { busyPollInterval = count; }
+  void KJ_ASYNC_API setBusyPollInterval(uint count) { busyPollInterval = count; }
   // Set the maximum number of events to run in a row before calling poll() on the EventPort to
   // check for new I/O.
   //
   // This has no effect when used in a fiber.
 
-  void runEventCallbacksOnStackPool(kj::Maybe<const FiberPool&> pool) { runningStacksPool = pool; }
+  void KJ_ASYNC_API runEventCallbacksOnStackPool(kj::Maybe<const FiberPool&> pool) {
+    runningStacksPool = pool;
+  }
   // Arranges to switch stacks while event callbacks are executing. This is an optimization that
   // is useful for programs that use extremely high thread counts, where each thread has its own
   // event loop, but each thread has relatively low event throughput, i.e. each thread spends
@@ -1340,7 +1345,7 @@ public:
   //
   // Pass `nullptr` as the parameter to go back to running events on the main stack.
 
-  void cancelAllDetached();
+  void KJ_ASYNC_API cancelAllDetached();
   // HACK: Immediately cancel all detached promises.
   //
   // New code should not use detached promises, and therefore should not need this.

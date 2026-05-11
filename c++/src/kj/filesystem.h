@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "memory.h"
 #include "io.h"
 #include <inttypes.h>
@@ -37,7 +38,7 @@ class Vector;
 
 class PathPtr;
 
-class Path {
+class KJ_CLASS Path {
   // A Path identifies a file in a directory tree.
   //
   // In KJ, we avoid representing paths as plain strings because this can lead to path injection
@@ -68,10 +69,10 @@ class Path {
   //     p = kj::mv(p).append("bar");  // in-place update, avoids string copying
 
 public:
-  Path(decltype(nullptr));  // empty path
+  KJ_API Path(decltype(nullptr));  // empty path
 
-  explicit Path(StringPtr name);
-  explicit Path(String&& name);
+  explicit KJ_API Path(StringPtr name);
+  explicit KJ_API Path(String&& name);
   // Create a Path containing only one component. `name` is a single filename; it cannot contain
   // '/' nor '\0' nor can it be exactly "" nor "." nor "..".
   //
@@ -79,34 +80,34 @@ public:
   // prevent path injection bugs where you didn't consider what would happen if the path contained
   // a '/'.
 
-  explicit Path(std::initializer_list<StringPtr> parts);
-  explicit Path(ArrayPtr<const StringPtr> parts);
-  explicit Path(Array<String> parts);
+  explicit KJ_API Path(std::initializer_list<StringPtr> parts);
+  explicit KJ_API Path(ArrayPtr<const StringPtr> parts);
+  explicit KJ_API Path(Array<String> parts);
   // Construct a path from an array. Note that this means you can do:
   //
   //     Path{"foo", "bar", "baz"}   // equivalent to Path::parse("foo/bar/baz")
 
   KJ_DISALLOW_COPY(Path);
-  Path(Path&&) = default;
-  Path& operator=(Path&&) = default;
+  KJ_API Path(Path&&) = default;
+  Path& KJ_API operator=(Path&&) = default;
 
-  Path clone() const;
+  Path KJ_API clone() const;
 
-  static Path parse(StringPtr path);
+  static Path KJ_API parse(StringPtr path);
   // Parses a path in traditional format. Components are separated by '/'. Any use of "." or
   // ".." will be canonicalized (if they can't be canonicalized, e.g. because the path starts with
   // "..", an exception is thrown). Multiple consecutive '/'s will be collapsed. A leading '/'
   // is NOT accepted -- if that is a problem, you probably want `eval()`. Trailing '/'s are
   // ignored.
 
-  Path append(Path&& suffix) const&;
-  Path append(Path&& suffix) &&;
-  Path append(PathPtr suffix) const&;
-  Path append(PathPtr suffix) &&;
-  Path append(StringPtr suffix) const&;
-  Path append(StringPtr suffix) &&;
-  Path append(String&& suffix) const&;
-  Path append(String&& suffix) &&;
+  Path KJ_API append(Path&& suffix) const&;
+  Path KJ_API append(Path&& suffix) &&;
+  Path KJ_API append(PathPtr suffix) const&;
+  Path KJ_API append(PathPtr suffix) &&;
+  Path KJ_API append(StringPtr suffix) const&;
+  Path KJ_API append(StringPtr suffix) &&;
+  Path KJ_API append(String&& suffix) const&;
+  Path KJ_API append(String&& suffix) &&;
   // Create a new path by appending the given path to this path.
   //
   // `suffix` cannot contain '/' characters. Instead, you can append an array:
@@ -117,8 +118,8 @@ public:
   //
   //     path.append(Path::parse("foo//baz/../bar"))
 
-  Path eval(StringPtr pathText) const&;
-  Path eval(StringPtr pathText) &&;
+  Path KJ_API eval(StringPtr pathText) const&;
+  Path KJ_API eval(StringPtr pathText) &&;
   // Evaluates a traditional path relative to this one. `pathText` is parsed like `parse()` would,
   // except that:
   // - It can contain leading ".." components that traverse up the tree.
@@ -130,51 +131,51 @@ public:
   // `path.append(Path::parse(str))`. The former is much riskier than the latter in terms of path
   // injection vulnerabilities.
 
-  PathPtr basename() const&;
-  Path basename() &&;
+  PathPtr KJ_API basename() const&;
+  Path KJ_API basename() &&;
   // Get the last component of the path. (Use `basename()[0]` to get just the string.)
 
-  PathPtr parent() const&;
-  Path parent() &&;
+  PathPtr KJ_API parent() const&;
+  Path KJ_API parent() &&;
   // Get the parent path.
 
-  String toString(bool absolute = false) const;
+  String KJ_API toString(bool absolute = false) const;
   // Converts the path to a traditional path string, appropriate to pass to a unix system call.
   // Never throws.
 
-  const String& operator[](size_t i) const&;
-  String operator[](size_t i) &&;
-  size_t size() const;
-  const String* begin() const;
-  const String* end() const;
-  PathPtr slice(size_t start, size_t end) const&;
-  Path slice(size_t start, size_t end) &&;
+  const String& KJ_API operator[](size_t i) const&;
+  String KJ_API operator[](size_t i) &&;
+  size_t KJ_API size() const;
+  const String* KJ_API begin() const;
+  const String* KJ_API end() const;
+  PathPtr KJ_API slice(size_t start, size_t end) const&;
+  Path KJ_API slice(size_t start, size_t end) &&;
   // A Path can be accessed as an array of strings.
 
-  bool operator==(PathPtr other) const;
-  bool operator!=(PathPtr other) const;
-  bool operator< (PathPtr other) const;
-  bool operator> (PathPtr other) const;
-  bool operator<=(PathPtr other) const;
-  bool operator>=(PathPtr other) const;
+  bool KJ_API operator==(PathPtr other) const;
+  bool KJ_API operator!=(PathPtr other) const;
+  bool KJ_API operator< (PathPtr other) const;
+  bool KJ_API operator> (PathPtr other) const;
+  bool KJ_API operator<=(PathPtr other) const;
+  bool KJ_API operator>=(PathPtr other) const;
   // Compare path components lexically.
 
-  bool operator==(const Path& other) const;
-  bool operator!=(const Path& other) const;
-  bool operator< (const Path& other) const;
-  bool operator> (const Path& other) const;
-  bool operator<=(const Path& other) const;
-  bool operator>=(const Path& other) const;
+  bool KJ_API operator==(const Path& other) const;
+  bool KJ_API operator!=(const Path& other) const;
+  bool KJ_API operator< (const Path& other) const;
+  bool KJ_API operator> (const Path& other) const;
+  bool KJ_API operator<=(const Path& other) const;
+  bool KJ_API operator>=(const Path& other) const;
 
-  uint hashCode() const;
+  uint KJ_API hashCode() const;
   // Can use in HashMap.
 
-  bool startsWith(PathPtr prefix) const;
-  bool endsWith(PathPtr suffix) const;
+  bool KJ_API startsWith(PathPtr prefix) const;
+  bool KJ_API endsWith(PathPtr suffix) const;
   // Compare prefix / suffix.
 
-  Path evalWin32(StringPtr pathText) const&;
-  Path evalWin32(StringPtr pathText) &&;
+  Path KJ_API evalWin32(StringPtr pathText) const&;
+  Path KJ_API evalWin32(StringPtr pathText) &&;
   // Evaluates a Win32-style path, as might be written by a user. Differences from `eval()`
   // include:
   //
@@ -183,13 +184,13 @@ public:
   //   the colon, will become the first component of the path, e.g. "c:\foo" becomes {"c:", "foo"}.
   // - A network path like "\\host\share\path" is parsed as {"host", "share", "path"}.
 
-  Path evalNative(StringPtr pathText) const&;
-  Path evalNative(StringPtr pathText) &&;
+  Path KJ_API evalNative(StringPtr pathText) const&;
+  Path KJ_API evalNative(StringPtr pathText) &&;
   // Alias for either eval() or evalWin32() depending on the target platform. Use this when you are
   // parsing a path provided by a user and you want the user to be able to use the "natural" format
   // for their platform.
 
-  String toWin32String(bool absolute = false) const;
+  String KJ_API toWin32String(bool absolute = false) const;
   // Converts the path to a Win32 path string, as you might display to a user.
   //
   // This is meant for display. For making Win32 system calls, consider `toWin32Api()` instead.
@@ -202,12 +203,12 @@ public:
   // Windows, such as if it contains backslashes (within a path component), colons, or special
   // names like "con".
 
-  String toNativeString(bool absolute = false) const;
+  String KJ_API toNativeString(bool absolute = false) const;
   // Alias for either toString() or toWin32String() depending on the target platform. Use this when
   // you are formatting a path to display to a user and you want to present it in the "natural"
   // format for the user's platform.
 
-  Array<wchar_t> forWin32Api(bool absolute) const;
+  Array<wchar_t> KJ_API forWin32Api(bool absolute) const;
   // Like toWin32String, but additionally:
   // - Converts the path to UTF-16, with a NUL terminator included.
   // - For absolute paths, adds the "\\?\" prefix which opts into permitting paths longer than
@@ -218,7 +219,7 @@ public:
   //
   //     DeleteFileW(path.forWin32Api(true).begin());
 
-  static Path parseWin32Api(ArrayPtr<const wchar_t> text);
+  static Path KJ_API parseWin32Api(ArrayPtr<const wchar_t> text);
   // Parses an absolute path as returned by a Win32 API call like GetFinalPathNameByHandle() or
   // GetCurrentDirectory(). A "\\?\" prefix is optional but understood if present.
   //
@@ -248,43 +249,43 @@ private:
   static bool isWin32Special(StringPtr part);
 };
 
-class PathPtr {
+class KJ_CLASS PathPtr {
   // Points to a Path or a slice of a Path, but doesn't own it.
   //
   // PathPtr is to Path as ArrayPtr is to Array and StringPtr is to String.
 
 public:
-  PathPtr(decltype(nullptr));
-  PathPtr(const Path& path);
+  KJ_API PathPtr(decltype(nullptr));
+  KJ_API PathPtr(const Path& path);
 
-  Path clone();
-  Path append(Path&& suffix) const;
-  Path append(PathPtr suffix) const;
-  Path append(StringPtr suffix) const;
-  Path append(String&& suffix) const;
-  Path eval(StringPtr pathText) const;
-  PathPtr basename() const;
-  PathPtr parent() const;
-  String toString(bool absolute = false) const;
-  const String& operator[](size_t i) const;
-  size_t size() const;
-  const String* begin() const;
-  const String* end() const;
-  PathPtr slice(size_t start, size_t end) const;
-  bool operator==(PathPtr other) const;
-  bool operator!=(PathPtr other) const;
-  bool operator< (PathPtr other) const;
-  bool operator> (PathPtr other) const;
-  bool operator<=(PathPtr other) const;
-  bool operator>=(PathPtr other) const;
-  uint hashCode() const;
-  bool startsWith(PathPtr prefix) const;
-  bool endsWith(PathPtr suffix) const;
-  Path evalWin32(StringPtr pathText) const;
-  Path evalNative(StringPtr pathText) const;
-  String toWin32String(bool absolute = false) const;
-  String toNativeString(bool absolute = false) const;
-  Array<wchar_t> forWin32Api(bool absolute) const;
+  Path KJ_API clone();
+  Path KJ_API append(Path&& suffix) const;
+  Path KJ_API append(PathPtr suffix) const;
+  Path KJ_API append(StringPtr suffix) const;
+  Path KJ_API append(String&& suffix) const;
+  Path KJ_API eval(StringPtr pathText) const;
+  PathPtr KJ_API basename() const;
+  PathPtr KJ_API parent() const;
+  String KJ_API toString(bool absolute = false) const;
+  const String& KJ_API operator[](size_t i) const;
+  size_t KJ_API size() const;
+  const String* KJ_API begin() const;
+  const String* KJ_API end() const;
+  PathPtr KJ_API slice(size_t start, size_t end) const;
+  bool KJ_API operator==(PathPtr other) const;
+  bool KJ_API operator!=(PathPtr other) const;
+  bool KJ_API operator< (PathPtr other) const;
+  bool KJ_API operator> (PathPtr other) const;
+  bool KJ_API operator<=(PathPtr other) const;
+  bool KJ_API operator>=(PathPtr other) const;
+  uint KJ_API hashCode() const;
+  bool KJ_API startsWith(PathPtr prefix) const;
+  bool KJ_API endsWith(PathPtr suffix) const;
+  Path KJ_API evalWin32(StringPtr pathText) const;
+  Path KJ_API evalNative(StringPtr pathText) const;
+  String KJ_API toWin32String(bool absolute = false) const;
+  String KJ_API toNativeString(bool absolute = false) const;
+  Array<wchar_t> KJ_API forWin32Api(bool absolute) const;
   // Equivalent to the corresponding methods of `Path`.
 
 private:
@@ -313,25 +314,25 @@ private:
 // methods). Of course, if you concurrently write the same bytes of a file from multiple threads,
 // it's unspecified which write will "win".
 
-class FsNode {
+class KJ_CLASS FsNode {
   // Base class for filesystem node types.
 
 public:
-  Own<const FsNode> clone() const;
+  Own<const FsNode> KJ_API clone() const;
   // Creates a new object of exactly the same type as this one, pointing at exactly the same
   // external object.
   //
   // Under the hood, this will call dup(), so the FD number will not be the same.
 
-  virtual Maybe<int> getFd() const { return nullptr; }
+  virtual Maybe<int> KJ_API getFd() const { return nullptr; }
   // Get the underlying Unix file descriptor, if any. Returns nullptr if this object actually isn't
   // wrapping a file descriptor.
 
-  virtual Maybe<void*> getWin32Handle() const { return nullptr; }
+  virtual Maybe<void*> KJ_API getWin32Handle() const { return nullptr; }
   // Get the underlying Win32 HANDLE, if any. Returns nullptr if this object actually isn't
   // wrapping a handle.
 
-  enum class Type {
+  enum class KJ_CLASS Type {
     FILE,
     DIRECTORY,
     SYMLINK,
@@ -342,23 +343,23 @@ public:
     OTHER,
   };
 
-  struct Metadata {
-    Type type = Type::FILE;
+  struct KJ_CLASS Metadata {
+    Type KJ_API type = Type::FILE;
 
-    uint64_t size = 0;
+    uint64_t KJ_API size = 0;
     // Logical size of the file.
 
-    uint64_t spaceUsed = 0;
+    uint64_t KJ_API spaceUsed = 0;
     // Physical size of the file on disk. May be smaller for sparse files, or larger for
     // pre-allocated files.
 
-    Date lastModified = UNIX_EPOCH;
+    Date KJ_API lastModified = UNIX_EPOCH;
     // Last modification time of the file.
 
-    uint linkCount = 1;
+    uint KJ_API linkCount = 1;
     // Number of hard links pointing to this node.
 
-    uint64_t hashCode = 0;
+    uint64_t KJ_API hashCode = 0;
     // Hint which can be used to determine if two FsNode instances point to the same underlying
     // file object. If two FsNodes report different hashCodes, then they are not the same object.
     // If they report the same hashCode, then they may or may not be the same object.
@@ -384,18 +385,18 @@ public:
     // - Other timestamps: Differs across platforms.
     // - Device number: If you care, you're probably doing platform-specific stuff anyway.
 
-    Metadata() = default;
-    Metadata(Type type, uint64_t size, uint64_t spaceUsed, Date lastModified, uint linkCount,
-             uint64_t hashCode)
+    KJ_API Metadata() = default;
+    KJ_API Metadata(Type type, uint64_t size, uint64_t spaceUsed, Date lastModified,
+                    uint linkCount, uint64_t hashCode)
         : type(type), size(size), spaceUsed(spaceUsed), lastModified(lastModified),
           linkCount(linkCount), hashCode(hashCode) {}
     // TODO(cleanup): This constructor is redundant in C++14, but needed in C++11.
   };
 
-  virtual Metadata stat() const = 0;
+  virtual Metadata KJ_API stat() const = 0;
 
-  virtual void sync() const = 0;
-  virtual void datasync() const = 0;
+  virtual void KJ_API sync() const = 0;
+  virtual void KJ_API datasync() const = 0;
   // Maps to fsync() and fdatasync() system calls.
   //
   // Also, when creating or overwriting a file, the first call to sync() atomically links the file
@@ -404,29 +405,29 @@ public:
   // it.)
 
 protected:
-  virtual Own<const FsNode> cloneFsNode() const = 0;
+  virtual Own<const FsNode> KJ_API cloneFsNode() const = 0;
   // Implements clone(). Required to return an object with exactly the same type as this one.
   // Hence, every subclass must implement this.
 };
 
-class ReadableFile: public FsNode {
+class KJ_CLASS ReadableFile: public FsNode {
 public:
-  Own<const ReadableFile> clone() const;
+  Own<const ReadableFile> KJ_API clone() const;
 
-  String readAllText() const;
+  String KJ_API readAllText() const;
   // Read all text in the file and return as a big string.
 
-  Array<byte> readAllBytes() const;
+  Array<byte> KJ_API readAllBytes() const;
   // Read all bytes in the file and return as a big byte array.
   //
   // This differs from mmap() in that the read is performed all at once. Future changes to the file
   // do not affect the returned copy. Consider using mmap() instead, particularly for large files.
 
-  virtual size_t read(uint64_t offset, ArrayPtr<byte> buffer) const = 0;
+  virtual size_t KJ_API read(uint64_t offset, ArrayPtr<byte> buffer) const = 0;
   // Fills `buffer` with data starting at `offset`. Returns the number of bytes actually read --
   // the only time this is less than `buffer.size()` is when EOF occurs mid-buffer.
 
-  virtual Array<const byte> mmap(uint64_t offset, uint64_t size) const = 0;
+  virtual Array<const byte> KJ_API mmap(uint64_t offset, uint64_t size) const = 0;
   // Maps the file to memory read-only. The returned array always has exactly the requested size.
   // Depending on the capabilities of the OS and filesystem, the mapping may or may not reflect
   // changes that happen to the file after mmap() returns.
@@ -440,7 +441,7 @@ public:
   // The returned array is always exactly the size requested. However, accessing bytes beyond the
   // current end of the file may raise SIGBUS, or may simply return zero.
 
-  virtual Array<byte> mmapPrivate(uint64_t offset, uint64_t size) const = 0;
+  virtual Array<byte> KJ_API mmapPrivate(uint64_t offset, uint64_t size) const = 0;
   // Like mmap() but returns a view that the caller can modify. Modifications will not be written
   // to the underlying file. Every call to this method returns a unique mapping. Changes made to
   // the underlying file by other clients may or may not be reflected in the mapping -- in fact,
@@ -451,28 +452,28 @@ public:
   // reflected in the mapping.
 };
 
-class AppendableFile: public FsNode, public OutputStream {
+class KJ_CLASS AppendableFile: public FsNode, public OutputStream {
 public:
-  Own<const AppendableFile> clone() const;
+  Own<const AppendableFile> KJ_API clone() const;
 
   // All methods are inherited.
 };
 
-class WritableFileMapping {
+class KJ_CLASS WritableFileMapping {
 public:
-  virtual ArrayPtr<byte> get() const = 0;
+  virtual ArrayPtr<byte> KJ_API get() const = 0;
   // Gets the mapped bytes. The returned array can be modified, and those changes may be written to
   // the underlying file, but there is no guarantee that they are written unless you subsequently
   // call changed().
 
-  virtual void changed(ArrayPtr<byte> slice) const = 0;
+  virtual void KJ_API changed(ArrayPtr<byte> slice) const = 0;
   // Notifies the implementation that the given bytes have changed. For some implementations this
   // may be a no-op while for others it may be necessary in order for the changes to be written
   // back at all.
   //
   // `slice` must be a slice of `bytes()`.
 
-  virtual void sync(ArrayPtr<byte> slice) const = 0;
+  virtual void KJ_API sync(ArrayPtr<byte> slice) const = 0;
   // Implies `changed()`, and then waits until the range has actually been written to disk before
   // returning.
   //
@@ -485,34 +486,35 @@ public:
   // object after calling `.sync()` on the WritableFileMapping.
 };
 
-class File: public ReadableFile {
+class KJ_CLASS File: public ReadableFile {
 public:
-  Own<const File> clone() const;
+  Own<const File> KJ_API clone() const;
 
-  void writeAll(ArrayPtr<const byte> bytes) const;
-  void writeAll(StringPtr text) const;
+  void KJ_API writeAll(ArrayPtr<const byte> bytes) const;
+  void KJ_API writeAll(StringPtr text) const;
   // Completely replace the file with the given bytes or text.
 
-  virtual void write(uint64_t offset, ArrayPtr<const byte> data) const = 0;
+  virtual void KJ_API write(uint64_t offset, ArrayPtr<const byte> data) const = 0;
   // Write the given data starting at the given offset in the file.
 
-  virtual void zero(uint64_t offset, uint64_t size) const = 0;
+  virtual void KJ_API zero(uint64_t offset, uint64_t size) const = 0;
   // Write zeros to the file, starting at `offset` and continuing for `size` bytes. If the platform
   // supports it, this will "punch a hole" in the file, such that blocks that are entirely zeros
   // do not take space on disk.
 
-  virtual void truncate(uint64_t size) const = 0;
+  virtual void KJ_API truncate(uint64_t size) const = 0;
   // Set the file end pointer to `size`. If `size` is less than the current size, data past the end
   // is truncated. If `size` is larger than the current size, zeros are added to the end of the
   // file. If the platform supports it, blocks containing all-zeros will not be stored to disk.
 
-  virtual Own<const WritableFileMapping> mmapWritable(uint64_t offset, uint64_t size) const = 0;
+  virtual Own<const WritableFileMapping> KJ_API mmapWritable(uint64_t offset,
+                                                             uint64_t size) const = 0;
   // Like ReadableFile::mmap() but returns a mapping for which any changes will be immediately
   // visible in other mappings of the file on the same system and will eventually be written back
   // to the file.
 
-  virtual size_t copy(uint64_t offset, const ReadableFile& from, uint64_t fromOffset,
-                      uint64_t size) const;
+  virtual size_t KJ_API copy(uint64_t offset, const ReadableFile& from, uint64_t fromOffset,
+                             uint64_t size) const;
   // Copies bytes from one file to another.
   //
   // Copies `size` bytes or to EOF, whichever comes first. Returns the number of bytes actually
@@ -524,57 +526,57 @@ public:
   // superior implementations that offload the work to the OS or even implement copy-on-write.
 };
 
-class ReadableDirectory: public FsNode {
+class KJ_CLASS ReadableDirectory: public FsNode {
   // Read-only subset of `Directory`.
 
 public:
-  Own<const ReadableDirectory> clone() const;
+  Own<const ReadableDirectory> KJ_API clone() const;
 
-  virtual Array<String> listNames() const = 0;
+  virtual Array<String> KJ_API listNames() const = 0;
   // List the contents of this directory. Does NOT include "." nor "..".
 
-  struct Entry {
-    FsNode::Type type;
-    String name;
+  struct KJ_CLASS Entry {
+    FsNode::Type KJ_API type;
+    String KJ_API name;
 
-    inline bool operator< (const Entry& other) const { return name <  other.name; }
-    inline bool operator> (const Entry& other) const { return name >  other.name; }
-    inline bool operator<=(const Entry& other) const { return name <= other.name; }
-    inline bool operator>=(const Entry& other) const { return name >= other.name; }
+    inline bool KJ_API operator< (const Entry& other) const { return name <  other.name; }
+    inline bool KJ_API operator> (const Entry& other) const { return name >  other.name; }
+    inline bool KJ_API operator<=(const Entry& other) const { return name <= other.name; }
+    inline bool KJ_API operator>=(const Entry& other) const { return name >= other.name; }
     // Convenience comparison operators to sort entries by name.
   };
 
-  virtual Array<Entry> listEntries() const = 0;
+  virtual Array<Entry> KJ_API listEntries() const = 0;
   // List the contents of the directory including the type of each file. On some platforms and
   // filesystems, this is just as fast as listNames(), but on others it may require stat()ing each
   // file.
 
-  virtual bool exists(PathPtr path) const = 0;
+  virtual bool KJ_API exists(PathPtr path) const = 0;
   // Does the specified path exist?
   //
   // If the path is a symlink, the symlink is followed and the return value indicates if the target
   // exists. If you want to know if the symlink exists, use lstat(). (This implies that listNames()
   // may return names for which exists() reports false.)
 
-  FsNode::Metadata lstat(PathPtr path) const;
-  virtual Maybe<FsNode::Metadata> tryLstat(PathPtr path) const = 0;
+  FsNode::Metadata KJ_API lstat(PathPtr path) const;
+  virtual Maybe<FsNode::Metadata> KJ_API tryLstat(PathPtr path) const = 0;
   // Gets metadata about the path. If the path is a symlink, it is not followed -- the metadata
   // describes the symlink itself. `tryLstat()` returns null if the path doesn't exist.
 
-  Own<const ReadableFile> openFile(PathPtr path) const;
-  virtual Maybe<Own<const ReadableFile>> tryOpenFile(PathPtr path) const = 0;
+  Own<const ReadableFile> KJ_API openFile(PathPtr path) const;
+  virtual Maybe<Own<const ReadableFile>> KJ_API tryOpenFile(PathPtr path) const = 0;
   // Open a file for reading.
   //
   // `tryOpenFile()` returns null if the path doesn't exist. Other errors still throw exceptions.
 
-  Own<const ReadableDirectory> openSubdir(PathPtr path) const;
-  virtual Maybe<Own<const ReadableDirectory>> tryOpenSubdir(PathPtr path) const = 0;
+  Own<const ReadableDirectory> KJ_API openSubdir(PathPtr path) const;
+  virtual Maybe<Own<const ReadableDirectory>> KJ_API tryOpenSubdir(PathPtr path) const = 0;
   // Opens a subdirectory.
   //
   // `tryOpenSubdir()` returns null if the path doesn't exist. Other errors still throw exceptions.
 
-  String readlink(PathPtr path) const;
-  virtual Maybe<String> tryReadlink(PathPtr path) const = 0;
+  String KJ_API readlink(PathPtr path) const;
+  virtual Maybe<String> KJ_API tryReadlink(PathPtr path) const = 0;
   // If `path` is a symlink, reads and returns the link contents.
   //
   // Note that tryReadlink() differs subtly from tryOpen*(). For example, tryOpenFile() throws if
@@ -587,7 +589,7 @@ public:
   // See Directory::symlink() for warnings about symlinks.
 };
 
-enum class WriteMode {
+enum class KJ_CLASS WriteMode {
   // Mode for opening a file (or directory) for write.
   //
   // (To open a file or directory read-only, do not specify a mode.)
@@ -652,16 +654,16 @@ enum class WriteMode {
   // the parent.
 };
 
-inline constexpr WriteMode operator|(WriteMode a, WriteMode b) {
+inline constexpr WriteMode KJ_API operator|(WriteMode a, WriteMode b) {
   return static_cast<WriteMode>(static_cast<uint>(a) | static_cast<uint>(b));
 }
-inline constexpr WriteMode operator&(WriteMode a, WriteMode b) {
+inline constexpr WriteMode KJ_API operator&(WriteMode a, WriteMode b) {
   return static_cast<WriteMode>(static_cast<uint>(a) & static_cast<uint>(b));
 }
-inline constexpr WriteMode operator+(WriteMode a, WriteMode b) {
+inline constexpr WriteMode KJ_API operator+(WriteMode a, WriteMode b) {
   return static_cast<WriteMode>(static_cast<uint>(a) | static_cast<uint>(b));
 }
-inline constexpr WriteMode operator-(WriteMode a, WriteMode b) {
+inline constexpr WriteMode KJ_API operator-(WriteMode a, WriteMode b) {
   return static_cast<WriteMode>(static_cast<uint>(a) & ~static_cast<uint>(b));
 }
 template <typename T, typename = EnableIf<__is_enum(T)>>
@@ -671,7 +673,7 @@ bool has(T haystack, T needle) {
           static_cast<__underlying_type(T)>(needle);
 }
 
-enum class TransferMode {
+enum class KJ_CLASS TransferMode {
   // Specifies desired behavior for Directory::transfer().
 
   MOVE,
@@ -691,7 +693,7 @@ enum class TransferMode {
   // holes in the target file where holes exist in the source file.
 };
 
-class Directory: public ReadableDirectory {
+class KJ_CLASS Directory: public ReadableDirectory {
   // Refers to a specific directory on disk.
   //
   // A `Directory` object *only* provides access to children of the directory, not parents. That
@@ -712,7 +714,7 @@ class Directory: public ReadableDirectory {
   // behavior.
 
 public:
-  Own<const Directory> clone() const;
+  Own<const Directory> KJ_API clone() const;
 
   template <typename T>
   class Replacer {
@@ -796,46 +798,46 @@ public:
   using ReadableDirectory::tryOpenFile;
   using ReadableDirectory::tryOpenSubdir;
 
-  Own<const File> openFile(PathPtr path, WriteMode mode) const;
-  virtual Maybe<Own<const File>> tryOpenFile(PathPtr path, WriteMode mode) const = 0;
+  Own<const File> KJ_API openFile(PathPtr path, WriteMode mode) const;
+  virtual Maybe<Own<const File>> KJ_API tryOpenFile(PathPtr path, WriteMode mode) const = 0;
   // Open a file for writing.
   //
   // `tryOpenFile()` returns null if the path is required to exist but doesn't (MODIFY or REPLACE)
   // or if the path is required not to exist but does (CREATE or RACE). These are the only cases
   // where it returns null -- all other types of errors (like "access denied") throw exceptions.
 
-  virtual Own<Replacer<File>> replaceFile(PathPtr path, WriteMode mode) const = 0;
+  virtual Own<Replacer<File>> KJ_API replaceFile(PathPtr path, WriteMode mode) const = 0;
   // Construct a file which, when ready, will be atomically moved to `path`, replacing whatever
   // is there already. See `Replacer<T>` for detalis.
   //
   // The `CREATE` and `MODIFY` bits of `mode` are not enforced until commit time, hence
   // `replaceFile()` has no "try" variant.
 
-  virtual Own<const File> createTemporary() const = 0;
+  virtual Own<const File> KJ_API createTemporary() const = 0;
   // Create a temporary file backed by this directory's filesystem, but which isn't linked into
   // the directory tree. The file is deleted from disk when all references to it have been dropped.
 
-  Own<AppendableFile> appendFile(PathPtr path, WriteMode mode) const;
-  virtual Maybe<Own<AppendableFile>> tryAppendFile(PathPtr path, WriteMode mode) const = 0;
+  Own<AppendableFile> KJ_API appendFile(PathPtr path, WriteMode mode) const;
+  virtual Maybe<Own<AppendableFile>> KJ_API tryAppendFile(PathPtr path, WriteMode mode) const = 0;
   // Opens the file for appending only. Useful for log files.
   //
   // If the underlying filesystem supports it, writes to the file will always be appended even if
   // other writers are writing to the same file at the same time -- however, some implementations
   // may instead assume that no other process is changing the file size between writes.
 
-  Own<const Directory> openSubdir(PathPtr path, WriteMode mode) const;
-  virtual Maybe<Own<const Directory>> tryOpenSubdir(PathPtr path, WriteMode mode) const = 0;
+  Own<const Directory> KJ_API openSubdir(PathPtr path, WriteMode mode) const;
+  virtual Maybe<Own<const Directory>> KJ_API tryOpenSubdir(PathPtr path, WriteMode mode) const = 0;
   // Opens a subdirectory for writing.
 
-  virtual Own<Replacer<Directory>> replaceSubdir(PathPtr path, WriteMode mode) const = 0;
+  virtual Own<Replacer<Directory>> KJ_API replaceSubdir(PathPtr path, WriteMode mode) const = 0;
   // Construct a directory which, when ready, will be atomically moved to `path`, replacing
   // whatever is there already. See `Replacer<T>` for detalis.
   //
   // The `CREATE` and `MODIFY` bits of `mode` are not enforced until commit time, hence
   // `replaceSubdir()` has no "try" variant.
 
-  void symlink(PathPtr linkpath, StringPtr content, WriteMode mode) const;
-  virtual bool trySymlink(PathPtr linkpath, StringPtr content, WriteMode mode) const = 0;
+  void KJ_API symlink(PathPtr linkpath, StringPtr content, WriteMode mode) const;
+  virtual bool KJ_API trySymlink(PathPtr linkpath, StringPtr content, WriteMode mode) const = 0;
   // Create a symlink. `content` is the raw text which will be written into the symlink node.
   // How this text is interpreted is entirely dependent on the filesystem. Note in particular that:
   // - Windows will require a path that uses backslashes as the separator.
@@ -849,16 +851,17 @@ public:
   // PRIVATE have no effect. `trySymlink()` returns false in CREATE mode when the target already
   // exists.
 
-  void transfer(PathPtr toPath, WriteMode toMode,
-                PathPtr fromPath, TransferMode mode) const;
-  void transfer(PathPtr toPath, WriteMode toMode,
-                const Directory& fromDirectory, PathPtr fromPath,
-                TransferMode mode) const;
-  virtual bool tryTransfer(PathPtr toPath, WriteMode toMode,
-                           const Directory& fromDirectory, PathPtr fromPath,
-                           TransferMode mode) const;
-  virtual Maybe<bool> tryTransferTo(const Directory& toDirectory, PathPtr toPath, WriteMode toMode,
-                                    PathPtr fromPath, TransferMode mode) const;
+  void KJ_API transfer(PathPtr toPath, WriteMode toMode,
+                       PathPtr fromPath, TransferMode mode) const;
+  void KJ_API transfer(PathPtr toPath, WriteMode toMode,
+                       const Directory& fromDirectory, PathPtr fromPath,
+                       TransferMode mode) const;
+  virtual bool KJ_API tryTransfer(PathPtr toPath, WriteMode toMode,
+                                  const Directory& fromDirectory, PathPtr fromPath,
+                                  TransferMode mode) const;
+  virtual Maybe<bool> KJ_API tryTransferTo(const Directory& toDirectory, PathPtr toPath,
+                                           WriteMode toMode, PathPtr fromPath,
+                                           TransferMode mode) const;
   // Move, link, or copy a file/directory tree from one location to another.
   //
   // Filesystems vary in what kinds of transfers are allowed, especially for TransferMode::LINK,
@@ -875,8 +878,8 @@ public:
   // `toMode` controls how the target path is created. CREATE_PARENT is honored but EXECUTABLE and
   // PRIVATE have no effect.
 
-  void remove(PathPtr path) const;
-  virtual bool tryRemove(PathPtr path) const = 0;
+  void KJ_API remove(PathPtr path) const;
+  virtual bool KJ_API tryRemove(PathPtr path) const = 0;
   // Deletes/unlinks the given path. If the path names a directory, it is recursively deleted.
   //
   // tryRemove() returns false in the specific case that the path doesn't exist. remove() would
@@ -908,15 +911,15 @@ private:
   static void commitFailed(WriteMode mode);
 };
 
-class Filesystem {
+class KJ_CLASS Filesystem {
 public:
-  virtual const Directory& getRoot() const = 0;
+  virtual const Directory& KJ_API getRoot() const = 0;
   // Get the filesystem's root directory, as of the time the Filesystem object was created.
 
-  virtual const Directory& getCurrent() const = 0;
+  virtual const Directory& KJ_API getCurrent() const = 0;
   // Get the filesystem's current directory, as of the time the Filesystem object was created.
 
-  virtual PathPtr getCurrentPath() const = 0;
+  virtual PathPtr KJ_API getCurrentPath() const = 0;
   // Get the path from the root to the current directory, as of the time the Filesystem object was
   // created. Note that because a `Directory` does not provide access to its parent, if you want to
   // follow `..` from the current directory, you must use `getCurrentPath().eval("..")` or
@@ -937,8 +940,8 @@ public:
 
 // =======================================================================================
 
-Own<File> newInMemoryFile(const Clock& clock);
-Own<Directory> newInMemoryDirectory(const Clock& clock);
+Own<File> KJ_API newInMemoryFile(const Clock& clock);
+Own<Directory> KJ_API newInMemoryDirectory(const Clock& clock);
 // Construct file and directory objects which reside in-memory.
 //
 // InMemoryFile has the following special properties:
@@ -953,7 +956,7 @@ Own<Directory> newInMemoryDirectory(const Clock& clock);
 // - link() and rename() accept any kind of Directory as `fromDirectory` -- it doesn't need to be
 //   another InMemoryDirectory. However, for rename(), the from path must be a directory.
 
-Own<AppendableFile> newFileAppender(Own<const File> inner);
+Own<AppendableFile> KJ_API newFileAppender(Own<const File> inner);
 // Creates an AppendableFile by wrapping a File. Note that this implementation assumes it is the
 // only writer. A correct implementation should always append to the file even if other writes
 // are happening simultaneously, as is achieved with the O_APPEND flag to open(2), but that
@@ -965,14 +968,14 @@ typedef AutoCloseHandle OsFileHandle;
 typedef AutoCloseFd OsFileHandle;
 #endif
 
-Own<ReadableFile> newDiskReadableFile(OsFileHandle fd);
-Own<AppendableFile> newDiskAppendableFile(OsFileHandle fd);
-Own<File> newDiskFile(OsFileHandle fd);
-Own<ReadableDirectory> newDiskReadableDirectory(OsFileHandle fd);
-Own<Directory> newDiskDirectory(OsFileHandle fd);
+Own<ReadableFile> KJ_API newDiskReadableFile(OsFileHandle fd);
+Own<AppendableFile> KJ_API newDiskAppendableFile(OsFileHandle fd);
+Own<File> KJ_API newDiskFile(OsFileHandle fd);
+Own<ReadableDirectory> KJ_API newDiskReadableDirectory(OsFileHandle fd);
+Own<Directory> KJ_API newDiskDirectory(OsFileHandle fd);
 // Wrap a file descriptor (or Windows HANDLE) as various filesystem types.
 
-Own<Filesystem> newDiskFilesystem();
+Own<Filesystem> KJ_API newDiskFilesystem();
 // Get at implementation of `Filesystem` representing the real filesystem.
 //
 // DO NOT CALL THIS except at the top level of your program, e.g. in main(). Anywhere else, you

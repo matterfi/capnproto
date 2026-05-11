@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "string.h"
 
 KJ_BEGIN_HEADER
@@ -28,7 +29,7 @@ KJ_BEGIN_HEADER
 namespace kj {
 namespace _ {  // private
 
-struct HashCoder {
+struct KJ_CLASS HashCoder {
   // This is a dummy type with only one instance: HASHCODER (below).  To make an arbitrary type
   // hashable, define `operator*(HashCoder, T)` to return any other type that is already hashable.
   // Be sure to declare the operator in the same namespace as `T` **or** in the global scope.
@@ -41,45 +42,45 @@ struct HashCoder {
   // different.  Declaring `operator*` with `HashCoder` as the left operand cannot conflict with
   // anything.
 
-  uint operator*(ArrayPtr<const byte> s) const;
-  inline uint operator*(ArrayPtr<byte> s) const { return operator*(s.asConst()); }
+  uint KJ_API operator*(ArrayPtr<const byte> s) const;
+  inline uint KJ_API operator*(ArrayPtr<byte> s) const { return operator*(s.asConst()); }
 
-  inline uint operator*(ArrayPtr<const char> s) const { return operator*(s.asBytes()); }
-  inline uint operator*(ArrayPtr<char> s) const { return operator*(s.asBytes()); }
-  inline uint operator*(const Array<const char>& s) const { return operator*(s.asBytes()); }
-  inline uint operator*(const Array<char>& s) const { return operator*(s.asBytes()); }
-  inline uint operator*(const String& s) const { return operator*(s.asBytes()); }
-  inline uint operator*(const StringPtr& s) const { return operator*(s.asBytes()); }
-  inline uint operator*(const ConstString& s) const { return operator*(s.asBytes()); }
+  inline uint KJ_API operator*(ArrayPtr<const char> s) const { return operator*(s.asBytes()); }
+  inline uint KJ_API operator*(ArrayPtr<char> s) const { return operator*(s.asBytes()); }
+  inline uint KJ_API operator*(const Array<const char>& s) const { return operator*(s.asBytes()); }
+  inline uint KJ_API operator*(const Array<char>& s) const { return operator*(s.asBytes()); }
+  inline uint KJ_API operator*(const String& s) const { return operator*(s.asBytes()); }
+  inline uint KJ_API operator*(const StringPtr& s) const { return operator*(s.asBytes()); }
+  inline uint KJ_API operator*(const ConstString& s) const { return operator*(s.asBytes()); }
 
-  inline uint operator*(decltype(nullptr)) const { return 0; }
-  inline uint operator*(bool b) const { return b; }
-  inline uint operator*(char i) const { return i; }
-  inline uint operator*(signed char i) const { return i; }
-  inline uint operator*(unsigned char i) const { return i; }
-  inline uint operator*(signed short i) const { return i; }
-  inline uint operator*(unsigned short i) const { return i; }
-  inline uint operator*(signed int i) const { return i; }
-  inline uint operator*(unsigned int i) const { return i; }
+  inline uint KJ_API operator*(decltype(nullptr)) const { return 0; }
+  inline uint KJ_API operator*(bool b) const { return b; }
+  inline uint KJ_API operator*(char i) const { return i; }
+  inline uint KJ_API operator*(signed char i) const { return i; }
+  inline uint KJ_API operator*(unsigned char i) const { return i; }
+  inline uint KJ_API operator*(signed short i) const { return i; }
+  inline uint KJ_API operator*(unsigned short i) const { return i; }
+  inline uint KJ_API operator*(signed int i) const { return i; }
+  inline uint KJ_API operator*(unsigned int i) const { return i; }
 
-  inline uint operator*(signed long i) const {
+  inline uint KJ_API operator*(signed long i) const {
     if (sizeof(i) == sizeof(uint)) {
       return operator*(static_cast<uint>(i));
     } else {
       return operator*(static_cast<unsigned long long>(i));
     }
   }
-  inline uint operator*(unsigned long i) const {
+  inline uint KJ_API operator*(unsigned long i) const {
     if (sizeof(i) == sizeof(uint)) {
       return operator*(static_cast<uint>(i));
     } else {
       return operator*(static_cast<unsigned long long>(i));
     }
   }
-  inline uint operator*(signed long long i) const {
+  inline uint KJ_API operator*(signed long long i) const {
     return operator*(static_cast<unsigned long long>(i));
   }
-  inline uint operator*(unsigned long long i) const {
+  inline uint KJ_API operator*(unsigned long long i) const {
     // Mix 64 bits to 32 bits in such a way that if our input values differ primarily in the upper
     // 32 bits, we still get good diffusion. (I.e. we cannot just truncate!)
     //
@@ -112,11 +113,11 @@ struct HashCoder {
   template <typename T, typename Result = decltype(instance<T>().hashCode())>
   inline Result operator*(T&& value) const { return kj::fwd<T>(value).hashCode(); }
 };
-static KJ_CONSTEXPR(const) HashCoder HASHCODER = HashCoder();
+static KJ_CONSTEXPR(const) HashCoder KJ_API HASHCODER = HashCoder();
 
 }  // namespace _ (private)
 
-#define KJ_HASHCODE(...) operator*(::kj::_::HashCoder, __VA_ARGS__)
+#define KJ_HASHCODE(...) KJ_API operator*(::kj::_::HashCoder, __VA_ARGS__)
 // Defines a hash function for a custom type.  Example:
 //
 //    class Foo {...};
@@ -128,7 +129,7 @@ static KJ_CONSTEXPR(const) HashCoder HASHCODER = HashCoder();
 // namespace. It can return any type which itself is hashable -- that value will be hashed in turn
 // until a `uint` comes out.
 
-inline uint hashCode(uint value) { return value; }
+inline uint KJ_API hashCode(uint value) { return value; }
 template <typename T>
 inline uint hashCode(T&& value) { return hashCode(_::HASHCODER * kj::fwd<T>(value)); }
 template <typename T, size_t N>

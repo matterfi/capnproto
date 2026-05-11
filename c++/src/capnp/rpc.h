@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-capnp-rpc.h"
 #include <capnp/capability.h>
 #include "rpc-prelude.h"
 
@@ -253,37 +254,37 @@ private:
 // =======================================================================================
 // VatNetwork
 
-class OutgoingRpcMessage {
+class CAPNP_RPC_CLASS OutgoingRpcMessage {
   // A message to be sent by a `VatNetwork`.
 
 public:
-  virtual AnyPointer::Builder getBody() = 0;
+  virtual AnyPointer::Builder CAPNP_RPC_API getBody() = 0;
   // Get the message body, which the caller may fill in any way it wants.  (The standard RPC
   // implementation initializes it as a Message as defined in rpc.capnp.)
 
-  virtual void setFds(kj::Array<int> fds) {}
+  virtual void CAPNP_RPC_API setFds(kj::Array<int> fds) {}
   // Set the list of file descriptors to send along with this message, if FD passing is supported.
   // An implementation may ignore this.
 
-  virtual void send() = 0;
+  virtual void CAPNP_RPC_API send() = 0;
   // Send the message, or at least put it in a queue to be sent later.  Note that the builder
   // returned by `getBody()` remains valid at least until the `OutgoingRpcMessage` is destroyed.
 
-  virtual size_t sizeInWords() = 0;
+  virtual size_t CAPNP_RPC_API sizeInWords() = 0;
   // Get the total size of the message, for flow control purposes. Although the caller could
   // also call getBody().targetSize(), doing that would walk the message tree, whereas typical
   // implementations can compute the size more cheaply by summing segment sizes.
 };
 
-class IncomingRpcMessage {
+class CAPNP_RPC_CLASS IncomingRpcMessage {
   // A message received from a `VatNetwork`.
 
 public:
-  virtual AnyPointer::Reader getBody() = 0;
+  virtual AnyPointer::Reader CAPNP_RPC_API getBody() = 0;
   // Get the message body, to be interpreted by the caller.  (The standard RPC implementation
   // interprets it as a Message as defined in rpc.capnp.)
 
-  virtual kj::ArrayPtr<kj::AutoCloseFd> getAttachedFds() { return nullptr; }
+  virtual kj::ArrayPtr<kj::AutoCloseFd> CAPNP_RPC_API getAttachedFds() { return nullptr; }
   // If the transport supports attached file descriptors and some were attached to this message,
   // returns them. Otherwise returns an empty array. It is intended that the caller will move the
   // FDs out of this table when they are consumed, possibly leaving behind a null slot. Callers
@@ -291,27 +292,28 @@ public:
   // (We don't use Maybe here because moving from a Maybe doesn't make it null, so it would only
   // add confusion. Moving from an AutoCloseFd does in fact make it null.)
 
-  virtual size_t sizeInWords() = 0;
+  virtual size_t CAPNP_RPC_API sizeInWords() = 0;
   // Get the total size of the message, for flow control purposes. Although the caller could
   // also call getBody().targetSize(), doing that would walk the message tree, whereas typical
   // implementations can compute the size more cheaply by summing segment sizes.
 
-  static bool isShortLivedRpcMessage(AnyPointer::Reader body);
+  static bool CAPNP_RPC_API isShortLivedRpcMessage(AnyPointer::Reader body);
   // Helper function which computes whether the standard RpcSystem implementation would consider
   // the given message body to be short-lived, meaning it will be dropped before the next message
   // is read. This is useful to implement BufferedMessageStream::IsShortLivedCallback.
 
-  static kj::Function<bool(MessageReader&)> getShortLivedCallback();
+  static kj::Function<bool(MessageReader&)> CAPNP_RPC_API getShortLivedCallback();
   // Returns a function that wraps isShortLivedRpcMessage(). The returned function type matches
   // `BufferedMessageStream::IsShortLivedCallback` (defined in serialize-async.h), but we don't
   // include that header here.
 };
 
-class RpcFlowController {
+class CAPNP_RPC_CLASS RpcFlowController {
   // Tracks a particular RPC stream in order to implement a flow control algorithm.
 
 public:
-  virtual kj::Promise<void> send(kj::Own<OutgoingRpcMessage> message, kj::Promise<void> ack) = 0;
+  virtual kj::Promise<void> CAPNP_RPC_API send(kj::Own<OutgoingRpcMessage> message,
+                                               kj::Promise<void> ack) = 0;
   // Like calling message->send(), but the promise resolves when it's a good time to send the
   // next message.
   //
@@ -331,31 +333,31 @@ public:
   // Dropping the returned promise does not cancel the send. Once send() is called, there's no way
   // to stop it.
 
-  virtual kj::Promise<void> waitAllAcked() = 0;
+  virtual kj::Promise<void> CAPNP_RPC_API waitAllAcked() = 0;
   // Wait for all `ack`s previously passed to send() to finish. It is an error to call send() again
   // after this.
 
   // ---------------------------------------------------------------------------
   // Common implementations.
 
-  static kj::Own<RpcFlowController> newFixedWindowController(size_t windowSize);
+  static kj::Own<RpcFlowController> CAPNP_RPC_API newFixedWindowController(size_t windowSize);
   // Constructs a flow controller that implements a strict fixed window of the given size. In other
   // words, the controller will throttle the stream when the total bytes in-flight exceeds the
   // window.
 
-  class WindowGetter {
+  class CAPNP_RPC_CLASS WindowGetter {
   public:
-    virtual size_t getWindow() = 0;
+    virtual size_t CAPNP_RPC_API getWindow() = 0;
   };
 
-  static kj::Own<RpcFlowController> newVariableWindowController(WindowGetter& getter);
+  static kj::Own<RpcFlowController> CAPNP_RPC_API newVariableWindowController(WindowGetter& getter);
   // Like newFixedWindowController(), but the window size is allowed to vary over time. Useful if
   // you have a technique for estimating one good window size for the connection as a whole but not
   // for individual streams. Keep in mind, though, that in situations where the other end of the
   // connection is merely proxying capabilities from a variety of final destinations across a
   // variety of networks, no single window will be appropriate for all streams.
 
-  static constexpr size_t DEFAULT_WINDOW_SIZE = 65536;
+  static constexpr size_t CAPNP_RPC_API DEFAULT_WINDOW_SIZE = 65536;
   // The window size used by the default implementation of Connection::newStream().
 };
 

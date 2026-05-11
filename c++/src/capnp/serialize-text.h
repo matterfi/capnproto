@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-capnp-capnpc.h"
 #include <kj/string.h>
 #include "dynamic.h"
 #include "orphan.h"
@@ -30,7 +31,7 @@ CAPNP_BEGIN_HEADER
 
 namespace capnp {
 
-class TextCodec {
+class CAPNP_CAPNPC_CLASS TextCodec {
   // Reads and writes Cap'n Proto objects in a plain text format (as used in the schema
   // language for constants, and read/written by the 'decode' and 'encode' commands of
   // the capnp tool).
@@ -46,16 +47,16 @@ class TextCodec {
   // Requires linking with the capnpc library.
 
 public:
-  TextCodec();
-  ~TextCodec() noexcept(true);
+  CAPNP_CAPNPC_API TextCodec();
+  CAPNP_CAPNPC_API ~TextCodec() noexcept(true);
 
-  void setPrettyPrint(bool enabled);
+  void CAPNP_CAPNPC_API setPrettyPrint(bool enabled);
   // If enabled, pads the output of `encode()` with spaces and newlines to make it more
   // human-readable.
 
   template <typename T>
   kj::String encode(T&& value) const;
-  kj::String encode(DynamicValue::Reader value) const;
+  kj::String CAPNP_CAPNPC_API encode(DynamicValue::Reader value) const;
   // Encode any Cap'n Proto value.
 
   template <typename T>
@@ -64,7 +65,7 @@ public:
   // orphanage. Any errors parsing the input or assigning the fields of T are thrown as
   // exceptions.
 
-  void decode(kj::StringPtr input, DynamicStruct::Builder output) const;
+  void CAPNP_CAPNPC_API decode(kj::StringPtr input, DynamicStruct::Builder output) const;
   // Decode a text message for a struct into the given builder. Any errors parsing the
   // input or assigning the fields of the output are thrown as exceptions.
 

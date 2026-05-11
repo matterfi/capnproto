@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <capnp/export-capnp-capnpc.h>
 #include <kj/string.h>
 #include <kj/array.h>
 #include <capnp/common.h>
@@ -30,9 +31,10 @@ CAPNP_BEGIN_HEADER
 namespace capnp {
 namespace compiler {
 
-uint64_t generateChildId(uint64_t parentId, kj::StringPtr childName);
-uint64_t generateGroupId(uint64_t parentId, uint16_t groupIndex);
-uint64_t generateMethodParamsId(uint64_t parentId, uint16_t methodOrdinal, bool isResults);
+uint64_t CAPNP_CAPNPC_API generateChildId(uint64_t parentId, kj::StringPtr childName);
+uint64_t CAPNP_CAPNPC_API generateGroupId(uint64_t parentId, uint16_t groupIndex);
+uint64_t CAPNP_CAPNPC_API generateMethodParamsId(uint64_t parentId, uint16_t methodOrdinal,
+                                                 bool isResults);
 // Generate a default type ID for various symbols. These are used only if the developer did not
 // specify an ID explicitly.
 //

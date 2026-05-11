@@ -21,31 +21,32 @@
 
 #pragma once
 
+#include <kj/export-kj-tls.h>
 #include <kj/async-io.h>
 
 KJ_BEGIN_HEADER
 
 namespace kj {
 
-class ReadyInputStreamWrapper {
+class KJ_TLS_CLASS ReadyInputStreamWrapper {
   // Provides readiness-based Async I/O as a wrapper around KJ's standard completion-based API, for
   // compatibility with libraries that use readiness-based abstractions (e.g. OpenSSL).
   //
   // Unfortunately this requires buffering, so is not very efficient.
 
 public:
-  ReadyInputStreamWrapper(AsyncInputStream& input);
-  ~ReadyInputStreamWrapper() noexcept(false);
+  KJ_TLS_API ReadyInputStreamWrapper(AsyncInputStream& input);
+  KJ_TLS_API ~ReadyInputStreamWrapper() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(ReadyInputStreamWrapper);
 
-  kj::Maybe<size_t> read(kj::ArrayPtr<byte> dst);
+  kj::Maybe<size_t> KJ_TLS_API read(kj::ArrayPtr<byte> dst);
   // Reads bytes into `dst`, returning the number of bytes read. Returns zero only at EOF. Returns
   // nullptr if not ready.
 
-  kj::Promise<void> whenReady();
+  kj::Promise<void> KJ_TLS_API whenReady();
   // Returns a promise that resolves when read() will return non-null.
 
-  bool isAtEnd() { return eof; }
+  bool KJ_TLS_API isAtEnd() { return eof; }
   // Returns true if read() would return zero.
 
 private:
@@ -58,28 +59,28 @@ private:
   byte buffer[8192];
 };
 
-class ReadyOutputStreamWrapper {
+class KJ_TLS_CLASS ReadyOutputStreamWrapper {
   // Provides readiness-based Async I/O as a wrapper around KJ's standard completion-based API, for
   // compatibility with libraries that use readiness-based abstractions (e.g. OpenSSL).
   //
   // Unfortunately this requires buffering, so is not very efficient.
 
 public:
-  ReadyOutputStreamWrapper(AsyncOutputStream& output);
-  ~ReadyOutputStreamWrapper() noexcept(false);
+  KJ_TLS_API ReadyOutputStreamWrapper(AsyncOutputStream& output);
+  KJ_TLS_API ~ReadyOutputStreamWrapper() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(ReadyOutputStreamWrapper);
 
-  kj::Maybe<size_t> write(kj::ArrayPtr<const byte> src);
+  kj::Maybe<size_t> KJ_TLS_API write(kj::ArrayPtr<const byte> src);
   // Writes bytes from `src`, returning the number of bytes written. Never returns zero for
   // a non-empty `src`. Returns nullptr if not ready.
 
-  kj::Promise<void> whenReady();
+  kj::Promise<void> KJ_TLS_API whenReady();
   // Returns a promise that resolves when write() will return non-null.
 
   class Cork;
   // An object that, when destructed, will uncork its parent stream.
 
-  Cork cork();
+  Cork KJ_TLS_API cork();
   // After calling, data won't be pumped until either the internal buffer fills up or the returned
   // object is destructed. Use this if you know multiple small write() calls will be happening in
   // the near future and want to flush them all at once.
@@ -106,15 +107,15 @@ private:
   // Asynchronously push the buffer out to the underlying stream.
 };
 
-class ReadyOutputStreamWrapper::Cork {
+class KJ_TLS_CLASS ReadyOutputStreamWrapper::Cork {
   // An object that, when destructed, will uncork its parent stream.
 public:
-  ~Cork() {
+  KJ_TLS_API ~Cork() {
     KJ_IF_MAYBE(p, parent) {
       p->uncork();
     }
   }
-  Cork(Cork&& other) : parent(kj::mv(other.parent)) {
+  KJ_TLS_API Cork(Cork&& other) : parent(kj::mv(other.parent)) {
     other.parent = nullptr;
   }
   KJ_DISALLOW_COPY(Cork);

@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <capnp/export-capnp-capnpc.h>
 #include <capnp/compiler/grammar.capnp.h>
 #include <capnp/schema.capnp.h>
 #include <capnp/schema-loader.h>
@@ -32,28 +33,29 @@ CAPNP_BEGIN_HEADER
 namespace capnp {
 namespace compiler {
 
-class Module: public ErrorReporter {
+class CAPNP_CAPNPC_CLASS Module: public ErrorReporter {
 public:
-  virtual kj::StringPtr getSourceName() = 0;
+  virtual kj::StringPtr CAPNP_CAPNPC_API getSourceName() = 0;
   // The name of the module file relative to the source tree.  Used to decide where to output
   // generated code and to form the `displayName` in the schema.
 
-  virtual Orphan<ParsedFile> loadContent(Orphanage orphanage) = 0;
+  virtual Orphan<ParsedFile> CAPNP_CAPNPC_API loadContent(Orphanage orphanage) = 0;
   // Loads the module content, using the given orphanage to allocate objects if necessary.
 
-  virtual kj::Maybe<Module&> importRelative(kj::StringPtr importPath) = 0;
+  virtual kj::Maybe<Module&> CAPNP_CAPNPC_API importRelative(kj::StringPtr importPath) = 0;
   // Find another module, relative to this one.  Importing the same logical module twice should
   // produce the exact same object, comparable by identity.  These objects are owned by some
   // outside pool that outlives the Compiler instance.
 
-  virtual kj::Maybe<kj::Array<const byte>> embedRelative(kj::StringPtr embedPath) = 0;
+  virtual kj::Maybe<kj::Array<const byte>> CAPNP_CAPNPC_API embedRelative(
+      kj::StringPtr embedPath) = 0;
   // Read and return the content of a file specified using `embed`.
 
-  virtual kj::ArrayPtr<const Resolution> getResolutions() { return nullptr; }
+  virtual kj::ArrayPtr<const Resolution> CAPNP_CAPNPC_API getResolutions() { return nullptr; }
   // Get the list of all resolutions reported using ErrorHandler::reportResolution().
 };
 
-class Compiler final: private SchemaLoader::LazyLoadCallback {
+class CAPNP_CAPNPC_CLASS Compiler final: private SchemaLoader::LazyLoadCallback {
   // Cross-links separate modules (schema files) and translates them into schema nodes.
   //
   // This class is thread-safe, hence all its methods are const.
@@ -77,27 +79,27 @@ public:
     // point.
   };
 
-  explicit Compiler(AnnotationFlag annotationFlag = COMPILE_ANNOTATIONS);
-  ~Compiler() noexcept(false);
+  explicit CAPNP_CAPNPC_API Compiler(AnnotationFlag annotationFlag = COMPILE_ANNOTATIONS);
+  CAPNP_CAPNPC_API ~Compiler() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(Compiler);
 
-  class CompiledType {
+  class CAPNP_CAPNPC_CLASS CompiledType {
     // Represents a compiled type expression, from which you can traverse to nested types, apply
     // generics, etc.
 
   public:
-    CompiledType clone();
+    CompiledType CAPNP_CAPNPC_API clone();
     // Make another CompiledType pointing to the same type.
 
-    kj::Maybe<Type> getSchema();
+    kj::Maybe<Type> CAPNP_CAPNPC_API getSchema();
     // Evaluate to a type schema. Returns null if this "type" cannot actually be used as a field
     // type, e.g. because it's the pseudo-type representing a file's top-level scope.
 
-    kj::Maybe<CompiledType> getMember(kj::StringPtr name);
+    kj::Maybe<CompiledType> CAPNP_CAPNPC_API getMember(kj::StringPtr name);
     // Look up a nested declaration. Returns null if there is no such member, or if the member is
     // not a type.
 
-    kj::Maybe<CompiledType> applyBrand(kj::Array<CompiledType> arguments);
+    kj::Maybe<CompiledType> CAPNP_CAPNPC_API applyBrand(kj::Array<CompiledType> arguments);
     // If this is a generic type, specializes apply a brand to it. Returns null if this is
     // not a generic type or too many arguments were specified.
 
@@ -111,17 +113,18 @@ public:
     friend class Compiler;
   };
 
-  class ModuleScope {
+  class CAPNP_CAPNPC_CLASS ModuleScope {
     // Result of compiling a module.
 
   public:
-    uint64_t getId() { return id; }
+    uint64_t CAPNP_CAPNPC_API getId() { return id; }
 
-    CompiledType getRoot();
+    CompiledType CAPNP_CAPNPC_API getRoot();
     // Get a CompiledType representing the root, which can be used to programmatically look up
     // declarations.
 
-    kj::Maybe<CompiledType> evalType(Expression::Reader expression, ErrorReporter& errorReporter);
+    kj::Maybe<CompiledType> CAPNP_CAPNPC_API evalType(Expression::Reader expression,
+                                                      ErrorReporter& errorReporter);
     // Evaluate some type expression within the scope of this module.
     //
     // Returns null if errors prevented evaluation; the errors will have been reported to
@@ -138,13 +141,13 @@ public:
     friend class Compiler;
   };
 
-  ModuleScope add(Module& module) const;
+  ModuleScope CAPNP_CAPNPC_API add(Module& module) const;
   // Add a module to the Compiler, returning a CompiledType representing the top-level scope of
   // the module.  The module is parsed at the time `add()` is called, but not fully compiled --
   // individual schema nodes are compiled lazily.  If you want to force eager compilation,
   // see `eagerlyCompile()`, below.
 
-  kj::Maybe<uint64_t> lookup(uint64_t parent, kj::StringPtr childName) const;
+  kj::Maybe<uint64_t> CAPNP_CAPNPC_API lookup(uint64_t parent, kj::StringPtr childName) const;
   // Given the type ID of a schema node, find the ID of a node nested within it.  Throws an
   // exception if the parent ID is not recognized; returns null if the parent has no child of the
   // given name.  Neither the parent nor the child schema node is actually compiled.
@@ -152,14 +155,14 @@ public:
   // TODO(cleanup): This interface does not handle generics correctly. Use the
   //   ModuleScope/CompiledType interface instead.
 
-  kj::Maybe<schema::Node::SourceInfo::Reader> getSourceInfo(uint64_t id) const;
+  kj::Maybe<schema::Node::SourceInfo::Reader> CAPNP_CAPNPC_API getSourceInfo(uint64_t id) const;
   // Get the SourceInfo for the given type ID, if available.
 
   Orphan<List<schema::CodeGeneratorRequest::RequestedFile::Import>>
-      getFileImportTable(Module& module, Orphanage orphanage) const;
+      CAPNP_CAPNPC_API getFileImportTable(Module& module, Orphanage orphanage) const;
   // Build the import table for the CodeGeneratorRequest for the given module.
 
-  Orphan<List<schema::Node::SourceInfo>> getAllSourceInfo(Orphanage orphanage) const;
+  Orphan<List<schema::Node::SourceInfo>> CAPNP_CAPNPC_API getAllSourceInfo(Orphanage orphanage) const;
   // Gets the SourceInfo structs for all nodes parsed by the compiler.
 
   enum Eagerness: uint32_t {
@@ -225,7 +228,7 @@ public:
     // can form the flags to use when traversing a dependency by shifting bits.
   };
 
-  void eagerlyCompile(uint64_t id, uint eagerness) const;
+  void CAPNP_CAPNPC_API eagerlyCompile(uint64_t id, uint eagerness) const;
   // Force eager compilation of schema nodes related to the given ID.  `eagerness` specifies which
   // related nodes should be compiled before returning.  It is a bitwise OR of the possible values
   // of the `Eagerness` enum.
@@ -233,12 +236,12 @@ public:
   // If this returns and no errors have been reported, then it is guaranteed that the compiled
   // nodes can be found in the SchemaLoader returned by `getLoader()`.
 
-  const SchemaLoader& getLoader() const { return loader; }
-  SchemaLoader& getLoader() { return loader; }
+  const SchemaLoader& CAPNP_CAPNPC_API getLoader() const { return loader; }
+  SchemaLoader& CAPNP_CAPNPC_API getLoader() { return loader; }
   // Get a SchemaLoader backed by this compiler.  Schema nodes will be lazily constructed as you
   // traverse them using this loader.
 
-  void clearWorkspace() const;
+  void CAPNP_CAPNPC_API clearWorkspace() const;
   // The compiler builds a lot of temporary tables and data structures while it works.  It's
   // useful to keep these around if more work is expected (especially if you are using lazy
   // compilation and plan to look up Schema nodes that haven't already been seen), but once

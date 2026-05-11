@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include "string.h"
 #include "vector.h"
 #include "async-io.h"
@@ -44,14 +45,14 @@ kj::ArrayPtr<const char> safeUnixPath(const struct sockaddr_un* addr, uint addrl
 // paths MUST be read using this function.
 #endif
 
-class NetworkFilter: public LowLevelAsyncIoProvider::NetworkFilter {
+class KJ_CLASS NetworkFilter: public LowLevelAsyncIoProvider::NetworkFilter {
 public:
-  NetworkFilter();
-  NetworkFilter(ArrayPtr<const StringPtr> allow, ArrayPtr<const StringPtr> deny,
+  KJ_API NetworkFilter();
+  KJ_API NetworkFilter(ArrayPtr<const StringPtr> allow, ArrayPtr<const StringPtr> deny,
                 NetworkFilter& next);
 
-  bool shouldAllow(const struct sockaddr* addr, uint addrlen) override;
-  bool shouldAllowParse(const struct sockaddr* addr, uint addrlen);
+  bool KJ_API shouldAllow(const struct sockaddr* addr, uint addrlen) override;
+  bool KJ_API shouldAllowParse(const struct sockaddr* addr, uint addrlen);
 
 private:
   Vector<CidrRange> allowCidrs;

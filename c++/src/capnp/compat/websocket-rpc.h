@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <capnp/export-capnp-websocket.h>
 #include <kj/compat/http.h>
 #include <capnp/serialize-async.h>
 
@@ -28,26 +29,26 @@ CAPNP_BEGIN_HEADER
 
 namespace capnp {
 
-class WebSocketMessageStream final : public MessageStream {
+class CAPNP_WEBSOCKET_CLASS WebSocketMessageStream final : public MessageStream {
   // An implementation of MessageStream that sends messages over a websocket.
   //
   // Each capnproto message is sent in a single binary websocket frame.
 public:
-  WebSocketMessageStream(kj::WebSocket& socket);
+  CAPNP_WEBSOCKET_API WebSocketMessageStream(kj::WebSocket& socket);
 
   // Implements MessageStream
-  kj::Promise<kj::Maybe<MessageReaderAndFds>> tryReadMessage(
+  kj::Promise<kj::Maybe<MessageReaderAndFds>> CAPNP_WEBSOCKET_API tryReadMessage(
       kj::ArrayPtr<kj::AutoCloseFd> fdSpace,
       ReaderOptions options = ReaderOptions(), kj::ArrayPtr<word> scratchSpace = nullptr) override;
-  kj::Promise<void> writeMessage(
+  kj::Promise<void> CAPNP_WEBSOCKET_API writeMessage(
       kj::ArrayPtr<const int> fds,
       kj::ArrayPtr<const kj::ArrayPtr<const word>> segments) override
     KJ_WARN_UNUSED_RESULT;
-  kj::Promise<void> writeMessages(
+  kj::Promise<void> CAPNP_WEBSOCKET_API writeMessages(
       kj::ArrayPtr<kj::ArrayPtr<const kj::ArrayPtr<const word>>> messages) override
     KJ_WARN_UNUSED_RESULT;
-  kj::Maybe<int> getSendBufferSize() override;
-  kj::Promise<void> end() override;
+  kj::Maybe<int> CAPNP_WEBSOCKET_API getSendBufferSize() override;
+  kj::Promise<void> CAPNP_WEBSOCKET_API end() override;
 private:
   kj::WebSocket& socket;
 };

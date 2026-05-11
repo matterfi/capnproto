@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "export-kj.h"
 #include <initializer_list>
 #include "array.h"
 #include "kj/common.h"
@@ -37,7 +38,7 @@ namespace kj {
   class StringTree;   // string-tree.h
 }
 
-constexpr kj::StringPtr operator "" _kj(const char* str, size_t n);
+constexpr kj::StringPtr KJ_API operator "" _kj(const char* str, size_t n);
 // You can append _kj to a string literal to make its type be StringPtr. There are a few cases
 // where you must do this for correctness:
 // - When you want to declare a constexpr StringPtr. Without _kj, this is a compile error.
@@ -53,7 +54,7 @@ constexpr kj::StringPtr operator "" _kj(const char* str, size_t n);
 // string literal vs. one with _kj (assuming the compiler is able to optimize away strlen() on a
 // string literal).
 
-constexpr kj::LiteralStringConst operator "" _kjc(const char* str, size_t n);
+constexpr kj::LiteralStringConst KJ_API operator "" _kjc(const char* str, size_t n);
 
 namespace kj {
 
@@ -70,29 +71,29 @@ namespace kj {
 // a NUL byte appear immediately after the last byte of the content.  This terminator byte is not
 // counted in the string's size.
 
-class StringPtr {
+class KJ_CLASS StringPtr {
 public:
-  inline StringPtr(): content("", 1) {}
-  inline StringPtr(decltype(nullptr)): content("", 1) {}
-  inline StringPtr(const char* value KJ_LIFETIMEBOUND): content(value, strlen(value) + 1) {}
-  inline StringPtr(const char* value KJ_LIFETIMEBOUND, size_t size): content(value, size + 1) {
+  inline KJ_API StringPtr(): content("", 1) {}
+  inline KJ_API StringPtr(decltype(nullptr)): content("", 1) {}
+  inline KJ_API StringPtr(const char* value KJ_LIFETIMEBOUND): content(value, strlen(value) + 1) {}
+  inline KJ_API StringPtr(const char* value KJ_LIFETIMEBOUND, size_t size): content(value, size + 1) {
     KJ_IREQUIRE(value[size] == '\0', "StringPtr must be NUL-terminated.");
   }
-  inline StringPtr(const char* begin KJ_LIFETIMEBOUND, const char* end KJ_LIFETIMEBOUND): StringPtr(begin, end - begin) {}
-  inline StringPtr(String&& value KJ_LIFETIMEBOUND) : StringPtr(value) {}
-  inline StringPtr(const String& value KJ_LIFETIMEBOUND);
-  inline StringPtr(const ConstString& value KJ_LIFETIMEBOUND);
+  inline KJ_API StringPtr(const char* begin KJ_LIFETIMEBOUND, const char* end KJ_LIFETIMEBOUND): StringPtr(begin, end - begin) {}
+  inline KJ_API StringPtr(String&& value KJ_LIFETIMEBOUND) : StringPtr(value) {}
+  inline KJ_API StringPtr(const String& value KJ_LIFETIMEBOUND);
+  inline KJ_API StringPtr(const ConstString& value KJ_LIFETIMEBOUND);
   StringPtr& operator=(String&& value) = delete;
-  inline StringPtr& operator=(decltype(nullptr)) {
+  inline StringPtr& KJ_API operator=(decltype(nullptr)) {
     content = ArrayPtr<const char>("", 1);
     return *this;
   }
 
 #if __cpp_char8_t
-  inline StringPtr(const char8_t* value KJ_LIFETIMEBOUND): StringPtr(reinterpret_cast<const char*>(value)) {}
-  inline StringPtr(const char8_t* value KJ_LIFETIMEBOUND, size_t size)
+  inline KJ_API StringPtr(const char8_t* value KJ_LIFETIMEBOUND): StringPtr(reinterpret_cast<const char*>(value)) {}
+  inline KJ_API StringPtr(const char8_t* value KJ_LIFETIMEBOUND, size_t size)
       : StringPtr(reinterpret_cast<const char*>(value), size) {}
-  inline StringPtr(const char8_t* begin KJ_LIFETIMEBOUND, const char8_t* end KJ_LIFETIMEBOUND)
+  inline KJ_API StringPtr(const char8_t* begin KJ_LIFETIMEBOUND, const char8_t* end KJ_LIFETIMEBOUND)
       : StringPtr(reinterpret_cast<const char*>(begin), reinterpret_cast<const char*>(end)) {}
   // KJ strings are and always have been UTF-8, so screw this C++20 char8_t stuff.
 #endif
@@ -116,46 +117,46 @@ public:
   // those who don't want it.
 #endif
 
-  inline constexpr operator ArrayPtr<const char>() const;
-  inline constexpr ArrayPtr<const char> asArray() const;
-  inline ArrayPtr<const byte> asBytes() const { return asArray().asBytes(); }
+  inline constexpr KJ_API operator ArrayPtr<const char>() const;
+  inline constexpr ArrayPtr<const char> KJ_API asArray() const;
+  inline ArrayPtr<const byte> KJ_API asBytes() const { return asArray().asBytes(); }
   // Result does not include NUL terminator.
 
-  inline const char* cStr() const { return content.begin(); }
+  inline const char* KJ_API cStr() const { return content.begin(); }
   // Returns NUL-terminated string.
 
-  inline size_t size() const { return content.size() - 1; }
+  inline size_t KJ_API size() const { return content.size() - 1; }
   // Result does not include NUL terminator.
 
-  inline char operator[](size_t index) const { return content[index]; }
+  inline char KJ_API operator[](size_t index) const { return content[index]; }
 
-  inline constexpr const char* begin() const { return content.begin(); }
-  inline constexpr const char* end() const { return content.end() - 1; }
+  inline constexpr const char* KJ_API begin() const { return content.begin(); }
+  inline constexpr const char* KJ_API end() const { return content.end() - 1; }
 
-  inline constexpr bool operator==(decltype(nullptr)) const { return content.size() <= 1; }
+  inline constexpr bool KJ_API operator==(decltype(nullptr)) const { return content.size() <= 1; }
 #if !__cpp_impl_three_way_comparison
-  inline constexpr bool operator!=(decltype(nullptr)) const { return content.size() > 1; }
+  inline constexpr bool KJ_API operator!=(decltype(nullptr)) const { return content.size() > 1; }
 #endif
 
   inline bool operator==(const StringPtr& other) const;
 #if !__cpp_impl_three_way_comparison
-  inline bool operator!=(const StringPtr& other) const { return !(*this == other); }
+  inline bool KJ_API operator!=(const StringPtr& other) const { return !(*this == other); }
 #endif
-  inline bool operator< (const StringPtr& other) const;
-  inline bool operator> (const StringPtr& other) const { return other < *this; }
-  inline bool operator<=(const StringPtr& other) const { return !(other < *this); }
-  inline bool operator>=(const StringPtr& other) const { return !(*this < other); }
+  inline bool KJ_API operator< (const StringPtr& other) const;
+  inline bool KJ_API operator> (const StringPtr& other) const { return other < *this; }
+  inline bool KJ_API operator<=(const StringPtr& other) const { return !(other < *this); }
+  inline bool KJ_API operator>=(const StringPtr& other) const { return !(*this < other); }
 
-  inline StringPtr slice(size_t start) const;
-  inline ArrayPtr<const char> slice(size_t start, size_t end) const;
+  inline StringPtr KJ_API slice(size_t start) const;
+  inline ArrayPtr<const char> KJ_API slice(size_t start, size_t end) const;
   // A string slice is only NUL-terminated if it is a suffix, so slice() has a one-parameter
   // version that assumes end = size().
 
-  inline bool startsWith(const StringPtr& other) const { return asArray().startsWith(other);}
-  inline bool endsWith(const StringPtr& other) const { return asArray().endsWith(other); }
+  inline bool KJ_API startsWith(const StringPtr& other) const { return asArray().startsWith(other);}
+  inline bool KJ_API endsWith(const StringPtr& other) const { return asArray().endsWith(other); }
 
-  inline Maybe<size_t> findFirst(char c) const { return asArray().findFirst(c); }
-  inline Maybe<size_t> findLast(char c) const { return asArray().findLast(c); }
+  inline Maybe<size_t> KJ_API findFirst(char c) const { return asArray().findFirst(c); }
+  inline Maybe<size_t> KJ_API findLast(char c) const { return asArray().findLast(c); }
 
   template <typename T>
   T parseAs() const;
@@ -170,7 +171,7 @@ public:
 
   template <typename... Attachments>
   ConstString attach(Attachments&&... attachments) const KJ_WARN_UNUSED_RESULT;
-  ConstString attach() const KJ_WARN_UNUSED_RESULT;
+  ConstString KJ_API attach() const KJ_WARN_UNUSED_RESULT;
   // Like ArrayPtr<T>::attach(), but instead promotes a StringPtr into a ConstString. Generally the
   // attachment should be an object that somehow owns the String that the StringPtr is pointing at.
 
@@ -184,41 +185,41 @@ private:
 };
 
 #if !__cpp_impl_three_way_comparison
-inline bool operator==(const char* a, const StringPtr& b) { return b == a; }
-inline bool operator!=(const char* a, const StringPtr& b) { return b != a; }
+inline bool KJ_API operator==(const char* a, const StringPtr& b) { return b == a; }
+inline bool KJ_API operator!=(const char* a, const StringPtr& b) { return b != a; }
 #endif
 
-template <> char StringPtr::parseAs<char>() const;
-template <> signed char StringPtr::parseAs<signed char>() const;
-template <> unsigned char StringPtr::parseAs<unsigned char>() const;
-template <> short StringPtr::parseAs<short>() const;
-template <> unsigned short StringPtr::parseAs<unsigned short>() const;
-template <> int StringPtr::parseAs<int>() const;
-template <> unsigned StringPtr::parseAs<unsigned>() const;
-template <> long StringPtr::parseAs<long>() const;
-template <> unsigned long StringPtr::parseAs<unsigned long>() const;
-template <> long long StringPtr::parseAs<long long>() const;
-template <> unsigned long long StringPtr::parseAs<unsigned long long>() const;
-template <> float StringPtr::parseAs<float>() const;
-template <> double StringPtr::parseAs<double>() const;
+template <> char KJ_API StringPtr::parseAs<char>() const;
+template <> signed char KJ_API StringPtr::parseAs<signed char>() const;
+template <> unsigned char KJ_API StringPtr::parseAs<unsigned char>() const;
+template <> short KJ_API StringPtr::parseAs<short>() const;
+template <> unsigned short KJ_API StringPtr::parseAs<unsigned short>() const;
+template <> int KJ_API StringPtr::parseAs<int>() const;
+template <> unsigned KJ_API StringPtr::parseAs<unsigned>() const;
+template <> long KJ_API StringPtr::parseAs<long>() const;
+template <> unsigned long KJ_API StringPtr::parseAs<unsigned long>() const;
+template <> long long KJ_API StringPtr::parseAs<long long>() const;
+template <> unsigned long long KJ_API StringPtr::parseAs<unsigned long long>() const;
+template <> float KJ_API StringPtr::parseAs<float>() const;
+template <> double KJ_API StringPtr::parseAs<double>() const;
 
-template <> Maybe<char> StringPtr::tryParseAs<char>() const;
-template <> Maybe<signed char> StringPtr::tryParseAs<signed char>() const;
-template <> Maybe<unsigned char> StringPtr::tryParseAs<unsigned char>() const;
-template <> Maybe<short> StringPtr::tryParseAs<short>() const;
-template <> Maybe<unsigned short> StringPtr::tryParseAs<unsigned short>() const;
-template <> Maybe<int> StringPtr::tryParseAs<int>() const;
-template <> Maybe<unsigned> StringPtr::tryParseAs<unsigned>() const;
-template <> Maybe<long> StringPtr::tryParseAs<long>() const;
-template <> Maybe<unsigned long> StringPtr::tryParseAs<unsigned long>() const;
-template <> Maybe<long long> StringPtr::tryParseAs<long long>() const;
-template <> Maybe<unsigned long long> StringPtr::tryParseAs<unsigned long long>() const;
-template <> Maybe<float> StringPtr::tryParseAs<float>() const;
-template <> Maybe<double> StringPtr::tryParseAs<double>() const;
+template <> Maybe<char> KJ_API StringPtr::tryParseAs<char>() const;
+template <> Maybe<signed char> KJ_API StringPtr::tryParseAs<signed char>() const;
+template <> Maybe<unsigned char> KJ_API StringPtr::tryParseAs<unsigned char>() const;
+template <> Maybe<short> KJ_API StringPtr::tryParseAs<short>() const;
+template <> Maybe<unsigned short> KJ_API StringPtr::tryParseAs<unsigned short>() const;
+template <> Maybe<int> KJ_API StringPtr::tryParseAs<int>() const;
+template <> Maybe<unsigned> KJ_API StringPtr::tryParseAs<unsigned>() const;
+template <> Maybe<long> KJ_API StringPtr::tryParseAs<long>() const;
+template <> Maybe<unsigned long> KJ_API StringPtr::tryParseAs<unsigned long>() const;
+template <> Maybe<long long> KJ_API StringPtr::tryParseAs<long long>() const;
+template <> Maybe<unsigned long long> KJ_API StringPtr::tryParseAs<unsigned long long>() const;
+template <> Maybe<float> KJ_API StringPtr::tryParseAs<float>() const;
+template <> Maybe<double> KJ_API StringPtr::tryParseAs<double>() const;
 
-class LiteralStringConst: public StringPtr {
+class KJ_CLASS LiteralStringConst: public StringPtr {
 public:
-  inline operator ConstString() const;
+  inline KJ_API operator ConstString() const;
 
 private:
   inline explicit constexpr LiteralStringConst(ArrayPtr<const char> content): StringPtr(content) {}
@@ -235,90 +236,118 @@ private:
 // To allocate a String, you must call kj::heapString().  We do not implement implicit copying to
 // the heap because this hides potential inefficiency from the developer.
 
-class String {
+class KJ_CLASS String {
 public:
-  String() = default;
-  inline String(decltype(nullptr)): content(nullptr) {}
-  inline String(char* value, size_t size, const ArrayDisposer& disposer);
+  KJ_API String() = default;
+  inline KJ_API String(decltype(nullptr)): content(nullptr) {}
+  inline KJ_API String(char* value, size_t size, const ArrayDisposer& disposer);
   // Does not copy.  `size` does not include NUL terminator, but `value` must be NUL-terminated.
-  inline explicit String(Array<char> buffer);
+  inline explicit KJ_API String(Array<char> buffer);
   // Does not copy.  Requires `buffer` ends with `\0`.
 
-  inline operator ArrayPtr<char>() KJ_LIFETIMEBOUND;
-  inline operator ArrayPtr<const char>() const KJ_LIFETIMEBOUND;
-  inline ArrayPtr<char> asArray() KJ_LIFETIMEBOUND;
-  inline ArrayPtr<const char> asArray() const KJ_LIFETIMEBOUND;
-  inline ArrayPtr<byte> asBytes() KJ_LIFETIMEBOUND { return asArray().asBytes(); }
-  inline ArrayPtr<const byte> asBytes() const KJ_LIFETIMEBOUND { return asArray().asBytes(); }
+  inline KJ_API operator ArrayPtr<char>() KJ_LIFETIMEBOUND;
+  inline KJ_API operator ArrayPtr<const char>() const KJ_LIFETIMEBOUND;
+  inline ArrayPtr<char> KJ_API asArray() KJ_LIFETIMEBOUND;
+  inline ArrayPtr<const char> KJ_API asArray() const KJ_LIFETIMEBOUND;
+  inline ArrayPtr<byte> KJ_API asBytes() KJ_LIFETIMEBOUND { return asArray().asBytes(); }
+  inline ArrayPtr<const byte> KJ_API asBytes() const KJ_LIFETIMEBOUND {
+    return asArray().asBytes();
+  }
   // Result does not include NUL terminator.
 
-  inline StringPtr asPtr() const KJ_LIFETIMEBOUND {
+  inline StringPtr KJ_API asPtr() const KJ_LIFETIMEBOUND {
     // Convenience operator to return a StringPtr.
     return StringPtr{*this};
   }
 
-  inline Array<char> releaseArray() { return kj::mv(content); }
+  inline Array<char> KJ_API releaseArray() { return kj::mv(content); }
   // Disowns the backing array (which includes the NUL terminator) and returns it. The String value
   // is clobbered (as if moved away).
 
-  inline const char* cStr() const KJ_LIFETIMEBOUND;
+  inline const char* KJ_API cStr() const KJ_LIFETIMEBOUND;
 
-  inline size_t size() const;
+  inline size_t KJ_API size() const;
   // Result does not include NUL terminator.
 
-  inline char operator[](size_t index) const;
-  inline char& operator[](size_t index) KJ_LIFETIMEBOUND;
+  inline char KJ_API operator[](size_t index) const;
+  inline char& KJ_API operator[](size_t index) KJ_LIFETIMEBOUND;
 
-  inline char* begin() KJ_LIFETIMEBOUND;
-  inline char* end() KJ_LIFETIMEBOUND;
-  inline const char* begin() const KJ_LIFETIMEBOUND;
-  inline const char* end() const KJ_LIFETIMEBOUND;
+  inline char* KJ_API begin() KJ_LIFETIMEBOUND;
+  inline char* KJ_API end() KJ_LIFETIMEBOUND;
+  inline const char* KJ_API begin() const KJ_LIFETIMEBOUND;
+  inline const char* KJ_API end() const KJ_LIFETIMEBOUND;
 
-  inline bool operator==(decltype(nullptr)) const { return content.size() <= 1; }
-  inline bool operator!=(decltype(nullptr)) const { return content.size() > 1; }
+  inline bool KJ_API operator==(decltype(nullptr)) const { return content.size() <= 1; }
+  inline bool KJ_API operator!=(decltype(nullptr)) const { return content.size() > 1; }
 
-  inline bool operator==(const StringPtr& other) const { return StringPtr(*this) == other; }
+  inline bool KJ_API operator==(const StringPtr& other) const { return StringPtr(*this) == other; }
 #if !__cpp_impl_three_way_comparison
-  inline bool operator!=(const StringPtr& other) const { return StringPtr(*this) != other; }
+  inline bool KJ_API operator!=(const StringPtr& other) const { return StringPtr(*this) != other; }
 #endif
-  inline bool operator< (const StringPtr& other) const { return StringPtr(*this) <  other; }
-  inline bool operator> (const StringPtr& other) const { return StringPtr(*this) >  other; }
-  inline bool operator<=(const StringPtr& other) const { return StringPtr(*this) <= other; }
-  inline bool operator>=(const StringPtr& other) const { return StringPtr(*this) >= other; }
+  inline bool KJ_API operator< (const StringPtr& other) const { return StringPtr(*this) <  other; }
+  inline bool KJ_API operator> (const StringPtr& other) const { return StringPtr(*this) >  other; }
+  inline bool KJ_API operator<=(const StringPtr& other) const { return StringPtr(*this) <= other; }
+  inline bool KJ_API operator>=(const StringPtr& other) const { return StringPtr(*this) >= other; }
 
-  inline bool operator==(const String& other) const { return StringPtr(*this) == StringPtr(other); }
+  inline bool KJ_API operator==(const String& other) const {
+    return StringPtr(*this) == StringPtr(other);
+  }
 #if !__cpp_impl_three_way_comparison
-  inline bool operator!=(const String& other) const { return StringPtr(*this) != StringPtr(other); }
+  inline bool KJ_API operator!=(const String& other) const {
+    return StringPtr(*this) != StringPtr(other);
+  }
 #endif
-  inline bool operator< (const String& other) const { return StringPtr(*this) <  StringPtr(other); }
-  inline bool operator> (const String& other) const { return StringPtr(*this) >  StringPtr(other); }
-  inline bool operator<=(const String& other) const { return StringPtr(*this) <= StringPtr(other); }
-  inline bool operator>=(const String& other) const { return StringPtr(*this) >= StringPtr(other); }
+  inline bool KJ_API operator< (const String& other) const {
+    return StringPtr(*this) <  StringPtr(other);
+  }
+  inline bool KJ_API operator> (const String& other) const {
+    return StringPtr(*this) >  StringPtr(other);
+  }
+  inline bool KJ_API operator<=(const String& other) const {
+    return StringPtr(*this) <= StringPtr(other);
+  }
+  inline bool KJ_API operator>=(const String& other) const {
+    return StringPtr(*this) >= StringPtr(other);
+  }
   // Note that if we don't overload for `const String&` specifically, then C++20 will decide that
   // comparisons between two strings are ambiguous. (Clang turns this into a warning,
   // -Wambiguous-reversed-operator, due to the stupidity...)
 
-  inline bool operator==(const ConstString& other) const { return StringPtr(*this) == StringPtr(other); }
+  inline bool KJ_API operator==(const ConstString& other) const {
+    return StringPtr(*this) == StringPtr(other);
+  }
 #if !__cpp_impl_three_way_comparison
-  inline bool operator!=(const ConstString& other) const { return StringPtr(*this) != StringPtr(other); }
+  inline bool KJ_API operator!=(const ConstString& other) const {
+    return StringPtr(*this) != StringPtr(other);
+  }
 #endif
-  inline bool operator< (const ConstString& other) const { return StringPtr(*this) <  StringPtr(other); }
-  inline bool operator> (const ConstString& other) const { return StringPtr(*this) >  StringPtr(other); }
-  inline bool operator<=(const ConstString& other) const { return StringPtr(*this) <= StringPtr(other); }
-  inline bool operator>=(const ConstString& other) const { return StringPtr(*this) >= StringPtr(other); }
+  inline bool KJ_API operator< (const ConstString& other) const {
+    return StringPtr(*this) <  StringPtr(other);
+  }
+  inline bool KJ_API operator> (const ConstString& other) const {
+    return StringPtr(*this) >  StringPtr(other);
+  }
+  inline bool KJ_API operator<=(const ConstString& other) const {
+    return StringPtr(*this) <= StringPtr(other);
+  }
+  inline bool KJ_API operator>=(const ConstString& other) const {
+    return StringPtr(*this) >= StringPtr(other);
+  }
 
-  inline bool startsWith(const StringPtr& other) const { return asArray().startsWith(other);}
-  inline bool endsWith(const StringPtr& other) const { return asArray().endsWith(other); }
+  inline bool KJ_API startsWith(const StringPtr& other) const {
+    return asArray().startsWith(other);
+  }
+  inline bool KJ_API endsWith(const StringPtr& other) const { return asArray().endsWith(other); }
 
-  inline StringPtr slice(size_t start) const KJ_LIFETIMEBOUND {
+  inline StringPtr KJ_API slice(size_t start) const KJ_LIFETIMEBOUND {
     return StringPtr(*this).slice(start);
   }
-  inline ArrayPtr<const char> slice(size_t start, size_t end) const KJ_LIFETIMEBOUND {
+  inline ArrayPtr<const char> KJ_API slice(size_t start, size_t end) const KJ_LIFETIMEBOUND {
     return StringPtr(*this).slice(start, end);
   }
 
-  inline Maybe<size_t> findFirst(char c) const { return asArray().findFirst(c); }
-  inline Maybe<size_t> findLast(char c) const { return asArray().findLast(c); }
+  inline Maybe<size_t> KJ_API findFirst(char c) const { return asArray().findFirst(c); }
+  inline Maybe<size_t> KJ_API findLast(char c) const { return asArray().findLast(c); }
 
   template <typename T>
   T parseAs() const { return StringPtr(*this).parseAs<T>(); }
@@ -338,87 +367,113 @@ private:
 // a copy. Any String can also convert (by move) to ConstString, transferring ownership of
 // the buffer.
 
-class ConstString {
+class KJ_CLASS ConstString {
 public:
-  ConstString() = default;
-  inline ConstString(decltype(nullptr)): content(nullptr) {}
-  inline ConstString(const char* value, size_t size, const ArrayDisposer& disposer);
+  KJ_API ConstString() = default;
+  inline KJ_API ConstString(decltype(nullptr)): content(nullptr) {}
+  inline KJ_API ConstString(const char* value, size_t size, const ArrayDisposer& disposer);
   // Does not copy.  `size` does not include NUL terminator, but `value` must be NUL-terminated.
-  inline explicit ConstString(Array<const char> buffer);
+  inline explicit KJ_API ConstString(Array<const char> buffer);
   // Does not copy.  Requires `buffer` ends with `\0`.
-  inline explicit ConstString(String&& string): content(string.releaseArray()) {}
+  inline explicit KJ_API ConstString(String&& string): content(string.releaseArray()) {}
   // Does not copy. Ownership is transfered.
 
-  inline operator ArrayPtr<const char>() const KJ_LIFETIMEBOUND;
-  inline ArrayPtr<const char> asArray() const KJ_LIFETIMEBOUND;
-  inline ArrayPtr<const byte> asBytes() const KJ_LIFETIMEBOUND { return asArray().asBytes(); }
+  inline KJ_API operator ArrayPtr<const char>() const KJ_LIFETIMEBOUND;
+  inline ArrayPtr<const char> KJ_API asArray() const KJ_LIFETIMEBOUND;
+  inline ArrayPtr<const byte> KJ_API asBytes() const KJ_LIFETIMEBOUND {
+    return asArray().asBytes();
+  }
   // Result does not include NUL terminator.
 
-  inline StringPtr asPtr() const KJ_LIFETIMEBOUND {
+  inline StringPtr KJ_API asPtr() const KJ_LIFETIMEBOUND {
     // Convenience operator to return a StringPtr.
     return StringPtr{*this};
   }
 
-  inline Array<const char> releaseArray() { return kj::mv(content); }
+  inline Array<const char> KJ_API releaseArray() { return kj::mv(content); }
   // Disowns the backing array (which includes the NUL terminator) and returns it. The ConstString value
   // is clobbered (as if moved away).
 
-  inline const char* cStr() const KJ_LIFETIMEBOUND;
+  inline const char* KJ_API cStr() const KJ_LIFETIMEBOUND;
 
-  inline size_t size() const;
+  inline size_t KJ_API size() const;
   // Result does not include NUL terminator.
 
-  inline char operator[](size_t index) const;
-  inline char& operator[](size_t index) KJ_LIFETIMEBOUND;
+  inline char KJ_API operator[](size_t index) const;
+  inline char& KJ_API operator[](size_t index) KJ_LIFETIMEBOUND;
 
-  inline const char* begin() const KJ_LIFETIMEBOUND;
-  inline const char* end() const KJ_LIFETIMEBOUND;
+  inline const char* KJ_API begin() const KJ_LIFETIMEBOUND;
+  inline const char* KJ_API end() const KJ_LIFETIMEBOUND;
 
-  inline bool operator==(decltype(nullptr)) const { return content.size() <= 1; }
-  inline bool operator!=(decltype(nullptr)) const { return content.size() > 1; }
+  inline bool KJ_API operator==(decltype(nullptr)) const { return content.size() <= 1; }
+  inline bool KJ_API operator!=(decltype(nullptr)) const { return content.size() > 1; }
 
-  inline bool operator==(const StringPtr& other) const { return StringPtr(*this) == other; }
+  inline bool KJ_API operator==(const StringPtr& other) const { return StringPtr(*this) == other; }
 #if !__cpp_impl_three_way_comparison
-  inline bool operator!=(const StringPtr& other) const { return StringPtr(*this) != other; }
+  inline bool KJ_API operator!=(const StringPtr& other) const { return StringPtr(*this) != other; }
 #endif
-  inline bool operator< (const StringPtr& other) const { return StringPtr(*this) <  other; }
-  inline bool operator> (const StringPtr& other) const { return StringPtr(*this) >  other; }
-  inline bool operator<=(const StringPtr& other) const { return StringPtr(*this) <= other; }
-  inline bool operator>=(const StringPtr& other) const { return StringPtr(*this) >= other; }
+  inline bool KJ_API operator< (const StringPtr& other) const { return StringPtr(*this) <  other; }
+  inline bool KJ_API operator> (const StringPtr& other) const { return StringPtr(*this) >  other; }
+  inline bool KJ_API operator<=(const StringPtr& other) const { return StringPtr(*this) <= other; }
+  inline bool KJ_API operator>=(const StringPtr& other) const { return StringPtr(*this) >= other; }
 
-  inline bool operator==(const String& other) const { return StringPtr(*this) == StringPtr(other); }
+  inline bool KJ_API operator==(const String& other) const {
+    return StringPtr(*this) == StringPtr(other);
+  }
 #if !__cpp_impl_three_way_comparison
-  inline bool operator!=(const String& other) const { return StringPtr(*this) != StringPtr(other); }
+  inline bool KJ_API operator!=(const String& other) const {
+    return StringPtr(*this) != StringPtr(other);
+  }
 #endif
-  inline bool operator< (const String& other) const { return StringPtr(*this) <  StringPtr(other); }
-  inline bool operator> (const String& other) const { return StringPtr(*this) >  StringPtr(other); }
-  inline bool operator<=(const String& other) const { return StringPtr(*this) <= StringPtr(other); }
-  inline bool operator>=(const String& other) const { return StringPtr(*this) >= StringPtr(other); }
+  inline bool KJ_API operator< (const String& other) const {
+    return StringPtr(*this) <  StringPtr(other);
+  }
+  inline bool KJ_API operator> (const String& other) const {
+    return StringPtr(*this) >  StringPtr(other);
+  }
+  inline bool KJ_API operator<=(const String& other) const {
+    return StringPtr(*this) <= StringPtr(other);
+  }
+  inline bool KJ_API operator>=(const String& other) const {
+    return StringPtr(*this) >= StringPtr(other);
+  }
 
-  inline bool operator==(const ConstString& other) const { return StringPtr(*this) == StringPtr(other); }
+  inline bool KJ_API operator==(const ConstString& other) const {
+    return StringPtr(*this) == StringPtr(other);
+  }
 #if !__cpp_impl_three_way_comparison
-  inline bool operator!=(const ConstString& other) const { return StringPtr(*this) != StringPtr(other); }
+  inline bool KJ_API operator!=(const ConstString& other) const {
+    return StringPtr(*this) != StringPtr(other);
+  }
 #endif
-  inline bool operator< (const ConstString& other) const { return StringPtr(*this) <  StringPtr(other); }
-  inline bool operator> (const ConstString& other) const { return StringPtr(*this) >  StringPtr(other); }
-  inline bool operator<=(const ConstString& other) const { return StringPtr(*this) <= StringPtr(other); }
-  inline bool operator>=(const ConstString& other) const { return StringPtr(*this) >= StringPtr(other); }
+  inline bool KJ_API operator< (const ConstString& other) const {
+    return StringPtr(*this) <  StringPtr(other);
+  }
+  inline bool KJ_API operator> (const ConstString& other) const {
+    return StringPtr(*this) >  StringPtr(other);
+  }
+  inline bool KJ_API operator<=(const ConstString& other) const {
+    return StringPtr(*this) <= StringPtr(other);
+  }
+  inline bool KJ_API operator>=(const ConstString& other) const {
+    return StringPtr(*this) >= StringPtr(other);
+  }
   // Note that if we don't overload for `const ConstString&` specifically, then C++20 will decide that
   // comparisons between two strings are ambiguous. (Clang turns this into a warning,
   // -Wambiguous-reversed-operator, due to the stupidity...)
 
-  inline bool startsWith(const StringPtr& other) const { return asArray().startsWith(other);}
-  inline bool endsWith(const StringPtr& other) const { return asArray().endsWith(other); }
+  inline bool KJ_API startsWith(const StringPtr& other) const { return asArray().startsWith(other);}
+  inline bool KJ_API endsWith(const StringPtr& other) const { return asArray().endsWith(other); }
 
-  inline StringPtr slice(size_t start) const KJ_LIFETIMEBOUND {
+  inline StringPtr KJ_API slice(size_t start) const KJ_LIFETIMEBOUND {
     return StringPtr(*this).slice(start);
   }
-  inline ArrayPtr<const char> slice(size_t start, size_t end) const KJ_LIFETIMEBOUND {
+  inline ArrayPtr<const char> KJ_API slice(size_t start, size_t end) const KJ_LIFETIMEBOUND {
     return StringPtr(*this).slice(start, end);
   }
 
-  inline Maybe<size_t> findFirst(char c) const { return asArray().findFirst(c); }
-  inline Maybe<size_t> findLast(char c) const { return asArray().findLast(c); }
+  inline Maybe<size_t> KJ_API findFirst(char c) const { return asArray().findFirst(c); }
+  inline Maybe<size_t> KJ_API findLast(char c) const { return asArray().findLast(c); }
 
   template <typename T>
   T parseAs() const { return StringPtr(*this).parseAs<T>(); }
@@ -432,19 +487,19 @@ private:
 };
 
 #if !__cpp_impl_three_way_comparison
-inline bool operator==(const char* a, const String& b) { return b == a; }
-inline bool operator!=(const char* a, const String& b) { return b != a; }
+inline bool KJ_API operator==(const char* a, const String& b) { return b == a; }
+inline bool KJ_API operator!=(const char* a, const String& b) { return b != a; }
 #endif
 
-String heapString(size_t size);
+String KJ_API heapString(size_t size);
 // Allocate a String of the given size on the heap, not including NUL terminator.  The NUL
 // terminator will be initialized automatically but the rest of the content is not initialized.
 
-String heapString(const char* value);
-String heapString(const char* value, size_t size);
-String heapString(StringPtr value);
-String heapString(const String& value);
-String heapString(ArrayPtr<const char> value);
+String KJ_API heapString(const char* value);
+String KJ_API heapString(const char* value, size_t size);
+String KJ_API heapString(StringPtr value);
+String KJ_API heapString(const String& value);
+String KJ_API heapString(ArrayPtr<const char> value);
 // Allocates a copy of the given value on the heap.
 
 // =======================================================================================
@@ -521,7 +576,7 @@ template <typename T, typename... Rest>
 char* fillLimited(char* __restrict__ target, char* limit, Delimited<T>& first,Rest&&... rest);
 // As with StringTree, we special-case Delimited<T>.
 
-struct Stringifier {
+struct KJ_CLASS Stringifier {
   // This is a dummy type with only one instance: STR (below).  To make an arbitrary type
   // stringifiable, define `operator*(Stringifier, T)` to return an iterable container of `char`.
   // The container type must have a `size()` method.  Be sure to declare the operator in the same
@@ -534,12 +589,14 @@ struct Stringifier {
   // different.  Declaring `operator*` with `Stringifier` as the left operand cannot conflict with
   // anything.
 
-  inline ArrayPtr<const char> operator*(ArrayPtr<const char> s) const { return s; }
-  inline ArrayPtr<const char> operator*(ArrayPtr<char> s) const { return s; }
-  inline ArrayPtr<const char> operator*(const Array<const char>& s) const KJ_LIFETIMEBOUND {
+  inline ArrayPtr<const char> KJ_API operator*(ArrayPtr<const char> s) const { return s; }
+  inline ArrayPtr<const char> KJ_API operator*(ArrayPtr<char> s) const { return s; }
+  inline ArrayPtr<const char> KJ_API operator*(const Array<const char>& s) const KJ_LIFETIMEBOUND {
     return s;
   }
-  inline ArrayPtr<const char> operator*(const Array<char>& s) const KJ_LIFETIMEBOUND { return s; }
+  inline ArrayPtr<const char> KJ_API operator*(const Array<char>& s) const KJ_LIFETIMEBOUND {
+    return s;
+  }
   template<size_t n>
   inline ArrayPtr<const char> operator*(const CappedArray<char, n>& s) const KJ_LIFETIMEBOUND {
     return s;
@@ -548,52 +605,52 @@ struct Stringifier {
   inline ArrayPtr<const char> operator*(const FixedArray<char, n>& s) const KJ_LIFETIMEBOUND {
     return s;
   }
-  inline ArrayPtr<const char> operator*(const char* s) const KJ_LIFETIMEBOUND {
+  inline ArrayPtr<const char> KJ_API operator*(const char* s) const KJ_LIFETIMEBOUND {
     return arrayPtr(s, strlen(s));
   }
 #if __cpp_char8_t
-  inline ArrayPtr<const char> operator*(const char8_t* s) const KJ_LIFETIMEBOUND {
+  inline ArrayPtr<const char> KJ_API operator*(const char8_t* s) const KJ_LIFETIMEBOUND {
     return operator*(reinterpret_cast<const char*>(s));
   }
 #endif
-  inline ArrayPtr<const char> operator*(const String& s) const KJ_LIFETIMEBOUND {
+  inline ArrayPtr<const char> KJ_API operator*(const String& s) const KJ_LIFETIMEBOUND {
     return s.asArray();
   }
-  inline ArrayPtr<const char> operator*(const StringPtr& s) const { return s.asArray(); }
-  inline ArrayPtr<const char> operator*(const ConstString& s) const { return s.asArray(); }
+  inline ArrayPtr<const char> KJ_API operator*(const StringPtr& s) const { return s.asArray(); }
+  inline ArrayPtr<const char> KJ_API operator*(const ConstString& s) const { return s.asArray(); }
 
-  inline Range<char> operator*(const Range<char>& r) const { return r; }
-  inline Repeat<char> operator*(const Repeat<char>& r) const { return r; }
+  inline Range<char> KJ_API operator*(const Range<char>& r) const { return r; }
+  inline Repeat<char> KJ_API operator*(const Repeat<char>& r) const { return r; }
 
-  inline FixedArray<char, 1> operator*(char c) const {
+  inline FixedArray<char, 1> KJ_API operator*(char c) const {
     FixedArray<char, 1> result;
     result[0] = c;
     return result;
   }
 
-  StringPtr operator*(decltype(nullptr)) const;
-  StringPtr operator*(bool b) const;
+  StringPtr KJ_API operator*(decltype(nullptr)) const;
+  StringPtr KJ_API operator*(bool b) const;
 
-  CappedArray<char, 5> operator*(signed char i) const;
-  CappedArray<char, 5> operator*(unsigned char i) const;
-  CappedArray<char, sizeof(short) * 3 + 2> operator*(short i) const;
-  CappedArray<char, sizeof(unsigned short) * 3 + 2> operator*(unsigned short i) const;
-  CappedArray<char, sizeof(int) * 3 + 2> operator*(int i) const;
-  CappedArray<char, sizeof(unsigned int) * 3 + 2> operator*(unsigned int i) const;
-  CappedArray<char, sizeof(long) * 3 + 2> operator*(long i) const;
-  CappedArray<char, sizeof(unsigned long) * 3 + 2> operator*(unsigned long i) const;
-  CappedArray<char, sizeof(long long) * 3 + 2> operator*(long long i) const;
-  CappedArray<char, sizeof(unsigned long long) * 3 + 2> operator*(unsigned long long i) const;
-  CappedArray<char, 24> operator*(float f) const;
-  CappedArray<char, 32> operator*(double f) const;
-  CappedArray<char, sizeof(const void*) * 2 + 1> operator*(const void* s) const;
+  CappedArray<char, 5> KJ_API operator*(signed char i) const;
+  CappedArray<char, 5> KJ_API operator*(unsigned char i) const;
+  CappedArray<char, sizeof(short) * 3 + 2> KJ_API operator*(short i) const;
+  CappedArray<char, sizeof(unsigned short) * 3 + 2> KJ_API operator*(unsigned short i) const;
+  CappedArray<char, sizeof(int) * 3 + 2> KJ_API operator*(int i) const;
+  CappedArray<char, sizeof(unsigned int) * 3 + 2> KJ_API operator*(unsigned int i) const;
+  CappedArray<char, sizeof(long) * 3 + 2> KJ_API operator*(long i) const;
+  CappedArray<char, sizeof(unsigned long) * 3 + 2> KJ_API operator*(unsigned long i) const;
+  CappedArray<char, sizeof(long long) * 3 + 2> KJ_API operator*(long long i) const;
+  CappedArray<char, sizeof(unsigned long long) * 3 + 2> KJ_API operator*(unsigned long long i) const;
+  CappedArray<char, 24> KJ_API operator*(float f) const;
+  CappedArray<char, 32> KJ_API operator*(double f) const;
+  CappedArray<char, sizeof(const void*) * 2 + 1> KJ_API operator*(const void* s) const;
 
 #if KJ_COMPILER_SUPPORTS_STL_STRING_INTEROP  // supports expression SFINAE?
   template <typename T, typename Result = decltype(instance<T>().toString())>
   inline Result operator*(T&& value) const { return kj::fwd<T>(value).toString(); }
 #endif
 };
-static KJ_CONSTEXPR(const) Stringifier STR = Stringifier();
+static KJ_CONSTEXPR(const) Stringifier KJ_API STR = Stringifier();
 
 }  // namespace _ (private)
 
@@ -610,11 +667,11 @@ auto toCharSequence(T&& value) -> decltype(_::STR * kj::fwd<T>(value)) {
   return _::STR * kj::fwd<T>(value);
 }
 
-CappedArray<char, sizeof(unsigned char) * 2 + 1> hex(unsigned char i);
-CappedArray<char, sizeof(unsigned short) * 2 + 1> hex(unsigned short i);
-CappedArray<char, sizeof(unsigned int) * 2 + 1> hex(unsigned int i);
-CappedArray<char, sizeof(unsigned long) * 2 + 1> hex(unsigned long i);
-CappedArray<char, sizeof(unsigned long long) * 2 + 1> hex(unsigned long long i);
+CappedArray<char, sizeof(unsigned char) * 2 + 1> KJ_API hex(unsigned char i);
+CappedArray<char, sizeof(unsigned short) * 2 + 1> KJ_API hex(unsigned short i);
+CappedArray<char, sizeof(unsigned int) * 2 + 1> KJ_API hex(unsigned int i);
+CappedArray<char, sizeof(unsigned long) * 2 + 1> KJ_API hex(unsigned long i);
+CappedArray<char, sizeof(unsigned long long) * 2 + 1> KJ_API hex(unsigned long long i);
 
 template <typename... Params>
 String str(Params&&... params) {
@@ -627,7 +684,7 @@ String str(Params&&... params) {
   return _::concat(toCharSequence(kj::fwd<Params>(params))...);
 }
 
-inline String str(String&& s) { return mv(s); }
+inline String KJ_API str(String&& s) { return mv(s); }
 // Overload to prevent redundant allocation.
 
 template <typename T>
@@ -804,16 +861,16 @@ inline ConstString::ConstString(Array<const char> buffer): content(kj::mv(buffer
   KJ_IREQUIRE(content.size() > 0 && content.back() == '\0', "String must be NUL-terminated.");
 }
 
-inline String heapString(const char* value) {
+inline String KJ_API heapString(const char* value) {
   return heapString(value, strlen(value));
 }
-inline String heapString(StringPtr value) {
+inline String KJ_API heapString(StringPtr value) {
   return heapString(value.begin(), value.size());
 }
-inline String heapString(const String& value) {
+inline String KJ_API heapString(const String& value) {
   return heapString(value.begin(), value.size());
 }
-inline String heapString(ArrayPtr<const char> value) {
+inline String KJ_API heapString(ArrayPtr<const char> value) {
   return heapString(value.begin(), value.size());
 }
 

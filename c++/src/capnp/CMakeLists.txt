@@ -27,6 +27,7 @@ else()
 endif()
 
 set(capnp_headers
+  export-capnp.h
   c++.capnp.h
   common.h
   blob.h
@@ -71,6 +72,20 @@ target_include_directories(capnp INTERFACE
   $<BUILD_INTERFACE:${PARENT_DIR}>
   $<INSTALL_INTERFACE:include>
 )
+
+get_target_property(CAPNP_TYPE capnp TYPE)
+
+if(CAPNP_TYPE STREQUAL "SHARED_LIBRARY")
+  set(CAPNP_EXPORT_MACRO "CAPNP_BUILD")
+  set(CAPNP_IMPORT_MACRO "")
+else()
+  set(CAPNP_EXPORT_MACRO "CAPNP_STATIC_DEFINE")
+  set(CAPNP_IMPORT_MACRO "CAPNP_STATIC_DEFINE")
+endif()
+
+#set symbol visibility macros
+target_compile_definitions(capnp INTERFACE ${CAPNP_IMPORT_MACRO} PRIVATE ${CAPNP_EXPORT_MACRO})
+
 # Ensure the library has a version set to match autotools build
 set_target_properties(capnp PROPERTIES VERSION ${VERSION})
 install(TARGETS capnp ${INSTALL_TARGETS_DEFAULT_ARGS})
@@ -90,6 +105,7 @@ set(capnp-rpc_sources
   ez-rpc.c++
 )
 set(capnp-rpc_headers
+  export-capnp-rpc.h
   rpc-prelude.h
   rpc.h
   rpc-twoparty.h
@@ -107,6 +123,20 @@ if(NOT CAPNP_LITE)
   add_library(capnp-rpc ${capnp-rpc_sources})
   add_library(CapnProto::capnp-rpc ALIAS capnp-rpc)
   target_link_libraries(capnp-rpc PUBLIC capnp kj-async kj)
+
+  get_target_property(CAPNP_RPC_TYPE capnp-rpc TYPE)
+
+  if(CAPNP_RPC_TYPE STREQUAL "SHARED_LIBRARY")
+    set(CAPNP_RPC_EXPORT_MACRO "CAPNP_RPC_BUILD")
+    set(CAPNP_RPC_IMPORT_MACRO "")
+  else()
+    set(CAPNP_RPC_EXPORT_MACRO "CAPNP_RPC_STATIC_DEFINE")
+    set(CAPNP_RPC_IMPORT_MACRO "CAPNP_RPC_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(capnp-rpc INTERFACE ${CAPNP_RPC_IMPORT_MACRO} PRIVATE ${CAPNP_RPC_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(capnp-rpc PROPERTIES VERSION ${VERSION})
   install(TARGETS capnp-rpc ${INSTALL_TARGETS_DEFAULT_ARGS})
@@ -120,6 +150,7 @@ set(capnp-json_sources
   compat/json.capnp.c++
 )
 set(capnp-json_headers
+  export-capnp-json.h
   compat/json.h
   compat/json.capnp.h
 )
@@ -130,6 +161,20 @@ if(NOT CAPNP_LITE)
   add_library(capnp-json ${capnp-json_sources})
   add_library(CapnProto::capnp-json ALIAS capnp-json)
   target_link_libraries(capnp-json PUBLIC capnp kj-async kj)
+
+  get_target_property(CAPNP_JSON_TYPE capnp-json TYPE)
+
+  if(CAPNP_JSON_TYPE STREQUAL "SHARED_LIBRARY")
+    set(CAPNP_JSON_EXPORT_MACRO "CAPNP_JSON_BUILD")
+    set(CAPNP_JSON_IMPORT_MACRO "")
+  else()
+    set(CAPNP_JSON_EXPORT_MACRO "CAPNP_JSON_STATIC_DEFINE")
+    set(CAPNP_JSON_IMPORT_MACRO "CAPNP_JSON_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(capnp-json INTERFACE ${CAPNP_JSON_IMPORT_MACRO} PRIVATE ${CAPNP_JSON_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(capnp-json PROPERTIES VERSION ${VERSION})
   install(TARGETS capnp-json ${INSTALL_TARGETS_DEFAULT_ARGS})
@@ -142,12 +187,27 @@ set(capnp-websocket_sources
   compat/websocket-rpc.c++
 )
 set(capnp-websocket_headers
+  export-capnp-websocket.h
   compat/websocket-rpc.h
 )
 if(NOT CAPNP_LITE)
   add_library(capnp-websocket ${capnp-websocket_sources})
   add_library(CapnProto::capnp-websocket ALIAS capnp-websocket)
   target_link_libraries(capnp-websocket PUBLIC capnp capnp-rpc kj-http kj-async kj)
+
+  get_target_property(CAPNP_WEBSOCKET_TYPE capnp-websocket TYPE)
+
+  if(CAPNP_WEBSOCKET_TYPE STREQUAL "SHARED_LIBRARY")
+    set(CAPNP_WEBSOCKET_EXPORT_MACRO "CAPNP_WEBSOCKET_BUILD")
+    set(CAPNP_WEBSOCKET_IMPORT_MACRO "")
+  else()
+    set(CAPNP_WEBSOCKET_EXPORT_MACRO "CAPNP_WEBSOCKET_STATIC_DEFINE")
+    set(CAPNP_WEBSOCKET_IMPORT_MACRO "CAPNP_WEBSOCKET_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(capnp-websocket INTERFACE ${CAPNP_WEBSOCKET_IMPORT_MACRO} PRIVATE ${CAPNP_WEBSOCKET_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(capnp-websocket PROPERTIES VERSION ${VERSION})
   install(TARGETS capnp-websocket ${INSTALL_TARGETS_DEFAULT_ARGS})
@@ -169,9 +229,26 @@ set(capnpc_sources
   schema-parser.c++
   serialize-text.c++
 )
+set(capnpc_headers
+  export-capnp-capnpc.h
+)
 if(NOT CAPNP_LITE)
   add_library(capnpc ${capnpc_sources})
   target_link_libraries(capnpc PUBLIC capnp kj)
+
+  get_target_property(CAPNP_CAPNPC_TYPE capnpc TYPE)
+
+  if(CAPNP_CAPNPC_TYPE STREQUAL "SHARED_LIBRARY")
+    set(CAPNP_CAPNPC_EXPORT_MACRO "CAPNP_CAPNPC_BUILD")
+    set(CAPNP_CAPNPC_IMPORT_MACRO "")
+  else()
+    set(CAPNP_CAPNPC_EXPORT_MACRO "CAPNP_CAPNPC_STATIC_DEFINE")
+    set(CAPNP_CAPNPC_IMPORT_MACRO "CAPNP_CAPNPC_STATIC_DEFINE")
+  endif()
+
+  #set symbol visibility macros
+  target_compile_definitions(capnpc INTERFACE ${CAPNP_CAPNPC_IMPORT_MACRO} PRIVATE ${CAPNP_CAPNPC_EXPORT_MACRO})
+
   # Ensure the library has a version set to match autotools build
   set_target_properties(capnpc PROPERTIES VERSION ${VERSION})
   install(TARGETS capnpc ${INSTALL_TARGETS_DEFAULT_ARGS})

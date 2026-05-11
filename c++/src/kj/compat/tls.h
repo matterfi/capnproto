@@ -28,6 +28,7 @@
 // ciphers and settings are used by default. Certificates validation is performed automatically
 // and cannot be bypassed.
 
+#include <kj/export-kj-tls.h>
 #include <kj/async-io.h>
 
 KJ_BEGIN_HEADER
@@ -40,7 +41,7 @@ struct TlsKeypair;
 class TlsSniCallback;
 class TlsConnection;
 
-enum class TlsVersion {
+enum class KJ_TLS_CLASS TlsVersion {
   SSL_3,     // avoid; cryptographically broken
   TLS_1_0,   // avoid; cryptographically weak
   TLS_1_1,   // avoid; cryptographically weak
@@ -51,42 +52,42 @@ enum class TlsVersion {
 using TlsErrorHandler = kj::Function<void(kj::Exception&&)>;
 // Use a simple kj::Function for handling errors during parallel accept().
 
-class TlsContext: public kj::SecureNetworkWrapper {
+class KJ_TLS_CLASS TlsContext: public kj::SecureNetworkWrapper {
   // TLS system. Allocate one of these, configure it with the proper keys and certificates (or
   // use the defaults), and then use it to wrap the standard KJ network interfaces in
   // implementations that transparently use TLS.
 
 public:
 
-  struct Options {
-    Options();
+  struct KJ_TLS_CLASS Options {
+    KJ_TLS_API Options();
     // Initializes all values to reasonable defaults.
 
     KJ_DISALLOW_COPY(Options);
-    Options(Options&&) = default;
-    Options& operator=(Options&&) = default;
+    KJ_TLS_API Options(Options&&) = default;
+    Options& KJ_TLS_API operator=(Options&&) = default;
     // Options is a move-only value type.
 
-    bool useSystemTrustStore;
+    bool KJ_TLS_API useSystemTrustStore;
     // Whether or not to trust the system's default trust store. Default: true.
 
-    bool verifyClients;
+    bool KJ_TLS_API verifyClients;
     // If true, when acting as a server, require the client to present a certificate. The
     // certificate must be signed by one of the trusted CAs, otherwise the client will be rejected.
     // (Typically you should set `useSystemTrustStore` false when using this flag, and specify
     // your specific trusted CAs in `trustedCertificates`.)
     // Default: false
 
-    kj::ArrayPtr<const TlsCertificate> trustedCertificates;
+    kj::ArrayPtr<const TlsCertificate> KJ_TLS_API trustedCertificates;
     // Additional certificates which should be trusted. Default: none.
 
-    TlsVersion minVersion;
+    TlsVersion KJ_TLS_API minVersion;
     // Minimum version. Defaults to minimum version that hasn't been cryptographically broken.
     // If you override this, consider doing:
     //
     //     options.minVersion = kj::max(myVersion, options.minVersion);
 
-    kj::StringPtr cipherList;
+    kj::StringPtr KJ_TLS_API cipherList;
     // OpenSSL cipher list string. The default is a curated list designed to be compatible with
     // almost all software in current use (specifically, based on Mozilla's "intermediate"
     // recommendations). The defaults will change in future versions of this library to account
@@ -97,32 +98,32 @@ public:
     //   algorithms.
     // - You need quickly to disable an algorithm recently discovered to be broken.
 
-    kj::Maybe<const TlsKeypair&> defaultKeypair;
+    kj::Maybe<const TlsKeypair&> KJ_TLS_API defaultKeypair;
     // Default keypair to use for all connections. Required for servers; optional for clients.
 
-    kj::Maybe<TlsSniCallback&> sniCallback;
+    kj::Maybe<TlsSniCallback&> KJ_TLS_API sniCallback;
     // Callback that can be used to choose a different key/certificate based on the specific
     // hostname requested by the client.
 
-    kj::Maybe<kj::Timer&> timer;
+    kj::Maybe<kj::Timer&> KJ_TLS_API timer;
     // The timer used for `acceptTimeout` below.
 
-    kj::Maybe<kj::Duration> acceptTimeout;
+    kj::Maybe<kj::Duration> KJ_TLS_API acceptTimeout;
     // Timeout applied to accepting a new TLS connection. `timer` is required if this is set.
 
-    kj::Maybe<TlsErrorHandler> acceptErrorHandler;
+    kj::Maybe<TlsErrorHandler> KJ_TLS_API acceptErrorHandler;
     // Error handler used for TLS accept errors.
   };
 
-  TlsContext(Options options = Options());
-  ~TlsContext() noexcept(false);
+  KJ_TLS_API TlsContext(Options options = Options());
+  KJ_TLS_API ~TlsContext() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(TlsContext);
 
-  kj::Promise<kj::Own<kj::AsyncIoStream>> wrapServer(kj::Own<kj::AsyncIoStream> stream);
+  kj::Promise<kj::Own<kj::AsyncIoStream>> KJ_TLS_API wrapServer(kj::Own<kj::AsyncIoStream> stream);
   // Upgrade a regular network stream to TLS and begin the initial handshake as the server. The
   // returned promise resolves when the handshake has completed successfully.
 
-  kj::Promise<kj::Own<kj::AsyncIoStream>> wrapClient(
+  kj::Promise<kj::Own<kj::AsyncIoStream>> KJ_TLS_API wrapClient(
       kj::Own<kj::AsyncIoStream> stream, kj::StringPtr expectedServerHostname);
   // Upgrade a regular network stream to TLS and begin the initial handshake as a client. The
   // returned promise resolves when the handshake has completed successfully, including validating
@@ -134,23 +135,23 @@ public:
   // 2. The server's certificate is validated against this hostname. If validation fails, the
   //    promise returned by wrapClient() will be broken; you'll never get a stream.
 
-  kj::Promise<kj::AuthenticatedStream> wrapServer(kj::AuthenticatedStream stream);
-  kj::Promise<kj::AuthenticatedStream> wrapClient(
+  kj::Promise<kj::AuthenticatedStream> KJ_TLS_API wrapServer(kj::AuthenticatedStream stream);
+  kj::Promise<kj::AuthenticatedStream> KJ_TLS_API wrapClient(
       kj::AuthenticatedStream stream, kj::StringPtr expectedServerHostname);
   // Like wrapServer() and wrapClient(), but also produces information about the peer's
   // certificate (if any). The returned `peerIdentity` will be a `TlsPeerIdentity`.
 
-  kj::Own<kj::ConnectionReceiver> wrapPort(kj::Own<kj::ConnectionReceiver> port);
+  kj::Own<kj::ConnectionReceiver> KJ_TLS_API wrapPort(kj::Own<kj::ConnectionReceiver> port);
   // Upgrade a ConnectionReceiver to one that automatically upgrades all accepted connections to
   // TLS (acting as the server).
 
-  kj::Own<kj::NetworkAddress> wrapAddress(
+  kj::Own<kj::NetworkAddress> KJ_TLS_API wrapAddress(
       kj::Own<kj::NetworkAddress> address, kj::StringPtr expectedServerHostname);
   // Upgrade a NetworkAddress to one that automatically upgrades all connections to TLS, acting
   // as the client when `connect()` is called or the server if `listen()` is called.
   // `connect()` will athenticate the server as `expectedServerHostname`.
 
-  kj::Own<kj::Network> wrapNetwork(kj::Network& network);
+  kj::Own<kj::Network> KJ_TLS_API wrapNetwork(kj::Network& network);
   // Upgrade a Network to one that automatically upgrades all connections to TLS. The network will
   // only accept addresses of the form "hostname" and "hostname:port" (it does not accept raw IP
   // addresses). It will automatically use SNI and verify certificates based on these hostnames.
@@ -164,28 +165,28 @@ private:
   struct SniCallback;
 };
 
-class TlsPrivateKey {
+class KJ_TLS_CLASS TlsPrivateKey {
   // A private key suitable for use in a TLS server.
 
 public:
-  TlsPrivateKey(kj::ArrayPtr<const byte> asn1);
+  KJ_TLS_API TlsPrivateKey(kj::ArrayPtr<const byte> asn1);
   // Parse a single binary (ASN1) private key. Supports PKCS8 keys as well as "traditional format"
   // RSA and DSA keys. Does not accept encrypted keys; it is the caller's responsibility to
   // decrypt.
 
-  TlsPrivateKey(kj::StringPtr pem, kj::Maybe<kj::StringPtr> password = nullptr);
+  KJ_TLS_API TlsPrivateKey(kj::StringPtr pem, kj::Maybe<kj::StringPtr> password = nullptr);
   // Parse a single PEM-encoded private key. Supports PKCS8 keys as well as "traditional format"
   // RSA and DSA keys. A password may optionally be provided and will be used if the key is
   // encrypted.
 
-  ~TlsPrivateKey() noexcept(false);
+  KJ_TLS_API ~TlsPrivateKey() noexcept(false);
 
-  TlsPrivateKey(const TlsPrivateKey& other);
-  TlsPrivateKey& operator=(const TlsPrivateKey& other);
+  KJ_TLS_API TlsPrivateKey(const TlsPrivateKey& other);
+  TlsPrivateKey& KJ_TLS_API operator=(const TlsPrivateKey& other);
   // Copy-by-refcount.
 
-  inline TlsPrivateKey(TlsPrivateKey&& other): pkey(other.pkey) { other.pkey = nullptr; }
-  inline TlsPrivateKey& operator=(TlsPrivateKey&& other) {
+  inline KJ_TLS_API TlsPrivateKey(TlsPrivateKey&& other): pkey(other.pkey) { other.pkey = nullptr; }
+  inline TlsPrivateKey& KJ_TLS_API operator=(TlsPrivateKey&& other) {
     pkey = other.pkey; other.pkey = nullptr;
     return *this;
   }
@@ -198,31 +199,31 @@ private:
   static int passwordCallback(char* buf, int size, int rwflag, void* u);
 };
 
-class TlsCertificate {
+class KJ_TLS_CLASS TlsCertificate {
   // A TLS certificate, possibly with chained intermediate certificates.
 
 public:
-  TlsCertificate(kj::ArrayPtr<const byte> asn1);
+  KJ_TLS_API TlsCertificate(kj::ArrayPtr<const byte> asn1);
   // Parse a single binary (ASN1) X509 certificate.
 
-  TlsCertificate(kj::ArrayPtr<const kj::ArrayPtr<const byte>> asn1);
+  KJ_TLS_API TlsCertificate(kj::ArrayPtr<const kj::ArrayPtr<const byte>> asn1);
   // Parse a chain of binary (ASN1) X509 certificates.
 
-  TlsCertificate(kj::StringPtr pem);
+  KJ_TLS_API TlsCertificate(kj::StringPtr pem);
   // Parse a PEM-encode X509 certificate or certificate chain. A chain can be constructed by
   // concatenating multiple PEM-encoded certificates, starting with the leaf certificate.
 
-  ~TlsCertificate() noexcept(false);
+  KJ_TLS_API ~TlsCertificate() noexcept(false);
 
-  TlsCertificate(const TlsCertificate& other);
-  TlsCertificate& operator=(const TlsCertificate& other);
+  KJ_TLS_API TlsCertificate(const TlsCertificate& other);
+  TlsCertificate& KJ_TLS_API operator=(const TlsCertificate& other);
   // Copy-by-refcount.
 
-  inline TlsCertificate(TlsCertificate&& other) {
+  inline KJ_TLS_API TlsCertificate(TlsCertificate&& other) {
     memcpy(chain, other.chain, sizeof(chain));
     memset(other.chain, 0, sizeof(chain));
   }
-  inline TlsCertificate& operator=(TlsCertificate&& other) {
+  inline TlsCertificate& KJ_TLS_API operator=(TlsCertificate&& other) {
     memcpy(chain, other.chain, sizeof(chain));
     memset(other.chain, 0, sizeof(chain));
     return *this;
@@ -243,14 +244,14 @@ private:
   friend class TlsContext;
 };
 
-struct TlsKeypair {
+struct KJ_TLS_CLASS TlsKeypair {
   // A pair of a private key and a certificate, for use by a server.
 
-  TlsPrivateKey privateKey;
-  TlsCertificate certificate;
+  TlsPrivateKey KJ_TLS_API privateKey;
+  TlsCertificate KJ_TLS_API certificate;
 };
 
-class TlsSniCallback {
+class KJ_TLS_CLASS TlsSniCallback {
   // Callback object to implement Server Name Indication, in which the server is able to decide
   // what key and certificate to use based on the hostname that the client is requesting.
   //
@@ -261,22 +262,22 @@ class TlsSniCallback {
   //   could do that but it's too much work for today.
 
 public:
-  virtual kj::Maybe<TlsKeypair> getKey(kj::StringPtr hostname) = 0;
+  virtual kj::Maybe<TlsKeypair> KJ_TLS_API getKey(kj::StringPtr hostname) = 0;
   // Get the key to use for `hostname`. Null return means use the default from
   // TlsContext::Options::defaultKeypair.
 };
 
-class TlsPeerIdentity final: public kj::PeerIdentity {
+class KJ_TLS_CLASS TlsPeerIdentity final: public kj::PeerIdentity {
 public:
   KJ_DISALLOW_COPY_AND_MOVE(TlsPeerIdentity);
-  ~TlsPeerIdentity() noexcept(false);
+  KJ_TLS_API ~TlsPeerIdentity() noexcept(false);
 
-  kj::String toString() override;
+  kj::String KJ_TLS_API toString() override;
 
-  kj::PeerIdentity& getNetworkIdentity() { return *inner; }
+  kj::PeerIdentity& KJ_TLS_API getNetworkIdentity() { return *inner; }
   // Gets the PeerIdentity of the underlying network connection.
 
-  bool hasCertificate() { return cert != nullptr; }
+  bool KJ_TLS_API hasCertificate() { return cert != nullptr; }
   // Did the peer even present a (trusted) certificate? Servers must always present certificates.
   // Clients need only present certificates when the `verifyClients` option is enabled.
   //
@@ -285,10 +286,10 @@ public:
   // in advance whether or not a certificate should be present, so it would lead to lots of
   // `KJ_ASSERT_NONNULL`...
 
-  kj::String getCommonName();
+  kj::String KJ_TLS_API getCommonName();
   // Get the authenticated common name from the certificate.
 
-  bool matchesHostname(kj::StringPtr hostname);
+  bool KJ_TLS_API matchesHostname(kj::StringPtr hostname);
   // Check if the certificate authenticates the given hostname, considering wildcards and SAN
   // extensions. If no certificate was provided, always returns false.
 

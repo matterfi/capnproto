@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <kj/export-kj-gzip.h>
 #include <kj/io.h>
 #include <kj/async-io.h>
 #include <zlib.h>
@@ -33,14 +34,14 @@ namespace _ {  // private
 
 constexpr size_t KJ_GZ_BUF_SIZE = 4096;
 
-class GzipOutputContext final {
+class KJ_GZIP_CLASS GzipOutputContext final {
 public:
-  GzipOutputContext(kj::Maybe<int> compressionLevel);
-  ~GzipOutputContext() noexcept(false);
+  KJ_GZIP_API GzipOutputContext(kj::Maybe<int> compressionLevel);
+  KJ_GZIP_API ~GzipOutputContext() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(GzipOutputContext);
 
-  void setInput(const void* in, size_t size);
-  kj::Tuple<bool, kj::ArrayPtr<const byte>> pumpOnce(int flush);
+  void KJ_GZIP_API setInput(const void* in, size_t size);
+  kj::Tuple<bool, kj::ArrayPtr<const byte>> KJ_GZIP_API pumpOnce(int flush);
 
 private:
   bool compressing;
@@ -52,13 +53,13 @@ private:
 
 }  // namespace _ (private)
 
-class GzipInputStream final: public InputStream {
+class KJ_GZIP_CLASS GzipInputStream final: public InputStream {
 public:
-  GzipInputStream(InputStream& inner);
-  ~GzipInputStream() noexcept(false);
+  KJ_GZIP_API GzipInputStream(InputStream& inner);
+  KJ_GZIP_API ~GzipInputStream() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(GzipInputStream);
 
-  size_t tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
+  size_t KJ_GZIP_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
 
 private:
   InputStream& inner;
@@ -70,19 +71,19 @@ private:
   size_t readImpl(byte* buffer, size_t minBytes, size_t maxBytes, size_t alreadyRead);
 };
 
-class GzipOutputStream final: public OutputStream {
+class KJ_GZIP_CLASS GzipOutputStream final: public OutputStream {
 public:
   enum { DECOMPRESS };
 
-  GzipOutputStream(OutputStream& inner, int compressionLevel = Z_DEFAULT_COMPRESSION);
-  GzipOutputStream(OutputStream& inner, decltype(DECOMPRESS));
-  ~GzipOutputStream() noexcept(false);
+  KJ_GZIP_API GzipOutputStream(OutputStream& inner, int compressionLevel = Z_DEFAULT_COMPRESSION);
+  KJ_GZIP_API GzipOutputStream(OutputStream& inner, decltype(DECOMPRESS));
+  KJ_GZIP_API ~GzipOutputStream() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(GzipOutputStream);
 
-  void write(const void* buffer, size_t size) override;
+  void KJ_GZIP_API write(const void* buffer, size_t size) override;
   using OutputStream::write;
 
-  inline void flush() {
+  inline void KJ_GZIP_API flush() {
     pump(Z_SYNC_FLUSH);
   }
 
@@ -93,13 +94,13 @@ private:
   void pump(int flush);
 };
 
-class GzipAsyncInputStream final: public AsyncInputStream {
+class KJ_GZIP_CLASS GzipAsyncInputStream final: public AsyncInputStream {
 public:
-  GzipAsyncInputStream(AsyncInputStream& inner);
-  ~GzipAsyncInputStream() noexcept(false);
+  KJ_GZIP_API GzipAsyncInputStream(AsyncInputStream& inner);
+  KJ_GZIP_API ~GzipAsyncInputStream() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(GzipAsyncInputStream);
 
-  Promise<size_t> tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
+  Promise<size_t> KJ_GZIP_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
 
 private:
   AsyncInputStream& inner;
@@ -111,25 +112,28 @@ private:
   Promise<size_t> readImpl(byte* buffer, size_t minBytes, size_t maxBytes, size_t alreadyRead);
 };
 
-class GzipAsyncOutputStream final: public AsyncOutputStream {
+class KJ_GZIP_CLASS GzipAsyncOutputStream final: public AsyncOutputStream {
 public:
   enum { DECOMPRESS };
 
-  GzipAsyncOutputStream(AsyncOutputStream& inner, int compressionLevel = Z_DEFAULT_COMPRESSION);
-  GzipAsyncOutputStream(AsyncOutputStream& inner, decltype(DECOMPRESS));
+  KJ_GZIP_API GzipAsyncOutputStream(AsyncOutputStream& inner,
+                                    int compressionLevel = Z_DEFAULT_COMPRESSION);
+  KJ_GZIP_API GzipAsyncOutputStream(AsyncOutputStream& inner, decltype(DECOMPRESS));
   KJ_DISALLOW_COPY_AND_MOVE(GzipAsyncOutputStream);
 
-  Promise<void> write(const void* buffer, size_t size) override;
-  Promise<void> write(ArrayPtr<const ArrayPtr<const byte>> pieces) override;
+  Promise<void> KJ_GZIP_API write(const void* buffer, size_t size) override;
+  Promise<void> KJ_GZIP_API write(ArrayPtr<const ArrayPtr<const byte>> pieces) override;
 
-  Promise<void> whenWriteDisconnected() override { return inner.whenWriteDisconnected(); }
+  Promise<void> KJ_GZIP_API whenWriteDisconnected() override {
+      return inner.whenWriteDisconnected();
+  }
 
-  inline Promise<void> flush() {
+  inline Promise<void> KJ_GZIP_API flush() {
     return pump(Z_SYNC_FLUSH);
   }
   // Call if you need to flush a stream at an arbitrary data point.
 
-  Promise<void> end() {
+  Promise<void> KJ_GZIP_API end() {
     return pump(Z_FINISH);
   }
   // Must call to flush and finish the stream, since some data may be buffered.

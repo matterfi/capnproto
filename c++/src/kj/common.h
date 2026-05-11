@@ -104,6 +104,7 @@ KJ_BEGIN_HEADER
 #endif
 #endif
 
+#include "export-kj.h"
 #include <stddef.h>
 #include <cstring>
 #include <initializer_list>
@@ -321,11 +322,11 @@ typedef unsigned char byte;
 
 namespace _ {  // private
 
-KJ_NORETURN(void inlineRequireFailure(
+KJ_NORETURN(void KJ_API inlineRequireFailure(
     const char* file, int line, const char* expectation, const char* macroArgs,
     const char* message = nullptr));
 
-KJ_NORETURN(void unreachable());
+KJ_NORETURN(void KJ_API unreachable());
 
 }  // namespace _ (private)
 
@@ -483,7 +484,7 @@ template <typename T> struct Decay_<volatile T> { typedef typename Decay_<T>::Ty
 template <typename T> using Decay = typename Decay_<T>::Type;
 
 template <bool b> struct EnableIf_;
-template <> struct EnableIf_<true> { typedef void Type; };
+template <> struct KJ_CLASS EnableIf_<true> { typedef void Type; };
 template <bool b> using EnableIf = typename EnableIf_<b>::Type;
 // Use like:
 //
@@ -499,7 +500,7 @@ T instance() noexcept;
 // Like std::declval, but doesn't transform T into an rvalue reference.  If you want that, specify
 // instance<T&&>().
 
-struct DisallowConstCopy {
+struct KJ_CLASS DisallowConstCopy {
   // Inherit from this, or declare a member variable of this type, to prevent the class from being
   // copyable from a const reference -- instead, it will only be copyable from non-const references.
   // This is useful for enforcing transitive constness of contained pointers.
@@ -610,17 +611,17 @@ template <typename T> struct IsSameType_<T, T> { static constexpr bool value = t
 template <typename T, typename U> constexpr bool isSameType() { return IsSameType_<T, U>::value; }
 
 template <typename T> constexpr bool isIntegral() { return false; }
-template <> constexpr bool isIntegral<char>() { return true; }
-template <> constexpr bool isIntegral<signed char>() { return true; }
-template <> constexpr bool isIntegral<short>() { return true; }
-template <> constexpr bool isIntegral<int>() { return true; }
-template <> constexpr bool isIntegral<long>() { return true; }
-template <> constexpr bool isIntegral<long long>() { return true; }
-template <> constexpr bool isIntegral<unsigned char>() { return true; }
-template <> constexpr bool isIntegral<unsigned short>() { return true; }
-template <> constexpr bool isIntegral<unsigned int>() { return true; }
-template <> constexpr bool isIntegral<unsigned long>() { return true; }
-template <> constexpr bool isIntegral<unsigned long long>() { return true; }
+template <> constexpr bool KJ_API isIntegral<char>() { return true; }
+template <> constexpr bool KJ_API isIntegral<signed char>() { return true; }
+template <> constexpr bool KJ_API isIntegral<short>() { return true; }
+template <> constexpr bool KJ_API isIntegral<int>() { return true; }
+template <> constexpr bool KJ_API isIntegral<long>() { return true; }
+template <> constexpr bool KJ_API isIntegral<long long>() { return true; }
+template <> constexpr bool KJ_API isIntegral<unsigned char>() { return true; }
+template <> constexpr bool KJ_API isIntegral<unsigned short>() { return true; }
+template <> constexpr bool KJ_API isIntegral<unsigned int>() { return true; }
+template <> constexpr bool KJ_API isIntegral<unsigned long>() { return true; }
+template <> constexpr bool KJ_API isIntegral<unsigned long long>() { return true; }
 
 template <typename T>
 struct CanConvert_ {
@@ -728,7 +729,7 @@ inline constexpr size_t size(T&& arr) { return arr.size(); }
 // Returns the size of the parameter, whether the parameter is a regular C array or a container
 // with a `.size()` method.
 
-class MaxValue_ {
+class KJ_CLASS MaxValue_ {
 private:
   template <typename T>
   inline constexpr T maxSigned() const {
@@ -741,8 +742,10 @@ private:
 
 public:
 #define _kJ_HANDLE_TYPE(T) \
-  inline constexpr operator   signed T() const { return MaxValue_::maxSigned  <  signed T>(); } \
-  inline constexpr operator unsigned T() const { return MaxValue_::maxUnsigned<unsigned T>(); }
+  inline constexpr KJ_API operator   signed T() const { \
+    return MaxValue_::maxSigned  <  signed T>(); } \
+  inline constexpr KJ_API operator unsigned T() const { \
+    return MaxValue_::maxUnsigned<unsigned T>(); }
   _kJ_HANDLE_TYPE(char)
   _kJ_HANDLE_TYPE(short)
   _kJ_HANDLE_TYPE(int)
@@ -758,7 +761,7 @@ public:
   }
 };
 
-class MinValue_ {
+class KJ_CLASS MinValue_ {
 private:
   template <typename T>
   inline constexpr T minSigned() const {
@@ -771,8 +774,10 @@ private:
 
 public:
 #define _kJ_HANDLE_TYPE(T) \
-  inline constexpr operator   signed T() const { return MinValue_::minSigned  <  signed T>(); } \
-  inline constexpr operator unsigned T() const { return MinValue_::minUnsigned<unsigned T>(); }
+  inline constexpr KJ_API operator   signed T() const { \
+    return MinValue_::minSigned  <  signed T>(); } \
+  inline constexpr KJ_API operator unsigned T() const { \
+    return MinValue_::minUnsigned<unsigned T>(); }
   _kJ_HANDLE_TYPE(char)
   _kJ_HANDLE_TYPE(short)
   _kJ_HANDLE_TYPE(int)
@@ -780,7 +785,7 @@ public:
   _kJ_HANDLE_TYPE(long long)
 #undef _kJ_HANDLE_TYPE
 
-  inline constexpr operator char() const {
+  inline constexpr KJ_API operator char() const {
     // `char` is different from both `signed char` and `unsigned char`, and may be signed or
     // unsigned on different platforms.  Ugh.
     return char(-1) < 0 ? MinValue_::minSigned<char>()
@@ -788,14 +793,14 @@ public:
   }
 };
 
-static KJ_CONSTEXPR(const) MaxValue_ maxValue = MaxValue_();
+static KJ_CONSTEXPR(const) MaxValue_ KJ_API maxValue = MaxValue_();
 // A special constant which, when cast to an integer type, takes on the maximum possible value of
 // that type.  This is useful to use as e.g. a parameter to a function because it will be robust
 // in the face of changes to the parameter's type.
 //
 // `char` is not supported, but `signed char` and `unsigned char` are.
 
-static KJ_CONSTEXPR(const) MinValue_ minValue = MinValue_();
+static KJ_CONSTEXPR(const) MinValue_ KJ_API minValue = MinValue_();
 // A special constant which, when cast to an integer type, takes on the minimum possible value
 // of that type.  This is useful to use as e.g. a parameter to a function because it will be robust
 // in the face of changes to the parameter's type.
@@ -815,25 +820,25 @@ inline constexpr unsigned long long maxValueForBits() {
   return (bits == 64 ? 0 : (1ull << bits)) - 1;
 }
 
-struct ThrowOverflow {
+struct KJ_CLASS ThrowOverflow {
   // Functor which throws an exception complaining about integer overflow. Usually this is used
   // with the interfaces in units.h, but is defined here because Cap'n Proto wants to avoid
   // including units.h when not using CAPNP_DEBUG_TYPES.
-  [[noreturn]] void operator()() const;
+  [[noreturn]] void KJ_API operator()() const;
 };
 
 #if __GNUC__ || __clang__ || _MSC_VER
-inline constexpr float inf() { return __builtin_huge_valf(); }
-inline constexpr float nan() { return __builtin_nanf(""); }
+inline constexpr float KJ_API inf() { return __builtin_huge_valf(); }
+inline constexpr float KJ_API nan() { return __builtin_nanf(""); }
 
 #else
 #error "Not sure how to support your compiler."
 #endif
 
-inline constexpr bool isNaN(float f) { return f != f; }
-inline constexpr bool isNaN(double f) { return f != f; }
+inline constexpr bool KJ_API isNaN(float f) { return f != f; }
+inline constexpr bool KJ_API isNaN(double f) { return f != f; }
 
-inline int popCount(unsigned int x) {
+inline int KJ_API popCount(unsigned int x) {
 #if defined(_MSC_VER) && !defined(__clang__)
   return __popcnt(x);
   // Note: __popcnt returns unsigned int, but the value is clearly guaranteed to fit into an int
@@ -1051,11 +1056,11 @@ struct PlacementNew {};
 }  // namespace _ (private)
 } // namespace kj
 
-inline void* operator new(size_t, void* __p, kj::_::PlacementNew) noexcept {
+inline void* KJ_API operator new(size_t, void* __p, kj::_::PlacementNew) noexcept {
   return __p;
 }
 
-inline void operator delete(void*, void* __p, kj::_::PlacementNew) noexcept {}
+inline void KJ_API operator delete(void*, void* __p, kj::_::PlacementNew) noexcept {}
 
 namespace kj {
 
@@ -1883,7 +1888,7 @@ private:
 };
 
 template <>
-inline Maybe<size_t> ArrayPtr<const char>::findFirst(const char& c) const {
+inline Maybe<size_t> KJ_API ArrayPtr<const char>::findFirst(const char& c) const {
   const char* pos = reinterpret_cast<const char*>(memchr(ptr, c, size_));
   if (pos == nullptr) {
     return nullptr;
@@ -1893,7 +1898,7 @@ inline Maybe<size_t> ArrayPtr<const char>::findFirst(const char& c) const {
 }
 
 template <>
-inline Maybe<size_t> ArrayPtr<char>::findFirst(const char& c) const {
+inline Maybe<size_t> KJ_API ArrayPtr<char>::findFirst(const char& c) const {
   char* pos = reinterpret_cast<char*>(memchr(ptr, c, size_));
   if (pos == nullptr) {
     return nullptr;
@@ -1903,7 +1908,7 @@ inline Maybe<size_t> ArrayPtr<char>::findFirst(const char& c) const {
 }
 
 template <>
-inline Maybe<size_t> ArrayPtr<const byte>::findFirst(const byte& c) const {
+inline Maybe<size_t> KJ_API ArrayPtr<const byte>::findFirst(const byte& c) const {
   const byte* pos = reinterpret_cast<const byte*>(memchr(ptr, c, size_));
   if (pos == nullptr) {
     return nullptr;
@@ -1913,7 +1918,7 @@ inline Maybe<size_t> ArrayPtr<const byte>::findFirst(const byte& c) const {
 }
 
 template <>
-inline Maybe<size_t> ArrayPtr<byte>::findFirst(const byte& c) const {
+inline Maybe<size_t> KJ_API ArrayPtr<byte>::findFirst(const byte& c) const {
   byte* pos = reinterpret_cast<byte*>(memchr(ptr, c, size_));
   if (pos == nullptr) {
     return nullptr;

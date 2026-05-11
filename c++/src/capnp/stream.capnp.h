@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "export-capnp.h"
 #include <capnp/generated-header-support.h>
 #include <kj/windows-sanity.h>
 
@@ -25,7 +26,7 @@ CAPNP_DECLARE_SCHEMA(995f9a3377c0b16e);
 
 namespace capnp {
 
-struct StreamResult {
+struct CAPNP_CLASS StreamResult {
   StreamResult() = delete;
 
   class Reader;
@@ -42,19 +43,19 @@ struct StreamResult {
 
 // =======================================================================================
 
-class StreamResult::Reader {
+class CAPNP_CLASS StreamResult::Reader {
 public:
   typedef StreamResult Reads;
 
-  Reader() = default;
-  inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API Reader() = default;
+  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize totalSize() const {
+  inline ::capnp::MessageSize CAPNP_API totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const {
+  inline ::kj::StringTree CAPNP_API toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
@@ -71,20 +72,20 @@ private:
   friend class ::capnp::Orphanage;
 };
 
-class StreamResult::Builder {
+class CAPNP_CLASS StreamResult::Builder {
 public:
   typedef StreamResult Builds;
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline Builder(decltype(nullptr)) {}
-  inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader asReader() const { return *this; }
+  inline CAPNP_API Builder(decltype(nullptr)) {}
+  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
+  inline Reader CAPNP_API asReader() const { return *this; }
 
-  inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
+  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree toString() const { return asReader().toString(); }
+  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
 private:
@@ -97,12 +98,12 @@ private:
 };
 
 #if !CAPNP_LITE
-class StreamResult::Pipeline {
+class CAPNP_CLASS StreamResult::Pipeline {
 public:
   typedef StreamResult Pipelines;
 
-  inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
