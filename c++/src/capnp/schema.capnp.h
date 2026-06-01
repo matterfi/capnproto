@@ -840,7 +840,7 @@ public:
                        // You can explicitly initialize to nullptr instead.
   inline CAPNP_API Builder(decltype(nullptr)) {}
   inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline operator CAPNP_API Reader() const { return Reader(_builder.asReader()); }
+  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
   inline Reader CAPNP_API asReader() const { return *this; }
 
   inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
