@@ -180,7 +180,13 @@ includekj_HEADERS =                                            \
   src/kj/main.h                                                \
   src/kj/test.h                                                \
   src/kj/win32-api-version.h                                   \
-  src/kj/windows-sanity.h
+  src/kj/windows-sanity.h                                      \
+  src/kj/export-kj.h                                           \
+  src/kj/export-kj-async.h                                     \
+  src/kj/export-kj-gzip.h                                      \
+  src/kj/export-kj-http.h                                      \
+  src/kj/export-kj-test.h                                      \
+  src/kj/export-kj-tls.h
 
 includekjparse_HEADERS =                                       \
   src/kj/parse/common.h                                        \
@@ -230,7 +236,12 @@ includecapnp_HEADERS =                                         \
   src/capnp/rpc.capnp.h                                        \
   src/capnp/rpc-twoparty.capnp.h                               \
   src/capnp/persistent.capnp.h                                 \
-  src/capnp/ez-rpc.h
+  src/capnp/ez-rpc.h                                           \
+  src/capnp/export-capnp.h                                     \
+  src/capnp/export-capnp-capnpc.h                              \
+  src/capnp/export-capnp-json.h                                \
+  src/capnp/export-capnp-rpc.h                                 \
+  src/capnp/export-capnp-websocket.h
 
 includecapnpcompat_HEADERS =                                   \
   src/capnp/compat/json.h                                      \
