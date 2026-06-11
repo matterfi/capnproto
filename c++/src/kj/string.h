@@ -84,7 +84,7 @@ public:
   inline KJ_API StringPtr(const String& value KJ_LIFETIMEBOUND);
   inline KJ_API StringPtr(const ConstString& value KJ_LIFETIMEBOUND);
   StringPtr& operator=(String&& value) = delete;
-  inline StringPtr& KJ_API operator=(decltype(nullptr)) {
+  inline StringPtr& operator=(decltype(nullptr)) {
     content = ArrayPtr<const char>("", 1);
     return *this;
   }
@@ -122,7 +122,7 @@ public:
   inline ArrayPtr<const byte> KJ_API asBytes() const { return asArray().asBytes(); }
   // Result does not include NUL terminator.
 
-  inline const char* KJ_API cStr() const { return content.begin(); }
+  inline const char* cStr() const { return content.begin(); }
   // Returns NUL-terminated string.
 
   inline size_t KJ_API size() const { return content.size() - 1; }
@@ -130,8 +130,8 @@ public:
 
   inline char KJ_API operator[](size_t index) const { return content[index]; }
 
-  inline constexpr const char* KJ_API begin() const { return content.begin(); }
-  inline constexpr const char* KJ_API end() const { return content.end() - 1; }
+  inline constexpr const char* begin() const { return content.begin(); }
+  inline constexpr const char* end() const { return content.end() - 1; }
 
   inline constexpr bool KJ_API operator==(decltype(nullptr)) const { return content.size() <= 1; }
 #if !__cpp_impl_three_way_comparison
@@ -264,18 +264,18 @@ public:
   // Disowns the backing array (which includes the NUL terminator) and returns it. The String value
   // is clobbered (as if moved away).
 
-  inline const char* KJ_API cStr() const KJ_LIFETIMEBOUND;
+  inline const char* cStr() const KJ_LIFETIMEBOUND;
 
   inline size_t KJ_API size() const;
   // Result does not include NUL terminator.
 
   inline char KJ_API operator[](size_t index) const;
-  inline char& KJ_API operator[](size_t index) KJ_LIFETIMEBOUND;
+  inline char& operator[](size_t index) KJ_LIFETIMEBOUND;
 
-  inline char* KJ_API begin() KJ_LIFETIMEBOUND;
-  inline char* KJ_API end() KJ_LIFETIMEBOUND;
-  inline const char* KJ_API begin() const KJ_LIFETIMEBOUND;
-  inline const char* KJ_API end() const KJ_LIFETIMEBOUND;
+  inline char* begin() KJ_LIFETIMEBOUND;
+  inline char* end() KJ_LIFETIMEBOUND;
+  inline const char* begin() const KJ_LIFETIMEBOUND;
+  inline const char* end() const KJ_LIFETIMEBOUND;
 
   inline bool KJ_API operator==(decltype(nullptr)) const { return content.size() <= 1; }
   inline bool KJ_API operator!=(decltype(nullptr)) const { return content.size() > 1; }
@@ -394,16 +394,16 @@ public:
   // Disowns the backing array (which includes the NUL terminator) and returns it. The ConstString value
   // is clobbered (as if moved away).
 
-  inline const char* KJ_API cStr() const KJ_LIFETIMEBOUND;
+  inline const char* cStr() const KJ_LIFETIMEBOUND;
 
   inline size_t KJ_API size() const;
   // Result does not include NUL terminator.
 
   inline char KJ_API operator[](size_t index) const;
-  inline char& KJ_API operator[](size_t index) KJ_LIFETIMEBOUND;
+  inline char& operator[](size_t index) KJ_LIFETIMEBOUND;
 
-  inline const char* KJ_API begin() const KJ_LIFETIMEBOUND;
-  inline const char* KJ_API end() const KJ_LIFETIMEBOUND;
+  inline const char* begin() const KJ_LIFETIMEBOUND;
+  inline const char* end() const KJ_LIFETIMEBOUND;
 
   inline bool KJ_API operator==(decltype(nullptr)) const { return content.size() <= 1; }
   inline bool KJ_API operator!=(decltype(nullptr)) const { return content.size() > 1; }
@@ -650,7 +650,7 @@ struct KJ_CLASS Stringifier {
   inline Result operator*(T&& value) const { return kj::fwd<T>(value).toString(); }
 #endif
 };
-static KJ_CONSTEXPR(const) Stringifier KJ_API STR = Stringifier();
+static KJ_CONSTEXPR(const) Stringifier STR = Stringifier();
 
 }  // namespace _ (private)
 
