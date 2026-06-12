@@ -793,14 +793,14 @@ public:
   }
 };
 
-static KJ_CONSTEXPR(const) MaxValue_ KJ_API maxValue = MaxValue_();
+static KJ_CONSTEXPR(const) MaxValue_ maxValue = MaxValue_();
 // A special constant which, when cast to an integer type, takes on the maximum possible value of
 // that type.  This is useful to use as e.g. a parameter to a function because it will be robust
 // in the face of changes to the parameter's type.
 //
 // `char` is not supported, but `signed char` and `unsigned char` are.
 
-static KJ_CONSTEXPR(const) MinValue_ KJ_API minValue = MinValue_();
+static KJ_CONSTEXPR(const) MinValue_ minValue = MinValue_();
 // A special constant which, when cast to an integer type, takes on the minimum possible value
 // of that type.  This is useful to use as e.g. a parameter to a function because it will be robust
 // in the face of changes to the parameter's type.
@@ -1056,11 +1056,11 @@ struct PlacementNew {};
 }  // namespace _ (private)
 } // namespace kj
 
-inline void* KJ_API operator new(size_t, void* __p, kj::_::PlacementNew) noexcept {
+inline void* operator new(size_t, void* __p, kj::_::PlacementNew) noexcept {
   return __p;
 }
 
-inline void KJ_API operator delete(void*, void* __p, kj::_::PlacementNew) noexcept {}
+inline void operator delete(void*, void* __p, kj::_::PlacementNew) noexcept {}
 
 namespace kj {
 

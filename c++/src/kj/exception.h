@@ -75,7 +75,7 @@ public:
   KJ_API Exception(Exception&& other) = default;
   KJ_API ~Exception() noexcept;
 
-  const char* KJ_API getFile() const { return file; }
+  const char* getFile() const { return file; }
   int KJ_API getLine() const { return line; }
   Type KJ_API getType() const { return type; }
   StringPtr KJ_API getDescription() const { return description; }
@@ -93,10 +93,10 @@ public:
   struct KJ_CLASS Context {
     // Describes a bit about what was going on when the exception was thrown.
 
-    const char* KJ_API file;
-    int KJ_API line;
-    String KJ_API description;
-    Maybe<Own<Context>> KJ_API next;
+    const char* file;
+    int line;
+    String description;
+    Maybe<Own<Context>> next;
 
     KJ_API Context(const char* file, int line, String&& description, Maybe<Own<Context>>&& next)
         : file(file), line(line), description(mv(description)), next(mv(next)) {}

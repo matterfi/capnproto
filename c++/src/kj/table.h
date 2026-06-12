@@ -1576,7 +1576,7 @@ public:
       return pos - 1;
     };
 
-    inline Iterator& KJ_API operator++() {
+    inline Iterator& operator++() {
       pos = links[pos].next;
       return *this;
     }
@@ -1585,7 +1585,7 @@ public:
       ++*this;
       return result;
     }
-    inline Iterator& KJ_API operator--() {
+    inline Iterator& operator--() {
       pos = links[pos].prev;
       return *this;
     }

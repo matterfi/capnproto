@@ -279,8 +279,8 @@ public:
   static const HeapArrayDisposer KJ_API instance;
 
 private:
-  static void* KJ_API allocateImpl(size_t elementSize, size_t elementCount, size_t capacity,
-                                   void (*constructElement)(void*), void (*destroyElement)(void*));
+  static void* allocateImpl(size_t elementSize, size_t elementCount, size_t capacity,
+                            void (*constructElement)(void*), void (*destroyElement)(void*));
   // Allocates and constructs the array.  Both function pointers are null if the constructor is
   // trivial, otherwise destroyElement is null if the constructor doesn't throw.
 

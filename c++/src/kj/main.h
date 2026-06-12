@@ -273,7 +273,7 @@ public:
     inline KJ_API Validity(String&& errorMessage)
         : errorMessage(kj::mv(errorMessage)) {}
 
-    inline const Maybe<String>& KJ_API getError() const { return errorMessage; }
+    inline const Maybe<String>& getError() const { return errorMessage; }
     inline Maybe<String> KJ_API releaseError() { return kj::mv(errorMessage); }
 
   private:
@@ -281,8 +281,8 @@ public:
     friend class MainBuilder;
   };
 
-  MainBuilder& KJ_API addOption(std::initializer_list<OptionName> names,
-                                Function<Validity()> callback, StringPtr helpText);
+  MainBuilder& addOption(std::initializer_list<OptionName> names,
+                         Function<Validity()> callback, StringPtr helpText);
   // Defines a new option (flag).  `names` is a list of characters and strings that can be used to
   // specify the option on the command line.  Single-character names are used with "-" while string
   // names are used with "--".  `helpText` is a natural-language description of the flag.
@@ -310,9 +310,9 @@ public:
   //
   // Note that help text is automatically word-wrapped.
 
-  MainBuilder& KJ_API addOptionWithArg(std::initializer_list<OptionName> names,
-                                       Function<Validity(StringPtr)> callback,
-                                       StringPtr argumentTitle, StringPtr helpText);
+  MainBuilder& addOptionWithArg(std::initializer_list<OptionName> names,
+                                Function<Validity(StringPtr)> callback,
+                                StringPtr argumentTitle, StringPtr helpText);
   // Like `addOption()`, but adds an option which accepts an argument.  `argumentTitle` is used in
   // the help text.  The argument text is passed to the callback.
   //
@@ -337,8 +337,8 @@ public:
   //     -o FILENAME, --output=FILENAME
   //         Output to FILENAME.
 
-  MainBuilder& KJ_API addSubCommand(StringPtr name, Function<MainFunc()> getSubParser,
-                                    StringPtr briefHelpText);
+  MainBuilder& addSubCommand(StringPtr name, Function<MainFunc()> getSubParser,
+                             StringPtr briefHelpText);
   // If exactly the given name is seen as an argument, invoke getSubParser() and then pass all
   // remaining arguments to the parser it returns.  This is useful for implementing commands which
   // have lots of sub-commands, like "git" (which has sub-commands "checkout", "branch", "pull",
@@ -351,10 +351,10 @@ public:
   // line.  It will not be wrapped.  Users can use the built-in "help" command to get extended
   // help on a particular command.
 
-  MainBuilder& KJ_API expectArg(StringPtr title, Function<Validity(StringPtr)> callback);
-  MainBuilder& KJ_API expectOptionalArg(StringPtr title, Function<Validity(StringPtr)> callback);
-  MainBuilder& KJ_API expectZeroOrMoreArgs(StringPtr title, Function<Validity(StringPtr)> callback);
-  MainBuilder& KJ_API expectOneOrMoreArgs(StringPtr title, Function<Validity(StringPtr)> callback);
+  MainBuilder& expectArg(StringPtr title, Function<Validity(StringPtr)> callback);
+  MainBuilder& expectOptionalArg(StringPtr title, Function<Validity(StringPtr)> callback);
+  MainBuilder& expectZeroOrMoreArgs(StringPtr title, Function<Validity(StringPtr)> callback);
+  MainBuilder& expectOneOrMoreArgs(StringPtr title, Function<Validity(StringPtr)> callback);
   // Set callbacks to handle arguments.  `expectArg()` and `expectOptionalArg()` specify positional
   // arguments with special handling, while `expect{Zero,One}OrMoreArgs()` specifies a handler for
   // an argument list (the handler is called once for each argument in the list).  `title`
@@ -386,7 +386,7 @@ public:
   // But, this flexibility seems necessary to support commands where the first argument is special
   // as well as commands (like `cp`) where the last argument is special.
 
-  MainBuilder& KJ_API callAfterParsing(Function<Validity()> callback);
+  MainBuilder& callAfterParsing(Function<Validity()> callback);
   // Call the given function after all arguments have been parsed.
 
   MainFunc KJ_API build();
