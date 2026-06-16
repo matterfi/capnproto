@@ -58,9 +58,9 @@ class Promise;
 class WaitScope;
 class TaskSet;
 
-Promise<void> KJ_ASYNC_API joinPromises(Array<Promise<void>>&& promises,
+KJ_ASYNC_API Promise<void> joinPromises(Array<Promise<void>>&& promises,
                                         SourceLocation location = {});
-Promise<void> KJ_ASYNC_API joinPromisesFailFast(Array<Promise<void>>&& promises,
+KJ_ASYNC_API Promise<void> joinPromisesFailFast(Array<Promise<void>>&& promises,
                                                 SourceLocation location = {});
 // Out-of-line <void> specialization of template function defined in async.h.
 
@@ -224,7 +224,7 @@ using OwnPromiseNode = Own<PromiseNode, PromiseDisposer>;
 
 class KJ_CLASS PromiseBase {
 public:
-  kj::String KJ_ASYNC_API trace();
+  KJ_ASYNC_API kj::String trace();
   // Dump debug info about this promise.
 
 private:
@@ -238,14 +238,14 @@ private:
   friend class PromiseNode;
 };
 
-void KJ_ASYNC_API detach(kj::Promise<void>&& promise);
-void KJ_ASYNC_API waitImpl(_::OwnPromiseNode&& node, _::ExceptionOrValue& result,
+KJ_ASYNC_API void detach(kj::Promise<void>&& promise);
+KJ_ASYNC_API void waitImpl(_::OwnPromiseNode&& node, _::ExceptionOrValue& result,
                            WaitScope& waitScope, SourceLocation location);
-bool KJ_ASYNC_API pollImpl(_::PromiseNode& node, WaitScope& waitScope, SourceLocation location);
-Promise<void> KJ_ASYNC_API yield();
-Promise<void> KJ_ASYNC_API yieldHarder();
-OwnPromiseNode KJ_ASYNC_API readyNow();
-OwnPromiseNode KJ_ASYNC_API neverDone();
+KJ_ASYNC_API bool pollImpl(_::PromiseNode& node, WaitScope& waitScope, SourceLocation location);
+KJ_ASYNC_API Promise<void> yield();
+KJ_ASYNC_API Promise<void> yieldHarder();
+KJ_ASYNC_API OwnPromiseNode readyNow();
+KJ_ASYNC_API OwnPromiseNode neverDone();
 
 class ReadyNow {
 public:
@@ -257,7 +257,7 @@ public:
   template <typename T>
   operator Promise<T>() const;
 
-  KJ_NORETURN(void KJ_ASYNC_API wait(WaitScope& waitScope, SourceLocation location = {}) const);
+  KJ_ASYNC_API KJ_NORETURN(void wait(WaitScope& waitScope, SourceLocation location = {}) const);
 };
 
 }  // namespace _ (private)

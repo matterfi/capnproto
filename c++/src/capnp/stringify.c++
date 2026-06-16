@@ -231,18 +231,18 @@ kj::StringTree stringify(DynamicValue::Reader value) {
 
 }  // namespace
 
-kj::StringTree CAPNP_API prettyPrint(DynamicStruct::Reader value) {
+CAPNP_API kj::StringTree prettyPrint(DynamicStruct::Reader value) {
   return print(value, schema::Type::STRUCT, Indent(true), BARE);
 }
 
-kj::StringTree CAPNP_API prettyPrint(DynamicList::Reader value) {
+CAPNP_API kj::StringTree prettyPrint(DynamicList::Reader value) {
   return print(value, schema::Type::LIST, Indent(true), BARE);
 }
 
-kj::StringTree CAPNP_API prettyPrint(DynamicStruct::Builder value) {
+CAPNP_API kj::StringTree prettyPrint(DynamicStruct::Builder value) {
   return prettyPrint(value.asReader());
 }
-kj::StringTree CAPNP_API prettyPrint(DynamicList::Builder value) {
+CAPNP_API kj::StringTree prettyPrint(DynamicList::Builder value) {
   return prettyPrint(value.asReader());
 }
 

@@ -40,12 +40,12 @@ class KJ_CLASS Arena {
   // allocating thread-local arenas.
 
 public:
-  explicit KJ_API Arena(size_t chunkSizeHint = 1024);
+  KJ_API explicit Arena(size_t chunkSizeHint = 1024);
   // Create an Arena.  `chunkSizeHint` hints at where to start when allocating chunks, but is only
   // a hint -- the Arena will, for example, allocate progressively larger chunks as time goes on,
   // in order to reduce overall allocation overhead.
 
-  explicit KJ_API Arena(ArrayPtr<byte> scratch);
+  KJ_API explicit Arena(ArrayPtr<byte> scratch);
   // Allocates from the given scratch space first, only resorting to the heap when it runs out.
 
   KJ_DISALLOW_COPY_AND_MOVE(Arena);
@@ -77,7 +77,7 @@ public:
   // Allocate a copy of the given value in the arena.  This is just a shortcut for calling the
   // type's copy (or move) constructor.
 
-  StringPtr KJ_API copyString(StringPtr content);
+  KJ_API StringPtr copyString(StringPtr content);
   // Make a copy of the given string inside the arena, and return a pointer to the copy.
 
 private:
@@ -102,7 +102,7 @@ private:
   // left in a consistent state, such that if cleanup() is called again, it will pick up where
   // it left off.
 
-  void* KJ_API allocateBytes(size_t amount, uint alignment, bool hasDisposer);
+  KJ_API void* allocateBytes(size_t amount, uint alignment, bool hasDisposer);
   // Allocate the given number of bytes.  `hasDisposer` must be true if `setDisposer()` may be
   // called on this pointer later.
 

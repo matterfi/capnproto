@@ -51,7 +51,7 @@ class Orphan;
 struct CAPNP_CLASS ReaderOptions {
   // Options controlling how data is read.
 
-  uint64_t CAPNP_API traversalLimitInWords = 8 * 1024 * 1024;
+  CAPNP_API uint64_t traversalLimitInWords = 8 * 1024 * 1024;
   // Limits how many total words of data are allowed to be traversed.  Traversal is counted when
   // a new struct or list builder is obtained, e.g. from a get() accessor.  This means that calling
   // the getter for the same sub-struct multiple times will cause it to be double-counted.  Once
@@ -72,7 +72,7 @@ struct CAPNP_CLASS ReaderOptions {
   // but probably at least prevents easy exploitation while also avoiding causing problems in most
   // typical cases.
 
-  int CAPNP_API nestingLimit = 64;
+  CAPNP_API int nestingLimit = 64;
   // Limits how deeply-nested a message structure can be, e.g. structs containing other structs or
   // lists of structs.
   //
@@ -100,13 +100,13 @@ public:
   // default value of "ReaderOptions()".  The base class constructor doesn't have a default value
   // in order to remind subclasses that they really need to give the user a way to provide this.
 
-  virtual CAPNP_API ~MessageReader() noexcept(false);
+  CAPNP_API virtual ~MessageReader() noexcept(false);
 
-  virtual kj::ArrayPtr<const word> CAPNP_API getSegment(uint id) = 0;
+  CAPNP_API virtual kj::ArrayPtr<const word> getSegment(uint id) = 0;
   // Gets the segment with the given ID, or returns null if no such segment exists. This method
   // will be called at most once for each segment ID.
 
-  inline const ReaderOptions& CAPNP_API getOptions();
+  CAPNP_API inline const ReaderOptions& getOptions();
   // Get the options passed to the constructor.
 
   template <typename RootType>
@@ -119,10 +119,10 @@ public:
   // RootType in this case must be DynamicStruct, and you must #include <capnp/dynamic.h> to
   // use this.
 
-  bool CAPNP_API isCanonical();
+  CAPNP_API bool isCanonical();
   // Returns whether the message encoded in the reader is in canonical form.
 
-  size_t CAPNP_API sizeInWords();
+  CAPNP_API size_t sizeInWords();
   // Add up the size of all segments.
 
 private:
@@ -142,7 +142,7 @@ private:
   bool allocatedArena;
 
   _::ReaderArena* arena() { return reinterpret_cast<_::ReaderArena*>(arenaSpace); }
-  AnyPointer::Reader CAPNP_API getRootInternal();
+  CAPNP_API AnyPointer::Reader getRootInternal();
 };
 
 class CAPNP_CLASS MessageBuilder {
@@ -159,18 +159,18 @@ class CAPNP_CLASS MessageBuilder {
 
 public:
   CAPNP_API MessageBuilder();
-  virtual CAPNP_API ~MessageBuilder() noexcept(false);
+  CAPNP_API virtual ~MessageBuilder() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(MessageBuilder);
 
   struct CAPNP_CLASS SegmentInit {
-    kj::ArrayPtr<word> CAPNP_API space;
+    CAPNP_API kj::ArrayPtr<word> space;
 
-    size_t CAPNP_API wordsUsed;
+    CAPNP_API size_t wordsUsed;
     // Number of words in `space` which are used; the rest are free space in which additional
     // objects may be allocated.
   };
 
-  explicit CAPNP_API MessageBuilder(kj::ArrayPtr<SegmentInit> segments);
+  CAPNP_API explicit MessageBuilder(kj::ArrayPtr<SegmentInit> segments);
   // Create a MessageBuilder backed by existing memory. This is an advanced interface that most
   // people should not use. THIS METHOD IS INSECURE; see below.
   //
@@ -191,7 +191,7 @@ public:
   //   not observe changes to the segment sizes nor newly-allocated segments caused by allocating
   //   new objects in this message.
 
-  virtual kj::ArrayPtr<word> CAPNP_API allocateSegment(uint minimumSize) = 0;
+  CAPNP_API virtual kj::ArrayPtr<word> allocateSegment(uint minimumSize) = 0;
   // Allocates an array of at least the given number of zero'd words, throwing an exception or
   // crashing if this is not possible.  It is expected that this method will usually return more
   // space than requested, and the caller should use that extra space as much as possible before
@@ -230,15 +230,15 @@ public:
   void adoptRoot(Orphan<T>&& orphan);
   // Like setRoot() but adopts the orphan without copying.
 
-  kj::ArrayPtr<const kj::ArrayPtr<const word>> CAPNP_API getSegmentsForOutput();
+  CAPNP_API kj::ArrayPtr<const kj::ArrayPtr<const word>> getSegmentsForOutput();
   // Get the raw data that makes up the message.
 
-  Orphanage CAPNP_API getOrphanage();
+  CAPNP_API Orphanage getOrphanage();
 
-  bool CAPNP_API isCanonical();
+  CAPNP_API bool isCanonical();
   // Check whether the message builder is in canonical form
 
-  size_t CAPNP_API sizeInWords();
+  CAPNP_API size_t sizeInWords();
   // Add up the allocated space from all segments.
 
 private:
@@ -257,7 +257,7 @@ private:
 
   _::BuilderArena* arena() { return reinterpret_cast<_::BuilderArena*>(arenaSpace); }
   _::SegmentBuilder* getRootSegment();
-  AnyPointer::Builder CAPNP_API getRootInternal();
+  CAPNP_API AnyPointer::Builder getRootInternal();
 
   kj::Own<_::CapTableBuilder> releaseBuiltinCapTable();
   // Hack for clone() to extract the cap table.
@@ -347,7 +347,7 @@ public:
   KJ_DISALLOW_COPY_AND_MOVE(SegmentArrayMessageReader);
   CAPNP_API ~SegmentArrayMessageReader() noexcept(false);
 
-  virtual kj::ArrayPtr<const word> CAPNP_API getSegment(uint id) override;
+  CAPNP_API virtual kj::ArrayPtr<const word> getSegment(uint id) override;
 
 private:
   kj::ArrayPtr<const kj::ArrayPtr<const word>> segments;
@@ -369,8 +369,8 @@ enum class CAPNP_CLASS AllocationStrategy: uint8_t {
   // allocated for a message of size n is O(log n).
 };
 
-constexpr uint CAPNP_API SUGGESTED_FIRST_SEGMENT_WORDS = 1024;
-constexpr AllocationStrategy CAPNP_API SUGGESTED_ALLOCATION_STRATEGY =
+CAPNP_API constexpr uint SUGGESTED_FIRST_SEGMENT_WORDS = 1024;
+CAPNP_API constexpr AllocationStrategy SUGGESTED_ALLOCATION_STRATEGY =
     AllocationStrategy::GROW_HEURISTICALLY;
 
 class CAPNP_CLASS MallocMessageBuilder: public MessageBuilder {
@@ -379,7 +379,7 @@ class CAPNP_CLASS MallocMessageBuilder: public MessageBuilder {
   // a specific location in memory.
 
 public:
-  explicit CAPNP_API MallocMessageBuilder(uint firstSegmentWords = SUGGESTED_FIRST_SEGMENT_WORDS,
+  CAPNP_API explicit MallocMessageBuilder(uint firstSegmentWords = SUGGESTED_FIRST_SEGMENT_WORDS,
       AllocationStrategy allocationStrategy = SUGGESTED_ALLOCATION_STRATEGY);
   // Creates a BuilderContext which allocates at least the given number of words for the first
   // segment, and then uses the given strategy to decide how much to allocate for subsequent
@@ -393,7 +393,7 @@ public:
   // The defaults have been chosen to be reasonable for most people, so don't change them unless you
   // have reason to believe you need to.
 
-  explicit CAPNP_API MallocMessageBuilder(kj::ArrayPtr<word> firstSegment,
+  CAPNP_API explicit MallocMessageBuilder(kj::ArrayPtr<word> firstSegment,
       AllocationStrategy allocationStrategy = SUGGESTED_ALLOCATION_STRATEGY);
   // This version always returns the given array for the first segment, and then proceeds with the
   // allocation strategy.  This is useful for optimization when building lots of small messages in
@@ -403,9 +403,9 @@ public:
   // over any space that was used so that it can be reused.
 
   KJ_DISALLOW_COPY_AND_MOVE(MallocMessageBuilder);
-  virtual CAPNP_API ~MallocMessageBuilder() noexcept(false);
+  CAPNP_API virtual ~MallocMessageBuilder() noexcept(false);
 
-  virtual kj::ArrayPtr<word> CAPNP_API allocateSegment(uint minimumSize) override;
+  CAPNP_API virtual kj::ArrayPtr<word> allocateSegment(uint minimumSize) override;
 
 private:
   uint nextSize;
@@ -432,14 +432,14 @@ class CAPNP_CLASS FlatMessageBuilder: public MessageBuilder {
   // the Cap'n Proto implementation.
 
 public:
-  explicit CAPNP_API FlatMessageBuilder(kj::ArrayPtr<word> array);
+  CAPNP_API explicit FlatMessageBuilder(kj::ArrayPtr<word> array);
   KJ_DISALLOW_COPY_AND_MOVE(FlatMessageBuilder);
-  virtual CAPNP_API ~FlatMessageBuilder() noexcept(false);
+  CAPNP_API virtual ~FlatMessageBuilder() noexcept(false);
 
-  void CAPNP_API requireFilled();
+  CAPNP_API void requireFilled();
   // Throws an exception if the flat array is not exactly full.
 
-  virtual kj::ArrayPtr<word> CAPNP_API allocateSegment(uint minimumSize) override;
+  CAPNP_API virtual kj::ArrayPtr<word> allocateSegment(uint minimumSize) override;
 
 private:
   kj::ArrayPtr<word> array;

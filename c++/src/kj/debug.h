@@ -427,13 +427,13 @@ public:
 #endif
     KJ_API ~Fault() noexcept(false);
 
-    KJ_NOINLINE KJ_NORETURN(void KJ_API fatal());
+    KJ_API KJ_NOINLINE KJ_NORETURN(void fatal());
     // Throw the exception.
 
   private:
-    void KJ_API init(const char* file, int line, Exception::Type type,
+    KJ_API void init(const char* file, int line, Exception::Type type,
                      const char* condition, const char* macroArgs, ArrayPtr<String> argValues);
-    void KJ_API init(const char* file, int line, int osErrorNumber,
+    KJ_API void init(const char* file, int line, int osErrorNumber,
                      const char* condition, const char* macroArgs, ArrayPtr<String> argValues);
 #if _WIN32 || __CYGWIN__
     void init(const char* file, int line, Win32Result osErrorNumber,
@@ -469,7 +469,7 @@ public:
   public:
     KJ_API Context();
     KJ_DISALLOW_COPY_AND_MOVE(Context);
-    virtual KJ_API ~Context() noexcept(false);
+    KJ_API virtual ~Context() noexcept(false);
 
     struct Value {
       const char* file;
@@ -482,9 +482,9 @@ public:
 
     virtual Value evaluate() = 0;
 
-    virtual void KJ_API onRecoverableException(Exception&& exception) override;
-    virtual void KJ_API onFatalException(Exception&& exception) override;
-    virtual void KJ_API logMessage(LogSeverity severity, const char* file, int line,
+    KJ_API virtual void onRecoverableException(Exception&& exception) override;
+    KJ_API virtual void onFatalException(Exception&& exception) override;
+    KJ_API virtual void logMessage(LogSeverity severity, const char* file, int line,
                                    int contextDepth, String&& text) override;
 
   private:
@@ -511,11 +511,11 @@ public:
   static String makeDescription(const char* macroArgs, Params&&... params);
 
 private:
-  static LogSeverity KJ_API minSeverity;
+  KJ_API static LogSeverity minSeverity;
 
-  static void KJ_API logInternal(const char* file, int line, LogSeverity severity,
+  KJ_API static void logInternal(const char* file, int line, LogSeverity severity,
                                  const char* macroArgs, ArrayPtr<String> argValues);
-  static String KJ_API makeDescriptionInternal(const char* macroArgs, ArrayPtr<String> argValues);
+  KJ_API static String makeDescriptionInternal(const char* macroArgs, ArrayPtr<String> argValues);
 
   static int getOsErrorNumber(bool nonblocking);
   // Get the error code of the last error (e.g. from errno).  Returns -1 on EINTR.

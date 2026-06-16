@@ -70,19 +70,19 @@ struct CAPNP_CLASS Void {
   // Type used for Void fields.  Using C++'s "void" type creates a bunch of issues since it behaves
   // differently from other types.
 
-  inline constexpr bool CAPNP_API operator==(Void other) const { return true; }
-  inline constexpr bool CAPNP_API operator!=(Void other) const { return false; }
+  CAPNP_API inline constexpr bool operator==(Void other) const { return true; }
+  CAPNP_API inline constexpr bool operator!=(Void other) const { return false; }
 };
 
-static constexpr Void CAPNP_API VOID = Void();
+CAPNP_API static constexpr Void VOID = Void();
 // Constant value for `Void`,  which is an empty struct.
 
-inline kj::StringPtr CAPNP_API KJ_STRINGIFY(Void) { return "void"; }
+CAPNP_API inline kj::StringPtr KJ_STRINGIFY(Void) { return "void"; }
 
 struct Text;
 struct Data;
 
-enum class CAPNP_API Kind: uint8_t {
+enum class CAPNP_CLASS Kind: uint8_t {
   PRIMITIVE,
   BLOB,
   ENUM,
@@ -96,14 +96,14 @@ enum class CAPNP_API Kind: uint8_t {
   // special handling. This includes types like AnyPointer, Dynamic*, etc.
 };
 
-enum class CAPNP_API Style: uint8_t {
+enum class CAPNP_CLASS Style: uint8_t {
   PRIMITIVE,
   POINTER,      // other than struct
   STRUCT,
   CAPABILITY
 };
 
-enum class CAPNP_API ElementSize: uint8_t {
+enum class CAPNP_CLASS ElementSize: uint8_t {
   // Size of a list element.
 
   VOID = 0,
@@ -118,7 +118,7 @@ enum class CAPNP_API ElementSize: uint8_t {
   INLINE_COMPOSITE = 7
 };
 
-enum class CAPNP_API PointerType {
+enum class CAPNP_CLASS PointerType {
   // Various wire types a pointer field can take
 
   NULL_,
@@ -330,10 +330,10 @@ struct PointerHelpers {};
 
 struct CAPNP_CLASS MessageSize {
   // Size of a message. Every struct and list type has a method `.totalSize()` that returns this.
-  uint64_t CAPNP_API wordCount;
-  uint CAPNP_API capCount;
+  CAPNP_API uint64_t wordCount;
+  CAPNP_API uint capCount;
 
-  inline constexpr MessageSize CAPNP_API operator+(const MessageSize& other) const {
+  CAPNP_API inline constexpr MessageSize operator+(const MessageSize& other) const {
     return { wordCount + other.wordCount, capCount + other.capCount };
   }
 };
@@ -356,7 +356,7 @@ class CAPNP_CLASS word {
 public:
   CAPNP_API word() = default;
 private:
-  uint64_t CAPNP_API content KJ_UNUSED_MEMBER;
+  CAPNP_API uint64_t content KJ_UNUSED_MEMBER;
 #if __GNUC__ < 8 || __clang__
   // GCC 8's -Wclass-memaccess complains whenever we try to memcpy() a `word` if we've disallowed
   // the copy constructor. We don't want to disable the warning because it's a useful warning and
@@ -479,31 +479,31 @@ inline constexpr const U* operator-=(const U*& ptr, kj::Quantity<T, U> offset) {
   return ptr = ptr - unbound(offset / kj::unit<kj::Quantity<T, U>>());
 }
 
-constexpr auto CAPNP_API BITS = kj::unit<BitCountN<1>>();
-constexpr auto CAPNP_API BYTES = kj::unit<ByteCountN<1>>();
-constexpr auto CAPNP_API WORDS = kj::unit<WordCountN<1>>();
-constexpr auto CAPNP_API ELEMENTS = kj::unit<ElementCountN<1>>();
-constexpr auto CAPNP_API POINTERS = kj::unit<WirePointerCountN<1>>();
+CAPNP_API constexpr auto BITS = kj::unit<BitCountN<1>>();
+CAPNP_API constexpr auto BYTES = kj::unit<ByteCountN<1>>();
+CAPNP_API constexpr auto WORDS = kj::unit<WordCountN<1>>();
+CAPNP_API constexpr auto ELEMENTS = kj::unit<ElementCountN<1>>();
+CAPNP_API constexpr auto POINTERS = kj::unit<WirePointerCountN<1>>();
 
-constexpr auto CAPNP_API ZERO = kj::bounded<0>();
-constexpr auto CAPNP_API ONE = kj::bounded<1>();
+CAPNP_API constexpr auto ZERO = kj::bounded<0>();
+CAPNP_API constexpr auto ONE = kj::bounded<1>();
 
 // GCC 4.7 actually gives unused warnings on these constants in opt mode...
-constexpr auto BITS_PER_BYTE CAPNP_API KJ_UNUSED = bounded<8>() * BITS / BYTES;
-constexpr auto BITS_PER_WORD CAPNP_API KJ_UNUSED = bounded<64>() * BITS / WORDS;
-constexpr auto BYTES_PER_WORD CAPNP_API KJ_UNUSED = bounded<8>() * BYTES / WORDS;
+CAPNP_API constexpr auto BITS_PER_BYTE KJ_UNUSED = bounded<8>() * BITS / BYTES;
+CAPNP_API constexpr auto BITS_PER_WORD KJ_UNUSED = bounded<64>() * BITS / WORDS;
+CAPNP_API constexpr auto BYTES_PER_WORD KJ_UNUSED = bounded<8>() * BYTES / WORDS;
 
-constexpr auto BITS_PER_POINTER CAPNP_API KJ_UNUSED = bounded<64>() * BITS / POINTERS;
-constexpr auto BYTES_PER_POINTER CAPNP_API KJ_UNUSED = bounded<8>() * BYTES / POINTERS;
-constexpr auto WORDS_PER_POINTER CAPNP_API KJ_UNUSED = ONE * WORDS / POINTERS;
+CAPNP_API constexpr auto BITS_PER_POINTER KJ_UNUSED = bounded<64>() * BITS / POINTERS;
+CAPNP_API constexpr auto BYTES_PER_POINTER KJ_UNUSED = bounded<8>() * BYTES / POINTERS;
+CAPNP_API constexpr auto WORDS_PER_POINTER KJ_UNUSED = ONE * WORDS / POINTERS;
 
-constexpr auto CAPNP_API POINTER_SIZE_IN_WORDS = ONE * POINTERS * WORDS_PER_POINTER;
+CAPNP_API constexpr auto POINTER_SIZE_IN_WORDS = ONE * POINTERS * WORDS_PER_POINTER;
 
-constexpr uint CAPNP_API SEGMENT_WORD_COUNT_BITS = 29;      // Number of words in a segment.
-constexpr uint CAPNP_API LIST_ELEMENT_COUNT_BITS = 29;      // Number of elements in a list.
-constexpr uint CAPNP_API STRUCT_DATA_WORD_COUNT_BITS = 16;  // Number of words in a Struct data section.
-constexpr uint CAPNP_API STRUCT_POINTER_COUNT_BITS = 16;    // Number of pointers in a Struct pointer section.
-constexpr uint CAPNP_API BLOB_SIZE_BITS = 29;               // Number of bytes in a blob.
+CAPNP_API constexpr uint SEGMENT_WORD_COUNT_BITS = 29;      // Number of words in a segment.
+CAPNP_API constexpr uint LIST_ELEMENT_COUNT_BITS = 29;      // Number of elements in a list.
+CAPNP_API constexpr uint STRUCT_DATA_WORD_COUNT_BITS = 16;  // Number of words in a Struct data section.
+CAPNP_API constexpr uint STRUCT_POINTER_COUNT_BITS = 16;    // Number of pointers in a Struct pointer section.
+CAPNP_API constexpr uint BLOB_SIZE_BITS = 29;               // Number of bytes in a blob.
 
 typedef WordCountN<SEGMENT_WORD_COUNT_BITS> SegmentWordCount;
 typedef ElementCountN<LIST_ELEMENT_COUNT_BITS> ListElementCount;
@@ -511,13 +511,13 @@ typedef WordCountN<STRUCT_DATA_WORD_COUNT_BITS, uint16_t> StructDataWordCount;
 typedef WirePointerCountN<STRUCT_POINTER_COUNT_BITS, uint16_t> StructPointerCount;
 typedef ByteCountN<BLOB_SIZE_BITS> BlobSize;
 
-constexpr auto CAPNP_API MAX_SEGMENT_WORDS =
+CAPNP_API constexpr auto MAX_SEGMENT_WORDS =
     bounded<kj::maxValueForBits<SEGMENT_WORD_COUNT_BITS>()>() * WORDS;
-constexpr auto CAPNP_API MAX_LIST_ELEMENTS =
+CAPNP_API constexpr auto MAX_LIST_ELEMENTS =
     bounded<kj::maxValueForBits<LIST_ELEMENT_COUNT_BITS>()>() * ELEMENTS;
-constexpr auto CAPNP_API MAX_STUCT_DATA_WORDS =
+CAPNP_API constexpr auto MAX_STUCT_DATA_WORDS =
     bounded<kj::maxValueForBits<STRUCT_DATA_WORD_COUNT_BITS>()>() * WORDS;
-constexpr auto CAPNP_API MAX_STRUCT_POINTER_COUNT =
+CAPNP_API constexpr auto MAX_STRUCT_POINTER_COUNT =
     bounded<kj::maxValueForBits<STRUCT_POINTER_COUNT_BITS>()>() * POINTERS;
 
 using StructDataBitCount = decltype(WordCountN<STRUCT_POINTER_COUNT_BITS>() * BITS_PER_WORD);
@@ -527,16 +527,16 @@ using StructDataOffset = decltype(StructDataBitCount() * (ONE * ELEMENTS / BITS)
 using StructPointerOffset = StructPointerCount;
 // Type of a field offset.
 
-inline StructDataOffset CAPNP_API assumeDataOffset(uint32_t offset) {
+CAPNP_API inline StructDataOffset assumeDataOffset(uint32_t offset) {
   return assumeMax(MAX_STUCT_DATA_WORDS * BITS_PER_WORD * (ONE * ELEMENTS / BITS),
                    bounded(offset) * ELEMENTS);
 }
 
-inline StructPointerOffset CAPNP_API assumePointerOffset(uint32_t offset) {
+CAPNP_API inline StructPointerOffset assumePointerOffset(uint32_t offset) {
   return assumeMax(MAX_STRUCT_POINTER_COUNT, bounded(offset) * POINTERS);
 }
 
-constexpr uint CAPNP_API MAX_TEXT_SIZE = kj::maxValueForBits<BLOB_SIZE_BITS>() - 1;
+CAPNP_API constexpr uint MAX_TEXT_SIZE = kj::maxValueForBits<BLOB_SIZE_BITS>() - 1;
 typedef kj::Quantity<kj::Bounded<MAX_TEXT_SIZE, uint>, byte> TextSize;
 // Not including NUL terminator.
 
@@ -676,34 +676,34 @@ inline auto trySubtract(T a, U b) -> kj::Maybe<decltype(a - b)> {
   }
 }
 
-constexpr uint CAPNP_API BITS = 1;
-constexpr uint CAPNP_API BYTES = 1;
-constexpr uint CAPNP_API WORDS = 1;
-constexpr uint CAPNP_API ELEMENTS = 1;
-constexpr uint CAPNP_API POINTERS = 1;
+CAPNP_API constexpr uint BITS = 1;
+CAPNP_API constexpr uint BYTES = 1;
+CAPNP_API constexpr uint WORDS = 1;
+CAPNP_API constexpr uint ELEMENTS = 1;
+CAPNP_API constexpr uint POINTERS = 1;
 
-constexpr uint CAPNP_API ZERO = 0;
-constexpr uint CAPNP_API ONE = 1;
+CAPNP_API constexpr uint ZERO = 0;
+CAPNP_API constexpr uint ONE = 1;
 
 // GCC 4.7 actually gives unused warnings on these constants in opt mode...
-constexpr uint CAPNP_API BITS_PER_BYTE KJ_UNUSED = 8;
-constexpr uint CAPNP_API BITS_PER_WORD KJ_UNUSED = 64;
-constexpr uint CAPNP_API BYTES_PER_WORD KJ_UNUSED = 8;
+CAPNP_API constexpr uint BITS_PER_BYTE KJ_UNUSED = 8;
+CAPNP_API constexpr uint BITS_PER_WORD KJ_UNUSED = 64;
+CAPNP_API constexpr uint BYTES_PER_WORD KJ_UNUSED = 8;
 
-constexpr uint CAPNP_API BITS_PER_POINTER KJ_UNUSED = 64;
-constexpr uint CAPNP_API BYTES_PER_POINTER KJ_UNUSED = 8;
-constexpr uint CAPNP_API WORDS_PER_POINTER KJ_UNUSED = 1;
+CAPNP_API constexpr uint BITS_PER_POINTER KJ_UNUSED = 64;
+CAPNP_API constexpr uint BYTES_PER_POINTER KJ_UNUSED = 8;
+CAPNP_API constexpr uint WORDS_PER_POINTER KJ_UNUSED = 1;
 
 // XXX
-constexpr uint CAPNP_API POINTER_SIZE_IN_WORDS = ONE * POINTERS * WORDS_PER_POINTER;
+CAPNP_API constexpr uint POINTER_SIZE_IN_WORDS = ONE * POINTERS * WORDS_PER_POINTER;
 
-constexpr uint CAPNP_API SEGMENT_WORD_COUNT_BITS = 29;      // Number of words in a segment.
-constexpr uint CAPNP_API LIST_ELEMENT_COUNT_BITS = 29;      // Number of elements in a list.
-constexpr uint CAPNP_API STRUCT_DATA_WORD_COUNT_BITS = 16;
+CAPNP_API constexpr uint SEGMENT_WORD_COUNT_BITS = 29;      // Number of words in a segment.
+CAPNP_API constexpr uint LIST_ELEMENT_COUNT_BITS = 29;      // Number of elements in a list.
+CAPNP_API constexpr uint STRUCT_DATA_WORD_COUNT_BITS = 16;
   // Number of words in a Struct data section.
-constexpr uint CAPNP_API STRUCT_POINTER_COUNT_BITS = 16;
+CAPNP_API constexpr uint STRUCT_POINTER_COUNT_BITS = 16;
   // Number of pointers in a Struct pointer section.
-constexpr uint CAPNP_API BLOB_SIZE_BITS = 29;               // Number of bytes in a blob.
+CAPNP_API constexpr uint BLOB_SIZE_BITS = 29;               // Number of bytes in a blob.
 
 typedef WordCountN<SEGMENT_WORD_COUNT_BITS> SegmentWordCount;
 typedef ElementCountN<LIST_ELEMENT_COUNT_BITS> ListElementCount;
@@ -712,20 +712,20 @@ typedef WirePointerCountN<STRUCT_POINTER_COUNT_BITS, uint16_t> StructPointerCoun
 typedef ByteCountN<BLOB_SIZE_BITS> BlobSize;
 // YYY
 
-constexpr auto CAPNP_API MAX_SEGMENT_WORDS = kj::maxValueForBits<SEGMENT_WORD_COUNT_BITS>();
-constexpr auto CAPNP_API MAX_LIST_ELEMENTS = kj::maxValueForBits<LIST_ELEMENT_COUNT_BITS>();
-constexpr auto CAPNP_API MAX_STUCT_DATA_WORDS = kj::maxValueForBits<STRUCT_DATA_WORD_COUNT_BITS>();
-constexpr auto CAPNP_API MAX_STRUCT_POINTER_COUNT =
+CAPNP_API constexpr auto MAX_SEGMENT_WORDS = kj::maxValueForBits<SEGMENT_WORD_COUNT_BITS>();
+CAPNP_API constexpr auto MAX_LIST_ELEMENTS = kj::maxValueForBits<LIST_ELEMENT_COUNT_BITS>();
+CAPNP_API constexpr auto MAX_STUCT_DATA_WORDS = kj::maxValueForBits<STRUCT_DATA_WORD_COUNT_BITS>();
+CAPNP_API constexpr auto MAX_STRUCT_POINTER_COUNT =
   kj::maxValueForBits<STRUCT_POINTER_COUNT_BITS>();
 
 typedef uint StructDataBitCount;
 typedef uint StructDataOffset;
 typedef uint StructPointerOffset;
 
-inline StructDataOffset CAPNP_API assumeDataOffset(uint32_t offset) { return offset; }
-inline StructPointerOffset CAPNP_API assumePointerOffset(uint32_t offset) { return offset; }
+CAPNP_API inline StructDataOffset assumeDataOffset(uint32_t offset) { return offset; }
+CAPNP_API inline StructPointerOffset assumePointerOffset(uint32_t offset) { return offset; }
 
-constexpr uint CAPNP_API MAX_TEXT_SIZE = kj::maxValueForBits<BLOB_SIZE_BITS>() - 1;
+CAPNP_API constexpr uint MAX_TEXT_SIZE = kj::maxValueForBits<BLOB_SIZE_BITS>() - 1;
 typedef uint TextSize;
 
 template <typename T>

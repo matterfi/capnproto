@@ -37,9 +37,9 @@ namespace kj {
 
 class KJ_CLASS InputStream {
 public:
-  virtual KJ_API ~InputStream() noexcept(false);
+  KJ_API virtual ~InputStream() noexcept(false);
 
-  size_t KJ_API read(void* buffer, size_t minBytes, size_t maxBytes);
+  KJ_API size_t read(void* buffer, size_t minBytes, size_t maxBytes);
   // Reads at least minBytes and at most maxBytes, copying them into the given buffer.  Returns
   // the size read.  Throws an exception on errors.  Implemented in terms of tryRead().
   //
@@ -56,18 +56,18 @@ public:
   // If the InputStream can't produce minBytes, it MUST throw an exception, as the caller is not
   // expected to understand how to deal with partial reads.
 
-  virtual size_t KJ_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) = 0;
+  KJ_API virtual size_t tryRead(void* buffer, size_t minBytes, size_t maxBytes) = 0;
   // Like read(), but may return fewer than minBytes on EOF.
 
-  inline void KJ_API read(void* buffer, size_t bytes) { read(buffer, bytes, bytes); }
+  KJ_API inline void read(void* buffer, size_t bytes) { read(buffer, bytes, bytes); }
   // Convenience method for reading an exact number of bytes.
 
-  virtual void KJ_API skip(size_t bytes);
+  KJ_API virtual void skip(size_t bytes);
   // Skips past the given number of bytes, discarding them.  The default implementation read()s
   // into a scratch buffer.
 
-  String KJ_API readAllText(uint64_t limit = kj::maxValue);
-  Array<byte> KJ_API readAllBytes(uint64_t limit = kj::maxValue);
+  KJ_API String readAllText(uint64_t limit = kj::maxValue);
+  KJ_API Array<byte> readAllBytes(uint64_t limit = kj::maxValue);
   // Read until EOF and return as one big byte array or string. Throw an exception if EOF is not
   // seen before reading `limit` bytes.
   //
@@ -77,12 +77,12 @@ public:
 
 class KJ_CLASS OutputStream {
 public:
-  virtual KJ_API ~OutputStream() noexcept(false);
+  KJ_API virtual ~OutputStream() noexcept(false);
 
-  virtual void KJ_API write(const void* buffer, size_t size) = 0;
+  KJ_API virtual void write(const void* buffer, size_t size) = 0;
   // Always writes the full size.  Throws exception on error.
 
-  virtual void KJ_API write(ArrayPtr<const ArrayPtr<const byte>> pieces);
+  KJ_API virtual void write(ArrayPtr<const ArrayPtr<const byte>> pieces);
   // Equivalent to write()ing each byte array in sequence, which is what the default implementation
   // does.  Override if you can do something better, e.g. use writev() to do the write in a single
   // syscall.
@@ -95,14 +95,14 @@ class KJ_CLASS BufferedInputStream: public InputStream {
   // caller a direct pointer to that memory to potentially avoid a copy.
 
 public:
-  virtual KJ_API ~BufferedInputStream() noexcept(false);
+  KJ_API virtual ~BufferedInputStream() noexcept(false);
 
-  ArrayPtr<const byte> KJ_API getReadBuffer();
+  KJ_API ArrayPtr<const byte> getReadBuffer();
   // Get a direct pointer into the read buffer, which contains the next bytes in the input.  If the
   // caller consumes any bytes, it should then call skip() to indicate this.  This always returns a
   // non-empty buffer or throws an exception.  Implemented in terms of tryGetReadBuffer().
 
-  virtual ArrayPtr<const byte> KJ_API tryGetReadBuffer() = 0;
+  KJ_API virtual ArrayPtr<const byte> tryGetReadBuffer() = 0;
   // Like getReadBuffer() but may return an empty buffer on EOF.
 };
 
@@ -113,9 +113,9 @@ class KJ_CLASS BufferedOutputStream: public OutputStream {
   // caller a direct pointer to that memory to potentially avoid a copy.
 
 public:
-  virtual KJ_API ~BufferedOutputStream() noexcept(false);
+  KJ_API virtual ~BufferedOutputStream() noexcept(false);
 
-  virtual ArrayPtr<byte> KJ_API getWriteBuffer() = 0;
+  KJ_API virtual ArrayPtr<byte> getWriteBuffer() = 0;
   // Get a direct pointer into the write buffer.  The caller may choose to fill in some prefix of
   // this buffer and then pass it to write(), in which case write() may avoid a copy.  It is
   // incorrect to pass to write any slice of this buffer which is not a prefix.
@@ -134,7 +134,7 @@ class KJ_CLASS BufferedInputStreamWrapper: public BufferedInputStream {
   // but is not provided by the library at this time.
 
 public:
-  explicit KJ_API BufferedInputStreamWrapper(InputStream& inner, ArrayPtr<byte> buffer = nullptr);
+  KJ_API explicit BufferedInputStreamWrapper(InputStream& inner, ArrayPtr<byte> buffer = nullptr);
   // Creates a buffered stream wrapping the given non-buffered stream.  No guarantee is made about
   // the position of the inner stream after a buffered wrapper has been created unless the entire
   // input is read.
@@ -146,9 +146,9 @@ public:
   KJ_API ~BufferedInputStreamWrapper() noexcept(false);
 
   // implements BufferedInputStream ----------------------------------
-  ArrayPtr<const byte> KJ_API tryGetReadBuffer() override;
-  size_t KJ_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
-  void KJ_API skip(size_t bytes) override;
+  KJ_API ArrayPtr<const byte> tryGetReadBuffer() override;
+  KJ_API size_t tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
+  KJ_API void skip(size_t bytes) override;
 
 private:
   InputStream& inner;
@@ -162,7 +162,7 @@ class KJ_CLASS BufferedOutputStreamWrapper: public BufferedOutputStream {
   // underlying stream may be delayed until flush() is called or the wrapper is destroyed.
 
 public:
-  explicit KJ_API BufferedOutputStreamWrapper(OutputStream& inner,
+  KJ_API explicit BufferedOutputStreamWrapper(OutputStream& inner,
                                               ArrayPtr<byte> buffer = nullptr);
   // Creates a buffered stream wrapping the given non-buffered stream.
   //
@@ -172,14 +172,14 @@ public:
   KJ_DISALLOW_COPY_AND_MOVE(BufferedOutputStreamWrapper);
   KJ_API ~BufferedOutputStreamWrapper() noexcept(false);
 
-  void KJ_API flush();
+  KJ_API void flush();
   // Force the wrapper to write any remaining bytes in its buffer to the inner stream.  Note that
   // this only flushes this object's buffer; this object has no idea how to flush any other buffers
   // that may be present in the underlying stream.
 
   // implements BufferedOutputStream ---------------------------------
-  ArrayPtr<byte> KJ_API getWriteBuffer() override;
-  void KJ_API write(const void* buffer, size_t size) override;
+  KJ_API ArrayPtr<byte> getWriteBuffer() override;
+  KJ_API void write(const void* buffer, size_t size) override;
 
 private:
   OutputStream& inner;
@@ -194,14 +194,14 @@ private:
 
 class ArrayInputStream: public BufferedInputStream {
 public:
-  explicit KJ_API ArrayInputStream(ArrayPtr<const byte> array);
+  KJ_API explicit ArrayInputStream(ArrayPtr<const byte> array);
   KJ_DISALLOW_COPY_AND_MOVE(ArrayInputStream);
   KJ_API ~ArrayInputStream() noexcept(false);
 
   // implements BufferedInputStream ----------------------------------
-  ArrayPtr<const byte> KJ_API tryGetReadBuffer() override;
-  size_t KJ_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
-  void KJ_API skip(size_t bytes) override;
+  KJ_API ArrayPtr<const byte> tryGetReadBuffer() override;
+  KJ_API size_t tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
+  KJ_API void skip(size_t bytes) override;
 
 private:
   ArrayPtr<const byte> array;
@@ -209,18 +209,18 @@ private:
 
 class KJ_CLASS ArrayOutputStream: public BufferedOutputStream {
 public:
-  explicit KJ_API ArrayOutputStream(ArrayPtr<byte> array);
+  KJ_API explicit ArrayOutputStream(ArrayPtr<byte> array);
   KJ_DISALLOW_COPY_AND_MOVE(ArrayOutputStream);
   KJ_API ~ArrayOutputStream() noexcept(false);
 
-  ArrayPtr<byte> KJ_API getArray() {
+  KJ_API ArrayPtr<byte> getArray() {
     // Get the portion of the array which has been filled in.
     return arrayPtr(array.begin(), fillPos);
   }
 
   // implements BufferedInputStream ----------------------------------
-  ArrayPtr<byte> KJ_API getWriteBuffer() override;
-  void KJ_API write(const void* buffer, size_t size) override;
+  KJ_API ArrayPtr<byte> getWriteBuffer() override;
+  KJ_API void write(const void* buffer, size_t size) override;
 
 private:
   ArrayPtr<byte> array;
@@ -229,20 +229,20 @@ private:
 
 class KJ_CLASS VectorOutputStream: public BufferedOutputStream {
 public:
-  explicit KJ_API VectorOutputStream(size_t initialCapacity = 4096);
+  KJ_API explicit VectorOutputStream(size_t initialCapacity = 4096);
   KJ_DISALLOW_COPY_AND_MOVE(VectorOutputStream);
   KJ_API ~VectorOutputStream() noexcept(false);
 
-  ArrayPtr<byte> KJ_API getArray() {
+  KJ_API ArrayPtr<byte> getArray() {
     // Get the portion of the array which has been filled in.
     return arrayPtr(vector.begin(), fillPos);
   }
 
-  void KJ_API clear() { fillPos = vector.begin(); }
+  KJ_API void clear() { fillPos = vector.begin(); }
 
   // implements BufferedInputStream ----------------------------------
-  ArrayPtr<byte> KJ_API getWriteBuffer() override;
-  void KJ_API write(const void* buffer, size_t size) override;
+  KJ_API ArrayPtr<byte> getWriteBuffer() override;
+  KJ_API void write(const void* buffer, size_t size) override;
 
 private:
   Array<byte> vector;
@@ -264,36 +264,36 @@ class KJ_CLASS AutoCloseFd {
   // have to call close() yourself and handle errors appropriately.
 
 public:
-  inline KJ_API AutoCloseFd(): fd(-1) {}
-  inline KJ_API AutoCloseFd(decltype(nullptr)): fd(-1) {}
-  inline explicit KJ_API AutoCloseFd(int fd): fd(fd) {}
-  inline KJ_API AutoCloseFd(AutoCloseFd&& other) noexcept: fd(other.fd) { other.fd = -1; }
+  KJ_API inline AutoCloseFd(): fd(-1) {}
+  KJ_API inline AutoCloseFd(decltype(nullptr)): fd(-1) {}
+  KJ_API inline explicit AutoCloseFd(int fd): fd(fd) {}
+  KJ_API inline AutoCloseFd(AutoCloseFd&& other) noexcept: fd(other.fd) { other.fd = -1; }
   KJ_DISALLOW_COPY(AutoCloseFd);
   KJ_API ~AutoCloseFd() noexcept(false);
 
-  inline AutoCloseFd& KJ_API operator=(AutoCloseFd&& other) {
+  KJ_API inline AutoCloseFd& operator=(AutoCloseFd&& other) {
     AutoCloseFd old(kj::mv(*this));
     fd = other.fd;
     other.fd = -1;
     return *this;
   }
 
-  inline AutoCloseFd& KJ_API operator=(decltype(nullptr)) {
+  KJ_API inline AutoCloseFd& operator=(decltype(nullptr)) {
     AutoCloseFd old(kj::mv(*this));
     return *this;
   }
 
-  inline KJ_API operator int() const { return fd; }
-  inline int KJ_API get() const { return fd; }
+  KJ_API inline operator int() const { return fd; }
+  KJ_API inline int get() const { return fd; }
 
   operator bool() const = delete;
   // Deleting this operator prevents accidental use in boolean contexts, which
   // the int conversion operator above would otherwise allow.
 
-  inline bool KJ_API operator==(decltype(nullptr)) { return fd < 0; }
-  inline bool KJ_API operator!=(decltype(nullptr)) { return fd >= 0; }
+  KJ_API inline bool operator==(decltype(nullptr)) { return fd < 0; }
+  KJ_API inline bool operator!=(decltype(nullptr)) { return fd >= 0; }
 
-  inline int KJ_API release() {
+  KJ_API inline int release() {
     // Release ownership of an FD. Not recommended.
     int result = fd;
     fd = -1;
@@ -304,7 +304,7 @@ private:
   int fd;
 };
 
-inline auto KJ_API KJ_STRINGIFY(const AutoCloseFd& fd)
+KJ_API inline auto KJ_STRINGIFY(const AutoCloseFd& fd)
     -> decltype(kj::toCharSequence(implicitCast<int>(fd))) {
   return kj::toCharSequence(implicitCast<int>(fd));
 }
@@ -313,14 +313,14 @@ class KJ_CLASS FdInputStream: public InputStream {
   // An InputStream wrapping a file descriptor.
 
 public:
-  explicit KJ_API FdInputStream(int fd): fd(fd) {}
-  explicit KJ_API FdInputStream(AutoCloseFd fd): fd(fd), autoclose(mv(fd)) {}
+  KJ_API explicit FdInputStream(int fd): fd(fd) {}
+  KJ_API explicit FdInputStream(AutoCloseFd fd): fd(fd), autoclose(mv(fd)) {}
   KJ_DISALLOW_COPY_AND_MOVE(FdInputStream);
   KJ_API ~FdInputStream() noexcept(false);
 
-  size_t KJ_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
+  KJ_API size_t tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
 
-  inline int KJ_API getFd() const { return fd; }
+  KJ_API inline int getFd() const { return fd; }
 
 private:
   int fd;
@@ -331,15 +331,15 @@ class KJ_CLASS FdOutputStream: public OutputStream {
   // An OutputStream wrapping a file descriptor.
 
 public:
-  explicit KJ_API FdOutputStream(int fd): fd(fd) {}
-  explicit KJ_API FdOutputStream(AutoCloseFd fd): fd(fd), autoclose(mv(fd)) {}
+  KJ_API explicit FdOutputStream(int fd): fd(fd) {}
+  KJ_API explicit FdOutputStream(AutoCloseFd fd): fd(fd), autoclose(mv(fd)) {}
   KJ_DISALLOW_COPY_AND_MOVE(FdOutputStream);
   KJ_API ~FdOutputStream() noexcept(false);
 
-  void KJ_API write(const void* buffer, size_t size) override;
-  void KJ_API write(ArrayPtr<const ArrayPtr<const byte>> pieces) override;
+  KJ_API void write(const void* buffer, size_t size) override;
+  KJ_API void write(ArrayPtr<const ArrayPtr<const byte>> pieces) override;
 
-  inline int KJ_API getFd() const { return fd; }
+  KJ_API inline int getFd() const { return fd; }
 
 private:
   int fd;
@@ -361,38 +361,38 @@ class KJ_CLASS AutoCloseHandle {
   // have to call close() yourself and handle errors appropriately.
 
 public:
-  inline KJ_API AutoCloseHandle(): handle((void*)-1) {}
-  inline KJ_API AutoCloseHandle(decltype(nullptr)): handle((void*)-1) {}
-  inline explicit KJ_API AutoCloseHandle(void* handle): handle(handle) {}
-  inline KJ_API AutoCloseHandle(AutoCloseHandle&& other) noexcept: handle(other.handle) {
+  KJ_API inline AutoCloseHandle(): handle((void*)-1) {}
+  KJ_API inline AutoCloseHandle(decltype(nullptr)): handle((void*)-1) {}
+  KJ_API inline explicit AutoCloseHandle(void* handle): handle(handle) {}
+  KJ_API inline AutoCloseHandle(AutoCloseHandle&& other) noexcept: handle(other.handle) {
     other.handle = (void*)-1;
   }
   KJ_DISALLOW_COPY(AutoCloseHandle);
   KJ_API ~AutoCloseHandle() noexcept(false);
 
-  inline AutoCloseHandle& KJ_API operator=(AutoCloseHandle&& other) {
+  KJ_API inline AutoCloseHandle& operator=(AutoCloseHandle&& other) {
     AutoCloseHandle old(kj::mv(*this));
     handle = other.handle;
     other.handle = (void*)-1;
     return *this;
   }
 
-  inline AutoCloseHandle& KJ_API operator=(decltype(nullptr)) {
+  KJ_API inline AutoCloseHandle& operator=(decltype(nullptr)) {
     AutoCloseHandle old(kj::mv(*this));
     return *this;
   }
 
-  inline KJ_API operator void*() const { return handle; }
-  inline void* KJ_API get() const { return handle; }
+  KJ_API inline operator void*() const { return handle; }
+  KJ_API inline void* get() const { return handle; }
 
   operator bool() const = delete;
   // Deleting this operator prevents accidental use in boolean contexts, which
   // the void* conversion operator above would otherwise allow.
 
-  inline bool KJ_API operator==(decltype(nullptr)) { return handle != (void*)-1; }
-  inline bool KJ_API operator!=(decltype(nullptr)) { return handle == (void*)-1; }
+  KJ_API inline bool operator==(decltype(nullptr)) { return handle != (void*)-1; }
+  KJ_API inline bool operator!=(decltype(nullptr)) { return handle == (void*)-1; }
 
-  inline void* KJ_API release() {
+  KJ_API inline void* release() {
     // Release ownership of an FD. Not recommended.
     void* result = handle;
     handle = (void*)-1;
@@ -407,12 +407,12 @@ class KJ_CLASS HandleInputStream: public InputStream {
   // An InputStream wrapping a Win32 HANDLE.
 
 public:
-  explicit KJ_API HandleInputStream(void* handle): handle(handle) {}
-  explicit KJ_API HandleInputStream(AutoCloseHandle handle): handle(handle), autoclose(mv(handle)) {}
+  KJ_API explicit HandleInputStream(void* handle): handle(handle) {}
+  KJ_API explicit HandleInputStream(AutoCloseHandle handle): handle(handle), autoclose(mv(handle)) {}
   KJ_DISALLOW_COPY_AND_MOVE(HandleInputStream);
   KJ_API ~HandleInputStream() noexcept(false);
 
-  size_t KJ_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
+  KJ_API size_t tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
 
 private:
   void* handle;
@@ -423,12 +423,12 @@ class KJ_CLASS HandleOutputStream: public OutputStream {
   // An OutputStream wrapping a Win32 HANDLE.
 
 public:
-  explicit KJ_API HandleOutputStream(void* handle): handle(handle) {}
-  explicit KJ_API HandleOutputStream(AutoCloseHandle handle): handle(handle), autoclose(mv(handle)) {}
+  KJ_API explicit HandleOutputStream(void* handle): handle(handle) {}
+  KJ_API explicit HandleOutputStream(AutoCloseHandle handle): handle(handle), autoclose(mv(handle)) {}
   KJ_DISALLOW_COPY_AND_MOVE(HandleOutputStream);
   KJ_API ~HandleOutputStream() noexcept(false);
 
-  void KJ_API write(const void* buffer, size_t size) override;
+  KJ_API void write(const void* buffer, size_t size) override;
 
 private:
   void* handle;

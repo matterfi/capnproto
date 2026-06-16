@@ -39,14 +39,14 @@ public:
   KJ_TLS_API ~ReadyInputStreamWrapper() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(ReadyInputStreamWrapper);
 
-  kj::Maybe<size_t> KJ_TLS_API read(kj::ArrayPtr<byte> dst);
+  KJ_TLS_API kj::Maybe<size_t> read(kj::ArrayPtr<byte> dst);
   // Reads bytes into `dst`, returning the number of bytes read. Returns zero only at EOF. Returns
   // nullptr if not ready.
 
-  kj::Promise<void> KJ_TLS_API whenReady();
+  KJ_TLS_API kj::Promise<void> whenReady();
   // Returns a promise that resolves when read() will return non-null.
 
-  bool KJ_TLS_API isAtEnd() { return eof; }
+  KJ_TLS_API bool isAtEnd() { return eof; }
   // Returns true if read() would return zero.
 
 private:
@@ -70,17 +70,17 @@ public:
   KJ_TLS_API ~ReadyOutputStreamWrapper() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(ReadyOutputStreamWrapper);
 
-  kj::Maybe<size_t> KJ_TLS_API write(kj::ArrayPtr<const byte> src);
+  KJ_TLS_API kj::Maybe<size_t> write(kj::ArrayPtr<const byte> src);
   // Writes bytes from `src`, returning the number of bytes written. Never returns zero for
   // a non-empty `src`. Returns nullptr if not ready.
 
-  kj::Promise<void> KJ_TLS_API whenReady();
+  KJ_TLS_API kj::Promise<void> whenReady();
   // Returns a promise that resolves when write() will return non-null.
 
   class Cork;
   // An object that, when destructed, will uncork its parent stream.
 
-  Cork KJ_TLS_API cork();
+  KJ_TLS_API Cork cork();
   // After calling, data won't be pumped until either the internal buffer fills up or the returned
   // object is destructed. Use this if you know multiple small write() calls will be happening in
   // the near future and want to flush them all at once.

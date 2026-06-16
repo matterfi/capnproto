@@ -40,8 +40,8 @@ public:
   KJ_GZIP_API ~GzipOutputContext() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(GzipOutputContext);
 
-  void KJ_GZIP_API setInput(const void* in, size_t size);
-  kj::Tuple<bool, kj::ArrayPtr<const byte>> KJ_GZIP_API pumpOnce(int flush);
+  KJ_GZIP_API void setInput(const void* in, size_t size);
+  KJ_GZIP_API kj::Tuple<bool, kj::ArrayPtr<const byte>> pumpOnce(int flush);
 
 private:
   bool compressing;
@@ -59,7 +59,7 @@ public:
   KJ_GZIP_API ~GzipInputStream() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(GzipInputStream);
 
-  size_t KJ_GZIP_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
+  KJ_GZIP_API size_t tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
 
 private:
   InputStream& inner;
@@ -80,10 +80,10 @@ public:
   KJ_GZIP_API ~GzipOutputStream() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(GzipOutputStream);
 
-  void KJ_GZIP_API write(const void* buffer, size_t size) override;
+  KJ_GZIP_API void write(const void* buffer, size_t size) override;
   using OutputStream::write;
 
-  inline void KJ_GZIP_API flush() {
+  KJ_GZIP_API inline void flush() {
     pump(Z_SYNC_FLUSH);
   }
 
@@ -100,7 +100,7 @@ public:
   KJ_GZIP_API ~GzipAsyncInputStream() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(GzipAsyncInputStream);
 
-  Promise<size_t> KJ_GZIP_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
+  KJ_GZIP_API Promise<size_t> tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
 
 private:
   AsyncInputStream& inner;
@@ -121,19 +121,19 @@ public:
   KJ_GZIP_API GzipAsyncOutputStream(AsyncOutputStream& inner, decltype(DECOMPRESS));
   KJ_DISALLOW_COPY_AND_MOVE(GzipAsyncOutputStream);
 
-  Promise<void> KJ_GZIP_API write(const void* buffer, size_t size) override;
-  Promise<void> KJ_GZIP_API write(ArrayPtr<const ArrayPtr<const byte>> pieces) override;
+  KJ_GZIP_API Promise<void> write(const void* buffer, size_t size) override;
+  KJ_GZIP_API Promise<void> write(ArrayPtr<const ArrayPtr<const byte>> pieces) override;
 
-  Promise<void> KJ_GZIP_API whenWriteDisconnected() override {
+  KJ_GZIP_API Promise<void> whenWriteDisconnected() override {
       return inner.whenWriteDisconnected();
   }
 
-  inline Promise<void> KJ_GZIP_API flush() {
+  KJ_GZIP_API inline Promise<void> flush() {
     return pump(Z_SYNC_FLUSH);
   }
   // Call if you need to flush a stream at an arbitrary data point.
 
-  Promise<void> KJ_GZIP_API end() {
+  KJ_GZIP_API Promise<void> end() {
     return pump(Z_FINISH);
   }
   // Must call to flush and finish the stream, since some data may be buffered.

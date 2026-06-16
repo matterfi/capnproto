@@ -35,13 +35,13 @@ class CAPNP_CLASS PackedInputStream: public kj::InputStream {
   // in the exact same size and sequence as the data was written to PackedOutputStream.
 
 public:
-  explicit CAPNP_API PackedInputStream(kj::BufferedInputStream& inner);
+  CAPNP_API explicit PackedInputStream(kj::BufferedInputStream& inner);
   KJ_DISALLOW_COPY_AND_MOVE(PackedInputStream);
   CAPNP_API ~PackedInputStream() noexcept(false);
 
   // implements InputStream ------------------------------------------
-  size_t CAPNP_API tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
-  void CAPNP_API skip(size_t bytes) override;
+  CAPNP_API size_t tryRead(void* buffer, size_t minBytes, size_t maxBytes) override;
+  CAPNP_API void skip(size_t bytes) override;
 
 private:
   kj::BufferedInputStream& inner;
@@ -50,12 +50,12 @@ private:
 class CAPNP_CLASS PackedOutputStream: public kj::OutputStream {
   // An output stream that packs data. Buffers passed to `write()` must be word-aligned.
 public:
-  explicit CAPNP_API PackedOutputStream(kj::BufferedOutputStream& inner);
+  CAPNP_API explicit PackedOutputStream(kj::BufferedOutputStream& inner);
   KJ_DISALLOW_COPY_AND_MOVE(PackedOutputStream);
   CAPNP_API ~PackedOutputStream() noexcept(false);
 
   // implements OutputStream -----------------------------------------
-  void CAPNP_API write(const void* buffer, size_t bytes) override;
+  CAPNP_API void write(const void* buffer, size_t bytes) override;
 
 private:
   kj::BufferedOutputStream& inner;
@@ -91,24 +91,24 @@ public:
   CAPNP_API ~PackedFdMessageReader() noexcept(false);
 };
 
-void CAPNP_API writePackedMessage(kj::BufferedOutputStream& output, MessageBuilder& builder);
-void CAPNP_API writePackedMessage(kj::BufferedOutputStream& output,
+CAPNP_API void writePackedMessage(kj::BufferedOutputStream& output, MessageBuilder& builder);
+CAPNP_API void writePackedMessage(kj::BufferedOutputStream& output,
                                   kj::ArrayPtr<const kj::ArrayPtr<const word>> segments);
 // Write a packed message to a buffered output stream.
 
-void CAPNP_API writePackedMessage(kj::OutputStream& output, MessageBuilder& builder);
-void CAPNP_API writePackedMessage(kj::OutputStream& output,
+CAPNP_API void writePackedMessage(kj::OutputStream& output, MessageBuilder& builder);
+CAPNP_API void writePackedMessage(kj::OutputStream& output,
                                   kj::ArrayPtr<const kj::ArrayPtr<const word>> segments);
 // Write a packed message to an unbuffered output stream.  If you intend to write multiple messages
 // in succession, consider wrapping your output in a buffered stream in order to reduce system
 // call overhead.
 
-void CAPNP_API writePackedMessageToFd(int fd, MessageBuilder& builder);
-void CAPNP_API writePackedMessageToFd(int fd,
+CAPNP_API void writePackedMessageToFd(int fd, MessageBuilder& builder);
+CAPNP_API void writePackedMessageToFd(int fd,
                                       kj::ArrayPtr<const kj::ArrayPtr<const word>> segments);
 // Write a single packed message to the file descriptor.
 
-size_t CAPNP_API computeUnpackedSizeInWords(kj::ArrayPtr<const byte> packedBytes);
+CAPNP_API size_t computeUnpackedSizeInWords(kj::ArrayPtr<const byte> packedBytes);
 // Computes the number of words to which the given packed bytes will unpack. Not intended for use
 // in performance-sensitive situations.
 

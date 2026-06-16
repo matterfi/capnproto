@@ -87,16 +87,16 @@ public:
   CAPNP_RPC_API RpcSystemBase(RpcSystemBase&& other) noexcept;
   CAPNP_RPC_API ~RpcSystemBase() noexcept(false);
 
-  void CAPNP_RPC_API setTraceEncoder(kj::Function<kj::String(const kj::Exception&)> func);
+  CAPNP_RPC_API void setTraceEncoder(kj::Function<kj::String(const kj::Exception&)> func);
 
-  kj::Promise<void> CAPNP_RPC_API run();
+  CAPNP_RPC_API kj::Promise<void> run();
 
 private:
   class Impl;
   kj::Own<Impl> impl;
 
-  Capability::Client CAPNP_RPC_API baseBootstrap(AnyStruct::Reader vatId);
-  Capability::Client CAPNP_RPC_API baseRestore(AnyStruct::Reader vatId, AnyPointer::Reader objectId);
+  CAPNP_RPC_API Capability::Client baseBootstrap(AnyStruct::Reader vatId);
+  CAPNP_RPC_API Capability::Client baseRestore(AnyStruct::Reader vatId, AnyPointer::Reader objectId);
   void baseSetFlowLimit(size_t words);
 
   template <typename>

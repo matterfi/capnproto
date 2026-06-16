@@ -36,10 +36,10 @@ class ListIterator;
 
 namespace _ {  // (private)
 
-KJ_NORETURN(void KJ_API throwDoubleAdd());
-KJ_NORETURN(void KJ_API throwRemovedNotPresent());
-KJ_NORETURN(void KJ_API throwRemovedWrongList());
-KJ_NORETURN(void KJ_API throwDestroyedWhileInList());
+KJ_API KJ_NORETURN(void throwDoubleAdd());
+KJ_API KJ_NORETURN(void throwRemovedNotPresent());
+KJ_API KJ_NORETURN(void throwRemovedWrongList());
+KJ_API KJ_NORETURN(void throwDestroyedWhileInList());
 
 }  // namespace _ (private)
 

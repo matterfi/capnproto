@@ -37,18 +37,18 @@ public:
   CAPNP_WEBSOCKET_API WebSocketMessageStream(kj::WebSocket& socket);
 
   // Implements MessageStream
-  kj::Promise<kj::Maybe<MessageReaderAndFds>> CAPNP_WEBSOCKET_API tryReadMessage(
+  CAPNP_WEBSOCKET_API kj::Promise<kj::Maybe<MessageReaderAndFds>> tryReadMessage(
       kj::ArrayPtr<kj::AutoCloseFd> fdSpace,
       ReaderOptions options = ReaderOptions(), kj::ArrayPtr<word> scratchSpace = nullptr) override;
-  kj::Promise<void> CAPNP_WEBSOCKET_API writeMessage(
+  CAPNP_WEBSOCKET_API kj::Promise<void> writeMessage(
       kj::ArrayPtr<const int> fds,
       kj::ArrayPtr<const kj::ArrayPtr<const word>> segments) override
     KJ_WARN_UNUSED_RESULT;
-  kj::Promise<void> CAPNP_WEBSOCKET_API writeMessages(
+  CAPNP_WEBSOCKET_API kj::Promise<void> writeMessages(
       kj::ArrayPtr<kj::ArrayPtr<const kj::ArrayPtr<const word>>> messages) override
     KJ_WARN_UNUSED_RESULT;
-  kj::Maybe<int> CAPNP_WEBSOCKET_API getSendBufferSize() override;
-  kj::Promise<void> CAPNP_WEBSOCKET_API end() override;
+  CAPNP_WEBSOCKET_API kj::Maybe<int> getSendBufferSize() override;
+  CAPNP_WEBSOCKET_API kj::Promise<void> end() override;
 private:
   kj::WebSocket& socket;
 };

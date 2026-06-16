@@ -121,19 +121,19 @@ template <> struct Kind_<DynamicCapability> { static constexpr Kind kind = Kind:
 
 }  // namespace _ (private)
 
-template <> inline constexpr Style CAPNP_API style<DynamicValue     >() {
+template <> CAPNP_API inline constexpr Style style<DynamicValue     >() {
   return Style::POINTER;
 }
-template <> inline constexpr Style CAPNP_API style<DynamicEnum      >() {
+template <> CAPNP_API inline constexpr Style style<DynamicEnum      >() {
   return Style::PRIMITIVE;
 }
-template <> inline constexpr Style CAPNP_API style<DynamicStruct    >() {
+template <> CAPNP_API inline constexpr Style style<DynamicStruct    >() {
   return Style::STRUCT;
 }
-template <> inline constexpr Style CAPNP_API style<DynamicList      >() {
+template <> CAPNP_API inline constexpr Style style<DynamicList      >() {
   return Style::POINTER;
 }
-template <> inline constexpr Style CAPNP_API style<DynamicCapability>() {
+template <> CAPNP_API inline constexpr Style style<DynamicCapability>() {
   return Style::CAPABILITY;
 }
 
@@ -142,9 +142,9 @@ template <> inline constexpr Style CAPNP_API style<DynamicCapability>() {
 class CAPNP_CLASS DynamicEnum {
 public:
   DynamicEnum() = default;
-  inline CAPNP_API DynamicEnum(EnumSchema::Enumerant enumerant)
+  CAPNP_API inline DynamicEnum(EnumSchema::Enumerant enumerant)
       : schema(enumerant.getContainingEnum()), value(enumerant.getOrdinal()) {}
-  inline CAPNP_API DynamicEnum(EnumSchema schema, uint16_t value)
+  CAPNP_API inline DynamicEnum(EnumSchema schema, uint16_t value)
       : schema(schema), value(value) {}
 
   template <typename T, typename = kj::EnableIf<kind<T>() == Kind::ENUM>>
@@ -154,14 +154,14 @@ public:
   inline T as() const { return static_cast<T>(asImpl(typeId<T>())); }
   // Cast to a native enum type.
 
-  inline EnumSchema CAPNP_API getSchema() const { return schema; }
+  CAPNP_API inline EnumSchema getSchema() const { return schema; }
 
-  kj::Maybe<EnumSchema::Enumerant> CAPNP_API getEnumerant() const;
+  CAPNP_API kj::Maybe<EnumSchema::Enumerant> getEnumerant() const;
   // Get which enumerant this enum value represents.  Returns nullptr if the numeric value does not
   // correspond to any enumerant in the schema -- this can happen if the data was built using a
   // newer schema that has more values defined.
 
-  inline uint16_t CAPNP_API getRaw() const { return value; }
+  CAPNP_API inline uint16_t getRaw() const { return value; }
   // Returns the raw underlying enum value.
 
 private:
@@ -203,33 +203,33 @@ public:
   template <typename T, typename = kj::EnableIf<kind<FromReader<T>>() == Kind::STRUCT>>
   inline Reader(T&& value): Reader(toDynamic(value)) {}
 
-  inline CAPNP_API operator AnyStruct::Reader() const { return AnyStruct::Reader(reader); }
+  CAPNP_API inline operator AnyStruct::Reader() const { return AnyStruct::Reader(reader); }
 
-  inline MessageSize CAPNP_API totalSize() const { return reader.totalSize().asPublic(); }
+  CAPNP_API inline MessageSize totalSize() const { return reader.totalSize().asPublic(); }
 
   template <typename T>
   typename T::Reader as() const;
   // Convert the dynamic struct to its compiled-in type.
 
-  inline StructSchema CAPNP_API getSchema() const { return schema; }
+  CAPNP_API inline StructSchema getSchema() const { return schema; }
 
-  DynamicValue::Reader CAPNP_API get(StructSchema::Field field) const;
+  CAPNP_API DynamicValue::Reader get(StructSchema::Field field) const;
   // Read the given field value.
 
-  bool CAPNP_API has(StructSchema::Field field, HasMode mode = HasMode::NON_NULL) const;
+  CAPNP_API bool has(StructSchema::Field field, HasMode mode = HasMode::NON_NULL) const;
   // Tests whether the given field is "present". If the field is a union member and is not the
   // active member, this always returns false. Otherwise, the field's value is interpreted
   // according to `mode`.
 
-  kj::Maybe<StructSchema::Field> CAPNP_API which() const;
+  CAPNP_API kj::Maybe<StructSchema::Field> which() const;
   // If the struct contains an (unnamed) union, and the currently-active field within that union
   // is known, this returns that field.  Otherwise, it returns null.  In other words, this returns
   // null if there is no union present _or_ if the union's discriminant is set to an unrecognized
   // value.  This could happen in particular when receiving a message from a sender who has a
   // newer version of the protocol and is using a field of the union that you don't know about yet.
 
-  DynamicValue::Reader CAPNP_API get(kj::StringPtr name) const;
-  bool CAPNP_API has(kj::StringPtr name, HasMode mode = HasMode::NON_NULL) const;
+  CAPNP_API DynamicValue::Reader get(kj::StringPtr name) const;
+  CAPNP_API bool has(kj::StringPtr name, HasMode mode = HasMode::NON_NULL) const;
   // Shortcuts to access fields by name.  These throw exceptions if no such field exists.
 
 private:
@@ -266,65 +266,65 @@ public:
   typedef DynamicStruct Builds;
 
   CAPNP_API Builder() = default;
-  inline CAPNP_API Builder(decltype(nullptr)) {}
+  CAPNP_API inline Builder(decltype(nullptr)) {}
 
   template <typename T, typename = kj::EnableIf<kind<FromBuilder<T>>() == Kind::STRUCT>>
   inline Builder(T&& value): Builder(toDynamic(value)) {}
 
-  inline CAPNP_API operator AnyStruct::Builder() { return AnyStruct::Builder(builder); }
+  CAPNP_API inline operator AnyStruct::Builder() { return AnyStruct::Builder(builder); }
 
-  inline MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_API inline MessageSize totalSize() const { return asReader().totalSize(); }
 
   template <typename T>
   typename T::Builder as();
   // Cast to a particular struct type.
 
-  inline StructSchema CAPNP_API getSchema() const { return schema; }
+  CAPNP_API inline StructSchema getSchema() const { return schema; }
 
-  DynamicValue::Builder CAPNP_API get(StructSchema::Field field);
+  CAPNP_API DynamicValue::Builder get(StructSchema::Field field);
   // Read the given field value.
 
-  inline bool CAPNP_API has(StructSchema::Field field, HasMode mode = HasMode::NON_NULL)
+  CAPNP_API inline bool has(StructSchema::Field field, HasMode mode = HasMode::NON_NULL)
       { return asReader().has(field, mode); }
   // Tests whether the given field is "present". If the field is a union member and is not the
   // active member, this always returns false. Otherwise, the field's value is interpreted
   // according to `mode`.
 
-  kj::Maybe<StructSchema::Field> CAPNP_API which();
+  CAPNP_API kj::Maybe<StructSchema::Field> which();
   // If the struct contains an (unnamed) union, and the currently-active field within that union
   // is known, this returns that field.  Otherwise, it returns null.  In other words, this returns
   // null if there is no union present _or_ if the union's discriminant is set to an unrecognized
   // value.  This could happen in particular when receiving a message from a sender who has a
   // newer version of the protocol and is using a field of the union that you don't know about yet.
 
-  void CAPNP_API set(StructSchema::Field field, const DynamicValue::Reader& value);
+  CAPNP_API void set(StructSchema::Field field, const DynamicValue::Reader& value);
   // Set the given field value.
 
-  DynamicValue::Builder CAPNP_API init(StructSchema::Field field);
-  DynamicValue::Builder CAPNP_API init(StructSchema::Field field, uint size);
+  CAPNP_API DynamicValue::Builder init(StructSchema::Field field);
+  CAPNP_API DynamicValue::Builder init(StructSchema::Field field, uint size);
   // Init a struct, list, or blob field.
 
-  void CAPNP_API adopt(StructSchema::Field field, Orphan<DynamicValue>&& orphan);
-  Orphan<DynamicValue> CAPNP_API disown(StructSchema::Field field);
+  CAPNP_API void adopt(StructSchema::Field field, Orphan<DynamicValue>&& orphan);
+  CAPNP_API Orphan<DynamicValue> disown(StructSchema::Field field);
   // Adopt/disown.  This works even for non-pointer fields: adopt() becomes equivalent to set()
   // and disown() becomes like get() followed by clear().
 
-  void CAPNP_API clear(StructSchema::Field field);
+  CAPNP_API void clear(StructSchema::Field field);
   // Clear a field, setting it to its default value.  For pointer fields, this actually makes the
   // field null.
 
-  DynamicValue::Builder CAPNP_API get(kj::StringPtr name);
-  bool CAPNP_API has(kj::StringPtr name, HasMode mode = HasMode::NON_NULL);
-  void CAPNP_API set(kj::StringPtr name, const DynamicValue::Reader& value);
-  void CAPNP_API set(kj::StringPtr name, std::initializer_list<DynamicValue::Reader> value);
-  DynamicValue::Builder CAPNP_API init(kj::StringPtr name);
-  DynamicValue::Builder CAPNP_API init(kj::StringPtr name, uint size);
-  void CAPNP_API adopt(kj::StringPtr name, Orphan<DynamicValue>&& orphan);
-  Orphan<DynamicValue> CAPNP_API disown(kj::StringPtr name);
-  void CAPNP_API clear(kj::StringPtr name);
+  CAPNP_API DynamicValue::Builder get(kj::StringPtr name);
+  CAPNP_API bool has(kj::StringPtr name, HasMode mode = HasMode::NON_NULL);
+  CAPNP_API void set(kj::StringPtr name, const DynamicValue::Reader& value);
+  CAPNP_API void set(kj::StringPtr name, std::initializer_list<DynamicValue::Reader> value);
+  CAPNP_API DynamicValue::Builder init(kj::StringPtr name);
+  CAPNP_API DynamicValue::Builder init(kj::StringPtr name, uint size);
+  CAPNP_API void adopt(kj::StringPtr name, Orphan<DynamicValue>&& orphan);
+  CAPNP_API Orphan<DynamicValue> disown(kj::StringPtr name);
+  CAPNP_API void clear(kj::StringPtr name);
   // Shortcuts to access fields by name.  These throw exceptions if no such field exists.
 
-  Reader CAPNP_API asReader() const;
+  CAPNP_API Reader asReader() const;
 
 private:
   StructSchema schema;
@@ -356,18 +356,18 @@ class CAPNP_CLASS DynamicStruct::Pipeline {
 public:
   typedef DynamicStruct Pipelines;
 
-  inline CAPNP_API Pipeline(decltype(nullptr)): typeless(nullptr) {}
+  CAPNP_API inline Pipeline(decltype(nullptr)): typeless(nullptr) {}
 
   template <typename T>
   typename T::Pipeline releaseAs();
   // Convert the dynamic pipeline to its compiled-in type.
 
-  inline StructSchema CAPNP_API getSchema() { return schema; }
+  CAPNP_API inline StructSchema getSchema() { return schema; }
 
-  DynamicValue::Pipeline CAPNP_API get(StructSchema::Field field);
+  CAPNP_API DynamicValue::Pipeline get(StructSchema::Field field);
   // Read the given field value.
 
-  DynamicValue::Pipeline CAPNP_API get(kj::StringPtr name);
+  CAPNP_API DynamicValue::Pipeline get(kj::StringPtr name);
   // Get by string name.
 
 private:
@@ -386,26 +386,26 @@ class CAPNP_CLASS DynamicList::Reader {
 public:
   typedef DynamicList Reads;
 
-  inline CAPNP_API Reader(): reader(ElementSize::VOID) {}
+  CAPNP_API inline Reader(): reader(ElementSize::VOID) {}
 
   template <typename T, typename = kj::EnableIf<kind<FromReader<T>>() == Kind::LIST>>
   inline Reader(T&& value): Reader(toDynamic(value)) {}
 
-  inline CAPNP_API operator AnyList::Reader() const { return AnyList::Reader(reader); }
+  CAPNP_API inline operator AnyList::Reader() const { return AnyList::Reader(reader); }
 
   template <typename T>
   typename T::Reader as() const;
   // Try to convert to any List<T>, Data, or Text.  Throws an exception if the underlying data
   // can't possibly represent the requested type.
 
-  inline ListSchema CAPNP_API getSchema() const { return schema; }
+  CAPNP_API inline ListSchema getSchema() const { return schema; }
 
-  inline uint CAPNP_API size() const { return unbound(reader.size() / ELEMENTS); }
-  DynamicValue::Reader CAPNP_API operator[](uint index) const;
+  CAPNP_API inline uint size() const { return unbound(reader.size() / ELEMENTS); }
+  CAPNP_API DynamicValue::Reader operator[](uint index) const;
 
   typedef _::IndexingIterator<const Reader, DynamicValue::Reader> Iterator;
-  inline Iterator CAPNP_API begin() const { return Iterator(this, 0); }
-  inline Iterator CAPNP_API end() const { return Iterator(this, size()); }
+  CAPNP_API inline Iterator begin() const { return Iterator(this, 0); }
+  CAPNP_API inline Iterator end() const { return Iterator(this, size()); }
 
 private:
   ListSchema schema;
@@ -430,35 +430,35 @@ class CAPNP_CLASS DynamicList::Builder {
 public:
   typedef DynamicList Builds;
 
-  inline CAPNP_API Builder(): builder(ElementSize::VOID) {}
-  inline CAPNP_API Builder(decltype(nullptr)): builder(ElementSize::VOID) {}
+  CAPNP_API inline Builder(): builder(ElementSize::VOID) {}
+  CAPNP_API inline Builder(decltype(nullptr)): builder(ElementSize::VOID) {}
 
   template <typename T, typename = kj::EnableIf<kind<FromBuilder<T>>() == Kind::LIST>>
   inline Builder(T&& value): Builder(toDynamic(value)) {}
 
-  inline CAPNP_API operator AnyList::Builder() { return AnyList::Builder(builder); }
+  CAPNP_API inline operator AnyList::Builder() { return AnyList::Builder(builder); }
 
   template <typename T>
   typename T::Builder as();
   // Try to convert to any List<T>, Data, or Text.  Throws an exception if the underlying data
   // can't possibly represent the requested type.
 
-  inline ListSchema CAPNP_API getSchema() const { return schema; }
+  CAPNP_API inline ListSchema getSchema() const { return schema; }
 
-  inline uint CAPNP_API size() const { return unbound(builder.size() / ELEMENTS); }
-  DynamicValue::Builder CAPNP_API operator[](uint index);
-  void CAPNP_API set(uint index, const DynamicValue::Reader& value);
-  DynamicValue::Builder CAPNP_API init(uint index, uint size);
-  void CAPNP_API adopt(uint index, Orphan<DynamicValue>&& orphan);
-  Orphan<DynamicValue> CAPNP_API disown(uint index);
+  CAPNP_API inline uint size() const { return unbound(builder.size() / ELEMENTS); }
+  CAPNP_API DynamicValue::Builder operator[](uint index);
+  CAPNP_API void set(uint index, const DynamicValue::Reader& value);
+  CAPNP_API DynamicValue::Builder init(uint index, uint size);
+  CAPNP_API void adopt(uint index, Orphan<DynamicValue>&& orphan);
+  CAPNP_API Orphan<DynamicValue> disown(uint index);
 
   typedef _::IndexingIterator<Builder, DynamicStruct::Builder> Iterator;
-  inline Iterator CAPNP_API begin() { return Iterator(this, 0); }
-  inline Iterator CAPNP_API end() { return Iterator(this, size()); }
+  CAPNP_API inline Iterator begin() { return Iterator(this, 0); }
+  CAPNP_API inline Iterator end() { return Iterator(this, size()); }
 
-  void CAPNP_API copyFrom(std::initializer_list<DynamicValue::Reader> value);
+  CAPNP_API void copyFrom(std::initializer_list<DynamicValue::Reader> value);
 
-  Reader CAPNP_API asReader() const;
+  CAPNP_API Reader asReader() const;
 
 private:
   ListSchema schema;
@@ -501,14 +501,14 @@ public:
   typename T::Client releaseAs();
   // Convert to any client type.
 
-  Client CAPNP_API upcast(InterfaceSchema requestedSchema);
+  CAPNP_API Client upcast(InterfaceSchema requestedSchema);
   // Upcast to a superclass.  Throws an exception if `schema` is not a superclass.
 
-  inline InterfaceSchema CAPNP_API getSchema() { return schema; }
+  CAPNP_API inline InterfaceSchema getSchema() { return schema; }
 
-  Request<DynamicStruct, DynamicStruct> CAPNP_API newRequest(
+  CAPNP_API Request<DynamicStruct, DynamicStruct> newRequest(
       InterfaceSchema::Method method, kj::Maybe<MessageSize> sizeHint = nullptr);
-  Request<DynamicStruct, DynamicStruct> CAPNP_API newRequest(
+  CAPNP_API Request<DynamicStruct, DynamicStruct> newRequest(
       kj::StringPtr methodName, kj::Maybe<MessageSize> sizeHint = nullptr);
 
 private:
@@ -536,7 +536,7 @@ public:
   typedef DynamicCapability Serves;
 
   struct CAPNP_CLASS Options {
-    bool CAPNP_API allowCancellation = false;
+    CAPNP_API bool allowCancellation = false;
     // See the `allowCancellation` annotation defined in `c++.capnp`.
     //
     // This option applies to all calls made to this server object. The annotation in the schema
@@ -546,13 +546,13 @@ public:
   CAPNP_API Server(InterfaceSchema schema): schema(schema) {}
   CAPNP_API Server(InterfaceSchema schema, Options options): schema(schema), options(options) {}
 
-  virtual kj::Promise<void> CAPNP_API call(InterfaceSchema::Method method,
+  CAPNP_API virtual kj::Promise<void> call(InterfaceSchema::Method method,
                                            CallContext<DynamicStruct, DynamicStruct> context) = 0;
 
-  DispatchCallResult CAPNP_API dispatchCall(uint64_t interfaceId, uint16_t methodId,
+  CAPNP_API DispatchCallResult dispatchCall(uint64_t interfaceId, uint16_t methodId,
       CallContext<AnyPointer, AnyPointer> context) override final;
 
-  inline InterfaceSchema CAPNP_API getSchema() const { return schema; }
+  CAPNP_API inline InterfaceSchema getSchema() const { return schema; }
 
 private:
   InterfaceSchema schema;
@@ -564,14 +564,14 @@ class CAPNP_CLASS Request<DynamicStruct, DynamicStruct>: public DynamicStruct::B
   // Specialization of `Request<T, U>` for DynamicStruct.
 
 public:
-  inline CAPNP_API Request(DynamicStruct::Builder builder, kj::Own<RequestHook>&& hook,
+  CAPNP_API inline Request(DynamicStruct::Builder builder, kj::Own<RequestHook>&& hook,
                            StructSchema resultSchema)
       : DynamicStruct::Builder(builder), hook(kj::mv(hook)), resultSchema(resultSchema) {}
 
-  RemotePromise<DynamicStruct> CAPNP_API send();
+  CAPNP_API RemotePromise<DynamicStruct> send();
   // Send the call and return a promise for the results.
 
-  kj::Promise<void> CAPNP_API sendStreaming();
+  CAPNP_API kj::Promise<void> sendStreaming();
   // Use when the caller is aware that the response type is StreamResult and wants to invoke
   // streaming behavior. It is an error to call this if the response type is not StreamResult.
 
@@ -594,20 +594,20 @@ class CAPNP_CLASS CallContext<DynamicStruct, DynamicStruct>: public kj::Disallow
   // threads.
 
 public:
-  explicit CAPNP_API CallContext(CallContextHook& hook, StructSchema paramType, StructSchema resultType);
+  CAPNP_API explicit CallContext(CallContextHook& hook, StructSchema paramType, StructSchema resultType);
 
-  DynamicStruct::Reader CAPNP_API getParams();
-  void CAPNP_API releaseParams();
-  DynamicStruct::Builder CAPNP_API getResults(kj::Maybe<MessageSize> sizeHint = nullptr);
-  DynamicStruct::Builder CAPNP_API initResults(kj::Maybe<MessageSize> sizeHint = nullptr);
-  void CAPNP_API setResults(DynamicStruct::Reader value);
-  void CAPNP_API adoptResults(Orphan<DynamicStruct>&& value);
-  Orphanage CAPNP_API getResultsOrphanage(kj::Maybe<MessageSize> sizeHint = nullptr);
+  CAPNP_API DynamicStruct::Reader getParams();
+  CAPNP_API void releaseParams();
+  CAPNP_API DynamicStruct::Builder getResults(kj::Maybe<MessageSize> sizeHint = nullptr);
+  CAPNP_API DynamicStruct::Builder initResults(kj::Maybe<MessageSize> sizeHint = nullptr);
+  CAPNP_API void setResults(DynamicStruct::Reader value);
+  CAPNP_API void adoptResults(Orphan<DynamicStruct>&& value);
+  CAPNP_API Orphanage getResultsOrphanage(kj::Maybe<MessageSize> sizeHint = nullptr);
   template <typename SubParams>
   kj::Promise<void> tailCall(Request<SubParams, DynamicStruct>&& tailRequest);
 
-  StructSchema CAPNP_API getParamsType() const { return paramType; }
-  StructSchema CAPNP_API getResultsType() const { return resultType; }
+  CAPNP_API StructSchema getParamsType() const { return paramType; }
+  CAPNP_API StructSchema getResultsType() const { return resultType; }
 
 private:
   CallContextHook* hook;
@@ -650,31 +650,31 @@ class CAPNP_CLASS DynamicValue::Reader {
 public:
   typedef DynamicValue Reads;
 
-  inline CAPNP_API Reader(decltype(nullptr) n = nullptr);  // UNKNOWN
-  inline CAPNP_API Reader(Void value);
-  inline CAPNP_API Reader(bool value);
-  inline CAPNP_API Reader(char value);
-  inline CAPNP_API Reader(signed char value);
-  inline CAPNP_API Reader(short value);
-  inline CAPNP_API Reader(int value);
-  inline CAPNP_API Reader(long value);
-  inline CAPNP_API Reader(long long value);
-  inline CAPNP_API Reader(unsigned char value);
-  inline CAPNP_API Reader(unsigned short value);
-  inline CAPNP_API Reader(unsigned int value);
-  inline CAPNP_API Reader(unsigned long value);
-  inline CAPNP_API Reader(unsigned long long value);
-  inline CAPNP_API Reader(float value);
-  inline CAPNP_API Reader(double value);
-  inline CAPNP_API Reader(const char* value);  // Text
-  inline CAPNP_API Reader(const Text::Reader& value);
-  inline CAPNP_API Reader(const Data::Reader& value);
-  inline CAPNP_API Reader(const DynamicList::Reader& value);
-  inline CAPNP_API Reader(DynamicEnum value);
-  inline CAPNP_API Reader(const DynamicStruct::Reader& value);
-  inline CAPNP_API Reader(const AnyPointer::Reader& value);
-  inline CAPNP_API Reader(DynamicCapability::Client& value);
-  inline CAPNP_API Reader(DynamicCapability::Client&& value);
+  CAPNP_API inline Reader(decltype(nullptr) n = nullptr);  // UNKNOWN
+  CAPNP_API inline Reader(Void value);
+  CAPNP_API inline Reader(bool value);
+  CAPNP_API inline Reader(char value);
+  CAPNP_API inline Reader(signed char value);
+  CAPNP_API inline Reader(short value);
+  CAPNP_API inline Reader(int value);
+  CAPNP_API inline Reader(long value);
+  CAPNP_API inline Reader(long long value);
+  CAPNP_API inline Reader(unsigned char value);
+  CAPNP_API inline Reader(unsigned short value);
+  CAPNP_API inline Reader(unsigned int value);
+  CAPNP_API inline Reader(unsigned long value);
+  CAPNP_API inline Reader(unsigned long long value);
+  CAPNP_API inline Reader(float value);
+  CAPNP_API inline Reader(double value);
+  CAPNP_API inline Reader(const char* value);  // Text
+  CAPNP_API inline Reader(const Text::Reader& value);
+  CAPNP_API inline Reader(const Data::Reader& value);
+  CAPNP_API inline Reader(const DynamicList::Reader& value);
+  CAPNP_API inline Reader(DynamicEnum value);
+  CAPNP_API inline Reader(const DynamicStruct::Reader& value);
+  CAPNP_API inline Reader(const AnyPointer::Reader& value);
+  CAPNP_API inline Reader(DynamicCapability::Client& value);
+  CAPNP_API inline Reader(DynamicCapability::Client&& value);
   template <typename T, typename = kj::EnableIf<kj::canConvert<T*, DynamicCapability::Server*>()>>
   inline Reader(kj::Own<T>&& value);
   CAPNP_API Reader(ConstSchema constant);
@@ -685,8 +685,8 @@ public:
   CAPNP_API Reader(const Reader& other);
   CAPNP_API Reader(Reader&& other) noexcept;
   CAPNP_API ~Reader() noexcept(false);
-  Reader& CAPNP_API operator=(const Reader& other);
-  Reader& CAPNP_API operator=(Reader&& other);
+  CAPNP_API Reader& operator=(const Reader& other);
+  CAPNP_API Reader& operator=(Reader&& other);
   // Unfortunately, we cannot use the implicit definitions of these since DynamicCapability is not
   // trivially copyable.
 
@@ -717,7 +717,7 @@ public:
   //
   // Any other conversion attempt will throw an exception.
 
-  inline Type CAPNP_API getType() const { return type; }
+  CAPNP_API inline Type getType() const { return type; }
   // Get the type of this value.
 
 private:
@@ -754,30 +754,30 @@ class CAPNP_CLASS DynamicValue::Builder {
 public:
   typedef DynamicValue Builds;
 
-  inline CAPNP_API Builder(decltype(nullptr) n = nullptr);  // UNKNOWN
-  inline CAPNP_API Builder(Void value);
-  inline CAPNP_API Builder(bool value);
-  inline CAPNP_API Builder(char value);
-  inline CAPNP_API Builder(signed char value);
-  inline CAPNP_API Builder(short value);
-  inline CAPNP_API Builder(int value);
-  inline CAPNP_API Builder(long value);
-  inline CAPNP_API Builder(long long value);
-  inline CAPNP_API Builder(unsigned char value);
-  inline CAPNP_API Builder(unsigned short value);
-  inline CAPNP_API Builder(unsigned int value);
-  inline CAPNP_API Builder(unsigned long value);
-  inline CAPNP_API Builder(unsigned long long value);
-  inline CAPNP_API Builder(float value);
-  inline CAPNP_API Builder(double value);
-  inline CAPNP_API Builder(Text::Builder value);
-  inline CAPNP_API Builder(Data::Builder value);
-  inline CAPNP_API Builder(DynamicList::Builder value);
-  inline CAPNP_API Builder(DynamicEnum value);
-  inline CAPNP_API Builder(DynamicStruct::Builder value);
-  inline CAPNP_API Builder(AnyPointer::Builder value);
-  inline CAPNP_API Builder(DynamicCapability::Client& value);
-  inline CAPNP_API Builder(DynamicCapability::Client&& value);
+  CAPNP_API inline Builder(decltype(nullptr) n = nullptr);  // UNKNOWN
+  CAPNP_API inline Builder(Void value);
+  CAPNP_API inline Builder(bool value);
+  CAPNP_API inline Builder(char value);
+  CAPNP_API inline Builder(signed char value);
+  CAPNP_API inline Builder(short value);
+  CAPNP_API inline Builder(int value);
+  CAPNP_API inline Builder(long value);
+  CAPNP_API inline Builder(long long value);
+  CAPNP_API inline Builder(unsigned char value);
+  CAPNP_API inline Builder(unsigned short value);
+  CAPNP_API inline Builder(unsigned int value);
+  CAPNP_API inline Builder(unsigned long value);
+  CAPNP_API inline Builder(unsigned long long value);
+  CAPNP_API inline Builder(float value);
+  CAPNP_API inline Builder(double value);
+  CAPNP_API inline Builder(Text::Builder value);
+  CAPNP_API inline Builder(Data::Builder value);
+  CAPNP_API inline Builder(DynamicList::Builder value);
+  CAPNP_API inline Builder(DynamicEnum value);
+  CAPNP_API inline Builder(DynamicStruct::Builder value);
+  CAPNP_API inline Builder(AnyPointer::Builder value);
+  CAPNP_API inline Builder(DynamicCapability::Client& value);
+  CAPNP_API inline Builder(DynamicCapability::Client&& value);
 
   template <typename T, typename = decltype(toDynamic(kj::instance<T>()))>
   inline Builder(T value): Builder(toDynamic(value)) {}
@@ -785,8 +785,8 @@ public:
   CAPNP_API Builder(Builder& other);
   CAPNP_API Builder(Builder&& other) noexcept;
   CAPNP_API ~Builder() noexcept(false);
-  Builder& CAPNP_API operator=(Builder& other);
-  Builder& CAPNP_API operator=(Builder&& other);
+  CAPNP_API Builder& operator=(Builder& other);
+  CAPNP_API Builder& operator=(Builder&& other);
   // Unfortunately, we cannot use the implicit definitions of these since DynamicCapability is not
   // trivially copyable.
 
@@ -794,10 +794,10 @@ public:
   inline BuilderFor<T> as() { return AsImpl<T>::apply(*this); }
   // See DynamicValue::Reader::as().
 
-  inline Type CAPNP_API getType() { return type; }
+  CAPNP_API inline Type getType() { return type; }
   // Get the type of this value.
 
-  Reader CAPNP_API asReader() const;
+  CAPNP_API Reader asReader() const;
 
 private:
   Type type;
@@ -830,9 +830,9 @@ class CAPNP_CLASS DynamicValue::Pipeline {
 public:
   typedef DynamicValue Pipelines;
 
-  inline CAPNP_API Pipeline(decltype(nullptr) n = nullptr);
-  inline CAPNP_API Pipeline(DynamicStruct::Pipeline&& value);
-  inline CAPNP_API Pipeline(DynamicCapability::Client&& value);
+  CAPNP_API inline Pipeline(decltype(nullptr) n = nullptr);
+  CAPNP_API inline Pipeline(DynamicStruct::Pipeline&& value);
+  CAPNP_API inline Pipeline(DynamicCapability::Client&& value);
 
   CAPNP_API Pipeline(Pipeline&& other) noexcept;
   CAPNP_API Pipeline& operator=(Pipeline&& other);
@@ -841,7 +841,7 @@ public:
   template <typename T>
   inline PipelineFor<T> releaseAs() { return AsImpl<T>::apply(*this); }
 
-  inline Type CAPNP_API getType() { return type; }
+  CAPNP_API inline Type getType() { return type; }
   // Get the type of this value.
 
 private:
@@ -856,13 +856,13 @@ private:
   // specialization.  Has a method apply() which does the work.
 };
 
-kj::StringTree CAPNP_API KJ_STRINGIFY(const DynamicValue::Reader& value);
-kj::StringTree CAPNP_API KJ_STRINGIFY(const DynamicValue::Builder& value);
-kj::StringTree CAPNP_API KJ_STRINGIFY(DynamicEnum value);
-kj::StringTree CAPNP_API KJ_STRINGIFY(const DynamicStruct::Reader& value);
-kj::StringTree CAPNP_API KJ_STRINGIFY(const DynamicStruct::Builder& value);
-kj::StringTree CAPNP_API KJ_STRINGIFY(const DynamicList::Reader& value);
-kj::StringTree CAPNP_API KJ_STRINGIFY(const DynamicList::Builder& value);
+CAPNP_API kj::StringTree KJ_STRINGIFY(const DynamicValue::Reader& value);
+CAPNP_API kj::StringTree KJ_STRINGIFY(const DynamicValue::Builder& value);
+CAPNP_API kj::StringTree KJ_STRINGIFY(DynamicEnum value);
+CAPNP_API kj::StringTree KJ_STRINGIFY(const DynamicStruct::Reader& value);
+CAPNP_API kj::StringTree KJ_STRINGIFY(const DynamicStruct::Builder& value);
+CAPNP_API kj::StringTree KJ_STRINGIFY(const DynamicList::Reader& value);
+CAPNP_API kj::StringTree KJ_STRINGIFY(const DynamicList::Builder& value);
 
 // -------------------------------------------------------------------
 // Orphan <-> Dynamic glue
@@ -873,13 +873,13 @@ public:
   CAPNP_API Orphan() = default;
   KJ_DISALLOW_COPY(Orphan);
   CAPNP_API Orphan(Orphan&&) = default;
-  Orphan& CAPNP_API operator=(Orphan&&) = default;
+  CAPNP_API Orphan& operator=(Orphan&&) = default;
 
   template <typename T, typename = kj::EnableIf<kind<T>() == Kind::STRUCT>>
   inline Orphan(Orphan<T>&& other): schema(Schema::from<T>()), builder(kj::mv(other.builder)) {}
 
-  DynamicStruct::Builder CAPNP_API get();
-  DynamicStruct::Reader CAPNP_API getReader() const;
+  CAPNP_API DynamicStruct::Builder get();
+  CAPNP_API DynamicStruct::Reader getReader() const;
 
   template <typename T>
   Orphan<T> releaseAs();
@@ -887,8 +887,8 @@ public:
   // the original Orphan<DynamicStruct> is no longer valid after this call; ownership is
   // transferred to the returned Orphan<T>.
 
-  inline bool CAPNP_API operator==(decltype(nullptr)) const { return builder == nullptr; }
-  inline bool CAPNP_API operator!=(decltype(nullptr)) const { return builder != nullptr; }
+  CAPNP_API inline bool operator==(decltype(nullptr)) const { return builder == nullptr; }
+  CAPNP_API inline bool operator!=(decltype(nullptr)) const { return builder != nullptr; }
 
 private:
   StructSchema schema;
@@ -912,13 +912,13 @@ public:
   CAPNP_API Orphan() = default;
   KJ_DISALLOW_COPY(Orphan);
   CAPNP_API Orphan(Orphan&&) = default;
-  Orphan& CAPNP_API operator=(Orphan&&) = default;
+  CAPNP_API Orphan& operator=(Orphan&&) = default;
 
   template <typename T, typename = kj::EnableIf<kind<T>() == Kind::LIST>>
   inline Orphan(Orphan<T>&& other): schema(Schema::from<T>()), builder(kj::mv(other.builder)) {}
 
-  DynamicList::Builder CAPNP_API get();
-  DynamicList::Reader CAPNP_API getReader() const;
+  CAPNP_API DynamicList::Builder get();
+  CAPNP_API DynamicList::Reader getReader() const;
 
   template <typename T>
   Orphan<T> releaseAs();
@@ -928,8 +928,8 @@ public:
 
   // TODO(someday): Support truncate().
 
-  inline bool CAPNP_API operator==(decltype(nullptr)) const { return builder == nullptr; }
-  inline bool CAPNP_API operator!=(decltype(nullptr)) const { return builder != nullptr; }
+  CAPNP_API inline bool operator==(decltype(nullptr)) const { return builder == nullptr; }
+  CAPNP_API inline bool operator!=(decltype(nullptr)) const { return builder != nullptr; }
 
 private:
   ListSchema schema;
@@ -952,13 +952,13 @@ public:
   CAPNP_API Orphan() = default;
   KJ_DISALLOW_COPY(Orphan);
   CAPNP_API Orphan(Orphan&&) = default;
-  Orphan& CAPNP_API operator=(Orphan&&) = default;
+  CAPNP_API Orphan& operator=(Orphan&&) = default;
 
   template <typename T, typename = kj::EnableIf<kind<T>() == Kind::INTERFACE>>
   inline Orphan(Orphan<T>&& other): schema(Schema::from<T>()), builder(kj::mv(other.builder)) {}
 
-  DynamicCapability::Client CAPNP_API get();
-  DynamicCapability::Client CAPNP_API getReader() const;
+  CAPNP_API DynamicCapability::Client get();
+  CAPNP_API DynamicCapability::Client getReader() const;
 
   template <typename T>
   Orphan<T> releaseAs();
@@ -966,8 +966,8 @@ public:
   // the original Orphan<DynamicCapability> is no longer valid after this call; ownership is
   // transferred to the returned Orphan<T>.
 
-  inline bool CAPNP_API operator==(decltype(nullptr)) const { return builder == nullptr; }
-  inline bool CAPNP_API operator!=(decltype(nullptr)) const { return builder != nullptr; }
+  CAPNP_API inline bool operator==(decltype(nullptr)) const { return builder == nullptr; }
+  CAPNP_API inline bool operator!=(decltype(nullptr)) const { return builder != nullptr; }
 
 private:
   InterfaceSchema schema;
@@ -987,23 +987,23 @@ private:
 template <>
 class CAPNP_CLASS Orphan<DynamicValue> {
 public:
-  inline CAPNP_API Orphan(decltype(nullptr) n = nullptr): type(DynamicValue::UNKNOWN) {}
-  inline CAPNP_API Orphan(Void value);
-  inline CAPNP_API Orphan(bool value);
-  inline CAPNP_API Orphan(char value);
-  inline CAPNP_API Orphan(signed char value);
-  inline CAPNP_API Orphan(short value);
-  inline CAPNP_API Orphan(int value);
-  inline CAPNP_API Orphan(long value);
-  inline CAPNP_API Orphan(long long value);
-  inline CAPNP_API Orphan(unsigned char value);
-  inline CAPNP_API Orphan(unsigned short value);
-  inline CAPNP_API Orphan(unsigned int value);
-  inline CAPNP_API Orphan(unsigned long value);
-  inline CAPNP_API Orphan(unsigned long long value);
-  inline CAPNP_API Orphan(float value);
-  inline CAPNP_API Orphan(double value);
-  inline CAPNP_API Orphan(DynamicEnum value);
+  CAPNP_API inline Orphan(decltype(nullptr) n = nullptr): type(DynamicValue::UNKNOWN) {}
+  CAPNP_API inline Orphan(Void value);
+  CAPNP_API inline Orphan(bool value);
+  CAPNP_API inline Orphan(char value);
+  CAPNP_API inline Orphan(signed char value);
+  CAPNP_API inline Orphan(short value);
+  CAPNP_API inline Orphan(int value);
+  CAPNP_API inline Orphan(long value);
+  CAPNP_API inline Orphan(long long value);
+  CAPNP_API inline Orphan(unsigned char value);
+  CAPNP_API inline Orphan(unsigned short value);
+  CAPNP_API inline Orphan(unsigned int value);
+  CAPNP_API inline Orphan(unsigned long value);
+  CAPNP_API inline Orphan(unsigned long long value);
+  CAPNP_API inline Orphan(float value);
+  CAPNP_API inline Orphan(double value);
+  CAPNP_API inline Orphan(DynamicEnum value);
   CAPNP_API Orphan(Orphan&&) = default;
   template <typename T>
   Orphan(Orphan<T>&&);
@@ -1011,12 +1011,12 @@ public:
   Orphan(void*) = delete;  // So Orphan(bool) doesn't accept pointers.
   KJ_DISALLOW_COPY(Orphan);
 
-  Orphan& CAPNP_API operator=(Orphan&&) = default;
+  CAPNP_API Orphan& operator=(Orphan&&) = default;
 
-  inline DynamicValue::Type CAPNP_API getType() { return type; }
+  CAPNP_API inline DynamicValue::Type getType() { return type; }
 
-  DynamicValue::Builder CAPNP_API get();
-  DynamicValue::Reader CAPNP_API getReader() const;
+  CAPNP_API DynamicValue::Builder get();
+  CAPNP_API DynamicValue::Reader getReader() const;
 
   template <typename T>
   Orphan<T> releaseAs();
@@ -1090,51 +1090,51 @@ Orphan<T> Orphan<DynamicValue>::releaseAs() {
 }
 
 template <>
-Orphan<AnyPointer> CAPNP_API Orphan<DynamicValue>::releaseAs<AnyPointer>();
+CAPNP_API Orphan<AnyPointer> Orphan<DynamicValue>::releaseAs<AnyPointer>();
 template <>
-Orphan<DynamicStruct> CAPNP_API Orphan<DynamicValue>::releaseAs<DynamicStruct>();
+CAPNP_API Orphan<DynamicStruct> Orphan<DynamicValue>::releaseAs<DynamicStruct>();
 template <>
-Orphan<DynamicList> CAPNP_API Orphan<DynamicValue>::releaseAs<DynamicList>();
+CAPNP_API Orphan<DynamicList> Orphan<DynamicValue>::releaseAs<DynamicList>();
 template <>
-Orphan<DynamicCapability> CAPNP_API Orphan<DynamicValue>::releaseAs<DynamicCapability>();
+CAPNP_API Orphan<DynamicCapability> Orphan<DynamicValue>::releaseAs<DynamicCapability>();
 
 template <>
 struct CAPNP_CLASS Orphanage::GetInnerBuilder<DynamicStruct, Kind::OTHER> {
-  static inline _::StructBuilder CAPNP_API apply(DynamicStruct::Builder& t) {
+  CAPNP_API static inline _::StructBuilder apply(DynamicStruct::Builder& t) {
     return t.builder;
   }
 };
 
 template <>
 struct CAPNP_CLASS Orphanage::GetInnerBuilder<DynamicList, Kind::OTHER> {
-  static inline _::ListBuilder CAPNP_API apply(DynamicList::Builder& t) {
+  CAPNP_API static inline _::ListBuilder apply(DynamicList::Builder& t) {
     return t.builder;
   }
 };
 
 template <>
-inline Orphan<DynamicStruct> CAPNP_API Orphanage::newOrphanCopy<DynamicStruct::Reader>(
+CAPNP_API inline Orphan<DynamicStruct> Orphanage::newOrphanCopy<DynamicStruct::Reader>(
     DynamicStruct::Reader copyFrom) const {
   return Orphan<DynamicStruct>(
       copyFrom.getSchema(), _::OrphanBuilder::copy(arena, capTable, copyFrom.reader));
 }
 
 template <>
-inline Orphan<DynamicList> CAPNP_API Orphanage::newOrphanCopy<DynamicList::Reader>(
+CAPNP_API inline Orphan<DynamicList> Orphanage::newOrphanCopy<DynamicList::Reader>(
     DynamicList::Reader copyFrom) const {
   return Orphan<DynamicList>(copyFrom.getSchema(),
       _::OrphanBuilder::copy(arena, capTable, copyFrom.reader));
 }
 
 template <>
-inline Orphan<DynamicCapability> CAPNP_API Orphanage::newOrphanCopy<DynamicCapability::Client>(
+CAPNP_API inline Orphan<DynamicCapability> Orphanage::newOrphanCopy<DynamicCapability::Client>(
     DynamicCapability::Client copyFrom) const {
   return Orphan<DynamicCapability>(
       copyFrom.getSchema(), _::OrphanBuilder::copy(arena, capTable, copyFrom.hook->addRef()));
 }
 
 template <>
-Orphan<DynamicValue> CAPNP_API Orphanage::newOrphanCopy<DynamicValue::Reader>(
+CAPNP_API Orphan<DynamicValue> Orphanage::newOrphanCopy<DynamicValue::Reader>(
     DynamicValue::Reader copyFrom) const;
 
 namespace _ {  // private
@@ -1144,14 +1144,14 @@ struct CAPNP_CLASS PointerHelpers<DynamicStruct, Kind::OTHER> {
   // getDynamic() is used when an AnyPointer's get() accessor is passed arguments, because for
   // non-dynamic types PointerHelpers::get() takes a default value as the third argument, and we
   // don't want people to accidentally be able to provide their own default value.
-  static DynamicStruct::Reader CAPNP_API getDynamic(PointerReader reader, StructSchema schema);
-  static DynamicStruct::Builder CAPNP_API getDynamic(PointerBuilder builder, StructSchema schema);
-  static void CAPNP_API set(PointerBuilder builder, const DynamicStruct::Reader& value);
-  static DynamicStruct::Builder CAPNP_API init(PointerBuilder builder, StructSchema schema);
-  static inline void CAPNP_API adopt(PointerBuilder builder, Orphan<DynamicStruct>&& value) {
+  CAPNP_API static DynamicStruct::Reader getDynamic(PointerReader reader, StructSchema schema);
+  CAPNP_API static DynamicStruct::Builder getDynamic(PointerBuilder builder, StructSchema schema);
+  CAPNP_API static void set(PointerBuilder builder, const DynamicStruct::Reader& value);
+  CAPNP_API static DynamicStruct::Builder init(PointerBuilder builder, StructSchema schema);
+  CAPNP_API static inline void adopt(PointerBuilder builder, Orphan<DynamicStruct>&& value) {
     builder.adopt(kj::mv(value.builder));
   }
-  static inline Orphan<DynamicStruct> CAPNP_API disown(PointerBuilder builder, StructSchema schema) {
+  CAPNP_API static inline Orphan<DynamicStruct> disown(PointerBuilder builder, StructSchema schema) {
     return Orphan<DynamicStruct>(schema, builder.disown());
   }
 };
@@ -1161,14 +1161,14 @@ struct CAPNP_CLASS PointerHelpers<DynamicList, Kind::OTHER> {
   // getDynamic() is used when an AnyPointer's get() accessor is passed arguments, because for
   // non-dynamic types PointerHelpers::get() takes a default value as the third argument, and we
   // don't want people to accidentally be able to provide their own default value.
-  static DynamicList::Reader CAPNP_API getDynamic(PointerReader reader, ListSchema schema);
-  static DynamicList::Builder CAPNP_API getDynamic(PointerBuilder builder, ListSchema schema);
-  static void CAPNP_API set(PointerBuilder builder, const DynamicList::Reader& value);
-  static DynamicList::Builder CAPNP_API init(PointerBuilder builder, ListSchema schema, uint size);
-  static inline void CAPNP_API adopt(PointerBuilder builder, Orphan<DynamicList>&& value) {
+  CAPNP_API static DynamicList::Reader getDynamic(PointerReader reader, ListSchema schema);
+  CAPNP_API static DynamicList::Builder getDynamic(PointerBuilder builder, ListSchema schema);
+  CAPNP_API static void set(PointerBuilder builder, const DynamicList::Reader& value);
+  CAPNP_API static DynamicList::Builder init(PointerBuilder builder, ListSchema schema, uint size);
+  CAPNP_API static inline void adopt(PointerBuilder builder, Orphan<DynamicList>&& value) {
     builder.adopt(kj::mv(value.builder));
   }
-  static inline Orphan<DynamicList> CAPNP_API disown(PointerBuilder builder, ListSchema schema) {
+  CAPNP_API static inline Orphan<DynamicList> disown(PointerBuilder builder, ListSchema schema) {
     return Orphan<DynamicList>(schema, builder.disown());
   }
 };
@@ -1178,16 +1178,16 @@ struct CAPNP_CLASS PointerHelpers<DynamicCapability, Kind::OTHER> {
   // getDynamic() is used when an AnyPointer's get() accessor is passed arguments, because for
   // non-dynamic types PointerHelpers::get() takes a default value as the third argument, and we
   // don't want people to accidentally be able to provide their own default value.
-  static DynamicCapability::Client CAPNP_API getDynamic(PointerReader reader,
+  CAPNP_API static DynamicCapability::Client getDynamic(PointerReader reader,
                                                         InterfaceSchema schema);
-  static DynamicCapability::Client CAPNP_API getDynamic(PointerBuilder builder,
+  CAPNP_API static DynamicCapability::Client getDynamic(PointerBuilder builder,
                                                         InterfaceSchema schema);
-  static void CAPNP_API set(PointerBuilder builder, DynamicCapability::Client& value);
-  static void CAPNP_API set(PointerBuilder builder, DynamicCapability::Client&& value);
-  static inline void CAPNP_API adopt(PointerBuilder builder, Orphan<DynamicCapability>&& value) {
+  CAPNP_API static void set(PointerBuilder builder, DynamicCapability::Client& value);
+  CAPNP_API static void set(PointerBuilder builder, DynamicCapability::Client&& value);
+  CAPNP_API static inline void adopt(PointerBuilder builder, Orphan<DynamicCapability>&& value) {
     builder.adopt(kj::mv(value.builder));
   }
-  static inline Orphan<DynamicCapability> CAPNP_API disown(PointerBuilder builder, InterfaceSchema schema) {
+  CAPNP_API static inline Orphan<DynamicCapability> disown(PointerBuilder builder, InterfaceSchema schema) {
     return Orphan<DynamicCapability>(schema, builder.disown());
   }
 };
@@ -1227,19 +1227,19 @@ inline BuilderFor<T> AnyPointer::Builder::initAs(ListSchema schema, uint element
   return _::PointerHelpers<T>::init(builder, schema, elementCount);
 }
 template <>
-inline void CAPNP_API AnyPointer::Builder::setAs<DynamicStruct>(DynamicStruct::Reader value) {
+CAPNP_API inline void AnyPointer::Builder::setAs<DynamicStruct>(DynamicStruct::Reader value) {
   return _::PointerHelpers<DynamicStruct>::set(builder, value);
 }
 template <>
-inline void CAPNP_API AnyPointer::Builder::setAs<DynamicList>(DynamicList::Reader value) {
+CAPNP_API inline void AnyPointer::Builder::setAs<DynamicList>(DynamicList::Reader value) {
   return _::PointerHelpers<DynamicList>::set(builder, value);
 }
 template <>
-inline void CAPNP_API AnyPointer::Builder::setAs<DynamicCapability>(DynamicCapability::Client value) {
+CAPNP_API inline void AnyPointer::Builder::setAs<DynamicCapability>(DynamicCapability::Client value) {
   return _::PointerHelpers<DynamicCapability>::set(builder, kj::mv(value));
 }
 template <>
-void CAPNP_API AnyPointer::Builder::adopt<DynamicValue>(Orphan<DynamicValue>&& orphan);
+CAPNP_API void AnyPointer::Builder::adopt<DynamicValue>(Orphan<DynamicValue>&& orphan);
 template <typename T>
 inline Orphan<T> AnyPointer::Builder::disownAs(StructSchema schema) {
   return _::PointerHelpers<T>::disown(builder, schema);
@@ -1256,43 +1256,43 @@ inline Orphan<T> AnyPointer::Builder::disownAs(InterfaceSchema schema) {
 // We have to declare the methods below inline because Clang and GCC disagree about how to mangle
 // their symbol names.
 template <>
-inline DynamicStruct::Builder CAPNP_API Orphan<AnyPointer>::getAs<DynamicStruct>(StructSchema schema) {
+CAPNP_API inline DynamicStruct::Builder Orphan<AnyPointer>::getAs<DynamicStruct>(StructSchema schema) {
   return DynamicStruct::Builder(schema, builder);
 }
 template <>
-inline DynamicStruct::Reader CAPNP_API Orphan<AnyPointer>::getAsReader<DynamicStruct>(
+CAPNP_API inline DynamicStruct::Reader Orphan<AnyPointer>::getAsReader<DynamicStruct>(
     StructSchema schema) const {
   return DynamicStruct::Reader(schema, builder);
 }
 template <>
-inline Orphan<DynamicStruct> CAPNP_API Orphan<AnyPointer>::releaseAs<DynamicStruct>(StructSchema schema) {
+CAPNP_API inline Orphan<DynamicStruct> Orphan<AnyPointer>::releaseAs<DynamicStruct>(StructSchema schema) {
   return Orphan<DynamicStruct>(schema, kj::mv(builder));
 }
 template <>
-inline DynamicList::Builder CAPNP_API Orphan<AnyPointer>::getAs<DynamicList>(ListSchema schema) {
+CAPNP_API inline DynamicList::Builder Orphan<AnyPointer>::getAs<DynamicList>(ListSchema schema) {
   return DynamicList::Builder(schema, builder);
 }
 template <>
-inline DynamicList::Reader CAPNP_API Orphan<AnyPointer>::getAsReader<DynamicList>(
+CAPNP_API inline DynamicList::Reader Orphan<AnyPointer>::getAsReader<DynamicList>(
     ListSchema schema) const {
   return DynamicList::Reader(schema, builder);
 }
 template <>
-inline Orphan<DynamicList> CAPNP_API Orphan<AnyPointer>::releaseAs<DynamicList>(ListSchema schema) {
+CAPNP_API inline Orphan<DynamicList> Orphan<AnyPointer>::releaseAs<DynamicList>(ListSchema schema) {
   return Orphan<DynamicList>(schema, kj::mv(builder));
 }
 template <>
-inline DynamicCapability::Client CAPNP_API Orphan<AnyPointer>::getAs<DynamicCapability>(
+CAPNP_API inline DynamicCapability::Client Orphan<AnyPointer>::getAs<DynamicCapability>(
     InterfaceSchema schema) {
   return DynamicCapability::Client(schema, builder.asCapability());
 }
 template <>
-inline DynamicCapability::Client CAPNP_API Orphan<AnyPointer>::getAsReader<DynamicCapability>(
+CAPNP_API inline DynamicCapability::Client Orphan<AnyPointer>::getAsReader<DynamicCapability>(
     InterfaceSchema schema) const {
   return DynamicCapability::Client(schema, builder.asCapability());
 }
 template <>
-inline Orphan<DynamicCapability> CAPNP_API Orphan<AnyPointer>::releaseAs<DynamicCapability>(
+CAPNP_API inline Orphan<DynamicCapability> Orphan<AnyPointer>::releaseAs<DynamicCapability>(
     InterfaceSchema schema) {
   return Orphan<DynamicCapability>(schema, kj::mv(builder));
 }
@@ -1351,11 +1351,11 @@ inline DynamicValue::Reader::Reader(std::nullptr_t n): type(UNKNOWN) {}
 inline DynamicValue::Builder::Builder(std::nullptr_t n): type(UNKNOWN) {}
 
 #define CAPNP_DECLARE_DYNAMIC_VALUE_CONSTRUCTOR(cppType, typeTag, fieldName) \
-inline CAPNP_API DynamicValue::Reader::Reader(cppType value) \
+CAPNP_API inline DynamicValue::Reader::Reader(cppType value) \
     : type(typeTag), fieldName##Value(value) {} \
-inline CAPNP_API DynamicValue::Builder::Builder(cppType value) \
+CAPNP_API inline DynamicValue::Builder::Builder(cppType value) \
     : type(typeTag), fieldName##Value(value) {} \
-inline CAPNP_API Orphan<DynamicValue>::Orphan(cppType value) \
+CAPNP_API inline Orphan<DynamicValue>::Orphan(cppType value) \
     : type(DynamicValue::typeTag), fieldName##Value(value) {}
 
 CAPNP_DECLARE_DYNAMIC_VALUE_CONSTRUCTOR(Void, VOID, void);
@@ -1377,9 +1377,9 @@ CAPNP_DECLARE_DYNAMIC_VALUE_CONSTRUCTOR(DynamicEnum, ENUM, enum);
 #undef CAPNP_DECLARE_DYNAMIC_VALUE_CONSTRUCTOR
 
 #define CAPNP_DECLARE_DYNAMIC_VALUE_CONSTRUCTOR(cppType, typeTag, fieldName) \
-inline CAPNP_API DynamicValue::Reader::Reader(const cppType::Reader& value) \
+CAPNP_API inline DynamicValue::Reader::Reader(const cppType::Reader& value) \
     : type(typeTag), fieldName##Value(value) {} \
-inline CAPNP_API DynamicValue::Builder::Builder(cppType::Builder value) \
+CAPNP_API inline DynamicValue::Builder::Builder(cppType::Builder value) \
     : type(typeTag), fieldName##Value(value) {}
 
 CAPNP_DECLARE_DYNAMIC_VALUE_CONSTRUCTOR(Text, TEXT, text);
@@ -1407,11 +1407,11 @@ inline DynamicValue::Reader::Reader(const char* value): Reader(Text::Reader(valu
 #define CAPNP_DECLARE_TYPE(discrim, typeName) \
 template <> \
 struct CAPNP_CLASS DynamicValue::Reader::AsImpl<typeName> { \
-  static ReaderFor<typeName> CAPNP_API apply(const Reader& reader); \
+  CAPNP_API static ReaderFor<typeName> apply(const Reader& reader); \
 }; \
 template <> \
 struct CAPNP_CLASS DynamicValue::Builder::AsImpl<typeName> { \
-  static BuilderFor<typeName> CAPNP_API apply(Builder& builder); \
+  CAPNP_API static BuilderFor<typeName> apply(Builder& builder); \
 };
 
 //CAPNP_DECLARE_TYPE(VOID, Void)
@@ -1440,11 +1440,11 @@ CAPNP_DECLARE_TYPE(ANY_POINTER, AnyPointer)
 // ReaderFor<> and BuilderFor<> wrappers, it works.
 template <>
 struct CAPNP_CLASS DynamicValue::Reader::AsImpl<Void> {
-  static Void CAPNP_API apply(const Reader& reader);
+  CAPNP_API static Void apply(const Reader& reader);
 };
 template <>
 struct CAPNP_CLASS DynamicValue::Builder::AsImpl<Void> {
-  static Void CAPNP_API apply(Builder& builder);
+  CAPNP_API static Void apply(Builder& builder);
 };
 
 template <typename T>
@@ -1501,13 +1501,13 @@ struct DynamicValue::Builder::AsImpl<T, Kind::INTERFACE> {
 
 template <>
 struct CAPNP_CLASS DynamicValue::Reader::AsImpl<DynamicValue> {
-  static CAPNP_API DynamicValue::Reader apply(const Reader& reader) {
+  CAPNP_API static DynamicValue::Reader apply(const Reader& reader) {
     return reader;
   }
 };
 template <>
 struct CAPNP_CLASS DynamicValue::Builder::AsImpl<DynamicValue> {
-  static CAPNP_API DynamicValue::Builder apply(Builder& builder) {
+  CAPNP_API static DynamicValue::Builder apply(Builder& builder) {
     return builder;
   }
 };
@@ -1532,11 +1532,11 @@ struct DynamicValue::Pipeline::AsImpl<T, Kind::INTERFACE> {
 };
 template <>
 struct CAPNP_CLASS DynamicValue::Pipeline::AsImpl<DynamicStruct, Kind::OTHER> {
-  static PipelineFor<DynamicStruct> CAPNP_API apply(Pipeline& pipeline);
+  CAPNP_API static PipelineFor<DynamicStruct> apply(Pipeline& pipeline);
 };
 template <>
 struct CAPNP_CLASS DynamicValue::Pipeline::AsImpl<DynamicCapability, Kind::OTHER> {
-  static PipelineFor<DynamicCapability> CAPNP_API apply(Pipeline& pipeline);
+  CAPNP_API static PipelineFor<DynamicCapability> apply(Pipeline& pipeline);
 };
 
 // -------------------------------------------------------------------
@@ -1558,11 +1558,11 @@ typename T::Builder DynamicStruct::Builder::as() {
 }
 
 template <>
-inline DynamicStruct::Reader CAPNP_API DynamicStruct::Reader::as<DynamicStruct>() const {
+CAPNP_API inline DynamicStruct::Reader DynamicStruct::Reader::as<DynamicStruct>() const {
   return *this;
 }
 template <>
-inline DynamicStruct::Builder CAPNP_API DynamicStruct::Builder::as<DynamicStruct>() {
+CAPNP_API inline DynamicStruct::Builder DynamicStruct::Builder::as<DynamicStruct>() {
   return *this;
 }
 
@@ -1571,23 +1571,23 @@ inline DynamicStruct::Reader DynamicStruct::Builder::asReader() const {
 }
 
 template <>
-inline AnyStruct::Reader CAPNP_API DynamicStruct::Reader::as<AnyStruct>() const {
+CAPNP_API inline AnyStruct::Reader DynamicStruct::Reader::as<AnyStruct>() const {
   return AnyStruct::Reader(reader);
 }
 
 template <>
-inline AnyStruct::Builder CAPNP_API DynamicStruct::Builder::as<AnyStruct>() {
+CAPNP_API inline AnyStruct::Builder DynamicStruct::Builder::as<AnyStruct>() {
   return AnyStruct::Builder(builder);
 }
 
 template <>
-inline DynamicStruct::Reader CAPNP_API AnyStruct::Reader::as<DynamicStruct>(
+CAPNP_API inline DynamicStruct::Reader AnyStruct::Reader::as<DynamicStruct>(
     StructSchema schema) const {
   return DynamicStruct::Reader(schema, _reader);
 }
 
 template <>
-inline DynamicStruct::Builder CAPNP_API AnyStruct::Builder::as<DynamicStruct>(
+CAPNP_API inline DynamicStruct::Builder AnyStruct::Builder::as<DynamicStruct>(
     StructSchema schema) {
   return DynamicStruct::Builder(schema, _builder);
 }
@@ -1618,21 +1618,21 @@ typename T::Builder DynamicList::Builder::as() {
 }
 
 template <>
-inline DynamicList::Reader CAPNP_API DynamicList::Reader::as<DynamicList>() const {
+CAPNP_API inline DynamicList::Reader DynamicList::Reader::as<DynamicList>() const {
   return *this;
 }
 template <>
-inline DynamicList::Builder CAPNP_API DynamicList::Builder::as<DynamicList>() {
+CAPNP_API inline DynamicList::Builder DynamicList::Builder::as<DynamicList>() {
   return *this;
 }
 
 template <>
-inline AnyList::Reader CAPNP_API DynamicList::Reader::as<AnyList>() const {
+CAPNP_API inline AnyList::Reader DynamicList::Reader::as<AnyList>() const {
   return AnyList::Reader(reader);
 }
 
 template <>
-inline AnyList::Builder CAPNP_API DynamicList::Builder::as<AnyList>() {
+CAPNP_API inline AnyList::Builder DynamicList::Builder::as<AnyList>() {
   return AnyList::Builder(builder);
 }
 
@@ -1699,13 +1699,13 @@ inline kj::Promise<void> CallContext<DynamicStruct, DynamicStruct>::tailCall(
 }
 
 template <>
-inline DynamicCapability::Client CAPNP_API Capability::Client::castAs<DynamicCapability>(
+CAPNP_API inline DynamicCapability::Client Capability::Client::castAs<DynamicCapability>(
     InterfaceSchema schema) {
   return DynamicCapability::Client(schema, hook->addRef());
 }
 
 template <>
-inline DynamicCapability::Client CAPNP_API CapabilityServerSet<DynamicCapability>::add(
+CAPNP_API inline DynamicCapability::Client CapabilityServerSet<DynamicCapability>::add(
     kj::Own<DynamicCapability::Server>&& server) {
   void* ptr = reinterpret_cast<void*>(server.get());
   auto schema = server->getSchema();

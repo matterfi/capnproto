@@ -44,7 +44,7 @@ class CAPNP_CLASS SchemaLoader {
 public:
   class CAPNP_CLASS LazyLoadCallback {
   public:
-    virtual void CAPNP_API load(const SchemaLoader& loader, uint64_t id) const = 0;
+    CAPNP_API virtual void load(const SchemaLoader& loader, uint64_t id) const = 0;
     // Request that the schema node with the given ID be loaded into the given SchemaLoader.  If
     // the callback is able to find a schema for this ID, it should invoke `loadOnce()` on
     // `loader` to load it.  If no such node exists, it should simply do nothing and return.
@@ -67,7 +67,7 @@ public:
   CAPNP_API ~SchemaLoader() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(SchemaLoader);
 
-  Schema CAPNP_API get(uint64_t id, schema::Brand::Reader brand = schema::Brand::Reader(),
+  CAPNP_API Schema get(uint64_t id, schema::Brand::Reader brand = schema::Brand::Reader(),
                        Schema scope = Schema()) const;
   // Gets the schema for the given ID, throwing an exception if it isn't present.
   //
@@ -80,23 +80,23 @@ public:
   // parameter references or indicates that some parameters will be inherited, these will be
   // interpreted within / inherited from `scope`.
 
-  kj::Maybe<Schema> CAPNP_API tryGet(uint64_t id,
+  CAPNP_API kj::Maybe<Schema> tryGet(uint64_t id,
                                      schema::Brand::Reader bindings = schema::Brand::Reader(),
                                      Schema scope = Schema()) const;
   // Like get() but doesn't throw.
 
-  Schema CAPNP_API getUnbound(uint64_t id) const;
+  CAPNP_API Schema getUnbound(uint64_t id) const;
   // Gets a special version of the schema in which all brand parameters are "unbound". This means
   // that if you look up a type via the Schema API, and it resolves to a brand parameter, the
   // returned Type's getBrandParameter() method will return info about that parameter. Otherwise,
   // normally, all brand parameters that aren't otherwise bound are assumed to simply be
   // "AnyPointer".
 
-  Type CAPNP_API getType(schema::Type::Reader type, Schema scope = Schema()) const;
+  CAPNP_API Type getType(schema::Type::Reader type, Schema scope = Schema()) const;
   // Convenience method which interprets a schema::Type to produce a Type object. Implemented in
   // terms of get().
 
-  Schema CAPNP_API load(const schema::Node::Reader& reader);
+  CAPNP_API Schema load(const schema::Node::Reader& reader);
   // Loads the given schema node.  Validates the node and throws an exception if invalid.  This
   // makes a copy of the schema, so the object passed in can be destroyed after this returns.
   //
@@ -131,7 +131,7 @@ public:
   // Also note that unknown types are not considered invalid.  Instead, the dynamic API returns
   // a DynamicValue with type UNKNOWN for these.
 
-  Schema CAPNP_API loadOnce(const schema::Node::Reader& reader) const;
+  CAPNP_API Schema loadOnce(const schema::Node::Reader& reader) const;
   // Like `load()` but does nothing if a schema with the same ID is already loaded.  In contrast,
   // `load()` would attempt to compare the schemas and take the newer one.  `loadOnce()` is safe
   // to call even while concurrently using schemas from this loader.  It should be considered an
@@ -146,12 +146,12 @@ public:
   // type using as<T>(), you must call this method before constructing the DynamicValue.  Otherwise,
   // as<T>() will throw an exception complaining about type mismatch.
 
-  kj::Array<Schema> CAPNP_API getAllLoaded() const;
+  CAPNP_API kj::Array<Schema> getAllLoaded() const;
   // Get a complete list of all loaded schema nodes.  It is particularly useful to call this after
   // loadCompiledTypeAndDependencies<T>() in order to get a flat list of all of T's transitive
   // dependencies.
 
-  void CAPNP_API computeOptimizationHints();
+  CAPNP_API void computeOptimizationHints();
   // Call after all interesting schemas have been loaded to compute optimization hints. In
   // particular, this initializes `hasNoCapabilities` for every struct type. Before this is called,
   // that value is initialized to false for all types (which ensures correct behavior but does not

@@ -72,21 +72,21 @@ public:
   // ---------------------------------------------------------------------------
   // standard API
 
-  void CAPNP_JSON_API setPrettyPrint(bool enabled);
+  CAPNP_JSON_API void setPrettyPrint(bool enabled);
   // Enable to insert newlines, indentation, and other extra spacing into the output. The default
   // is to use minimal whitespace.
 
-  void CAPNP_JSON_API setMaxNestingDepth(size_t maxNestingDepth);
+  CAPNP_JSON_API void setMaxNestingDepth(size_t maxNestingDepth);
   // Set maximum nesting depth when decoding JSON to prevent highly nested input from overflowing
   // the call stack. The default is 64.
 
-  void CAPNP_JSON_API setHasMode(HasMode mode);
+  CAPNP_JSON_API void setHasMode(HasMode mode);
   // Normally, primitive field values are always included even if they are equal to the default
   // value (HasMode::NON_NULL -- only null pointers are omitted). You can use
   // setHasMode(HasMode::NON_DEFAULT) to specify that default-valued primitive fields should be
   // omitted as well.
 
-  void CAPNP_JSON_API setRejectUnknownFields(bool enable);
+  CAPNP_JSON_API void setRejectUnknownFields(bool enable);
   // Choose whether decoding JSON with unknown fields should produce an error. You may trade
   // allowing schema evolution against a guarantee that all data is preserved when decoding JSON
   // by toggling this option. The default is to ignore unknown fields.
@@ -96,12 +96,12 @@ public:
   // Encode any Cap'n Proto value to JSON, including primitives and
   // Dynamic{Enum,Struct,List,Capability}, but not DynamicValue (see below).
 
-  kj::String CAPNP_JSON_API encode(DynamicValue::Reader value, Type type) const;
+  CAPNP_JSON_API kj::String encode(DynamicValue::Reader value, Type type) const;
   // Encode a DynamicValue to JSON. `type` is needed because `DynamicValue` itself does
   // not distinguish between e.g. int32 and int64, which in JSON are handled differently. Most
   // of the time, though, you can use the single-argument templated version of `encode()` instead.
 
-  void CAPNP_JSON_API decode(kj::ArrayPtr<const char> input, DynamicStruct::Builder output) const;
+  CAPNP_JSON_API void decode(kj::ArrayPtr<const char> input, DynamicStruct::Builder output) const;
   // Decode JSON text directly into a struct builder. This only works for structs since lists
   // need to be allocated with the correct size in advance.
   //
@@ -122,15 +122,15 @@ public:
   //
   //     uint32_t n = json.decode<uint32_t>(text);
 
-  Orphan<DynamicValue> CAPNP_JSON_API decode(kj::ArrayPtr<const char> input, Type type,
+  CAPNP_JSON_API Orphan<DynamicValue> decode(kj::ArrayPtr<const char> input, Type type,
       Orphanage orphanage) const;
-  Orphan<DynamicList> CAPNP_JSON_API decode(
+  CAPNP_JSON_API Orphan<DynamicList> decode(
       kj::ArrayPtr<const char> input, ListSchema type, Orphanage orphanage) const;
-  Orphan<DynamicStruct> CAPNP_JSON_API decode(
+  CAPNP_JSON_API Orphan<DynamicStruct> decode(
       kj::ArrayPtr<const char> input, StructSchema type, Orphanage orphanage) const;
-  DynamicCapability::Client CAPNP_JSON_API decode(kj::ArrayPtr<const char> input,
+  CAPNP_JSON_API DynamicCapability::Client decode(kj::ArrayPtr<const char> input,
       InterfaceSchema type) const;
-  DynamicEnum CAPNP_JSON_API decode(kj::ArrayPtr<const char> input, EnumSchema type) const;
+  CAPNP_JSON_API DynamicEnum decode(kj::ArrayPtr<const char> input, EnumSchema type) const;
   // Decode to a dynamic value, specifying the type schema.
 
   // ---------------------------------------------------------------------------
@@ -139,27 +139,27 @@ public:
   // You can separate text <-> JsonValue from JsonValue <-> T. These are particularly useful
   // for calling from Handler implementations.
 
-  kj::String CAPNP_JSON_API encodeRaw(JsonValue::Reader value) const;
-  void CAPNP_JSON_API decodeRaw(kj::ArrayPtr<const char> input, JsonValue::Builder output) const;
+  CAPNP_JSON_API kj::String encodeRaw(JsonValue::Reader value) const;
+  CAPNP_JSON_API void decodeRaw(kj::ArrayPtr<const char> input, JsonValue::Builder output) const;
   // Translate JsonValue <-> text.
 
   template <typename T>
   void encode(T&& value, JsonValue::Builder output) const;
-  void CAPNP_JSON_API encode(DynamicValue::Reader input, Type type, JsonValue::Builder output) const;
-  void CAPNP_JSON_API decode(JsonValue::Reader input, DynamicStruct::Builder output) const;
+  CAPNP_JSON_API void encode(DynamicValue::Reader input, Type type, JsonValue::Builder output) const;
+  CAPNP_JSON_API void decode(JsonValue::Reader input, DynamicStruct::Builder output) const;
   template <typename T>
   Orphan<T> decode(JsonValue::Reader input, Orphanage orphanage) const;
   template <typename T>
   ReaderFor<T> decode(JsonValue::Reader input) const;
 
-  Orphan<DynamicValue> CAPNP_JSON_API decode(JsonValue::Reader input, Type type,
+  CAPNP_JSON_API Orphan<DynamicValue> decode(JsonValue::Reader input, Type type,
       Orphanage orphanage) const;
-  Orphan<DynamicList> CAPNP_JSON_API decode(JsonValue::Reader input, ListSchema type,
+  CAPNP_JSON_API Orphan<DynamicList> decode(JsonValue::Reader input, ListSchema type,
       Orphanage orphanage) const;
-  Orphan<DynamicStruct> CAPNP_JSON_API decode(
+  CAPNP_JSON_API Orphan<DynamicStruct> decode(
       JsonValue::Reader input, StructSchema type, Orphanage orphanage) const;
-  DynamicCapability::Client CAPNP_JSON_API decode(JsonValue::Reader input, InterfaceSchema type) const;
-  DynamicEnum CAPNP_JSON_API decode(JsonValue::Reader input, EnumSchema type) const;
+  CAPNP_JSON_API DynamicCapability::Client decode(JsonValue::Reader input, InterfaceSchema type) const;
+  CAPNP_JSON_API DynamicEnum decode(JsonValue::Reader input, EnumSchema type) const;
 
   // ---------------------------------------------------------------------------
   // specializing particular types
@@ -198,11 +198,11 @@ public:
 
   template <typename T>
   void addTypeHandler(Handler<T>& handler);
-  void CAPNP_JSON_API addTypeHandler(Type type, Handler<DynamicValue>& handler);
-  void CAPNP_JSON_API addTypeHandler(EnumSchema type, Handler<DynamicEnum>& handler);
-  void CAPNP_JSON_API addTypeHandler(StructSchema type, Handler<DynamicStruct>& handler);
-  void CAPNP_JSON_API addTypeHandler(ListSchema type, Handler<DynamicList>& handler);
-  void CAPNP_JSON_API addTypeHandler(InterfaceSchema type, Handler<DynamicCapability>& handler);
+  CAPNP_JSON_API void addTypeHandler(Type type, Handler<DynamicValue>& handler);
+  CAPNP_JSON_API void addTypeHandler(EnumSchema type, Handler<DynamicEnum>& handler);
+  CAPNP_JSON_API void addTypeHandler(StructSchema type, Handler<DynamicStruct>& handler);
+  CAPNP_JSON_API void addTypeHandler(ListSchema type, Handler<DynamicList>& handler);
+  CAPNP_JSON_API void addTypeHandler(InterfaceSchema type, Handler<DynamicCapability>& handler);
   // Arrange that whenever the type T appears in the message, your handler will be used to
   // encode/decode it.
   //
@@ -213,7 +213,7 @@ public:
   void addFieldHandler(StructSchema::Field field, Handler<T>& handler);
   // Matches only the specific field. T can be a dynamic type. T must match the field's type.
 
-  void CAPNP_JSON_API handleByAnnotation(Schema schema);
+  CAPNP_JSON_API void handleByAnnotation(Schema schema);
   template <typename T> void handleByAnnotation();
   // Inspects the given type (as specified by type parameter or dynamic schema) and all its
   // dependencies looking for JSON annotations (see json.capnp), building and registering Handlers
@@ -416,11 +416,11 @@ class CAPNP_JSON_CLASS JsonCodec::Handler<DynamicStruct>: private JsonCodec::Han
   // Almost identical to Style::STRUCT except that we pass the struct type to decode().
 
 public:
-  virtual void CAPNP_JSON_API encode(const JsonCodec& codec, DynamicStruct::Reader input,
+  CAPNP_JSON_API virtual void encode(const JsonCodec& codec, DynamicStruct::Reader input,
                                 JsonValue::Builder output) const = 0;
-  virtual void CAPNP_JSON_API decode(const JsonCodec& codec, JsonValue::Reader input,
+  CAPNP_JSON_API virtual void decode(const JsonCodec& codec, JsonValue::Reader input,
                                 DynamicStruct::Builder output) const = 0;
-  virtual Orphan<DynamicStruct> CAPNP_JSON_API decode(const JsonCodec& codec, JsonValue::Reader input,
+  CAPNP_JSON_API virtual Orphan<DynamicStruct> decode(const JsonCodec& codec, JsonValue::Reader input,
                                                  StructSchema type, Orphanage orphanage) const {
     // If subclass does not override, fall back to regular version.
     auto result = orphanage.newOrphan(type);

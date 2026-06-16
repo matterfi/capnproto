@@ -93,7 +93,7 @@ class CAPNP_RPC_CLASS EzRpcClient {
   // - `TwoPartyVatNetwork` in `capnp/rpc-twoparty.h`.
 
 public:
-  explicit CAPNP_RPC_API EzRpcClient(kj::StringPtr serverAddress, uint defaultPort = 0,
+  CAPNP_RPC_API explicit EzRpcClient(kj::StringPtr serverAddress, uint defaultPort = 0,
                                  ReaderOptions readerOpts = ReaderOptions());
   // Construct a new EzRpcClient and connect to the given address.  The connection is formed in
   // the background -- if it fails, calls to capabilities returned by importCap() will fail with an
@@ -116,7 +116,7 @@ public:
   // Like the above constructor, but connects to an already-resolved socket address.  Any address
   // format supported by `kj::Network` in `kj/async-io.h` is accepted.
 
-  explicit CAPNP_RPC_API EzRpcClient(int socketFd, ReaderOptions readerOpts = ReaderOptions());
+  CAPNP_RPC_API explicit EzRpcClient(int socketFd, ReaderOptions readerOpts = ReaderOptions());
   // Create a client on top of an already-connected socket.
   // `readerOpts` acts as in the first constructor.
 
@@ -124,13 +124,13 @@ public:
 
   template <typename Type>
   typename Type::Client getMain();
-  Capability::Client CAPNP_RPC_API getMain();
+  CAPNP_RPC_API Capability::Client getMain();
   // Get the server's main (aka "bootstrap") interface.
 
   template <typename Type>
   typename Type::Client importCap(kj::StringPtr name) CAPNP_DEPRECATED(
       "Change your server to export a main interface, then use getMain() instead.");
-  Capability::Client CAPNP_RPC_API importCap(kj::StringPtr name) CAPNP_DEPRECATED(
+  CAPNP_RPC_API Capability::Client importCap(kj::StringPtr name) CAPNP_DEPRECATED(
       "Change your server to export a main interface, then use getMain() instead.");
   // ** DEPRECATED **
   //
@@ -140,15 +140,15 @@ public:
   // Named interfaces are deprecated. The new preferred usage pattern is for the server to export
   // a "main" interface which itself has methods for getting any other interfaces.
 
-  kj::WaitScope& CAPNP_RPC_API getWaitScope();
+  CAPNP_RPC_API kj::WaitScope& getWaitScope();
   // Get the `WaitScope` for the client's `EventLoop`, which allows you to synchronously wait on
   // promises.
 
-  kj::AsyncIoProvider& CAPNP_RPC_API getIoProvider();
+  CAPNP_RPC_API kj::AsyncIoProvider& getIoProvider();
   // Get the underlying AsyncIoProvider set up by the RPC system.  This is useful if you want
   // to do some non-RPC I/O in asynchronous fashion.
 
-  kj::LowLevelAsyncIoProvider& CAPNP_RPC_API getLowLevelIoProvider();
+  CAPNP_RPC_API kj::LowLevelAsyncIoProvider& getLowLevelIoProvider();
   // Get the underlying LowLevelAsyncIoProvider set up by the RPC system.  This is useful if you
   // want to do some non-RPC I/O in asynchronous fashion.
 
@@ -161,7 +161,7 @@ class CAPNP_RPC_CLASS EzRpcServer {
   // The server counterpart to `EzRpcClient`.  See `EzRpcClient` for an example.
 
 public:
-  explicit CAPNP_RPC_API EzRpcServer(Capability::Client mainInterface, kj::StringPtr bindAddress,
+  CAPNP_RPC_API explicit EzRpcServer(Capability::Client mainInterface, kj::StringPtr bindAddress,
                                  uint defaultPort = 0, ReaderOptions readerOpts = ReaderOptions());
   // Construct a new `EzRpcServer` that binds to the given address.  An address of "*" means to
   // bind to all local addresses.
@@ -194,7 +194,7 @@ public:
   // called).  `port` is returned by `getPort()` -- it serves no other purpose.
   // `readerOpts` acts as in the other two above constructors.
 
-  explicit CAPNP_RPC_API EzRpcServer(kj::StringPtr bindAddress, uint defaultPort = 0,
+  CAPNP_RPC_API explicit EzRpcServer(kj::StringPtr bindAddress, uint defaultPort = 0,
                                      ReaderOptions readerOpts = ReaderOptions())
       CAPNP_DEPRECATED("Please specify a main interface for your server.");
   CAPNP_RPC_API EzRpcServer(struct sockaddr* bindAddress, uint addrSize,
@@ -205,27 +205,27 @@ public:
 
   CAPNP_RPC_API ~EzRpcServer() noexcept(false);
 
-  void CAPNP_RPC_API exportCap(kj::StringPtr name, Capability::Client cap);
+  CAPNP_RPC_API void exportCap(kj::StringPtr name, Capability::Client cap);
   // Export a capability publicly under the given name, so that clients can import it.
   //
   // Keep in mind that you can implicitly convert `kj::Own<MyType::Server>&&` to
   // `Capability::Client`, so it's typical to pass something like
   // `kj::heap<MyImplementation>(<constructor params>)` as the second parameter.
 
-  kj::Promise<uint> CAPNP_RPC_API getPort();
+  CAPNP_RPC_API kj::Promise<uint> getPort();
   // Get the IP port number on which this server is listening.  This promise won't resolve until
   // the server is actually listening.  If the address was not an IP address (e.g. it was a Unix
   // domain socket) then getPort() resolves to zero.
 
-  kj::WaitScope& CAPNP_RPC_API getWaitScope();
+  CAPNP_RPC_API kj::WaitScope& getWaitScope();
   // Get the `WaitScope` for the client's `EventLoop`, which allows you to synchronously wait on
   // promises.
 
-  kj::AsyncIoProvider& CAPNP_RPC_API getIoProvider();
+  CAPNP_RPC_API kj::AsyncIoProvider& getIoProvider();
   // Get the underlying AsyncIoProvider set up by the RPC system.  This is useful if you want
   // to do some non-RPC I/O in asynchronous fashion.
 
-  kj::LowLevelAsyncIoProvider& CAPNP_RPC_API getLowLevelIoProvider();
+  CAPNP_RPC_API kj::LowLevelAsyncIoProvider& getLowLevelIoProvider();
   // Get the underlying LowLevelAsyncIoProvider set up by the RPC system.  This is useful if you
   // want to do some non-RPC I/O in asynchronous fashion.
 

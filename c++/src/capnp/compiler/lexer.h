@@ -32,9 +32,9 @@ CAPNP_BEGIN_HEADER
 namespace capnp {
 namespace compiler {
 
-bool CAPNP_CAPNPC_API lex(kj::ArrayPtr<const char> input, LexedStatements::Builder result,
+CAPNP_CAPNPC_API bool lex(kj::ArrayPtr<const char> input, LexedStatements::Builder result,
                    ErrorReporter& errorReporter);
-bool CAPNP_CAPNPC_API lex(kj::ArrayPtr<const char> input, LexedTokens::Builder result,
+CAPNP_CAPNPC_API bool lex(kj::ArrayPtr<const char> input, LexedTokens::Builder result,
                    ErrorReporter& errorReporter);
 // Lex the given source code, placing the results in `result`.  Returns true if there
 // were no errors, false if there were.  Even when errors are present, the file may have partial

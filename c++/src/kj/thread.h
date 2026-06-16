@@ -36,17 +36,17 @@ class KJ_CLASS Thread {
   // (if not unwinding from another exception).
 
 public:
-  explicit KJ_API Thread(Function<void()> func);
+  KJ_API explicit Thread(Function<void()> func);
   KJ_DISALLOW_COPY_AND_MOVE(Thread);
 
   KJ_API ~Thread() noexcept(false);
 
 #if !_WIN32
-  void KJ_API sendSignal(int signo);
+  KJ_API void sendSignal(int signo);
   // Send a Unix signal to the given thread, using pthread_kill or an equivalent.
 #endif
 
-  void KJ_API detach();
+  KJ_API void detach();
   // Don't join the thread in ~Thread().
 
 private:

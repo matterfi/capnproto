@@ -24,7 +24,7 @@
 
 namespace kj {
 
-void ThrowOverflow::operator()() const {
+void kj::ThrowOverflow::operator()() const {
   KJ_FAIL_REQUIRE("integer overflow");
 }
 

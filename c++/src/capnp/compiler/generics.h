@@ -49,7 +49,7 @@ struct CAPNP_CAPNPC_CLASS ImplicitParams {
   //
   // Here, `T` is an implicit parameter.
 
-  uint64_t CAPNP_CAPNPC_API scopeId;
+  CAPNP_CAPNPC_API uint64_t scopeId;
   // If zero, then any reference to an implicit param in this context should be compiled to a
   // `implicitMethodParam` AnyPointer. If non-zero, it should be compiled to a `parameter`
   // AnyPointer using this scopeId. This comes into play when compiling the implicitly-generated
@@ -60,10 +60,10 @@ struct CAPNP_CAPNPC_CLASS ImplicitParams {
   // TODO(cleanup): Unclear why ImplicitParams is even used when compiling the implicit structs
   //   with explicit params. Missing abstraction?
 
-  List<Declaration::BrandParameter>::Reader CAPNP_CAPNPC_API params;
+  CAPNP_CAPNPC_API List<Declaration::BrandParameter>::Reader params;
   // Name and metadata about the parameter declaration.
 
-  static inline ImplicitParams CAPNP_CAPNPC_API none() {
+  CAPNP_CAPNPC_API static inline ImplicitParams none() {
     // Convenience helper to create an empty `ImplicitParams`.
     return { 0, List<Declaration::BrandParameter>::Reader() };
   }
@@ -73,7 +73,7 @@ class CAPNP_CAPNPC_CLASS BrandedDecl {
   // Represents a declaration possibly with generic parameter bindings.
 
 public:
-  inline CAPNP_CAPNPC_API BrandedDecl(Resolver::ResolvedDecl decl,
+  CAPNP_CAPNPC_API inline BrandedDecl(Resolver::ResolvedDecl decl,
                                       kj::Own<BrandScope>&& brand,
                                       Expression::Reader source)
       : brand(kj::mv(brand)), source(source) {
@@ -83,16 +83,16 @@ public:
 
     body.init<Resolver::ResolvedDecl>(kj::mv(decl));
   }
-  inline CAPNP_CAPNPC_API BrandedDecl(Resolver::ResolvedParameter variable,
+  CAPNP_CAPNPC_API inline BrandedDecl(Resolver::ResolvedParameter variable,
                                       Expression::Reader source)
       : source(source) {
     body.init<Resolver::ResolvedParameter>(kj::mv(variable));
   }
-  inline CAPNP_CAPNPC_API BrandedDecl(decltype(nullptr)) {}
-  inline CAPNP_CAPNPC_API BrandedDecl() {}
+  CAPNP_CAPNPC_API inline BrandedDecl(decltype(nullptr)) {}
+  CAPNP_CAPNPC_API inline BrandedDecl() {}
     // exists only for ExternalMutexGuarded<BrandedDecl> to work...
 
-  static BrandedDecl CAPNP_CAPNPC_API implicitMethodParam(uint index) {
+  CAPNP_CAPNPC_API static BrandedDecl implicitMethodParam(uint index) {
     // Get a BrandedDecl referring to an implicit method parameter.
     // (As a hack, we internally represent this as a ResolvedParameter. Sorry.)
     return BrandedDecl(Resolver::ResolvedParameter { 0, index }, Expression::Reader());
@@ -101,16 +101,16 @@ public:
   CAPNP_CAPNPC_API BrandedDecl(BrandedDecl& other);
   CAPNP_CAPNPC_API BrandedDecl(BrandedDecl&& other) = default;
 
-  BrandedDecl& CAPNP_CAPNPC_API operator=(BrandedDecl& other);
-  BrandedDecl& CAPNP_CAPNPC_API operator=(BrandedDecl&& other) = default;
+  CAPNP_CAPNPC_API BrandedDecl& operator=(BrandedDecl& other);
+  CAPNP_CAPNPC_API BrandedDecl& operator=(BrandedDecl&& other) = default;
 
-  kj::Maybe<BrandedDecl> CAPNP_CAPNPC_API applyParams(kj::Array<BrandedDecl> params, Expression::Reader subSource);
+  CAPNP_CAPNPC_API kj::Maybe<BrandedDecl> applyParams(kj::Array<BrandedDecl> params, Expression::Reader subSource);
   // Treat the declaration as a generic and apply it to the given parameter list.
 
-  kj::Maybe<BrandedDecl> CAPNP_CAPNPC_API getMember(kj::StringPtr memberName, Expression::Reader subSource);
+  CAPNP_CAPNPC_API kj::Maybe<BrandedDecl> getMember(kj::StringPtr memberName, Expression::Reader subSource);
   // Get a member of this declaration.
 
-  kj::Maybe<Declaration::Which> CAPNP_CAPNPC_API getKind();
+  CAPNP_CAPNPC_API kj::Maybe<Declaration::Which> getKind();
   // Returns the kind of declaration, or null if this is an unbound generic variable.
 
   template <typename InitBrandFunc>
@@ -121,30 +121,30 @@ public:
   //
   // It is an error to call this when `getKind()` returns null.
 
-  kj::Maybe<BrandedDecl&> CAPNP_CAPNPC_API getListParam();
+  CAPNP_CAPNPC_API kj::Maybe<BrandedDecl&> getListParam();
   // Only if the kind is BUILTIN_LIST: Get the list's type parameter.
 
-  Resolver::ResolvedParameter CAPNP_CAPNPC_API asVariable();
+  CAPNP_CAPNPC_API Resolver::ResolvedParameter asVariable();
   // If this is an unbound generic variable (i.e. `getKind()` returns null), return information
   // about the variable.
   //
   // It is an error to call this when `getKind()` does not return null.
 
-  bool CAPNP_CAPNPC_API compileAsType(ErrorReporter& errorReporter, schema::Type::Builder target);
+  CAPNP_CAPNPC_API bool compileAsType(ErrorReporter& errorReporter, schema::Type::Builder target);
   // Compile this decl to a schema::Type.
 
-  inline void CAPNP_CAPNPC_API addError(ErrorReporter& errorReporter, kj::StringPtr message) {
+  CAPNP_CAPNPC_API inline void addError(ErrorReporter& errorReporter, kj::StringPtr message) {
     errorReporter.addErrorOn(source, message);
   }
 
-  Resolver::ResolveResult CAPNP_CAPNPC_API asResolveResult(uint64_t scopeId, schema::Brand::Builder brandBuilder);
+  CAPNP_CAPNPC_API Resolver::ResolveResult asResolveResult(uint64_t scopeId, schema::Brand::Builder brandBuilder);
   // Reverse this into a ResolveResult. If necessary, use `brandBuilder` to fill in
   // ResolvedDecl.brand.
 
-  kj::String CAPNP_CAPNPC_API toString();
-  kj::String CAPNP_CAPNPC_API toDebugString();
+  CAPNP_CAPNPC_API kj::String toString();
+  CAPNP_CAPNPC_API kj::String toDebugString();
 
-  kj::Maybe<uint64_t> CAPNP_CAPNPC_API getGenericTypeId() {
+  CAPNP_CAPNPC_API kj::Maybe<uint64_t> getGenericTypeId() {
     // If this declaration points to a type, gets its type ID. Keep in mind that this
     // drops the brand, that is, if the type is the result of applying a generic to
     // some type parameters, this returns only the ID of the underlying generic type,
@@ -178,13 +178,13 @@ public:
   //   make sense for BrandedDecl to have an ErrorReporter, specifically associated with its
   //   `source` expression.
 
-  bool CAPNP_CAPNPC_API isGeneric();
+  CAPNP_CAPNPC_API bool isGeneric();
   // Returns true if this scope or any parent scope is a generic (has brand parameters).
 
-  kj::Own<BrandScope> CAPNP_CAPNPC_API push(uint64_t typeId, uint paramCount);
+  CAPNP_CAPNPC_API kj::Own<BrandScope> push(uint64_t typeId, uint paramCount);
   // Creates a new child scope with the given type ID and number of brand parameters.
 
-  kj::Maybe<kj::Own<BrandScope>> CAPNP_CAPNPC_API setParams(
+  CAPNP_CAPNPC_API kj::Maybe<kj::Own<BrandScope>> setParams(
       kj::Array<BrandedDecl> params, Declaration::Which genericType, Expression::Reader source);
   // Create a new BrandScope representing the same scope, but with parameters filled in.
   //
@@ -194,10 +194,10 @@ public:
   // Returns null if an error occurred that prevented creating the BrandScope; the error will have
   // been reported to the ErrorReporter.
 
-  kj::Own<BrandScope> CAPNP_CAPNPC_API pop(uint64_t newLeafId);
+  CAPNP_CAPNPC_API kj::Own<BrandScope> pop(uint64_t newLeafId);
   // Return the parent scope.
 
-  kj::Maybe<BrandedDecl> CAPNP_CAPNPC_API lookupParameter(Resolver& resolver, uint64_t scopeId,
+  CAPNP_CAPNPC_API kj::Maybe<BrandedDecl> lookupParameter(Resolver& resolver, uint64_t scopeId,
                                                           uint index);
   // Search up the scope chain for the scope matching `scopeId`, and return its `index`th parameter
   // binding. Returns null if the parameter is from a scope that we are currently compiling, and
@@ -208,7 +208,7 @@ public:
   //
   // TODO(cleanup): Should be called lookupArgument()?
 
-  kj::Maybe<kj::ArrayPtr<BrandedDecl>> CAPNP_CAPNPC_API getParams(uint64_t scopeId);
+  CAPNP_CAPNPC_API kj::Maybe<kj::ArrayPtr<BrandedDecl>> getParams(uint64_t scopeId);
   // Get the whole list of parameter bindings at the given scope. Returns null if the scope is
   // currently be compiled and the parameters are unbound.
   //
@@ -231,18 +231,18 @@ public:
   //
   // TODO(cleanup): Should this return Maybe<Orphan<schema::Brand>> instead?
 
-  kj::Maybe<BrandedDecl> CAPNP_CAPNPC_API compileDeclExpression(
+  CAPNP_CAPNPC_API kj::Maybe<BrandedDecl> compileDeclExpression(
       Expression::Reader source, Resolver& resolver,
       ImplicitParams implicitMethodParams);
   // Interpret a type expression within this branded scope.
 
-  BrandedDecl CAPNP_CAPNPC_API interpretResolve(
+  CAPNP_CAPNPC_API BrandedDecl interpretResolve(
       Resolver& resolver, Resolver::ResolveResult& result, Expression::Reader source);
   // After using a Resolver to resolve a symbol, call interpretResolve() to interpret the result
   // within the current brand scope. For example, if a name resolved to a brand parameter, this
   // replaces it with the appropriate argument from the scope.
 
-  inline uint64_t CAPNP_CAPNPC_API getScopeId() { return leafId; }
+  CAPNP_CAPNPC_API inline uint64_t getScopeId() { return leafId; }
 
 private:
   ErrorReporter& errorReporter;
