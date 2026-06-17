@@ -37,11 +37,11 @@ struct KJ_HTTP_CLASS UrlOptions {
   // A copy of this options struct will be stored in the parsed Url object, at which point it
   // controls the behavior of the serializer in Url::toString().
 
-  bool KJ_HTTP_API percentDecode = true;
+  KJ_HTTP_API bool percentDecode = true;
   // True if URL components should be automatically percent-decoded during parsing, and
   // percent-encoded during serialization.
 
-  bool KJ_HTTP_API allowEmpty = false;
+  KJ_HTTP_API bool allowEmpty = false;
   // Whether or not to allow empty path and query components when parsing; otherwise, they are
   // silently removed. In other words, setting this false causes consecutive slashes in the path or
   // consecutive ampersands in the query to be collapsed into one, whereas if true then they
@@ -53,24 +53,24 @@ struct KJ_HTTP_CLASS Url {
   //
   // Can be parsed from a string and composed back into a string.
 
-  String KJ_HTTP_API scheme;
+  KJ_HTTP_API String scheme;
   // E.g. "http", "https".
 
   struct KJ_HTTP_CLASS UserInfo {
-    String KJ_HTTP_API username;
-    Maybe<String> KJ_HTTP_API password;
+    KJ_HTTP_API String username;
+    KJ_HTTP_API Maybe<String> password;
   };
 
-  Maybe<UserInfo> KJ_HTTP_API userInfo;
+  KJ_HTTP_API Maybe<UserInfo> userInfo;
   // Username / password.
 
-  String KJ_HTTP_API host;
+  KJ_HTTP_API String host;
   // Hostname, including port if specified. We choose not to parse out the port because KJ's
   // network address parsing functions already accept addresses containing port numbers, and
   // because most web standards don't actually want to separate host and port.
 
-  Vector<String> KJ_HTTP_API path;
-  bool KJ_HTTP_API hasTrailingSlash = false;
+  KJ_HTTP_API Vector<String> path;
+  KJ_HTTP_API bool hasTrailingSlash = false;
   // Path, split on '/' characters. Note that the individual components of `path` could contain
   // '/' characters if they were percent-encoded in the original URL.
   //
@@ -79,10 +79,10 @@ struct KJ_HTTP_CLASS Url {
   // components.
 
   struct KJ_HTTP_CLASS QueryParam {
-    String KJ_HTTP_API name;
-    String KJ_HTTP_API value;
+    KJ_HTTP_API String name;
+    KJ_HTTP_API String value;
   };
-  Vector<QueryParam> KJ_HTTP_API query;
+  KJ_HTTP_API Vector<QueryParam> query;
   // Query, e.g. from "?key=value&key2=value2". If a component of the query contains no '=' sign,
   // it will be parsed as a key with a null value, and later serialized with no '=' sign if you call
   // Url::toString().
@@ -93,20 +93,20 @@ struct KJ_HTTP_CLASS Url {
   //     QueryParam { kj::str("name"), nullptr }      // Null-valued; will not have an '=' sign.
   //     QueryParam { kj::str("name"), kj::str("") }  // Empty-valued; WILL have an '=' sign.
 
-  Maybe<String> KJ_HTTP_API fragment;
+  KJ_HTTP_API Maybe<String> fragment;
   // The stuff after the '#' character (not including the '#' character itself), if present.
 
   using Options = UrlOptions;
-  Options KJ_HTTP_API options;
+  KJ_HTTP_API Options options;
 
   // ---------------------------------------------------------------------------
 
   KJ_HTTP_API Url() = default;
   KJ_HTTP_API Url(Url&&) = default;
   KJ_HTTP_API ~Url() noexcept(false);
-  Url& KJ_HTTP_API operator=(Url&&) = default;
+  KJ_HTTP_API Url& operator=(Url&&) = default;
 
-  inline KJ_HTTP_API Url(String&& scheme, Maybe<UserInfo>&& userInfo, String&& host, Vector<String>&& path,
+  KJ_HTTP_API inline Url(String&& scheme, Maybe<UserInfo>&& userInfo, String&& host, Vector<String>&& path,
                     bool hasTrailingSlash, Vector<QueryParam>&& query, Maybe<String>&& fragment,
                     UrlOptions options)
       : scheme(kj::mv(scheme)), userInfo(kj::mv(userInfo)), host(kj::mv(host)), path(kj::mv(path)),
@@ -115,7 +115,7 @@ struct KJ_HTTP_CLASS Url {
   // This constructor makes brace initialization work in C++11 and C++20 -- but is technically not
   // needed in C++14 nor C++17. Go figure.
 
-  Url KJ_HTTP_API clone() const;
+  KJ_HTTP_API Url clone() const;
 
   enum Context {
     REMOTE_HREF,
@@ -135,15 +135,15 @@ struct KJ_HTTP_CLASS Url {
     //   don't have an authority section.
   };
 
-  kj::String KJ_HTTP_API toString(Context context = REMOTE_HREF) const;
+  KJ_HTTP_API kj::String toString(Context context = REMOTE_HREF) const;
   // Convert the URL to a string.
 
-  static Url KJ_HTTP_API parse(StringPtr text, Context context = REMOTE_HREF, Options options = {});
-  static Maybe<Url> KJ_HTTP_API tryParse(StringPtr text, Context context = REMOTE_HREF, Options options = {});
+  KJ_HTTP_API static Url parse(StringPtr text, Context context = REMOTE_HREF, Options options = {});
+  KJ_HTTP_API static Maybe<Url> tryParse(StringPtr text, Context context = REMOTE_HREF, Options options = {});
   // Parse an absolute URL.
 
-  Url KJ_HTTP_API parseRelative(StringPtr relative) const;
-  Maybe<Url> KJ_HTTP_API tryParseRelative(StringPtr relative) const;
+  KJ_HTTP_API Url parseRelative(StringPtr relative) const;
+  KJ_HTTP_API Maybe<Url> tryParseRelative(StringPtr relative) const;
   // Parse a relative URL string with this URL as the base.
 };
 

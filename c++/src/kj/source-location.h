@@ -69,10 +69,10 @@ class KJ_CLASS SourceLocation {
   // Neat little trick to make sure we can never call SourceLocation with explicit arguments.
 public:
 #if !KJ_COMPILER_SUPPORTS_SOURCE_LOCATION
-  constexpr KJ_API SourceLocation() : fileName("??"), function("??"), lineNumber(0), columnNumber(0) {}
+  KJ_API constexpr SourceLocation() : fileName("??"), function("??"), lineNumber(0), columnNumber(0) {}
   // Constructs a dummy source location that's not pointing at anything.
 #else
-  constexpr KJ_API SourceLocation(Badge = Badge{}, const char* file = __builtin_FILE(),
+  KJ_API constexpr SourceLocation(Badge = Badge{}, const char* file = __builtin_FILE(),
       const char* func = __builtin_FUNCTION(), uint line = __builtin_LINE(),
       uint column = KJ_CALLER_COLUMN())
     : fileName(file), function(func), lineNumber(line), columnNumber(column)
@@ -82,7 +82,7 @@ public:
 #if KJ_COMPILER_SUPPORTS_SOURCE_LOCATION
   // This can only be exposed if we actually generate valid SourceLocation objects as otherwise all
   // SourceLocation objects would confusingly (and likely problematically) be equated equal.
-  constexpr bool KJ_API operator==(const SourceLocation& o) const {
+  KJ_API constexpr bool operator==(const SourceLocation& o) const {
     // Pointer equality is fine here based on how SourceLocation operates & how compilers will
     // intern all duplicate string constants.
     return fileName == o.fileName && function == o.function && lineNumber == o.lineNumber &&
@@ -90,13 +90,13 @@ public:
   }
 #endif
 
-  const char* fileName;
-  const char* function;
-  uint lineNumber;
-  uint columnNumber;
+  KJ_API const char* fileName;
+  KJ_API const char* function;
+  KJ_API uint lineNumber;
+  KJ_API uint columnNumber;
 };
 
-kj::String KJ_API KJ_STRINGIFY(const SourceLocation& l);
+KJ_API kj::String KJ_STRINGIFY(const SourceLocation& l);
 
 class KJ_CLASS NoopSourceLocation {
   // This is used in places where we want to conditionally compile out tracking the source location.
@@ -104,7 +104,7 @@ class KJ_CLASS NoopSourceLocation {
   // isn't accidentally used in the wrong compilation context.
 };
 
-KJ_UNUSED static kj::String KJ_STRINGIFY(const NoopSourceLocation& l) {
+KJ_API KJ_UNUSED static kj::String KJ_STRINGIFY(const NoopSourceLocation& l) {
   return kj::String();
 }
 }  // namespace kj

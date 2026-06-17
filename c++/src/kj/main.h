@@ -35,10 +35,10 @@ class KJ_CLASS ProcessContext {
   // Context for command-line programs.
 
 public:
-  virtual StringPtr KJ_API getProgramName() = 0;
+  KJ_API virtual StringPtr getProgramName() = 0;
   // Get argv[0] as passed to main().
 
-  KJ_NORETURN(virtual void KJ_API exit()) = 0;
+  KJ_API KJ_NORETURN(virtual void exit()) = 0;
   // Indicates program completion.  The program is considered successful unless `error()` was
   // called.  Typically this exits with _Exit(), meaning that the stack is not unwound, buffers
   // are not flushed, etc. -- it is the responsibility of the caller to flush any buffers that
@@ -104,22 +104,22 @@ public:
   //   available for those who really think they need it.  Unfortunately, it is not yet available
   //   on many platforms.
 
-  virtual void KJ_API warning(StringPtr message) = 0;
+  KJ_API virtual void warning(StringPtr message) = 0;
   // Print the given message to standard error.  A newline is printed after the message if it
   // doesn't already have one.
 
-  virtual void KJ_API error(StringPtr message) = 0;
+  KJ_API virtual void error(StringPtr message) = 0;
   // Like `warning()`, but also sets a flag indicating that the process has failed, and that when
   // it eventually exits it should indicate an error status.
 
-  KJ_NORETURN(virtual void KJ_API exitError(StringPtr message)) = 0;
+  KJ_API KJ_NORETURN(virtual void exitError(StringPtr message)) = 0;
   // Equivalent to `error(message)` followed by `exit()`.
 
-  KJ_NORETURN(virtual void KJ_API exitInfo(StringPtr message)) = 0;
+  KJ_API KJ_NORETURN(virtual void exitInfo(StringPtr message)) = 0;
   // Displays the given non-error message to the user and then calls `exit()`.  This is used to
   // implement things like --help.
 
-  virtual void KJ_API increaseLoggingVerbosity() = 0;
+  KJ_API virtual void increaseLoggingVerbosity() = 0;
   // Increase the level of detail produced by the debug logging system.  `MainBuilder` invokes
   // this if the caller uses the -v flag.
 
@@ -134,7 +134,7 @@ class KJ_CLASS TopLevelProcessContext final: public ProcessContext {
   // calls the C `quick_exit()` function.
 
 public:
-  explicit KJ_API TopLevelProcessContext(StringPtr programName);
+  KJ_API explicit TopLevelProcessContext(StringPtr programName);
 
   struct KJ_CLASS CleanShutdownException { int exitCode; };
   // If the environment variable KJ_CLEAN_SHUTDOWN is set, then exit() will actually throw this
@@ -142,13 +142,13 @@ public:
   // This is useful primarily for testing purposes, to assist tools like memory leak checkers that
   // are easily confused by quick_exit().
 
-  StringPtr KJ_API getProgramName() override;
-  KJ_NORETURN(void KJ_API exit() override);
-  void KJ_API warning(StringPtr message) override;
-  void KJ_API error(StringPtr message) override;
-  KJ_NORETURN(void KJ_API exitError(StringPtr message) override);
-  KJ_NORETURN(void KJ_API exitInfo(StringPtr message) override);
-  void KJ_API increaseLoggingVerbosity() override;
+  KJ_API StringPtr getProgramName() override;
+  KJ_API KJ_NORETURN(void exit() override);
+  KJ_API void warning(StringPtr message) override;
+  KJ_API void error(StringPtr message) override;
+  KJ_API KJ_NORETURN(void exitError(StringPtr message) override);
+  KJ_API KJ_NORETURN(void exitInfo(StringPtr message) override);
+  KJ_API void increaseLoggingVerbosity() override;
 
 private:
   StringPtr programName;
@@ -158,7 +158,7 @@ private:
 
 typedef Function<void(StringPtr programName, ArrayPtr<const StringPtr> params)> MainFunc;
 
-int KJ_API runMainAndExit(ProcessContext& context, MainFunc&& func, int argc, char* argv[]);
+KJ_API int runMainAndExit(ProcessContext& context, MainFunc&& func, int argc, char* argv[]);
 // Runs the given main function and then exits using the given context.  If an exception is thrown,
 // this will catch it, report it via the context and exit with an error code.
 //
@@ -171,7 +171,7 @@ int KJ_API runMainAndExit(ProcessContext& context, MainFunc&& func, int argc, ch
 // Most users will use the KJ_MAIN() macro rather than call this function directly.
 
 #define KJ_MAIN(MainClass) \
-  int KJ_API main(int argc, char* argv[]) { \
+  KJ_API int main(int argc, char* argv[]) { \
     ::kj::TopLevelProcessContext context(argv[0]); \
     MainClass mainObject(context); \
     return ::kj::runMainAndExit(context, mainObject.getMain(), argc, argv); \
@@ -251,8 +251,8 @@ public:
   class KJ_CLASS OptionName {
   public:
     KJ_API OptionName() = default;
-    inline KJ_API OptionName(char shortName): isLong(false), shortName(shortName) {}
-    inline KJ_API OptionName(const char* longName): isLong(true), longName(longName) {}
+    KJ_API inline OptionName(char shortName): isLong(false), shortName(shortName) {}
+    KJ_API inline OptionName(const char* longName): isLong(true), longName(longName) {}
 
   private:
     bool isLong;
@@ -265,23 +265,23 @@ public:
 
   class KJ_CLASS Validity {
   public:
-    inline KJ_API Validity(bool valid) {
+    KJ_API inline Validity(bool valid) {
       if (!valid) errorMessage = heapString("invalid argument");
     }
-    inline KJ_API Validity(const char* errorMessage)
+    KJ_API inline Validity(const char* errorMessage)
         : errorMessage(heapString(errorMessage)) {}
-    inline KJ_API Validity(String&& errorMessage)
+    KJ_API inline Validity(String&& errorMessage)
         : errorMessage(kj::mv(errorMessage)) {}
 
-    inline const Maybe<String>& getError() const { return errorMessage; }
-    inline Maybe<String> KJ_API releaseError() { return kj::mv(errorMessage); }
+    KJ_API inline const Maybe<String>& getError() const { return errorMessage; }
+    KJ_API inline Maybe<String> releaseError() { return kj::mv(errorMessage); }
 
   private:
     Maybe<String> errorMessage;
     friend class MainBuilder;
   };
 
-  MainBuilder& addOption(std::initializer_list<OptionName> names,
+  KJ_API MainBuilder& addOption(std::initializer_list<OptionName> names,
                          Function<Validity()> callback, StringPtr helpText);
   // Defines a new option (flag).  `names` is a list of characters and strings that can be used to
   // specify the option on the command line.  Single-character names are used with "-" while string
@@ -310,7 +310,7 @@ public:
   //
   // Note that help text is automatically word-wrapped.
 
-  MainBuilder& addOptionWithArg(std::initializer_list<OptionName> names,
+  KJ_API MainBuilder& addOptionWithArg(std::initializer_list<OptionName> names,
                                 Function<Validity(StringPtr)> callback,
                                 StringPtr argumentTitle, StringPtr helpText);
   // Like `addOption()`, but adds an option which accepts an argument.  `argumentTitle` is used in
@@ -337,7 +337,7 @@ public:
   //     -o FILENAME, --output=FILENAME
   //         Output to FILENAME.
 
-  MainBuilder& addSubCommand(StringPtr name, Function<MainFunc()> getSubParser,
+  KJ_API MainBuilder& addSubCommand(StringPtr name, Function<MainFunc()> getSubParser,
                              StringPtr briefHelpText);
   // If exactly the given name is seen as an argument, invoke getSubParser() and then pass all
   // remaining arguments to the parser it returns.  This is useful for implementing commands which
@@ -351,10 +351,10 @@ public:
   // line.  It will not be wrapped.  Users can use the built-in "help" command to get extended
   // help on a particular command.
 
-  MainBuilder& expectArg(StringPtr title, Function<Validity(StringPtr)> callback);
-  MainBuilder& expectOptionalArg(StringPtr title, Function<Validity(StringPtr)> callback);
-  MainBuilder& expectZeroOrMoreArgs(StringPtr title, Function<Validity(StringPtr)> callback);
-  MainBuilder& expectOneOrMoreArgs(StringPtr title, Function<Validity(StringPtr)> callback);
+  KJ_API MainBuilder& expectArg(StringPtr title, Function<Validity(StringPtr)> callback);
+  KJ_API MainBuilder& expectOptionalArg(StringPtr title, Function<Validity(StringPtr)> callback);
+  KJ_API MainBuilder& expectZeroOrMoreArgs(StringPtr title, Function<Validity(StringPtr)> callback);
+  KJ_API MainBuilder& expectOneOrMoreArgs(StringPtr title, Function<Validity(StringPtr)> callback);
   // Set callbacks to handle arguments.  `expectArg()` and `expectOptionalArg()` specify positional
   // arguments with special handling, while `expect{Zero,One}OrMoreArgs()` specifies a handler for
   // an argument list (the handler is called once for each argument in the list).  `title`
@@ -386,10 +386,10 @@ public:
   // But, this flexibility seems necessary to support commands where the first argument is special
   // as well as commands (like `cp`) where the last argument is special.
 
-  MainBuilder& callAfterParsing(Function<Validity()> callback);
+  KJ_API MainBuilder& callAfterParsing(Function<Validity()> callback);
   // Call the given function after all arguments have been parsed.
 
-  MainFunc KJ_API build();
+  KJ_API MainFunc build();
   // Build the "main" function, which simply parses the arguments.  Once this returns, the
   // `MainBuilder` is no longer valid.
 

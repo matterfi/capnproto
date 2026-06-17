@@ -57,9 +57,9 @@ public:
                                    ReaderOptions options = ReaderOptions());
   // The array must remain valid until the MessageReader is destroyed.
 
-  kj::ArrayPtr<const word> CAPNP_API getSegment(uint id) override;
+  CAPNP_API kj::ArrayPtr<const word> getSegment(uint id) override;
 
-  const word* CAPNP_API getEnd() const { return end; }
+  CAPNP_API const word* getEnd() const { return end; }
   // Get a pointer just past the end of the message as determined by reading the message header.
   // This could actually be before the end of the input array.  This pointer is useful e.g. if
   // you know that the input array has extra stuff appended after the message and you want to
@@ -72,7 +72,7 @@ private:
   const word* end;
 };
 
-kj::ArrayPtr<const word> CAPNP_API initMessageBuilderFromFlatArrayCopy(
+CAPNP_API kj::ArrayPtr<const word> initMessageBuilderFromFlatArrayCopy(
     kj::ArrayPtr<const word> array, MessageBuilder& target,
     ReaderOptions options = ReaderOptions());
 // Convenience function which reads a message using `FlatArrayMessageReader` then copies the
@@ -87,7 +87,7 @@ kj::ArrayPtr<const word> CAPNP_API initMessageBuilderFromFlatArrayCopy(
 // of `MessageBuilder`'s constructors. However, this approach skips the validation step and is not
 // safe to use on untrusted input. Therefore, we do not provide a convenience method for it.)
 
-kj::Array<word> CAPNP_API messageToFlatArray(MessageBuilder& builder);
+CAPNP_API kj::Array<word> messageToFlatArray(MessageBuilder& builder);
 // Constructs a flat array containing the entire content of the given message.
 //
 // To output the message as bytes, use `.asBytes()` on the returned word array. Keep in mind that
@@ -98,18 +98,18 @@ kj::Array<word> CAPNP_API messageToFlatArray(MessageBuilder& builder);
 //     kj::ArrayPtr<kj::byte> bytes = words.asBytes();
 //     write(fd, bytes.begin(), bytes.size());
 
-kj::Array<word> CAPNP_API messageToFlatArray(
+CAPNP_API kj::Array<word> messageToFlatArray(
     kj::ArrayPtr<const kj::ArrayPtr<const word>> segments);
 // Version of messageToFlatArray that takes a raw segment array.
 
-size_t CAPNP_API computeSerializedSizeInWords(MessageBuilder& builder);
+CAPNP_API size_t computeSerializedSizeInWords(MessageBuilder& builder);
 // Returns the size, in words, that will be needed to serialize the message, including the header.
 
-size_t CAPNP_API computeSerializedSizeInWords(
+CAPNP_API size_t computeSerializedSizeInWords(
     kj::ArrayPtr<const kj::ArrayPtr<const word>> segments);
 // Version of computeSerializedSizeInWords that takes a raw segment array.
 
-size_t CAPNP_API expectedSizeInWordsFromPrefix(kj::ArrayPtr<const word> messagePrefix);
+CAPNP_API size_t expectedSizeInWordsFromPrefix(kj::ArrayPtr<const word> messagePrefix);
 // Given a prefix of a serialized message, try to determine the expected total size of the message,
 // in words. The returned size is based on the information known so far; it may be an underestimate
 // if the prefix doesn't contain the full segment table.
@@ -136,7 +136,7 @@ public:
   CAPNP_API ~InputStreamMessageReader() noexcept(false);
 
   // implements MessageReader ----------------------------------------
-  kj::ArrayPtr<const word> CAPNP_API getSegment(uint id) override;
+  CAPNP_API kj::ArrayPtr<const word> getSegment(uint id) override;
 
 private:
   kj::InputStream& inputStream;
@@ -163,10 +163,10 @@ void CAPNP_CLASS readMessageCopy(kj::InputStream& input, MessageBuilder& target,
 // of `MessageBuilder`'s constructors. However, this approach skips the validation step and is not
 // safe to use on untrusted input. Therefore, we do not provide a convenience method for it.)
 
-void CAPNP_API writeMessage(kj::OutputStream& output, MessageBuilder& builder);
+CAPNP_API void writeMessage(kj::OutputStream& output, MessageBuilder& builder);
 // Write the message to the given output stream.
 
-void CAPNP_API writeMessage(kj::OutputStream& output,
+CAPNP_API void writeMessage(kj::OutputStream& output,
                             kj::ArrayPtr<const kj::ArrayPtr<const word>> segments);
 // Write the segment array to the given output stream.
 
@@ -191,7 +191,7 @@ public:
   CAPNP_API ~StreamFdMessageReader() noexcept(false);
 };
 
-void CAPNP_API readMessageCopyFromFd(int fd, MessageBuilder& target,
+CAPNP_API void readMessageCopyFromFd(int fd, MessageBuilder& target,
                                      ReaderOptions options = ReaderOptions(),
                                      kj::ArrayPtr<word> scratchSpace = nullptr);
 // Convenience function which reads a message using `StreamFdMessageReader` then copies the
@@ -202,14 +202,14 @@ void CAPNP_API readMessageCopyFromFd(int fd, MessageBuilder& target,
 // of `MessageBuilder`'s constructors. However, this approach skips the validation step and is not
 // safe to use on untrusted input. Therefore, we do not provide a convenience method for it.)
 
-void CAPNP_API writeMessageToFd(int fd, MessageBuilder& builder);
+CAPNP_API void writeMessageToFd(int fd, MessageBuilder& builder);
 // Write the message to the given file descriptor.
 //
 // This function throws an exception on any I/O error.  If your code is not exception-safe, be sure
 // you catch this exception at the call site.  If throwing an exception is not acceptable, you
 // can implement your own OutputStream with arbitrary error handling and then use writeMessage().
 
-void CAPNP_API writeMessageToFd(int fd, kj::ArrayPtr<const kj::ArrayPtr<const word>> segments);
+CAPNP_API void writeMessageToFd(int fd, kj::ArrayPtr<const kj::ArrayPtr<const word>> segments);
 // Write the segment array to the given file descriptor.
 //
 // This function throws an exception on any I/O error.  If your code is not exception-safe, be sure

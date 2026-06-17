@@ -50,23 +50,23 @@ public:
   struct CAPNP_CAPNPC_CLASS ResolvedDecl {
     // Information about a resolved declaration.
 
-    uint64_t CAPNP_CAPNPC_API id;
+    CAPNP_CAPNPC_API uint64_t id;
     // Type ID / node ID of the resolved declaration.
 
-    uint CAPNP_CAPNPC_API genericParamCount;
+    CAPNP_CAPNPC_API uint genericParamCount;
     // If non-zero, the declaration is a generic with the given number of parameters.
 
-    uint64_t CAPNP_CAPNPC_API scopeId;
+    CAPNP_CAPNPC_API uint64_t scopeId;
     // The ID of the parent scope of this declaration.
 
-    Declaration::Which CAPNP_CAPNPC_API kind;
+    CAPNP_CAPNPC_API Declaration::Which kind;
     // What basic kind of declaration is this? E.g. struct, interface, const, etc.
 
-    Resolver* CAPNP_CAPNPC_API resolver;
+    CAPNP_CAPNPC_API Resolver* resolver;
     // `Resolver` instance that can be used to further resolve other declarations relative to this
     // one.
 
-    kj::Maybe<schema::Brand::Reader> CAPNP_CAPNPC_API brand;
+    CAPNP_CAPNPC_API kj::Maybe<schema::Brand::Reader> brand;
     // If present, then it is necessary to replace the brand scope with the given brand before
     // using the target type. This happens when the decl resolved to an alias; all other fields
     // of `ResolvedDecl` refer to the target of the alias, except for `scopeId` which is the
@@ -74,29 +74,29 @@ public:
   };
 
   struct CAPNP_CAPNPC_CLASS ResolvedParameter {
-    uint64_t CAPNP_CAPNPC_API id;  // ID of the node declaring the parameter.
-    uint CAPNP_CAPNPC_API index;   // Index of the parameter.
+    CAPNP_CAPNPC_API uint64_t id;  // ID of the node declaring the parameter.
+    CAPNP_CAPNPC_API uint index;   // Index of the parameter.
   };
 
   typedef kj::OneOf<ResolvedDecl, ResolvedParameter> ResolveResult;
 
-  virtual kj::Maybe<ResolveResult> CAPNP_CAPNPC_API resolve(kj::StringPtr name) = 0;
+  CAPNP_CAPNPC_API virtual kj::Maybe<ResolveResult> resolve(kj::StringPtr name) = 0;
   // Look up the given name, relative to this node, and return basic information about the
   // target.
 
-  virtual kj::Maybe<ResolveResult> CAPNP_CAPNPC_API resolveMember(kj::StringPtr name) = 0;
+  CAPNP_CAPNPC_API virtual kj::Maybe<ResolveResult> resolveMember(kj::StringPtr name) = 0;
   // Look up a member of this node.
 
-  virtual ResolvedDecl CAPNP_CAPNPC_API resolveBuiltin(Declaration::Which which) = 0;
-  virtual ResolvedDecl CAPNP_CAPNPC_API resolveId(uint64_t id) = 0;
+  CAPNP_CAPNPC_API virtual ResolvedDecl resolveBuiltin(Declaration::Which which) = 0;
+  CAPNP_CAPNPC_API virtual ResolvedDecl resolveId(uint64_t id) = 0;
 
-  virtual kj::Maybe<ResolvedDecl> CAPNP_CAPNPC_API getParent() = 0;
+  CAPNP_CAPNPC_API virtual kj::Maybe<ResolvedDecl> getParent() = 0;
   // Returns the parent of this scope, or null if this is the top scope.
 
-  virtual ResolvedDecl CAPNP_CAPNPC_API getTopScope() = 0;
+  CAPNP_CAPNPC_API virtual ResolvedDecl getTopScope() = 0;
   // Get the top-level scope containing this node.
 
-  virtual kj::Maybe<Schema> CAPNP_CAPNPC_API resolveBootstrapSchema(uint64_t id,
+  CAPNP_CAPNPC_API virtual kj::Maybe<Schema> resolveBootstrapSchema(uint64_t id,
                                                                    schema::Brand::Reader brand) = 0;
   // Get the schema for the given ID.  If a schema is returned, it must be safe to traverse its
   // dependencies via the Schema API.  A schema that is only at the bootstrap stage is
@@ -106,7 +106,7 @@ public:
   // traversing other schemas.  Returns null if the ID is recognized, but the corresponding
   // schema node failed to be built for reasons that were already reported.
 
-  virtual kj::Maybe<schema::Node::Reader> CAPNP_CAPNPC_API resolveFinalSchema(uint64_t id) = 0;
+  CAPNP_CAPNPC_API virtual kj::Maybe<schema::Node::Reader> resolveFinalSchema(uint64_t id) = 0;
   // Get the final schema for the given ID.  A bootstrap schema is not acceptable.  A raw
   // node reader is returned rather than a Schema object because using a Schema object built
   // by the final schema loader could trigger lazy initialization of dependencies which could
@@ -116,13 +116,13 @@ public:
   // traversing other schemas.  Returns null if the ID is recognized, but the corresponding
   // schema node failed to be built for reasons that were already reported.
 
-  virtual kj::Maybe<ResolvedDecl> CAPNP_CAPNPC_API resolveImport(kj::StringPtr name) = 0;
+  CAPNP_CAPNPC_API virtual kj::Maybe<ResolvedDecl> resolveImport(kj::StringPtr name) = 0;
   // Get the ID of an imported file given the import path.
 
-  virtual kj::Maybe<kj::Array<const byte>> CAPNP_CAPNPC_API readEmbed(kj::StringPtr name) = 0;
+  CAPNP_CAPNPC_API virtual kj::Maybe<kj::Array<const byte>> readEmbed(kj::StringPtr name) = 0;
   // Read and return the contents of a file for an `embed` expression.
 
-  virtual kj::Maybe<Type> CAPNP_CAPNPC_API resolveBootstrapType(schema::Type::Reader type,
+  CAPNP_CAPNPC_API virtual kj::Maybe<Type> resolveBootstrapType(schema::Type::Reader type,
                                                                 Schema scope) = 0;
   // Compile a schema::Type into a Type whose dependencies may safely be traversed via the schema
   // API. These dependencies may have only bootstrap schemas. Returns null if the type could not

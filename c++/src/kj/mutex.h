@@ -137,9 +137,9 @@ public:
     SHARED
   };
 
-  bool KJ_API lock(Exclusivity exclusivity, Maybe<Duration> timeout,
+  KJ_API bool lock(Exclusivity exclusivity, Maybe<Duration> timeout,
                    LockSourceLocationArg location);
-  void KJ_API unlock(Exclusivity exclusivity, Waiter* waiterToSkip = nullptr);
+  KJ_API void unlock(Exclusivity exclusivity, Waiter* waiterToSkip = nullptr);
 
   void assertLockedByCaller(Exclusivity exclusivity) const;
   // In debug mode, assert that the mutex is locked by the calling thread, or if that is
@@ -277,7 +277,7 @@ public:
     virtual void run() = 0;
   };
 
-  void KJ_API runOnce(Initializer& init, LockSourceLocationArg location);
+  KJ_API void runOnce(Initializer& init, LockSourceLocationArg location);
 
 #if _WIN32 || __CYGWIN__  // TODO(perf): Can we make this inline on win32 somehow?
   bool isInitialized() noexcept;
@@ -730,34 +730,34 @@ inline const T& Lazy<T>::get(Func&& init, LockSourceLocationArg location) const 
 
 #if KJ_TRACK_LOCK_BLOCKING
 struct KJ_CLASS BlockedOnMutexAcquisition {
-  const _::Mutex& KJ_API mutex;
+  KJ_API const _::Mutex& mutex;
   // The mutex we are blocked on.
 
-  const SourceLocation& KJ_API origin;
+  KJ_API const SourceLocation& origin;
   // Where did the blocking operation originate from.
 };
 
 struct KJ_CLASS BlockedOnCondVarWait {
-  const _::Mutex& KJ_API mutex;
+  KJ_API const _::Mutex& mutex;
   // The mutex the condition variable is using (may or may not be locked).
 
-  const void* KJ_API waiter;
+  KJ_API const void* waiter;
   // Pointer to the waiter that's being waited on.
 
-  const SourceLocation& KJ_API origin;
+  KJ_API const SourceLocation& origin;
   // Where did the blocking operation originate from.
 };
 
 struct KJ_CLASS BlockedOnOnceInit {
-  const _::Once& KJ_API once;
+  KJ_API const _::Once& once;
 
-  const SourceLocation& KJ_API origin;
+  KJ_API const SourceLocation& origin;
   // Where did the blocking operation originate from.
 };
 
 using BlockedOnReason = OneOf<BlockedOnMutexAcquisition, BlockedOnCondVarWait, BlockedOnOnceInit>;
 
-Maybe<const BlockedOnReason&> KJ_API blockedReason() noexcept;
+KJ_API Maybe<const BlockedOnReason&> blockedReason() noexcept;
 // Returns the information about the reason the current thread is blocked synchronously on KJ
 // lock primitives. Returns nullptr if the current thread is not currently blocked on such
 // primitives. This is intended to be called from a signal handler to check whether the current

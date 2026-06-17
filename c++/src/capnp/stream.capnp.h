@@ -48,14 +48,14 @@ public:
   typedef StreamResult Reads;
 
   CAPNP_API Reader() = default;
-  inline explicit CAPNP_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_API totalSize() const {
+  CAPNP_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_API toString() const {
+  CAPNP_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
@@ -78,14 +78,14 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_API asReader() const { return *this; }
+  CAPNP_API inline Builder(decltype(nullptr)) {}
+  CAPNP_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_API toString() const { return asReader().toString(); }
+  CAPNP_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
 private:
@@ -102,8 +102,8 @@ class CAPNP_CLASS StreamResult::Pipeline {
 public:
   typedef StreamResult Pipelines;
 
-  inline CAPNP_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:

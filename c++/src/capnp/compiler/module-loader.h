@@ -36,21 +36,21 @@ namespace compiler {
 
 class CAPNP_CAPNPC_CLASS ModuleLoader {
 public:
-  explicit CAPNP_CAPNPC_API ModuleLoader(GlobalErrorReporter& errorReporter);
+  CAPNP_CAPNPC_API explicit ModuleLoader(GlobalErrorReporter& errorReporter);
   // Create a ModuleLoader that reports error messages to the given reporter.
 
   KJ_DISALLOW_COPY_AND_MOVE(ModuleLoader);
 
   CAPNP_CAPNPC_API ~ModuleLoader() noexcept(false);
 
-  void CAPNP_CAPNPC_API addImportPath(const kj::ReadableDirectory& dir);
+  CAPNP_CAPNPC_API void addImportPath(const kj::ReadableDirectory& dir);
   // Add a directory to the list of paths that is searched for imports that start with a '/'.
 
-  kj::Maybe<Module&> CAPNP_CAPNPC_API loadModule(const kj::ReadableDirectory& dir, kj::PathPtr path);
+  CAPNP_CAPNPC_API kj::Maybe<Module&> loadModule(const kj::ReadableDirectory& dir, kj::PathPtr path);
   // Tries to load a module with the given path inside the given directory. Returns nullptr if the
   // file doesn't exist.
 
-  void CAPNP_CAPNPC_API setFileIdsRequired(bool value);
+  CAPNP_CAPNPC_API void setFileIdsRequired(bool value);
   // Same as SchemaParser::setFileIdsRequired(). If set false, files will not be required to have
   // a top-level file ID; if missing a random one will be assigned.
 

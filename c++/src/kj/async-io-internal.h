@@ -51,8 +51,8 @@ public:
   KJ_API NetworkFilter(ArrayPtr<const StringPtr> allow, ArrayPtr<const StringPtr> deny,
                 NetworkFilter& next);
 
-  bool KJ_API shouldAllow(const struct sockaddr* addr, uint addrlen) override;
-  bool KJ_API shouldAllowParse(const struct sockaddr* addr, uint addrlen);
+  KJ_API bool shouldAllow(const struct sockaddr* addr, uint addrlen) override;
+  KJ_API bool shouldAllowParse(const struct sockaddr* addr, uint addrlen);
 
 private:
   Vector<CidrRange> allowCidrs;

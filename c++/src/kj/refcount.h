@@ -67,10 +67,10 @@ class KJ_CLASS Refcounted: private Disposer {
 
 public:
   KJ_API Refcounted() = default;
-  virtual KJ_API ~Refcounted() noexcept(false);
+  KJ_API virtual ~Refcounted() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(Refcounted);
 
-  inline bool KJ_API isShared() const { return refcount > 1; }
+  KJ_API inline bool isShared() const { return refcount > 1; }
   // Check if there are multiple references to this object. This is sometimes useful for deciding
   // whether it's safe to modify the object vs. make a copy.
 
@@ -185,10 +185,10 @@ Own<RefcountedWrapper<Own<T>>> refcountedWrapper(Own<T>&& wrapped) {
 class KJ_CLASS AtomicRefcounted: private kj::Disposer {
 public:
   KJ_API AtomicRefcounted() = default;
-  virtual KJ_API ~AtomicRefcounted() noexcept(false);
+  KJ_API virtual ~AtomicRefcounted() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(AtomicRefcounted);
 
-  inline bool KJ_API isShared() const {
+  KJ_API inline bool isShared() const {
 #if _MSC_VER && !defined(__clang__)
     return KJ_MSVC_INTERLOCKED(Or, acq)(&refcount, 0) > 1;
 #else

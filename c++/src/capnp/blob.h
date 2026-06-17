@@ -53,12 +53,12 @@ public:
   typedef Data Reads;
 
   CAPNP_API Reader() = default;
-  inline CAPNP_API Reader(decltype(nullptr)): ArrayPtr<const byte>(nullptr) {}
-  inline CAPNP_API Reader(const byte* value, size_t size): ArrayPtr<const byte>(value, size) {}
-  inline CAPNP_API Reader(const kj::Array<const byte>& value): ArrayPtr<const byte>(value) {}
-  inline CAPNP_API Reader(const ArrayPtr<const byte>& value): ArrayPtr<const byte>(value) {}
-  inline CAPNP_API Reader(const kj::Array<byte>& value): ArrayPtr<const byte>(value) {}
-  inline CAPNP_API Reader(const ArrayPtr<byte>& value): ArrayPtr<const byte>(value) {}
+  CAPNP_API inline Reader(decltype(nullptr)): ArrayPtr<const byte>(nullptr) {}
+  CAPNP_API inline Reader(const byte* value, size_t size): ArrayPtr<const byte>(value, size) {}
+  CAPNP_API inline Reader(const kj::Array<const byte>& value): ArrayPtr<const byte>(value) {}
+  CAPNP_API inline Reader(const ArrayPtr<const byte>& value): ArrayPtr<const byte>(value) {}
+  CAPNP_API inline Reader(const kj::Array<byte>& value): ArrayPtr<const byte>(value) {}
+  CAPNP_API inline Reader(const ArrayPtr<byte>& value): ArrayPtr<const byte>(value) {}
 };
 
 class CAPNP_CLASS Text::Reader: public kj::StringPtr {
@@ -73,11 +73,11 @@ public:
   typedef Text Reads;
 
   CAPNP_API Reader() = default;
-  inline CAPNP_API Reader(decltype(nullptr)): StringPtr(nullptr) {}
-  inline CAPNP_API Reader(const char* value): StringPtr(value) {}
-  inline CAPNP_API Reader(const char* value, size_t size): StringPtr(value, size) {}
-  inline CAPNP_API Reader(const kj::String& value): StringPtr(value) {}
-  inline CAPNP_API Reader(const StringPtr& value): StringPtr(value) {}
+  CAPNP_API inline Reader(decltype(nullptr)): StringPtr(nullptr) {}
+  CAPNP_API inline Reader(const char* value): StringPtr(value) {}
+  CAPNP_API inline Reader(const char* value, size_t size): StringPtr(value, size) {}
+  CAPNP_API inline Reader(const kj::String& value): StringPtr(value) {}
+  CAPNP_API inline Reader(const StringPtr& value): StringPtr(value) {}
 
 #if KJ_COMPILER_SUPPORTS_STL_STRING_INTEROP
   template <
@@ -97,70 +97,70 @@ public:
   typedef Data Builds;
 
   CAPNP_API Builder() = default;
-  inline CAPNP_API Builder(decltype(nullptr)): ArrayPtr<byte>(nullptr) {}
-  inline CAPNP_API Builder(byte* value, size_t size): ArrayPtr<byte>(value, size) {}
-  inline CAPNP_API Builder(kj::Array<byte>& value): ArrayPtr<byte>(value) {}
-  inline CAPNP_API Builder(ArrayPtr<byte> value): ArrayPtr<byte>(value) {}
+  CAPNP_API inline Builder(decltype(nullptr)): ArrayPtr<byte>(nullptr) {}
+  CAPNP_API inline Builder(byte* value, size_t size): ArrayPtr<byte>(value, size) {}
+  CAPNP_API inline Builder(kj::Array<byte>& value): ArrayPtr<byte>(value) {}
+  CAPNP_API inline Builder(ArrayPtr<byte> value): ArrayPtr<byte>(value) {}
 
-  inline Data::Reader CAPNP_API asReader() const {
+  CAPNP_API inline Data::Reader asReader() const {
     return Data::Reader(kj::implicitCast<const kj::ArrayPtr<byte>&>(*this));
   }
-  inline CAPNP_API operator Reader() const { return asReader(); }
+  CAPNP_API inline operator Reader() const { return asReader(); }
 };
 
 class CAPNP_CLASS Text::Builder: public kj::DisallowConstCopy {
   // Basically identical to kj::StringPtr, except that the contents are non-const.
 
 public:
-  inline CAPNP_API Builder(): content(nulstr, 1) {}
-  inline CAPNP_API Builder(decltype(nullptr)): content(nulstr, 1) {}
-  inline CAPNP_API Builder(char* value): content(value, strlen(value) + 1) {}
-  inline CAPNP_API Builder(char* value, size_t size): content(value, size + 1) {
+  CAPNP_API inline Builder(): content(nulstr, 1) {}
+  CAPNP_API inline Builder(decltype(nullptr)): content(nulstr, 1) {}
+  CAPNP_API inline Builder(char* value): content(value, strlen(value) + 1) {}
+  CAPNP_API inline Builder(char* value, size_t size): content(value, size + 1) {
     KJ_IREQUIRE(value[size] == '\0', "StringPtr must be NUL-terminated.");
   }
 
-  inline Reader CAPNP_API asReader() const { return Reader(content.begin(), content.size() - 1); }
-  inline CAPNP_API operator Reader() const { return asReader(); }
+  CAPNP_API inline Reader asReader() const { return Reader(content.begin(), content.size() - 1); }
+  CAPNP_API inline operator Reader() const { return asReader(); }
 
-  inline CAPNP_API operator kj::ArrayPtr<char>();
-  inline kj::ArrayPtr<char> CAPNP_API asArray();
-  inline CAPNP_API operator kj::ArrayPtr<const char>() const;
-  inline kj::ArrayPtr<const char> CAPNP_API asArray() const;
-  inline kj::ArrayPtr<byte> CAPNP_API asBytes() { return asArray().asBytes(); }
-  inline kj::ArrayPtr<const byte> CAPNP_API asBytes() const { return asArray().asBytes(); }
+  CAPNP_API inline operator kj::ArrayPtr<char>();
+  CAPNP_API inline kj::ArrayPtr<char> asArray();
+  CAPNP_API inline operator kj::ArrayPtr<const char>() const;
+  CAPNP_API inline kj::ArrayPtr<const char> asArray() const;
+  CAPNP_API inline kj::ArrayPtr<byte> asBytes() { return asArray().asBytes(); }
+  CAPNP_API inline kj::ArrayPtr<const byte> asBytes() const { return asArray().asBytes(); }
   // Result does not include NUL terminator.
 
-  inline CAPNP_API operator kj::StringPtr() const;
-  inline kj::StringPtr CAPNP_API asString() const;
+  CAPNP_API inline operator kj::StringPtr() const;
+  CAPNP_API inline kj::StringPtr asString() const;
 
-  inline const char* CAPNP_API cStr() const { return content.begin(); }
+  CAPNP_API inline const char* cStr() const { return content.begin(); }
   // Returns NUL-terminated string.
 
-  inline size_t CAPNP_API size() const { return content.size() - 1; }
+  CAPNP_API inline size_t size() const { return content.size() - 1; }
   // Result does not include NUL terminator.
 
-  inline char CAPNP_API operator[](size_t index) const { return content[index]; }
-  inline char& CAPNP_API operator[](size_t index) { return content[index]; }
+  CAPNP_API inline char operator[](size_t index) const { return content[index]; }
+  CAPNP_API inline char& operator[](size_t index) { return content[index]; }
 
-  inline char* CAPNP_API begin() { return content.begin(); }
-  inline char* CAPNP_API end() { return content.end() - 1; }
-  inline const char* CAPNP_API begin() const { return content.begin(); }
-  inline const char* CAPNP_API end() const { return content.end() - 1; }
+  CAPNP_API inline char* begin() { return content.begin(); }
+  CAPNP_API inline char* end() { return content.end() - 1; }
+  CAPNP_API inline const char* begin() const { return content.begin(); }
+  CAPNP_API inline const char* end() const { return content.end() - 1; }
 
-  inline bool CAPNP_API operator==(decltype(nullptr)) const { return content.size() <= 1; }
-  inline bool CAPNP_API operator!=(decltype(nullptr)) const { return content.size() > 1; }
+  CAPNP_API inline bool operator==(decltype(nullptr)) const { return content.size() <= 1; }
+  CAPNP_API inline bool operator!=(decltype(nullptr)) const { return content.size() > 1; }
 
-  inline bool CAPNP_API operator==(Builder other) const { return asString() == other.asString(); }
-  inline bool CAPNP_API operator!=(Builder other) const { return asString() != other.asString(); }
-  inline bool CAPNP_API operator< (Builder other) const { return asString() <  other.asString(); }
-  inline bool CAPNP_API operator> (Builder other) const { return asString() >  other.asString(); }
-  inline bool CAPNP_API operator<=(Builder other) const { return asString() <= other.asString(); }
-  inline bool CAPNP_API operator>=(Builder other) const { return asString() >= other.asString(); }
+  CAPNP_API inline bool operator==(Builder other) const { return asString() == other.asString(); }
+  CAPNP_API inline bool operator!=(Builder other) const { return asString() != other.asString(); }
+  CAPNP_API inline bool operator< (Builder other) const { return asString() <  other.asString(); }
+  CAPNP_API inline bool operator> (Builder other) const { return asString() >  other.asString(); }
+  CAPNP_API inline bool operator<=(Builder other) const { return asString() <= other.asString(); }
+  CAPNP_API inline bool operator>=(Builder other) const { return asString() >= other.asString(); }
 
-  inline kj::StringPtr CAPNP_API slice(size_t start) const;
-  inline kj::ArrayPtr<const char> CAPNP_API slice(size_t start, size_t end) const;
-  inline Builder CAPNP_API slice(size_t start);
-  inline kj::ArrayPtr<char> CAPNP_API slice(size_t start, size_t end);
+  CAPNP_API inline kj::StringPtr slice(size_t start) const;
+  CAPNP_API inline kj::ArrayPtr<const char> slice(size_t start, size_t end) const;
+  CAPNP_API inline Builder slice(size_t start);
+  CAPNP_API inline kj::ArrayPtr<char> slice(size_t start, size_t end);
   // A string slice is only NUL-terminated if it is a suffix, so slice() has a one-parameter
   // version that assumes end = size().
 
@@ -172,14 +172,14 @@ private:
   static char nulstr[1];
 };
 
-inline kj::StringPtr CAPNP_API KJ_STRINGIFY(Text::Builder builder) {
+CAPNP_API inline kj::StringPtr KJ_STRINGIFY(Text::Builder builder) {
   return builder.asString();
 }
 
-inline bool CAPNP_API operator==(const char* a, const Text::Builder& b) {
+CAPNP_API inline bool operator==(const char* a, const Text::Builder& b) {
   return b.asString() == a;
 }
-inline bool CAPNP_API operator!=(const char* a, const Text::Builder& b) {
+CAPNP_API inline bool operator!=(const char* a, const Text::Builder& b) {
   return b.asString() != a;
 }
 

@@ -332,71 +332,71 @@ class CAPNP_CLASS PointerBuilder: public kj::DisallowConstCopy {
   // Represents a single pointer, usually embedded in a struct or a list.
 
 public:
-  inline CAPNP_API PointerBuilder(): segment(nullptr), capTable(nullptr), pointer(nullptr) {}
+  CAPNP_API inline PointerBuilder(): segment(nullptr), capTable(nullptr), pointer(nullptr) {}
 
-  static inline PointerBuilder CAPNP_API getRoot(
+  CAPNP_API static inline PointerBuilder getRoot(
       SegmentBuilder* segment, CapTableBuilder* capTable, word* location);
   // Get a PointerBuilder representing a message root located in the given segment at the given
   // location.
 
-  inline bool CAPNP_API isNull() { return getPointerType() == PointerType::NULL_; }
-  PointerType CAPNP_API getPointerType() const;
+  CAPNP_API inline bool isNull() { return getPointerType() == PointerType::NULL_; }
+  CAPNP_API PointerType getPointerType() const;
 
-  StructBuilder CAPNP_API getStruct(StructSize size, const word* defaultValue);
-  ListBuilder CAPNP_API getList(ElementSize elementSize, const word* defaultValue);
-  ListBuilder CAPNP_API getStructList(StructSize elementSize, const word* defaultValue);
-  ListBuilder CAPNP_API getListAnySize(const word* defaultValue);
+  CAPNP_API StructBuilder getStruct(StructSize size, const word* defaultValue);
+  CAPNP_API ListBuilder getList(ElementSize elementSize, const word* defaultValue);
+  CAPNP_API ListBuilder getStructList(StructSize elementSize, const word* defaultValue);
+  CAPNP_API ListBuilder getListAnySize(const word* defaultValue);
   template <typename T> typename T::Builder getBlob(
       const void* defaultValue, ByteCount defaultSize);
 #if !CAPNP_LITE
-  kj::Own<ClientHook> CAPNP_API getCapability();
+  CAPNP_API kj::Own<ClientHook> getCapability();
 #endif  // !CAPNP_LITE
   // Get methods:  Get the value.  If it is null, initialize it to a copy of the default value.
   // The default value is encoded as an "unchecked message" for structs, lists, and objects, or a
   // simple byte array for blobs.
 
-  StructBuilder CAPNP_API initStruct(StructSize size);
-  ListBuilder CAPNP_API initList(ElementSize elementSize, ElementCount elementCount);
-  ListBuilder CAPNP_API initStructList(ElementCount elementCount, StructSize size);
+  CAPNP_API StructBuilder initStruct(StructSize size);
+  CAPNP_API ListBuilder initList(ElementSize elementSize, ElementCount elementCount);
+  CAPNP_API ListBuilder initStructList(ElementCount elementCount, StructSize size);
   template <typename T> typename T::Builder initBlob(ByteCount size);
   // Init methods:  Initialize the pointer to a newly-allocated object, discarding the existing
   // object.
 
-  void CAPNP_API setStruct(const StructReader& value, bool canonical = false);
-  void CAPNP_API setList(const ListReader& value, bool canonical = false);
+  CAPNP_API void setStruct(const StructReader& value, bool canonical = false);
+  CAPNP_API void setList(const ListReader& value, bool canonical = false);
   template <typename T> void setBlob(typename T::Reader value);
 #if !CAPNP_LITE
-  void CAPNP_API setCapability(kj::Own<ClientHook>&& cap);
+  CAPNP_API void setCapability(kj::Own<ClientHook>&& cap);
 #endif  // !CAPNP_LITE
   // Set methods:  Initialize the pointer to a newly-allocated copy of the given value, discarding
   // the existing object.
 
-  void CAPNP_API adopt(OrphanBuilder&& orphan);
+  CAPNP_API void adopt(OrphanBuilder&& orphan);
   // Set the pointer to point at the given orphaned value.
 
-  OrphanBuilder CAPNP_API disown();
+  CAPNP_API OrphanBuilder disown();
   // Set the pointer to null and return its previous value as an orphan.
 
-  void CAPNP_API clear();
+  CAPNP_API void clear();
   // Clear the pointer to null, discarding its previous value.
 
-  void CAPNP_API transferFrom(PointerBuilder other);
+  CAPNP_API void transferFrom(PointerBuilder other);
   // Equivalent to `adopt(other.disown())`.
 
-  void CAPNP_API copyFrom(PointerReader other, bool canonical = false);
+  CAPNP_API void copyFrom(PointerReader other, bool canonical = false);
   // Equivalent to `set(other.get())`.
   // If you set the canonical flag, it will attempt to lay the target out
   // canonically, provided enough space is available.
 
-  PointerReader CAPNP_API asReader() const;
+  CAPNP_API PointerReader asReader() const;
 
-  BuilderArena* CAPNP_API getArena() const;
+  CAPNP_API BuilderArena* getArena() const;
   // Get the arena containing this pointer.
 
-  CapTableBuilder* CAPNP_API getCapTable();
+  CAPNP_API CapTableBuilder* getCapTable();
   // Gets the capability context in which this object is operating.
 
-  PointerBuilder CAPNP_API imbue(CapTableBuilder* capTable);
+  CAPNP_API PointerBuilder imbue(CapTableBuilder* capTable);
   // Return a copy of this builder except using the given capability context.
 
 private:
@@ -414,54 +414,54 @@ private:
 
 class CAPNP_CLASS PointerReader {
 public:
-  inline CAPNP_API PointerReader()
+  CAPNP_API inline PointerReader()
       : segment(nullptr), capTable(nullptr), pointer(nullptr), nestingLimit(0x7fffffff) {}
 
-  static PointerReader CAPNP_API getRoot(SegmentReader* segment, CapTableReader* capTable,
+  CAPNP_API static PointerReader getRoot(SegmentReader* segment, CapTableReader* capTable,
                                          const word* location, int nestingLimit);
   // Get a PointerReader representing a message root located in the given segment at the given
   // location.
 
-  static inline PointerReader CAPNP_API getRootUnchecked(const word* location);
+  CAPNP_API static inline PointerReader getRootUnchecked(const word* location);
   // Get a PointerReader for an unchecked message.
 
-  MessageSizeCounts CAPNP_API targetSize() const;
+  CAPNP_API MessageSizeCounts targetSize() const;
   // Return the total size of the target object and everything to which it points.  Does not count
   // far pointer overhead.  This is useful for deciding how much space is needed to copy the object
   // into a flat array.  However, the caller is advised NOT to treat this value as secure.  Instead,
   // use the result as a hint for allocating the first segment, do the copy, and then throw an
   // exception if it overruns.
 
-  inline bool CAPNP_API isNull() const { return getPointerType() == PointerType::NULL_; }
-  PointerType CAPNP_API getPointerType() const;
+  CAPNP_API inline bool isNull() const { return getPointerType() == PointerType::NULL_; }
+  CAPNP_API PointerType getPointerType() const;
 
-  StructReader CAPNP_API getStruct(const word* defaultValue) const;
-  ListReader CAPNP_API getList(ElementSize expectedElementSize, const word* defaultValue) const;
-  ListReader CAPNP_API getListAnySize(const word* defaultValue) const;
+  CAPNP_API StructReader getStruct(const word* defaultValue) const;
+  CAPNP_API ListReader getList(ElementSize expectedElementSize, const word* defaultValue) const;
+  CAPNP_API ListReader getListAnySize(const word* defaultValue) const;
   template <typename T>
   typename T::Reader getBlob(const void* defaultValue, ByteCount defaultSize) const;
 #if !CAPNP_LITE
-  kj::Own<ClientHook> CAPNP_API getCapability() const;
+  CAPNP_API kj::Own<ClientHook> getCapability() const;
 #endif  // !CAPNP_LITE
   // Get methods:  Get the value.  If it is null, return the default value instead.
   // The default value is encoded as an "unchecked message" for structs, lists, and objects, or a
   // simple byte array for blobs.
 
-  const word* CAPNP_API getUnchecked() const;
+  CAPNP_API const word* getUnchecked() const;
   // If this is an unchecked message, get a word* pointing at the location of the pointer.  This
   // word* can actually be passed to readUnchecked() to read the designated sub-object later.  If
   // this isn't an unchecked message, throws an exception.
 
-  kj::Maybe<Arena&> CAPNP_API getArena() const;
+  CAPNP_API kj::Maybe<Arena&> getArena() const;
   // Get the arena containing this pointer.
 
-  CapTableReader* CAPNP_API getCapTable();
+  CAPNP_API CapTableReader* getCapTable();
   // Gets the capability context in which this object is operating.
 
-  PointerReader CAPNP_API imbue(CapTableReader* capTable) const;
+  CAPNP_API PointerReader imbue(CapTableReader* capTable) const;
   // Return a copy of this reader except using the given capability context.
 
-  bool CAPNP_API isCanonical(const word **readHead);
+  CAPNP_API bool isCanonical(const word **readHead);
   // Validate this pointer's canonicity, subject to the conditions:
   // * All data to the left of readHead has been read thus far (for pointer
   //   ordering)
@@ -491,17 +491,17 @@ private:
 
 class CAPNP_CLASS StructBuilder: public kj::DisallowConstCopy {
 public:
-  inline CAPNP_API StructBuilder(): segment(nullptr), capTable(nullptr), data(nullptr),
+  CAPNP_API inline StructBuilder(): segment(nullptr), capTable(nullptr), data(nullptr),
                                     pointers(nullptr) {}
 
-  inline word* CAPNP_API getLocation() { return reinterpret_cast<word*>(data); }
+  CAPNP_API inline word* getLocation() { return reinterpret_cast<word*>(data); }
   // Get the object's location.  Only valid for independently-allocated objects (i.e. not list
   // elements).
 
-  inline StructDataBitCount CAPNP_API getDataSectionSize() const { return dataSize; }
-  inline StructPointerCount CAPNP_API getPointerSectionSize() const { return pointerCount; }
-  inline kj::ArrayPtr<byte> CAPNP_API getDataSectionAsBlob();
-  inline _::ListBuilder CAPNP_API getPointerSectionAsList();
+  CAPNP_API inline StructDataBitCount getDataSectionSize() const { return dataSize; }
+  CAPNP_API inline StructPointerCount getPointerSectionSize() const { return pointerCount; }
+  CAPNP_API inline kj::ArrayPtr<byte> getDataSectionAsBlob();
+  CAPNP_API inline _::ListBuilder getPointerSectionAsList();
 
   template <typename T>
   KJ_ALWAYS_INLINE(bool hasDataField(StructDataOffset offset));
@@ -527,32 +527,32 @@ public:
   // Like setDataField() but applies the given XOR mask before storing.  Used for writing fields
   // with non-zero default values.
 
-  KJ_ALWAYS_INLINE(PointerBuilder CAPNP_API getPointerField(StructPointerOffset ptrIndex));
+  CAPNP_API KJ_ALWAYS_INLINE(PointerBuilder getPointerField(StructPointerOffset ptrIndex));
   // Get a builder for a pointer field given the index within the pointer section.
 
-  void CAPNP_API clearAll();
+  CAPNP_API void clearAll();
   // Clear all pointers and data.
 
-  void CAPNP_API transferContentFrom(StructBuilder other);
+  CAPNP_API void transferContentFrom(StructBuilder other);
   // Adopt all pointers from `other`, and also copy all data.  If `other`'s sections are larger
   // than this, the extra data is not transferred, meaning there is a risk of data loss when
   // transferring from messages built with future versions of the protocol.
 
-  void CAPNP_API copyContentFrom(StructReader other);
+  CAPNP_API void copyContentFrom(StructReader other);
   // Copy content from `other`.  If `other`'s sections are larger than this, the extra data is not
   // copied, meaning there is a risk of data loss when copying from messages built with future
   // versions of the protocol.
 
-  StructReader CAPNP_API asReader() const;
+  CAPNP_API StructReader asReader() const;
   // Gets a StructReader pointing at the same memory.
 
-  BuilderArena* CAPNP_API getArena();
+  CAPNP_API BuilderArena* getArena();
   // Gets the arena in which this object is allocated.
 
-  CapTableBuilder* CAPNP_API getCapTable();
+  CAPNP_API CapTableBuilder* getCapTable();
   // Gets the capability context in which this object is operating.
 
-  StructBuilder CAPNP_API imbue(CapTableBuilder* capTable);
+  CAPNP_API StructBuilder imbue(CapTableBuilder* capTable);
   // Return a copy of this builder except using the given capability context.
 
 private:
@@ -580,22 +580,22 @@ private:
 
 class CAPNP_CLASS StructReader {
 public:
-  inline CAPNP_API StructReader()
+  CAPNP_API inline StructReader()
       : segment(nullptr), capTable(nullptr), data(nullptr), pointers(nullptr),
         dataSize(ZERO * BITS), pointerCount(ZERO * POINTERS), nestingLimit(0x7fffffff) {}
-  inline CAPNP_API StructReader(kj::ArrayPtr<const word> data)
+  CAPNP_API inline StructReader(kj::ArrayPtr<const word> data)
       : segment(nullptr), capTable(nullptr), data(data.begin()), pointers(nullptr),
         dataSize(assumeBits<STRUCT_DATA_WORD_COUNT_BITS>(data.size()) * WORDS * BITS_PER_WORD),
         pointerCount(ZERO * POINTERS), nestingLimit(0x7fffffff) {}
 
-  const void* CAPNP_API getLocation() const { return data; }
+  CAPNP_API const void* getLocation() const { return data; }
 
-  inline StructDataBitCount CAPNP_API getDataSectionSize() const { return dataSize; }
-  inline StructPointerCount CAPNP_API getPointerSectionSize() const { return pointerCount; }
-  inline kj::ArrayPtr<const byte> CAPNP_API getDataSectionAsBlob() const;
-  inline _::ListReader CAPNP_API getPointerSectionAsList() const;
+  CAPNP_API inline StructDataBitCount getDataSectionSize() const { return dataSize; }
+  CAPNP_API inline StructPointerCount getPointerSectionSize() const { return pointerCount; }
+  CAPNP_API inline kj::ArrayPtr<const byte> getDataSectionAsBlob() const;
+  CAPNP_API inline _::ListReader getPointerSectionAsList() const;
 
-  kj::Array<word> CAPNP_API canonicalize();
+  CAPNP_API kj::Array<word> canonicalize();
 
   template <typename T>
   KJ_ALWAYS_INLINE(bool hasDataField(StructDataOffset offset) const);
@@ -612,22 +612,22 @@ public:
   // Like getDataField(offset), but applies the given XOR mask to the result.  Used for reading
   // fields with non-zero default values.
 
-  KJ_ALWAYS_INLINE(PointerReader CAPNP_API getPointerField(StructPointerOffset ptrIndex) const);
+  CAPNP_API KJ_ALWAYS_INLINE(PointerReader getPointerField(StructPointerOffset ptrIndex) const);
   // Get a reader for a pointer field given the index within the pointer section.  If the index
   // is out-of-bounds, returns a null pointer.
 
-  MessageSizeCounts CAPNP_API totalSize() const;
+  CAPNP_API MessageSizeCounts totalSize() const;
   // Return the total size of the struct and everything to which it points.  Does not count far
   // pointer overhead.  This is useful for deciding how much space is needed to copy the struct
   // into a flat array.
 
-  CapTableReader* CAPNP_API getCapTable();
+  CAPNP_API CapTableReader* getCapTable();
   // Gets the capability context in which this object is operating.
 
-  StructReader CAPNP_API imbue(CapTableReader* capTable) const;
+  CAPNP_API StructReader imbue(CapTableReader* capTable) const;
   // Return a copy of this reader except using the given capability context.
 
-  bool CAPNP_API isCanonical(const word **readHead, const word **ptrHead,
+  CAPNP_API bool isCanonical(const word **readHead, const word **ptrHead,
                              bool *dataTrunc, bool *ptrTrunc);
   // Validate this pointer's canonicity, subject to the conditions:
   // * All data to the left of readHead has been read thus far (for pointer
@@ -677,12 +677,12 @@ private:
 
 class CAPNP_CLASS ListBuilder: public kj::DisallowConstCopy {
 public:
-  inline explicit CAPNP_API ListBuilder(ElementSize elementSize)
+  CAPNP_API inline explicit ListBuilder(ElementSize elementSize)
       : segment(nullptr), capTable(nullptr), ptr(nullptr), elementCount(ZERO * ELEMENTS),
         step(ZERO * BITS / ELEMENTS), structDataSize(ZERO * BITS),
         structPointerCount(ZERO * POINTERS), elementSize(elementSize) {}
 
-  inline word* CAPNP_API getLocation() {
+  CAPNP_API inline word* getLocation() {
     // Get the object's location.
 
     if (elementSize == ElementSize::INLINE_COMPOSITE && ptr != nullptr) {
@@ -692,13 +692,13 @@ public:
     }
   }
 
-  inline ElementSize CAPNP_API getElementSize() const { return elementSize; }
+  CAPNP_API inline ElementSize getElementSize() const { return elementSize; }
 
-  inline ListElementCount CAPNP_API size() const;
+  CAPNP_API inline ListElementCount size() const;
   // The number of elements in the list.
 
-  Text::Builder CAPNP_API asText();
-  Data::Builder CAPNP_API asData();
+  CAPNP_API Text::Builder asText();
+  CAPNP_API Data::Builder asData();
   // Reinterpret the list as a blob.  Throws an exception if the elements are not byte-sized.
 
   template <typename T>
@@ -709,20 +709,20 @@ public:
   KJ_ALWAYS_INLINE(void setDataElement(ElementCount index, kj::NoInfer<T> value));
   // Set the element at the given index.
 
-  KJ_ALWAYS_INLINE(PointerBuilder CAPNP_API getPointerElement(ElementCount index));
+  CAPNP_API KJ_ALWAYS_INLINE(PointerBuilder getPointerElement(ElementCount index));
 
-  StructBuilder CAPNP_API getStructElement(ElementCount index);
+  CAPNP_API StructBuilder getStructElement(ElementCount index);
 
-  ListReader CAPNP_API asReader() const;
+  CAPNP_API ListReader asReader() const;
   // Get a ListReader pointing at the same memory.
 
-  BuilderArena* CAPNP_API getArena();
+  CAPNP_API BuilderArena* getArena();
   // Gets the arena in which this object is allocated.
 
-  CapTableBuilder* CAPNP_API getCapTable();
+  CAPNP_API CapTableBuilder* getCapTable();
   // Gets the capability context in which this object is operating.
 
-  ListBuilder CAPNP_API imbue(CapTableBuilder* capTable);
+  CAPNP_API ListBuilder imbue(CapTableBuilder* capTable);
   // Return a copy of this builder except using the given capability context.
 
 private:
@@ -761,40 +761,40 @@ private:
 
 class CAPNP_CLASS ListReader {
 public:
-  inline explicit CAPNP_API ListReader(ElementSize elementSize)
+  CAPNP_API inline explicit ListReader(ElementSize elementSize)
       : segment(nullptr), capTable(nullptr), ptr(nullptr), elementCount(ZERO * ELEMENTS),
         step(ZERO * BITS / ELEMENTS), structDataSize(ZERO * BITS),
         structPointerCount(ZERO * POINTERS), elementSize(elementSize), nestingLimit(0x7fffffff) {}
 
-  inline ListElementCount CAPNP_API size() const;
+  CAPNP_API inline ListElementCount size() const;
   // The number of elements in the list.
 
-  inline ElementSize CAPNP_API getElementSize() const { return elementSize; }
+  CAPNP_API inline ElementSize getElementSize() const { return elementSize; }
 
-  Text::Reader CAPNP_API asText();
-  Data::Reader CAPNP_API asData();
+  CAPNP_API Text::Reader asText();
+  CAPNP_API Data::Reader asData();
   // Reinterpret the list as a blob.  Throws an exception if the elements are not byte-sized.
 
-  kj::ArrayPtr<const byte> CAPNP_API asRawBytes() const;
+  CAPNP_API kj::ArrayPtr<const byte> asRawBytes() const;
 
   template <typename T>
   KJ_ALWAYS_INLINE(T getDataElement(ElementCount index) const);
   // Get the element of the given type at the given index.
 
-  KJ_ALWAYS_INLINE(PointerReader CAPNP_API getPointerElement(ElementCount index) const);
+  CAPNP_API KJ_ALWAYS_INLINE(PointerReader getPointerElement(ElementCount index) const);
 
-  StructReader CAPNP_API getStructElement(ElementCount index) const;
+  CAPNP_API StructReader getStructElement(ElementCount index) const;
 
-  MessageSizeCounts CAPNP_API totalSize() const;
+  CAPNP_API MessageSizeCounts totalSize() const;
   // Like StructReader::totalSize(). Note that for struct lists, the size includes the list tag.
 
-  CapTableReader* CAPNP_API getCapTable();
+  CAPNP_API CapTableReader* getCapTable();
   // Gets the capability context in which this object is operating.
 
-  ListReader CAPNP_API imbue(CapTableReader* capTable) const;
+  CAPNP_API ListReader imbue(CapTableReader* capTable) const;
   // Return a copy of this reader except using the given capability context.
 
-  bool CAPNP_API isCanonical(const word **readHead, const WirePointer* ref);
+  CAPNP_API bool isCanonical(const word **readHead, const WirePointer* ref);
   // Validate this pointer's canonicity, subject to the conditions:
   // * All data to the left of readHead has been read thus far (for pointer
   //   ordering)
@@ -845,85 +845,85 @@ private:
 
 class CAPNP_CLASS OrphanBuilder {
 public:
-  inline CAPNP_API OrphanBuilder(): segment(nullptr), capTable(nullptr), location(nullptr) {
+  CAPNP_API inline OrphanBuilder(): segment(nullptr), capTable(nullptr), location(nullptr) {
     memset(&tag, 0, sizeof(tag));
   }
   OrphanBuilder(const OrphanBuilder& other) = delete;
-  inline CAPNP_API OrphanBuilder(OrphanBuilder&& other) noexcept;
-  inline CAPNP_API ~OrphanBuilder() noexcept(false);
+  CAPNP_API inline OrphanBuilder(OrphanBuilder&& other) noexcept;
+  CAPNP_API inline ~OrphanBuilder() noexcept(false);
 
-  static OrphanBuilder CAPNP_API initStruct(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder initStruct(BuilderArena* arena, CapTableBuilder* capTable,
                                             StructSize size);
-  static OrphanBuilder CAPNP_API initList(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder initList(BuilderArena* arena, CapTableBuilder* capTable,
                                           ElementCount elementCount, ElementSize elementSize);
-  static OrphanBuilder CAPNP_API initStructList(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder initStructList(BuilderArena* arena, CapTableBuilder* capTable,
                                                 ElementCount elementCount, StructSize elementSize);
-  static OrphanBuilder CAPNP_API initText(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder initText(BuilderArena* arena, CapTableBuilder* capTable,
                                           ByteCount size);
-  static OrphanBuilder CAPNP_API initData(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder initData(BuilderArena* arena, CapTableBuilder* capTable,
                                           ByteCount size);
 
-  static OrphanBuilder CAPNP_API copy(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder copy(BuilderArena* arena, CapTableBuilder* capTable,
                                       StructReader copyFrom);
-  static OrphanBuilder CAPNP_API copy(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder copy(BuilderArena* arena, CapTableBuilder* capTable,
                                       ListReader copyFrom);
-  static OrphanBuilder CAPNP_API copy(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder copy(BuilderArena* arena, CapTableBuilder* capTable,
                                       PointerReader copyFrom);
-  static OrphanBuilder CAPNP_API copy(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder copy(BuilderArena* arena, CapTableBuilder* capTable,
                                       Text::Reader copyFrom);
-  static OrphanBuilder CAPNP_API copy(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder copy(BuilderArena* arena, CapTableBuilder* capTable,
                                       Data::Reader copyFrom);
 #if !CAPNP_LITE
-  static OrphanBuilder CAPNP_API copy(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder copy(BuilderArena* arena, CapTableBuilder* capTable,
                                       kj::Own<ClientHook> copyFrom);
 #endif  // !CAPNP_LITE
 
-  static OrphanBuilder CAPNP_API concat(BuilderArena* arena, CapTableBuilder* capTable,
+  CAPNP_API static OrphanBuilder concat(BuilderArena* arena, CapTableBuilder* capTable,
                                         ElementSize expectedElementSize,
                                         StructSize expectedStructSize,
                                         kj::ArrayPtr<const ListReader> lists);
 
-  static OrphanBuilder CAPNP_API referenceExternalData(BuilderArena* arena, Data::Reader data);
+  CAPNP_API static OrphanBuilder referenceExternalData(BuilderArena* arena, Data::Reader data);
 
-  OrphanBuilder& CAPNP_API operator=(const OrphanBuilder& other) = delete;
-  inline OrphanBuilder& CAPNP_API operator=(OrphanBuilder&& other);
+  CAPNP_API OrphanBuilder& operator=(const OrphanBuilder& other) = delete;
+  CAPNP_API inline OrphanBuilder& operator=(OrphanBuilder&& other);
 
-  inline bool CAPNP_API operator==(decltype(nullptr)) const { return location == nullptr; }
-  inline bool CAPNP_API operator!=(decltype(nullptr)) const { return location != nullptr; }
+  CAPNP_API inline bool operator==(decltype(nullptr)) const { return location == nullptr; }
+  CAPNP_API inline bool operator!=(decltype(nullptr)) const { return location != nullptr; }
 
-  StructBuilder CAPNP_API asStruct(StructSize size);
+  CAPNP_API StructBuilder asStruct(StructSize size);
   // Interpret as a struct, or throw an exception if not a struct.
 
-  ListBuilder CAPNP_API asList(ElementSize elementSize);
+  CAPNP_API ListBuilder asList(ElementSize elementSize);
   // Interpret as a list, or throw an exception if not a list.  elementSize cannot be
   // INLINE_COMPOSITE -- use asStructList() instead.
 
-  ListBuilder CAPNP_API asStructList(StructSize elementSize);
+  CAPNP_API ListBuilder asStructList(StructSize elementSize);
   // Interpret as a struct list, or throw an exception if not a list.
 
-  ListBuilder CAPNP_API asListAnySize();
+  CAPNP_API ListBuilder asListAnySize();
   // For AnyList.
 
-  Text::Builder CAPNP_API asText();
-  Data::Builder CAPNP_API asData();
+  CAPNP_API Text::Builder asText();
+  CAPNP_API Data::Builder asData();
   // Interpret as a blob, or throw an exception if not a blob.
 
-  StructReader CAPNP_API asStructReader(StructSize size) const;
-  ListReader CAPNP_API asListReader(ElementSize elementSize) const;
-  ListReader CAPNP_API asListReaderAnySize() const;
+  CAPNP_API StructReader asStructReader(StructSize size) const;
+  CAPNP_API ListReader asListReader(ElementSize elementSize) const;
+  CAPNP_API ListReader asListReaderAnySize() const;
 #if !CAPNP_LITE
-  kj::Own<ClientHook> CAPNP_API asCapability() const;
+  CAPNP_API kj::Own<ClientHook> asCapability() const;
 #endif  // !CAPNP_LITE
-  Text::Reader CAPNP_API asTextReader() const;
-  Data::Reader CAPNP_API asDataReader() const;
+  CAPNP_API Text::Reader asTextReader() const;
+  CAPNP_API Data::Reader asDataReader() const;
 
-  bool CAPNP_API truncate(ElementCount size, bool isText) KJ_WARN_UNUSED_RESULT;
+  CAPNP_API bool truncate(ElementCount size, bool isText) KJ_WARN_UNUSED_RESULT;
   // Resize the orphan list to the given size. Returns false if the list is currently empty but
   // the requested size is non-zero, in which case the caller will need to allocate a new list.
 
-  void CAPNP_API truncate(ElementCount size, ElementSize elementSize);
-  void CAPNP_API truncate(ElementCount size, StructSize elementSize);
-  void CAPNP_API truncateText(ElementCount size);
+  CAPNP_API void truncate(ElementCount size, ElementSize elementSize);
+  CAPNP_API void truncate(ElementCount size, StructSize elementSize);
+  CAPNP_API void truncateText(ElementCount size);
   // Versions of truncate() that know how to allocate a new list if needed.
 
 private:
@@ -960,7 +960,7 @@ private:
   inline WirePointer* tagAsPtr() { return reinterpret_cast<WirePointer*>(&tag); }
   inline const WirePointer* tagAsPtr() const { return reinterpret_cast<const WirePointer*>(&tag); }
 
-  void CAPNP_API euthanize();
+  CAPNP_API void euthanize();
   // Erase the target object, zeroing it out and possibly reclaiming the memory.  Called when
   // the OrphanBuilder is being destroyed or overwritten and it is non-null.
 
@@ -971,18 +971,18 @@ private:
 // Internal implementation details...
 
 // These are defined in the source file.
-template <> typename Text::Builder CAPNP_API PointerBuilder::initBlob<Text>(ByteCount size);
-template <> void CAPNP_API PointerBuilder::setBlob<Text>(typename Text::Reader value);
-template <> typename Text::Builder CAPNP_API PointerBuilder::getBlob<Text>(
+template <> CAPNP_API typename Text::Builder PointerBuilder::initBlob<Text>(ByteCount size);
+template <> CAPNP_API void PointerBuilder::setBlob<Text>(typename Text::Reader value);
+template <> CAPNP_API typename Text::Builder PointerBuilder::getBlob<Text>(
     const void* defaultValue, ByteCount defaultSize);
-template <> typename Text::Reader CAPNP_API PointerReader::getBlob<Text>(
+template <> CAPNP_API typename Text::Reader PointerReader::getBlob<Text>(
     const void* defaultValue, ByteCount defaultSize) const;
 
-template <> typename Data::Builder CAPNP_API PointerBuilder::initBlob<Data>(ByteCount size);
-template <> void CAPNP_API PointerBuilder::setBlob<Data>(typename Data::Reader value);
-template <> typename Data::Builder CAPNP_API PointerBuilder::getBlob<Data>(
+template <> CAPNP_API typename Data::Builder PointerBuilder::initBlob<Data>(ByteCount size);
+template <> CAPNP_API void PointerBuilder::setBlob<Data>(typename Data::Reader value);
+template <> CAPNP_API typename Data::Builder PointerBuilder::getBlob<Data>(
     const void* defaultValue, ByteCount defaultSize);
-template <> typename Data::Reader CAPNP_API PointerReader::getBlob<Data>(
+template <> CAPNP_API typename Data::Reader PointerReader::getBlob<Data>(
     const void* defaultValue, ByteCount defaultSize) const;
 
 inline PointerBuilder PointerBuilder::getRoot(
@@ -1014,7 +1014,7 @@ inline bool StructBuilder::hasDataField(StructDataOffset offset) {
 }
 
 template <>
-inline bool CAPNP_API StructBuilder::hasDataField<Void>(StructDataOffset offset) {
+CAPNP_API inline bool StructBuilder::hasDataField<Void>(StructDataOffset offset) {
   return false;
 }
 
@@ -1024,7 +1024,7 @@ inline T StructBuilder::getDataField(StructDataOffset offset) {
 }
 
 template <>
-inline bool CAPNP_API StructBuilder::getDataField<bool>(StructDataOffset offset) {
+CAPNP_API inline bool StructBuilder::getDataField<bool>(StructDataOffset offset) {
   BitCount32 boffset = offset * (ONE * BITS / ELEMENTS);
   byte* b = reinterpret_cast<byte*>(data) + boffset / BITS_PER_BYTE;
   return (*reinterpret_cast<uint8_t*>(b) &
@@ -1032,7 +1032,7 @@ inline bool CAPNP_API StructBuilder::getDataField<bool>(StructDataOffset offset)
 }
 
 template <>
-inline Void CAPNP_API StructBuilder::getDataField<Void>(StructDataOffset offset) {
+CAPNP_API inline Void StructBuilder::getDataField<Void>(StructDataOffset offset) {
   return VOID;
 }
 
@@ -1049,17 +1049,17 @@ inline void StructBuilder::setDataField(StructDataOffset offset, kj::NoInfer<T> 
 #if CAPNP_CANONICALIZE_NAN
 // Use mask() on floats and doubles to make sure we canonicalize NaNs.
 template <>
-inline void CAPNP_API StructBuilder::setDataField<float>(StructDataOffset offset, float value) {
+CAPNP_API inline void StructBuilder::setDataField<float>(StructDataOffset offset, float value) {
   setDataField<uint32_t>(offset, mask<float>(value, 0));
 }
 template <>
-inline void CAPNP_API StructBuilder::setDataField<double>(StructDataOffset offset, double value) {
+CAPNP_API inline void StructBuilder::setDataField<double>(StructDataOffset offset, double value) {
   setDataField<uint64_t>(offset, mask<double>(value, 0));
 }
 #endif
 
 template <>
-inline void CAPNP_API StructBuilder::setDataField<bool>(StructDataOffset offset, bool value) {
+CAPNP_API inline void StructBuilder::setDataField<bool>(StructDataOffset offset, bool value) {
   auto boffset = offset * (ONE * BITS / ELEMENTS);
   byte* b = reinterpret_cast<byte*>(data) + boffset / BITS_PER_BYTE;
   uint bitnum = unboundMaxBits<3>(boffset % BITS_PER_BYTE / BITS);
@@ -1068,7 +1068,7 @@ inline void CAPNP_API StructBuilder::setDataField<bool>(StructDataOffset offset,
 }
 
 template <>
-inline void CAPNP_API StructBuilder::setDataField<Void>(StructDataOffset offset, Void value) {}
+CAPNP_API inline void StructBuilder::setDataField<Void>(StructDataOffset offset, Void value) {}
 
 template <typename T>
 inline void StructBuilder::setDataField(StructDataOffset offset,
@@ -1101,7 +1101,7 @@ inline bool StructReader::hasDataField(StructDataOffset offset) const {
 }
 
 template <>
-inline bool CAPNP_API StructReader::hasDataField<Void>(StructDataOffset offset) const {
+CAPNP_API inline bool StructReader::hasDataField<Void>(StructDataOffset offset) const {
   return false;
 }
 
@@ -1115,7 +1115,7 @@ inline T StructReader::getDataField(StructDataOffset offset) const {
 }
 
 template <>
-inline bool CAPNP_API StructReader::getDataField<bool>(StructDataOffset offset) const {
+CAPNP_API inline bool StructReader::getDataField<bool>(StructDataOffset offset) const {
   auto boffset = offset * (ONE * BITS / ELEMENTS);
   if (boffset < dataSize) {
     const byte* b = reinterpret_cast<const byte*>(data) + boffset / BITS_PER_BYTE;
@@ -1127,7 +1127,7 @@ inline bool CAPNP_API StructReader::getDataField<bool>(StructDataOffset offset) 
 }
 
 template <>
-inline Void CAPNP_API StructReader::getDataField<Void>(StructDataOffset offset) const {
+CAPNP_API inline Void StructReader::getDataField<Void>(StructDataOffset offset) const {
   return VOID;
 }
 
@@ -1164,7 +1164,7 @@ inline T ListBuilder::getDataElement(ElementCount index) {
 }
 
 template <>
-inline bool CAPNP_API ListBuilder::getDataElement<bool>(ElementCount index) {
+CAPNP_API inline bool ListBuilder::getDataElement<bool>(ElementCount index) {
   // Ignore step for bit lists because bit lists cannot be upgraded to struct lists.
   auto bindex = index * (ONE * BITS / ELEMENTS);
   byte* b = ptr + bindex / BITS_PER_BYTE;
@@ -1173,7 +1173,7 @@ inline bool CAPNP_API ListBuilder::getDataElement<bool>(ElementCount index) {
 }
 
 template <>
-inline Void CAPNP_API ListBuilder::getDataElement<Void>(ElementCount index) {
+CAPNP_API inline Void ListBuilder::getDataElement<Void>(ElementCount index) {
   return VOID;
 }
 
@@ -1186,17 +1186,17 @@ inline void ListBuilder::setDataElement(ElementCount index, kj::NoInfer<T> value
 #if CAPNP_CANONICALIZE_NAN
 // Use mask() on floats and doubles to make sure we canonicalize NaNs.
 template <>
-inline void CAPNP_API ListBuilder::setDataElement<float>(ElementCount index, float value) {
+CAPNP_API inline void ListBuilder::setDataElement<float>(ElementCount index, float value) {
   setDataElement<uint32_t>(index, mask<float>(value, 0));
 }
 template <>
-inline void CAPNP_API ListBuilder::setDataElement<double>(ElementCount index, double value) {
+CAPNP_API inline void ListBuilder::setDataElement<double>(ElementCount index, double value) {
   setDataElement<uint64_t>(index, mask<double>(value, 0));
 }
 #endif
 
 template <>
-inline void CAPNP_API ListBuilder::setDataElement<bool>(ElementCount index, bool value) {
+CAPNP_API inline void ListBuilder::setDataElement<bool>(ElementCount index, bool value) {
   // Ignore stepBytes for bit lists because bit lists cannot be upgraded to struct lists.
   auto bindex = index * (ONE * BITS / ELEMENTS);
   byte* b = ptr + bindex / BITS_PER_BYTE;
@@ -1206,7 +1206,7 @@ inline void CAPNP_API ListBuilder::setDataElement<bool>(ElementCount index, bool
 }
 
 template <>
-inline void CAPNP_API ListBuilder::setDataElement<Void>(ElementCount index, Void value) {}
+CAPNP_API inline void ListBuilder::setDataElement<Void>(ElementCount index, Void value) {}
 
 inline PointerBuilder ListBuilder::getPointerElement(ElementCount index) {
   return PointerBuilder(segment, capTable, reinterpret_cast<WirePointer*>(ptr +
@@ -1224,7 +1224,7 @@ inline T ListReader::getDataElement(ElementCount index) const {
 }
 
 template <>
-inline bool CAPNP_API ListReader::getDataElement<bool>(ElementCount index) const {
+CAPNP_API inline bool ListReader::getDataElement<bool>(ElementCount index) const {
   // Ignore step for bit lists because bit lists cannot be upgraded to struct lists.
   auto bindex = index * (ONE * BITS / ELEMENTS);
   const byte* b = ptr + bindex / BITS_PER_BYTE;
@@ -1233,7 +1233,7 @@ inline bool CAPNP_API ListReader::getDataElement<bool>(ElementCount index) const
 }
 
 template <>
-inline Void CAPNP_API ListReader::getDataElement<Void>(ElementCount index) const {
+CAPNP_API inline Void ListReader::getDataElement<Void>(ElementCount index) const {
   return VOID;
 }
 

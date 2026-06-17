@@ -322,11 +322,11 @@ typedef unsigned char byte;
 
 namespace _ {  // private
 
-KJ_NORETURN(void KJ_API inlineRequireFailure(
+KJ_API KJ_NORETURN(void inlineRequireFailure(
     const char* file, int line, const char* expectation, const char* macroArgs,
     const char* message = nullptr));
 
-KJ_NORETURN(void KJ_API unreachable());
+KJ_API KJ_NORETURN(void unreachable());
 
 }  // namespace _ (private)
 
@@ -611,17 +611,17 @@ template <typename T> struct IsSameType_<T, T> { static constexpr bool value = t
 template <typename T, typename U> constexpr bool isSameType() { return IsSameType_<T, U>::value; }
 
 template <typename T> constexpr bool isIntegral() { return false; }
-template <> constexpr bool KJ_API isIntegral<char>() { return true; }
-template <> constexpr bool KJ_API isIntegral<signed char>() { return true; }
-template <> constexpr bool KJ_API isIntegral<short>() { return true; }
-template <> constexpr bool KJ_API isIntegral<int>() { return true; }
-template <> constexpr bool KJ_API isIntegral<long>() { return true; }
-template <> constexpr bool KJ_API isIntegral<long long>() { return true; }
-template <> constexpr bool KJ_API isIntegral<unsigned char>() { return true; }
-template <> constexpr bool KJ_API isIntegral<unsigned short>() { return true; }
-template <> constexpr bool KJ_API isIntegral<unsigned int>() { return true; }
-template <> constexpr bool KJ_API isIntegral<unsigned long>() { return true; }
-template <> constexpr bool KJ_API isIntegral<unsigned long long>() { return true; }
+template <> KJ_API constexpr bool isIntegral<char>() { return true; }
+template <> KJ_API constexpr bool isIntegral<signed char>() { return true; }
+template <> KJ_API constexpr bool isIntegral<short>() { return true; }
+template <> KJ_API constexpr bool isIntegral<int>() { return true; }
+template <> KJ_API constexpr bool isIntegral<long>() { return true; }
+template <> KJ_API constexpr bool isIntegral<long long>() { return true; }
+template <> KJ_API constexpr bool isIntegral<unsigned char>() { return true; }
+template <> KJ_API constexpr bool isIntegral<unsigned short>() { return true; }
+template <> KJ_API constexpr bool isIntegral<unsigned int>() { return true; }
+template <> KJ_API constexpr bool isIntegral<unsigned long>() { return true; }
+template <> KJ_API constexpr bool isIntegral<unsigned long long>() { return true; }
 
 template <typename T>
 struct CanConvert_ {
@@ -742,9 +742,9 @@ private:
 
 public:
 #define _kJ_HANDLE_TYPE(T) \
-  inline constexpr KJ_API operator   signed T() const { \
+  KJ_API inline constexpr operator   signed T() const { \
     return MaxValue_::maxSigned  <  signed T>(); } \
-  inline constexpr KJ_API operator unsigned T() const { \
+  KJ_API inline constexpr operator unsigned T() const { \
     return MaxValue_::maxUnsigned<unsigned T>(); }
   _kJ_HANDLE_TYPE(char)
   _kJ_HANDLE_TYPE(short)
@@ -774,9 +774,9 @@ private:
 
 public:
 #define _kJ_HANDLE_TYPE(T) \
-  inline constexpr KJ_API operator   signed T() const { \
+  KJ_API inline constexpr operator   signed T() const { \
     return MinValue_::minSigned  <  signed T>(); } \
-  inline constexpr KJ_API operator unsigned T() const { \
+  KJ_API inline constexpr operator unsigned T() const { \
     return MinValue_::minUnsigned<unsigned T>(); }
   _kJ_HANDLE_TYPE(char)
   _kJ_HANDLE_TYPE(short)
@@ -785,7 +785,7 @@ public:
   _kJ_HANDLE_TYPE(long long)
 #undef _kJ_HANDLE_TYPE
 
-  inline constexpr KJ_API operator char() const {
+  KJ_API inline constexpr operator char() const {
     // `char` is different from both `signed char` and `unsigned char`, and may be signed or
     // unsigned on different platforms.  Ugh.
     return char(-1) < 0 ? MinValue_::minSigned<char>()
@@ -793,14 +793,14 @@ public:
   }
 };
 
-static KJ_CONSTEXPR(const) MaxValue_ maxValue = MaxValue_();
+KJ_API static KJ_CONSTEXPR(const) MaxValue_ maxValue = MaxValue_();
 // A special constant which, when cast to an integer type, takes on the maximum possible value of
 // that type.  This is useful to use as e.g. a parameter to a function because it will be robust
 // in the face of changes to the parameter's type.
 //
 // `char` is not supported, but `signed char` and `unsigned char` are.
 
-static KJ_CONSTEXPR(const) MinValue_ minValue = MinValue_();
+KJ_API static KJ_CONSTEXPR(const) MinValue_ minValue = MinValue_();
 // A special constant which, when cast to an integer type, takes on the minimum possible value
 // of that type.  This is useful to use as e.g. a parameter to a function because it will be robust
 // in the face of changes to the parameter's type.
@@ -824,21 +824,21 @@ struct KJ_CLASS ThrowOverflow {
   // Functor which throws an exception complaining about integer overflow. Usually this is used
   // with the interfaces in units.h, but is defined here because Cap'n Proto wants to avoid
   // including units.h when not using CAPNP_DEBUG_TYPES.
-  [[noreturn]] void KJ_API operator()() const;
+  KJ_API [[noreturn]] void operator()() const;
 };
 
 #if __GNUC__ || __clang__ || _MSC_VER
-inline constexpr float KJ_API inf() { return __builtin_huge_valf(); }
-inline constexpr float KJ_API nan() { return __builtin_nanf(""); }
+KJ_API inline constexpr float inf() { return __builtin_huge_valf(); }
+KJ_API inline constexpr float nan() { return __builtin_nanf(""); }
 
 #else
 #error "Not sure how to support your compiler."
 #endif
 
-inline constexpr bool KJ_API isNaN(float f) { return f != f; }
-inline constexpr bool KJ_API isNaN(double f) { return f != f; }
+KJ_API inline constexpr bool isNaN(float f) { return f != f; }
+KJ_API inline constexpr bool isNaN(double f) { return f != f; }
 
-inline int KJ_API popCount(unsigned int x) {
+KJ_API inline int popCount(unsigned int x) {
 #if defined(_MSC_VER) && !defined(__clang__)
   return __popcnt(x);
   // Note: __popcnt returns unsigned int, but the value is clearly guaranteed to fit into an int
@@ -1056,11 +1056,11 @@ struct PlacementNew {};
 }  // namespace _ (private)
 } // namespace kj
 
-inline void* operator new(size_t, void* __p, kj::_::PlacementNew) noexcept {
+KJ_API inline void* operator new(size_t, void* __p, kj::_::PlacementNew) noexcept {
   return __p;
 }
 
-inline void operator delete(void*, void* __p, kj::_::PlacementNew) noexcept {}
+KJ_API inline void operator delete(void*, void* __p, kj::_::PlacementNew) noexcept {}
 
 namespace kj {
 
@@ -1888,7 +1888,7 @@ private:
 };
 
 template <>
-inline Maybe<size_t> KJ_API ArrayPtr<const char>::findFirst(const char& c) const {
+KJ_API inline Maybe<size_t> ArrayPtr<const char>::findFirst(const char& c) const {
   const char* pos = reinterpret_cast<const char*>(memchr(ptr, c, size_));
   if (pos == nullptr) {
     return nullptr;
@@ -1898,7 +1898,7 @@ inline Maybe<size_t> KJ_API ArrayPtr<const char>::findFirst(const char& c) const
 }
 
 template <>
-inline Maybe<size_t> KJ_API ArrayPtr<char>::findFirst(const char& c) const {
+KJ_API inline Maybe<size_t> ArrayPtr<char>::findFirst(const char& c) const {
   char* pos = reinterpret_cast<char*>(memchr(ptr, c, size_));
   if (pos == nullptr) {
     return nullptr;
@@ -1908,7 +1908,7 @@ inline Maybe<size_t> KJ_API ArrayPtr<char>::findFirst(const char& c) const {
 }
 
 template <>
-inline Maybe<size_t> KJ_API ArrayPtr<const byte>::findFirst(const byte& c) const {
+KJ_API inline Maybe<size_t> ArrayPtr<const byte>::findFirst(const byte& c) const {
   const byte* pos = reinterpret_cast<const byte*>(memchr(ptr, c, size_));
   if (pos == nullptr) {
     return nullptr;
@@ -1918,7 +1918,7 @@ inline Maybe<size_t> KJ_API ArrayPtr<const byte>::findFirst(const byte& c) const
 }
 
 template <>
-inline Maybe<size_t> KJ_API ArrayPtr<byte>::findFirst(const byte& c) const {
+KJ_API inline Maybe<size_t> ArrayPtr<byte>::findFirst(const byte& c) const {
   byte* pos = reinterpret_cast<byte*>(memchr(ptr, c, size_));
   if (pos == nullptr) {
     return nullptr;

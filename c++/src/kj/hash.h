@@ -42,45 +42,45 @@ struct KJ_CLASS HashCoder {
   // different.  Declaring `operator*` with `HashCoder` as the left operand cannot conflict with
   // anything.
 
-  uint KJ_API operator*(ArrayPtr<const byte> s) const;
-  inline uint KJ_API operator*(ArrayPtr<byte> s) const { return operator*(s.asConst()); }
+  KJ_API uint operator*(ArrayPtr<const byte> s) const;
+  KJ_API inline uint operator*(ArrayPtr<byte> s) const { return operator*(s.asConst()); }
 
-  inline uint KJ_API operator*(ArrayPtr<const char> s) const { return operator*(s.asBytes()); }
-  inline uint KJ_API operator*(ArrayPtr<char> s) const { return operator*(s.asBytes()); }
-  inline uint KJ_API operator*(const Array<const char>& s) const { return operator*(s.asBytes()); }
-  inline uint KJ_API operator*(const Array<char>& s) const { return operator*(s.asBytes()); }
-  inline uint KJ_API operator*(const String& s) const { return operator*(s.asBytes()); }
-  inline uint KJ_API operator*(const StringPtr& s) const { return operator*(s.asBytes()); }
-  inline uint KJ_API operator*(const ConstString& s) const { return operator*(s.asBytes()); }
+  KJ_API inline uint operator*(ArrayPtr<const char> s) const { return operator*(s.asBytes()); }
+  KJ_API inline uint operator*(ArrayPtr<char> s) const { return operator*(s.asBytes()); }
+  KJ_API inline uint operator*(const Array<const char>& s) const { return operator*(s.asBytes()); }
+  KJ_API inline uint operator*(const Array<char>& s) const { return operator*(s.asBytes()); }
+  KJ_API inline uint operator*(const String& s) const { return operator*(s.asBytes()); }
+  KJ_API inline uint operator*(const StringPtr& s) const { return operator*(s.asBytes()); }
+  KJ_API inline uint operator*(const ConstString& s) const { return operator*(s.asBytes()); }
 
-  inline uint KJ_API operator*(decltype(nullptr)) const { return 0; }
-  inline uint KJ_API operator*(bool b) const { return b; }
-  inline uint KJ_API operator*(char i) const { return i; }
-  inline uint KJ_API operator*(signed char i) const { return i; }
-  inline uint KJ_API operator*(unsigned char i) const { return i; }
-  inline uint KJ_API operator*(signed short i) const { return i; }
-  inline uint KJ_API operator*(unsigned short i) const { return i; }
-  inline uint KJ_API operator*(signed int i) const { return i; }
-  inline uint KJ_API operator*(unsigned int i) const { return i; }
+  KJ_API inline uint operator*(decltype(nullptr)) const { return 0; }
+  KJ_API inline uint operator*(bool b) const { return b; }
+  KJ_API inline uint operator*(char i) const { return i; }
+  KJ_API inline uint operator*(signed char i) const { return i; }
+  KJ_API inline uint operator*(unsigned char i) const { return i; }
+  KJ_API inline uint operator*(signed short i) const { return i; }
+  KJ_API inline uint operator*(unsigned short i) const { return i; }
+  KJ_API inline uint operator*(signed int i) const { return i; }
+  KJ_API inline uint operator*(unsigned int i) const { return i; }
 
-  inline uint KJ_API operator*(signed long i) const {
+  KJ_API inline uint operator*(signed long i) const {
     if (sizeof(i) == sizeof(uint)) {
       return operator*(static_cast<uint>(i));
     } else {
       return operator*(static_cast<unsigned long long>(i));
     }
   }
-  inline uint KJ_API operator*(unsigned long i) const {
+  KJ_API inline uint operator*(unsigned long i) const {
     if (sizeof(i) == sizeof(uint)) {
       return operator*(static_cast<uint>(i));
     } else {
       return operator*(static_cast<unsigned long long>(i));
     }
   }
-  inline uint KJ_API operator*(signed long long i) const {
+  KJ_API inline uint operator*(signed long long i) const {
     return operator*(static_cast<unsigned long long>(i));
   }
-  inline uint KJ_API operator*(unsigned long long i) const {
+  KJ_API inline uint operator*(unsigned long long i) const {
     // Mix 64 bits to 32 bits in such a way that if our input values differ primarily in the upper
     // 32 bits, we still get good diffusion. (I.e. we cannot just truncate!)
     //
@@ -113,7 +113,7 @@ struct KJ_CLASS HashCoder {
   template <typename T, typename Result = decltype(instance<T>().hashCode())>
   inline Result operator*(T&& value) const { return kj::fwd<T>(value).hashCode(); }
 };
-static KJ_CONSTEXPR(const) HashCoder HASHCODER = HashCoder();
+KJ_API static KJ_CONSTEXPR(const) HashCoder HASHCODER = HashCoder();
 
 }  // namespace _ (private)
 
@@ -129,7 +129,7 @@ static KJ_CONSTEXPR(const) HashCoder HASHCODER = HashCoder();
 // namespace. It can return any type which itself is hashable -- that value will be hashed in turn
 // until a `uint` comes out.
 
-inline uint KJ_API hashCode(uint value) { return value; }
+KJ_API inline uint hashCode(uint value) { return value; }
 template <typename T>
 inline uint hashCode(T&& value) { return hashCode(_::HASHCODER * kj::fwd<T>(value)); }
 template <typename T, size_t N>

@@ -36,17 +36,17 @@ class KJ_ASYNC_CLASS CidrRange {
 public:
   KJ_ASYNC_API CidrRange(StringPtr pattern);
 
-  static CidrRange KJ_ASYNC_API inet4(ArrayPtr<const byte> bits, uint bitCount);
-  static CidrRange KJ_ASYNC_API inet6(
+  KJ_ASYNC_API static CidrRange inet4(ArrayPtr<const byte> bits, uint bitCount);
+  KJ_ASYNC_API static CidrRange inet6(
       ArrayPtr<const uint16_t> prefix, ArrayPtr<const uint16_t> suffix, uint bitCount);
   // Zeros are inserted between `prefix` and `suffix` to extend the address to 128 bits.
 
-  uint KJ_ASYNC_API getSpecificity() const { return bitCount; }
+  KJ_ASYNC_API uint getSpecificity() const { return bitCount; }
 
-  bool KJ_ASYNC_API matches(const struct sockaddr* addr) const;
-  bool KJ_ASYNC_API matchesFamily(int family) const;
+  KJ_ASYNC_API bool matches(const struct sockaddr* addr) const;
+  KJ_ASYNC_API bool matchesFamily(int family) const;
 
-  String KJ_ASYNC_API toString() const;
+  KJ_ASYNC_API String toString() const;
 
 private:
   int family;

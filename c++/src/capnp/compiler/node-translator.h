@@ -53,19 +53,19 @@ public:
   CAPNP_CAPNPC_API ~NodeTranslator() noexcept(false);
 
   struct CAPNP_CAPNPC_CLASS NodeSet {
-    schema::Node::Reader CAPNP_CAPNPC_API node;
+    CAPNP_CAPNPC_API schema::Node::Reader node;
     // The main node.
 
-    kj::Array<schema::Node::Reader> CAPNP_CAPNPC_API auxNodes;
+    CAPNP_CAPNPC_API kj::Array<schema::Node::Reader> auxNodes;
     // Auxiliary nodes that were produced when translating this node and should be loaded along
     // with it.  In particular, structs that contain groups (or named unions) spawn extra nodes
     // representing those, and interfaces spawn struct nodes representing method params/results.
 
-    kj::Array<schema::Node::SourceInfo::Reader> CAPNP_CAPNPC_API sourceInfo;
+    CAPNP_CAPNPC_API kj::Array<schema::Node::SourceInfo::Reader> sourceInfo;
     // The SourceInfo for the node and all aux nodes.
   };
 
-  NodeSet CAPNP_CAPNPC_API getBootstrapNode();
+  CAPNP_CAPNPC_API NodeSet getBootstrapNode();
   // Get an incomplete version of the node in which pointer-typed value expressions have not yet
   // been translated.  Instead, for all `schema.Value` objects representing pointer-type values,
   // the value is set to an appropriate "empty" value.  This version of the schema can be used to
@@ -74,14 +74,14 @@ public:
   // If the final node has already been built, this will actually return the final node (in fact,
   // it's the same node object).
 
-  NodeSet CAPNP_CAPNPC_API finish(Schema selfUnboundBootstrap);
+  CAPNP_CAPNPC_API NodeSet finish(Schema selfUnboundBootstrap);
   // Finish translating the node (including filling in all the pieces that are missing from the
   // bootstrap node) and return it.
   //
   // `selfUnboundBootstrap` is a Schema build using the Node returned by getBootstrapNode(), and
   // with generic parameters "unbound", i.e. it was returned by SchemaLoader::getUnbound().
 
-  static kj::Maybe<Resolver::ResolveResult> CAPNP_CAPNPC_API compileDecl(
+  CAPNP_CAPNPC_API static kj::Maybe<Resolver::ResolveResult> compileDecl(
       uint64_t scopeId, uint scopeParameterCount, Resolver& resolver, ErrorReporter& errorReporter,
       Expression::Reader expression, schema::Brand::Builder brandBuilder);
   // Compile a one-off declaration expression without building a NodeTranslator. Used for
@@ -197,9 +197,9 @@ class CAPNP_CAPNPC_CLASS ValueTranslator {
 public:
   class CAPNP_CAPNPC_CLASS Resolver {
   public:
-    virtual kj::Maybe<DynamicValue::Reader> CAPNP_CAPNPC_API resolveConstant(
+    CAPNP_CAPNPC_API virtual kj::Maybe<DynamicValue::Reader> resolveConstant(
         Expression::Reader name) = 0;
-    virtual kj::Maybe<kj::Array<const byte>> CAPNP_CAPNPC_API readEmbed(
+    CAPNP_CAPNPC_API virtual kj::Maybe<kj::Array<const byte>> readEmbed(
         LocatedText::Reader filename) = 0;
   };
 
@@ -207,9 +207,9 @@ public:
                                    Orphanage orphanage)
       : resolver(resolver), errorReporter(errorReporter), orphanage(orphanage) {}
 
-  kj::Maybe<Orphan<DynamicValue>> CAPNP_CAPNPC_API compileValue(Expression::Reader src, Type type);
+  CAPNP_CAPNPC_API kj::Maybe<Orphan<DynamicValue>> compileValue(Expression::Reader src, Type type);
 
-  void CAPNP_CAPNPC_API fillStructValue(DynamicStruct::Builder builder,
+  CAPNP_CAPNPC_API void fillStructValue(DynamicStruct::Builder builder,
                                         List<Expression::Param>::Reader assignments);
   // Interprets the given assignments and uses them to fill in the given struct builder.
 

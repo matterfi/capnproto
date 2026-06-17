@@ -421,74 +421,74 @@ public:
   typedef Message Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which() const;
-  inline bool CAPNP_RPC_API isUnimplemented() const;
-  inline bool CAPNP_RPC_API hasUnimplemented() const;
-  inline  ::capnp::rpc::Message::Reader CAPNP_RPC_API getUnimplemented() const;
+  CAPNP_RPC_API inline Which which() const;
+  CAPNP_RPC_API inline bool isUnimplemented() const;
+  CAPNP_RPC_API inline bool hasUnimplemented() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Message::Reader getUnimplemented() const;
 
-  inline bool CAPNP_RPC_API isAbort() const;
-  inline bool CAPNP_RPC_API hasAbort() const;
-  inline  ::capnp::rpc::Exception::Reader CAPNP_RPC_API getAbort() const;
+  CAPNP_RPC_API inline bool isAbort() const;
+  CAPNP_RPC_API inline bool hasAbort() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Reader getAbort() const;
 
-  inline bool CAPNP_RPC_API isCall() const;
-  inline bool CAPNP_RPC_API hasCall() const;
-  inline  ::capnp::rpc::Call::Reader CAPNP_RPC_API getCall() const;
+  CAPNP_RPC_API inline bool isCall() const;
+  CAPNP_RPC_API inline bool hasCall() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Call::Reader getCall() const;
 
-  inline bool CAPNP_RPC_API isReturn() const;
-  inline bool CAPNP_RPC_API hasReturn() const;
-  inline  ::capnp::rpc::Return::Reader CAPNP_RPC_API getReturn() const;
+  CAPNP_RPC_API inline bool isReturn() const;
+  CAPNP_RPC_API inline bool hasReturn() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Return::Reader getReturn() const;
 
-  inline bool CAPNP_RPC_API isFinish() const;
-  inline bool CAPNP_RPC_API hasFinish() const;
-  inline  ::capnp::rpc::Finish::Reader CAPNP_RPC_API getFinish() const;
+  CAPNP_RPC_API inline bool isFinish() const;
+  CAPNP_RPC_API inline bool hasFinish() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Finish::Reader getFinish() const;
 
-  inline bool CAPNP_RPC_API isResolve() const;
-  inline bool CAPNP_RPC_API hasResolve() const;
-  inline  ::capnp::rpc::Resolve::Reader CAPNP_RPC_API getResolve() const;
+  CAPNP_RPC_API inline bool isResolve() const;
+  CAPNP_RPC_API inline bool hasResolve() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Resolve::Reader getResolve() const;
 
-  inline bool CAPNP_RPC_API isRelease() const;
-  inline bool CAPNP_RPC_API hasRelease() const;
-  inline  ::capnp::rpc::Release::Reader CAPNP_RPC_API getRelease() const;
+  CAPNP_RPC_API inline bool isRelease() const;
+  CAPNP_RPC_API inline bool hasRelease() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Release::Reader getRelease() const;
 
-  inline bool CAPNP_RPC_API isObsoleteSave() const;
-  inline bool CAPNP_RPC_API hasObsoleteSave() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getObsoleteSave() const;
+  CAPNP_RPC_API inline bool isObsoleteSave() const;
+  CAPNP_RPC_API inline bool hasObsoleteSave() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getObsoleteSave() const;
 
-  inline bool CAPNP_RPC_API isBootstrap() const;
-  inline bool CAPNP_RPC_API hasBootstrap() const;
-  inline  ::capnp::rpc::Bootstrap::Reader CAPNP_RPC_API getBootstrap() const;
+  CAPNP_RPC_API inline bool isBootstrap() const;
+  CAPNP_RPC_API inline bool hasBootstrap() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Bootstrap::Reader getBootstrap() const;
 
-  inline bool CAPNP_RPC_API isObsoleteDelete() const;
-  inline bool CAPNP_RPC_API hasObsoleteDelete() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getObsoleteDelete() const;
+  CAPNP_RPC_API inline bool isObsoleteDelete() const;
+  CAPNP_RPC_API inline bool hasObsoleteDelete() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getObsoleteDelete() const;
 
-  inline bool CAPNP_RPC_API isProvide() const;
-  inline bool CAPNP_RPC_API hasProvide() const;
-  inline  ::capnp::rpc::Provide::Reader CAPNP_RPC_API getProvide() const;
+  CAPNP_RPC_API inline bool isProvide() const;
+  CAPNP_RPC_API inline bool hasProvide() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Provide::Reader getProvide() const;
 
-  inline bool CAPNP_RPC_API isAccept() const;
-  inline bool CAPNP_RPC_API hasAccept() const;
-  inline  ::capnp::rpc::Accept::Reader CAPNP_RPC_API getAccept() const;
+  CAPNP_RPC_API inline bool isAccept() const;
+  CAPNP_RPC_API inline bool hasAccept() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Accept::Reader getAccept() const;
 
-  inline bool CAPNP_RPC_API isJoin() const;
-  inline bool CAPNP_RPC_API hasJoin() const;
-  inline  ::capnp::rpc::Join::Reader CAPNP_RPC_API getJoin() const;
+  CAPNP_RPC_API inline bool isJoin() const;
+  CAPNP_RPC_API inline bool hasJoin() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Join::Reader getJoin() const;
 
-  inline bool CAPNP_RPC_API isDisembargo() const;
-  inline bool CAPNP_RPC_API hasDisembargo() const;
-  inline  ::capnp::rpc::Disembargo::Reader CAPNP_RPC_API getDisembargo() const;
+  CAPNP_RPC_API inline bool isDisembargo() const;
+  CAPNP_RPC_API inline bool hasDisembargo() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Disembargo::Reader getDisembargo() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -508,122 +508,122 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which();
-  inline bool CAPNP_RPC_API isUnimplemented();
-  inline bool CAPNP_RPC_API hasUnimplemented();
-  inline  ::capnp::rpc::Message::Builder CAPNP_RPC_API getUnimplemented();
-  inline void CAPNP_RPC_API setUnimplemented( ::capnp::rpc::Message::Reader value);
-  inline  ::capnp::rpc::Message::Builder CAPNP_RPC_API initUnimplemented();
-  inline void CAPNP_RPC_API adoptUnimplemented(::capnp::Orphan< ::capnp::rpc::Message>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Message> CAPNP_RPC_API disownUnimplemented();
+  CAPNP_RPC_API inline Which which();
+  CAPNP_RPC_API inline bool isUnimplemented();
+  CAPNP_RPC_API inline bool hasUnimplemented();
+  CAPNP_RPC_API inline  ::capnp::rpc::Message::Builder getUnimplemented();
+  CAPNP_RPC_API inline void setUnimplemented( ::capnp::rpc::Message::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Message::Builder initUnimplemented();
+  CAPNP_RPC_API inline void adoptUnimplemented(::capnp::Orphan< ::capnp::rpc::Message>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Message> disownUnimplemented();
 
-  inline bool CAPNP_RPC_API isAbort();
-  inline bool CAPNP_RPC_API hasAbort();
-  inline  ::capnp::rpc::Exception::Builder CAPNP_RPC_API getAbort();
-  inline void CAPNP_RPC_API setAbort( ::capnp::rpc::Exception::Reader value);
-  inline  ::capnp::rpc::Exception::Builder CAPNP_RPC_API initAbort();
-  inline void CAPNP_RPC_API adoptAbort(::capnp::Orphan< ::capnp::rpc::Exception>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Exception> CAPNP_RPC_API disownAbort();
+  CAPNP_RPC_API inline bool isAbort();
+  CAPNP_RPC_API inline bool hasAbort();
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Builder getAbort();
+  CAPNP_RPC_API inline void setAbort( ::capnp::rpc::Exception::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Builder initAbort();
+  CAPNP_RPC_API inline void adoptAbort(::capnp::Orphan< ::capnp::rpc::Exception>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Exception> disownAbort();
 
-  inline bool CAPNP_RPC_API isCall();
-  inline bool CAPNP_RPC_API hasCall();
-  inline  ::capnp::rpc::Call::Builder CAPNP_RPC_API getCall();
-  inline void CAPNP_RPC_API setCall( ::capnp::rpc::Call::Reader value);
-  inline  ::capnp::rpc::Call::Builder CAPNP_RPC_API initCall();
-  inline void CAPNP_RPC_API adoptCall(::capnp::Orphan< ::capnp::rpc::Call>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Call> CAPNP_RPC_API disownCall();
+  CAPNP_RPC_API inline bool isCall();
+  CAPNP_RPC_API inline bool hasCall();
+  CAPNP_RPC_API inline  ::capnp::rpc::Call::Builder getCall();
+  CAPNP_RPC_API inline void setCall( ::capnp::rpc::Call::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Call::Builder initCall();
+  CAPNP_RPC_API inline void adoptCall(::capnp::Orphan< ::capnp::rpc::Call>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Call> disownCall();
 
-  inline bool CAPNP_RPC_API isReturn();
-  inline bool CAPNP_RPC_API hasReturn();
-  inline  ::capnp::rpc::Return::Builder CAPNP_RPC_API getReturn();
-  inline void CAPNP_RPC_API setReturn( ::capnp::rpc::Return::Reader value);
-  inline  ::capnp::rpc::Return::Builder CAPNP_RPC_API initReturn();
-  inline void CAPNP_RPC_API adoptReturn(::capnp::Orphan< ::capnp::rpc::Return>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Return> CAPNP_RPC_API disownReturn();
+  CAPNP_RPC_API inline bool isReturn();
+  CAPNP_RPC_API inline bool hasReturn();
+  CAPNP_RPC_API inline  ::capnp::rpc::Return::Builder getReturn();
+  CAPNP_RPC_API inline void setReturn( ::capnp::rpc::Return::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Return::Builder initReturn();
+  CAPNP_RPC_API inline void adoptReturn(::capnp::Orphan< ::capnp::rpc::Return>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Return> disownReturn();
 
-  inline bool CAPNP_RPC_API isFinish();
-  inline bool CAPNP_RPC_API hasFinish();
-  inline  ::capnp::rpc::Finish::Builder CAPNP_RPC_API getFinish();
-  inline void CAPNP_RPC_API setFinish( ::capnp::rpc::Finish::Reader value);
-  inline  ::capnp::rpc::Finish::Builder CAPNP_RPC_API initFinish();
-  inline void CAPNP_RPC_API adoptFinish(::capnp::Orphan< ::capnp::rpc::Finish>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Finish> CAPNP_RPC_API disownFinish();
+  CAPNP_RPC_API inline bool isFinish();
+  CAPNP_RPC_API inline bool hasFinish();
+  CAPNP_RPC_API inline  ::capnp::rpc::Finish::Builder getFinish();
+  CAPNP_RPC_API inline void setFinish( ::capnp::rpc::Finish::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Finish::Builder initFinish();
+  CAPNP_RPC_API inline void adoptFinish(::capnp::Orphan< ::capnp::rpc::Finish>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Finish> disownFinish();
 
-  inline bool CAPNP_RPC_API isResolve();
-  inline bool CAPNP_RPC_API hasResolve();
-  inline  ::capnp::rpc::Resolve::Builder CAPNP_RPC_API getResolve();
-  inline void CAPNP_RPC_API setResolve( ::capnp::rpc::Resolve::Reader value);
-  inline  ::capnp::rpc::Resolve::Builder CAPNP_RPC_API initResolve();
-  inline void CAPNP_RPC_API adoptResolve(::capnp::Orphan< ::capnp::rpc::Resolve>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Resolve> CAPNP_RPC_API disownResolve();
+  CAPNP_RPC_API inline bool isResolve();
+  CAPNP_RPC_API inline bool hasResolve();
+  CAPNP_RPC_API inline  ::capnp::rpc::Resolve::Builder getResolve();
+  CAPNP_RPC_API inline void setResolve( ::capnp::rpc::Resolve::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Resolve::Builder initResolve();
+  CAPNP_RPC_API inline void adoptResolve(::capnp::Orphan< ::capnp::rpc::Resolve>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Resolve> disownResolve();
 
-  inline bool CAPNP_RPC_API isRelease();
-  inline bool CAPNP_RPC_API hasRelease();
-  inline  ::capnp::rpc::Release::Builder CAPNP_RPC_API getRelease();
-  inline void CAPNP_RPC_API setRelease( ::capnp::rpc::Release::Reader value);
-  inline  ::capnp::rpc::Release::Builder CAPNP_RPC_API initRelease();
-  inline void CAPNP_RPC_API adoptRelease(::capnp::Orphan< ::capnp::rpc::Release>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Release> CAPNP_RPC_API disownRelease();
+  CAPNP_RPC_API inline bool isRelease();
+  CAPNP_RPC_API inline bool hasRelease();
+  CAPNP_RPC_API inline  ::capnp::rpc::Release::Builder getRelease();
+  CAPNP_RPC_API inline void setRelease( ::capnp::rpc::Release::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Release::Builder initRelease();
+  CAPNP_RPC_API inline void adoptRelease(::capnp::Orphan< ::capnp::rpc::Release>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Release> disownRelease();
 
-  inline bool CAPNP_RPC_API isObsoleteSave();
-  inline bool CAPNP_RPC_API hasObsoleteSave();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getObsoleteSave();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initObsoleteSave();
+  CAPNP_RPC_API inline bool isObsoleteSave();
+  CAPNP_RPC_API inline bool hasObsoleteSave();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getObsoleteSave();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initObsoleteSave();
 
-  inline bool CAPNP_RPC_API isBootstrap();
-  inline bool CAPNP_RPC_API hasBootstrap();
-  inline  ::capnp::rpc::Bootstrap::Builder CAPNP_RPC_API getBootstrap();
-  inline void CAPNP_RPC_API setBootstrap( ::capnp::rpc::Bootstrap::Reader value);
-  inline  ::capnp::rpc::Bootstrap::Builder CAPNP_RPC_API initBootstrap();
-  inline void CAPNP_RPC_API adoptBootstrap(::capnp::Orphan< ::capnp::rpc::Bootstrap>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Bootstrap> CAPNP_RPC_API disownBootstrap();
+  CAPNP_RPC_API inline bool isBootstrap();
+  CAPNP_RPC_API inline bool hasBootstrap();
+  CAPNP_RPC_API inline  ::capnp::rpc::Bootstrap::Builder getBootstrap();
+  CAPNP_RPC_API inline void setBootstrap( ::capnp::rpc::Bootstrap::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Bootstrap::Builder initBootstrap();
+  CAPNP_RPC_API inline void adoptBootstrap(::capnp::Orphan< ::capnp::rpc::Bootstrap>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Bootstrap> disownBootstrap();
 
-  inline bool CAPNP_RPC_API isObsoleteDelete();
-  inline bool CAPNP_RPC_API hasObsoleteDelete();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getObsoleteDelete();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initObsoleteDelete();
+  CAPNP_RPC_API inline bool isObsoleteDelete();
+  CAPNP_RPC_API inline bool hasObsoleteDelete();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getObsoleteDelete();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initObsoleteDelete();
 
-  inline bool CAPNP_RPC_API isProvide();
-  inline bool CAPNP_RPC_API hasProvide();
-  inline  ::capnp::rpc::Provide::Builder CAPNP_RPC_API getProvide();
-  inline void CAPNP_RPC_API setProvide( ::capnp::rpc::Provide::Reader value);
-  inline  ::capnp::rpc::Provide::Builder CAPNP_RPC_API initProvide();
-  inline void CAPNP_RPC_API adoptProvide(::capnp::Orphan< ::capnp::rpc::Provide>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Provide> CAPNP_RPC_API disownProvide();
+  CAPNP_RPC_API inline bool isProvide();
+  CAPNP_RPC_API inline bool hasProvide();
+  CAPNP_RPC_API inline  ::capnp::rpc::Provide::Builder getProvide();
+  CAPNP_RPC_API inline void setProvide( ::capnp::rpc::Provide::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Provide::Builder initProvide();
+  CAPNP_RPC_API inline void adoptProvide(::capnp::Orphan< ::capnp::rpc::Provide>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Provide> disownProvide();
 
-  inline bool CAPNP_RPC_API isAccept();
-  inline bool CAPNP_RPC_API hasAccept();
-  inline  ::capnp::rpc::Accept::Builder CAPNP_RPC_API getAccept();
-  inline void CAPNP_RPC_API setAccept( ::capnp::rpc::Accept::Reader value);
-  inline  ::capnp::rpc::Accept::Builder CAPNP_RPC_API initAccept();
-  inline void CAPNP_RPC_API adoptAccept(::capnp::Orphan< ::capnp::rpc::Accept>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Accept> CAPNP_RPC_API disownAccept();
+  CAPNP_RPC_API inline bool isAccept();
+  CAPNP_RPC_API inline bool hasAccept();
+  CAPNP_RPC_API inline  ::capnp::rpc::Accept::Builder getAccept();
+  CAPNP_RPC_API inline void setAccept( ::capnp::rpc::Accept::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Accept::Builder initAccept();
+  CAPNP_RPC_API inline void adoptAccept(::capnp::Orphan< ::capnp::rpc::Accept>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Accept> disownAccept();
 
-  inline bool CAPNP_RPC_API isJoin();
-  inline bool CAPNP_RPC_API hasJoin();
-  inline  ::capnp::rpc::Join::Builder CAPNP_RPC_API getJoin();
-  inline void CAPNP_RPC_API setJoin( ::capnp::rpc::Join::Reader value);
-  inline  ::capnp::rpc::Join::Builder CAPNP_RPC_API initJoin();
-  inline void CAPNP_RPC_API adoptJoin(::capnp::Orphan< ::capnp::rpc::Join>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Join> CAPNP_RPC_API disownJoin();
+  CAPNP_RPC_API inline bool isJoin();
+  CAPNP_RPC_API inline bool hasJoin();
+  CAPNP_RPC_API inline  ::capnp::rpc::Join::Builder getJoin();
+  CAPNP_RPC_API inline void setJoin( ::capnp::rpc::Join::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Join::Builder initJoin();
+  CAPNP_RPC_API inline void adoptJoin(::capnp::Orphan< ::capnp::rpc::Join>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Join> disownJoin();
 
-  inline bool CAPNP_RPC_API isDisembargo();
-  inline bool CAPNP_RPC_API hasDisembargo();
-  inline  ::capnp::rpc::Disembargo::Builder CAPNP_RPC_API getDisembargo();
-  inline void CAPNP_RPC_API setDisembargo( ::capnp::rpc::Disembargo::Reader value);
-  inline  ::capnp::rpc::Disembargo::Builder CAPNP_RPC_API initDisembargo();
-  inline void CAPNP_RPC_API adoptDisembargo(::capnp::Orphan< ::capnp::rpc::Disembargo>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Disembargo> CAPNP_RPC_API disownDisembargo();
+  CAPNP_RPC_API inline bool isDisembargo();
+  CAPNP_RPC_API inline bool hasDisembargo();
+  CAPNP_RPC_API inline  ::capnp::rpc::Disembargo::Builder getDisembargo();
+  CAPNP_RPC_API inline void setDisembargo( ::capnp::rpc::Disembargo::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Disembargo::Builder initDisembargo();
+  CAPNP_RPC_API inline void adoptDisembargo(::capnp::Orphan< ::capnp::rpc::Disembargo>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Disembargo> disownDisembargo();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -639,8 +639,8 @@ class CAPNP_RPC_CLASS Message::Pipeline {
 public:
   typedef Message Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -656,22 +656,22 @@ public:
   typedef Bootstrap Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId() const;
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId() const;
 
-  inline bool CAPNP_RPC_API hasDeprecatedObjectId() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getDeprecatedObjectId() const;
+  CAPNP_RPC_API inline bool hasDeprecatedObjectId() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getDeprecatedObjectId() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -691,22 +691,22 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId();
-  inline void CAPNP_RPC_API setQuestionId( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId();
+  CAPNP_RPC_API inline void setQuestionId( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API hasDeprecatedObjectId();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getDeprecatedObjectId();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initDeprecatedObjectId();
+  CAPNP_RPC_API inline bool hasDeprecatedObjectId();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getDeprecatedObjectId();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initDeprecatedObjectId();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -722,8 +722,8 @@ class CAPNP_RPC_CLASS Bootstrap::Pipeline {
 public:
   typedef Bootstrap Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -739,37 +739,37 @@ public:
   typedef Call Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId() const;
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId() const;
 
-  inline bool CAPNP_RPC_API hasTarget() const;
-  inline  ::capnp::rpc::MessageTarget::Reader CAPNP_RPC_API getTarget() const;
+  CAPNP_RPC_API inline bool hasTarget() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Reader getTarget() const;
 
-  inline  ::uint64_t CAPNP_RPC_API getInterfaceId() const;
+  CAPNP_RPC_API inline  ::uint64_t getInterfaceId() const;
 
-  inline  ::uint16_t CAPNP_RPC_API getMethodId() const;
+  CAPNP_RPC_API inline  ::uint16_t getMethodId() const;
 
-  inline bool CAPNP_RPC_API hasParams() const;
-  inline  ::capnp::rpc::Payload::Reader CAPNP_RPC_API getParams() const;
+  CAPNP_RPC_API inline bool hasParams() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Payload::Reader getParams() const;
 
-  inline typename SendResultsTo::Reader CAPNP_RPC_API getSendResultsTo() const;
+  CAPNP_RPC_API inline typename SendResultsTo::Reader getSendResultsTo() const;
 
-  inline bool CAPNP_RPC_API getAllowThirdPartyTailCall() const;
+  CAPNP_RPC_API inline bool getAllowThirdPartyTailCall() const;
 
-  inline bool CAPNP_RPC_API getNoPromisePipelining() const;
+  CAPNP_RPC_API inline bool getNoPromisePipelining() const;
 
-  inline bool CAPNP_RPC_API getOnlyPromisePipeline() const;
+  CAPNP_RPC_API inline bool getOnlyPromisePipeline() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -789,50 +789,50 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId();
-  inline void CAPNP_RPC_API setQuestionId( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId();
+  CAPNP_RPC_API inline void setQuestionId( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API hasTarget();
-  inline  ::capnp::rpc::MessageTarget::Builder CAPNP_RPC_API getTarget();
-  inline void CAPNP_RPC_API setTarget( ::capnp::rpc::MessageTarget::Reader value);
-  inline  ::capnp::rpc::MessageTarget::Builder CAPNP_RPC_API initTarget();
-  inline void CAPNP_RPC_API adoptTarget(::capnp::Orphan< ::capnp::rpc::MessageTarget>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::MessageTarget> CAPNP_RPC_API disownTarget();
+  CAPNP_RPC_API inline bool hasTarget();
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Builder getTarget();
+  CAPNP_RPC_API inline void setTarget( ::capnp::rpc::MessageTarget::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Builder initTarget();
+  CAPNP_RPC_API inline void adoptTarget(::capnp::Orphan< ::capnp::rpc::MessageTarget>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::MessageTarget> disownTarget();
 
-  inline  ::uint64_t CAPNP_RPC_API getInterfaceId();
-  inline void CAPNP_RPC_API setInterfaceId( ::uint64_t value);
+  CAPNP_RPC_API inline  ::uint64_t getInterfaceId();
+  CAPNP_RPC_API inline void setInterfaceId( ::uint64_t value);
 
-  inline  ::uint16_t CAPNP_RPC_API getMethodId();
-  inline void CAPNP_RPC_API setMethodId( ::uint16_t value);
+  CAPNP_RPC_API inline  ::uint16_t getMethodId();
+  CAPNP_RPC_API inline void setMethodId( ::uint16_t value);
 
-  inline bool CAPNP_RPC_API hasParams();
-  inline  ::capnp::rpc::Payload::Builder CAPNP_RPC_API getParams();
-  inline void CAPNP_RPC_API setParams( ::capnp::rpc::Payload::Reader value);
-  inline  ::capnp::rpc::Payload::Builder CAPNP_RPC_API initParams();
-  inline void CAPNP_RPC_API adoptParams(::capnp::Orphan< ::capnp::rpc::Payload>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Payload> CAPNP_RPC_API disownParams();
+  CAPNP_RPC_API inline bool hasParams();
+  CAPNP_RPC_API inline  ::capnp::rpc::Payload::Builder getParams();
+  CAPNP_RPC_API inline void setParams( ::capnp::rpc::Payload::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Payload::Builder initParams();
+  CAPNP_RPC_API inline void adoptParams(::capnp::Orphan< ::capnp::rpc::Payload>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Payload> disownParams();
 
-  inline typename SendResultsTo::Builder CAPNP_RPC_API getSendResultsTo();
-  inline typename SendResultsTo::Builder CAPNP_RPC_API initSendResultsTo();
+  CAPNP_RPC_API inline typename SendResultsTo::Builder getSendResultsTo();
+  CAPNP_RPC_API inline typename SendResultsTo::Builder initSendResultsTo();
 
   inline bool getAllowThirdPartyTailCall();
-  inline void CAPNP_RPC_API setAllowThirdPartyTailCall(bool value);
+  CAPNP_RPC_API inline void setAllowThirdPartyTailCall(bool value);
 
   inline bool getNoPromisePipelining();
-  inline void CAPNP_RPC_API setNoPromisePipelining(bool value);
+  CAPNP_RPC_API inline void setNoPromisePipelining(bool value);
 
   inline bool getOnlyPromisePipeline();
-  inline void CAPNP_RPC_API setOnlyPromisePipeline(bool value);
+  CAPNP_RPC_API inline void setOnlyPromisePipeline(bool value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -848,13 +848,13 @@ class CAPNP_RPC_CLASS Call::Pipeline {
 public:
   typedef Call Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::rpc::MessageTarget::Pipeline CAPNP_RPC_API getTarget();
-  inline  ::capnp::rpc::Payload::Pipeline CAPNP_RPC_API getParams();
-  inline typename SendResultsTo::Pipeline CAPNP_RPC_API getSendResultsTo();
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Pipeline getTarget();
+  CAPNP_RPC_API inline  ::capnp::rpc::Payload::Pipeline getParams();
+  CAPNP_RPC_API inline typename SendResultsTo::Pipeline getSendResultsTo();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -868,28 +868,28 @@ public:
   typedef SendResultsTo Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which() const;
-  inline bool CAPNP_RPC_API isCaller() const;
-  inline  ::capnp::Void CAPNP_RPC_API getCaller() const;
+  CAPNP_RPC_API inline Which which() const;
+  CAPNP_RPC_API inline bool isCaller() const;
+  CAPNP_RPC_API inline  ::capnp::Void getCaller() const;
 
-  inline bool CAPNP_RPC_API isYourself() const;
-  inline  ::capnp::Void CAPNP_RPC_API getYourself() const;
+  CAPNP_RPC_API inline bool isYourself() const;
+  CAPNP_RPC_API inline  ::capnp::Void getYourself() const;
 
-  inline bool CAPNP_RPC_API isThirdParty() const;
-  inline bool CAPNP_RPC_API hasThirdParty() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getThirdParty() const;
+  CAPNP_RPC_API inline bool isThirdParty() const;
+  CAPNP_RPC_API inline bool hasThirdParty() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getThirdParty() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -909,29 +909,29 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which();
-  inline bool CAPNP_RPC_API isCaller();
-  inline  ::capnp::Void CAPNP_RPC_API getCaller();
-  inline void CAPNP_RPC_API setCaller( ::capnp::Void value = ::capnp::VOID);
+  CAPNP_RPC_API inline Which which();
+  CAPNP_RPC_API inline bool isCaller();
+  CAPNP_RPC_API inline  ::capnp::Void getCaller();
+  CAPNP_RPC_API inline void setCaller( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool CAPNP_RPC_API isYourself();
-  inline  ::capnp::Void CAPNP_RPC_API getYourself();
-  inline void CAPNP_RPC_API setYourself( ::capnp::Void value = ::capnp::VOID);
+  CAPNP_RPC_API inline bool isYourself();
+  CAPNP_RPC_API inline  ::capnp::Void getYourself();
+  CAPNP_RPC_API inline void setYourself( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool CAPNP_RPC_API isThirdParty();
-  inline bool CAPNP_RPC_API hasThirdParty();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getThirdParty();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initThirdParty();
+  CAPNP_RPC_API inline bool isThirdParty();
+  CAPNP_RPC_API inline bool hasThirdParty();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getThirdParty();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initThirdParty();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -947,8 +947,8 @@ class CAPNP_RPC_CLASS Call::SendResultsTo::Pipeline {
 public:
   typedef SendResultsTo Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -964,45 +964,45 @@ public:
   typedef Return Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which() const;
-  inline  ::uint32_t CAPNP_RPC_API getAnswerId() const;
+  CAPNP_RPC_API inline Which which() const;
+  CAPNP_RPC_API inline  ::uint32_t getAnswerId() const;
 
-  inline bool CAPNP_RPC_API getReleaseParamCaps() const;
+  CAPNP_RPC_API inline bool getReleaseParamCaps() const;
 
-  inline bool CAPNP_RPC_API isResults() const;
-  inline bool CAPNP_RPC_API hasResults() const;
-  inline  ::capnp::rpc::Payload::Reader CAPNP_RPC_API getResults() const;
+  CAPNP_RPC_API inline bool isResults() const;
+  CAPNP_RPC_API inline bool hasResults() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Payload::Reader getResults() const;
 
-  inline bool CAPNP_RPC_API isException() const;
-  inline bool CAPNP_RPC_API hasException() const;
-  inline  ::capnp::rpc::Exception::Reader CAPNP_RPC_API getException() const;
+  CAPNP_RPC_API inline bool isException() const;
+  CAPNP_RPC_API inline bool hasException() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Reader getException() const;
 
-  inline bool CAPNP_RPC_API isCanceled() const;
-  inline  ::capnp::Void CAPNP_RPC_API getCanceled() const;
+  CAPNP_RPC_API inline bool isCanceled() const;
+  CAPNP_RPC_API inline  ::capnp::Void getCanceled() const;
 
-  inline bool CAPNP_RPC_API isResultsSentElsewhere() const;
-  inline  ::capnp::Void CAPNP_RPC_API getResultsSentElsewhere() const;
+  CAPNP_RPC_API inline bool isResultsSentElsewhere() const;
+  CAPNP_RPC_API inline  ::capnp::Void getResultsSentElsewhere() const;
 
-  inline bool CAPNP_RPC_API isTakeFromOtherQuestion() const;
-  inline  ::uint32_t CAPNP_RPC_API getTakeFromOtherQuestion() const;
+  CAPNP_RPC_API inline bool isTakeFromOtherQuestion() const;
+  CAPNP_RPC_API inline  ::uint32_t getTakeFromOtherQuestion() const;
 
-  inline bool CAPNP_RPC_API isAcceptFromThirdParty() const;
-  inline bool CAPNP_RPC_API hasAcceptFromThirdParty() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getAcceptFromThirdParty() const;
+  CAPNP_RPC_API inline bool isAcceptFromThirdParty() const;
+  CAPNP_RPC_API inline bool hasAcceptFromThirdParty() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getAcceptFromThirdParty() const;
 
-  inline bool CAPNP_RPC_API getNoFinishNeeded() const;
+  CAPNP_RPC_API inline bool getNoFinishNeeded() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1022,58 +1022,58 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which();
-  inline  ::uint32_t CAPNP_RPC_API getAnswerId();
-  inline void CAPNP_RPC_API setAnswerId( ::uint32_t value);
+  CAPNP_RPC_API inline Which which();
+  CAPNP_RPC_API inline  ::uint32_t getAnswerId();
+  CAPNP_RPC_API inline void setAnswerId( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API getReleaseParamCaps();
-  inline void CAPNP_RPC_API setReleaseParamCaps(bool value);
+  CAPNP_RPC_API inline bool getReleaseParamCaps();
+  CAPNP_RPC_API inline void setReleaseParamCaps(bool value);
 
-  inline bool CAPNP_RPC_API isResults();
-  inline bool CAPNP_RPC_API hasResults();
-  inline  ::capnp::rpc::Payload::Builder CAPNP_RPC_API getResults();
-  inline void CAPNP_RPC_API setResults( ::capnp::rpc::Payload::Reader value);
-  inline  ::capnp::rpc::Payload::Builder CAPNP_RPC_API initResults();
-  inline void CAPNP_RPC_API adoptResults(::capnp::Orphan< ::capnp::rpc::Payload>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Payload> CAPNP_RPC_API disownResults();
+  CAPNP_RPC_API inline bool isResults();
+  CAPNP_RPC_API inline bool hasResults();
+  CAPNP_RPC_API inline  ::capnp::rpc::Payload::Builder getResults();
+  CAPNP_RPC_API inline void setResults( ::capnp::rpc::Payload::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Payload::Builder initResults();
+  CAPNP_RPC_API inline void adoptResults(::capnp::Orphan< ::capnp::rpc::Payload>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Payload> disownResults();
 
-  inline bool CAPNP_RPC_API isException();
-  inline bool CAPNP_RPC_API hasException();
-  inline  ::capnp::rpc::Exception::Builder CAPNP_RPC_API getException();
-  inline void CAPNP_RPC_API setException( ::capnp::rpc::Exception::Reader value);
-  inline  ::capnp::rpc::Exception::Builder CAPNP_RPC_API initException();
-  inline void CAPNP_RPC_API adoptException(::capnp::Orphan< ::capnp::rpc::Exception>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Exception> CAPNP_RPC_API disownException();
+  CAPNP_RPC_API inline bool isException();
+  CAPNP_RPC_API inline bool hasException();
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Builder getException();
+  CAPNP_RPC_API inline void setException( ::capnp::rpc::Exception::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Builder initException();
+  CAPNP_RPC_API inline void adoptException(::capnp::Orphan< ::capnp::rpc::Exception>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Exception> disownException();
 
-  inline bool CAPNP_RPC_API isCanceled();
-  inline  ::capnp::Void CAPNP_RPC_API getCanceled();
-  inline void CAPNP_RPC_API setCanceled( ::capnp::Void value = ::capnp::VOID);
+  CAPNP_RPC_API inline bool isCanceled();
+  CAPNP_RPC_API inline  ::capnp::Void getCanceled();
+  CAPNP_RPC_API inline void setCanceled( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool CAPNP_RPC_API isResultsSentElsewhere();
-  inline  ::capnp::Void CAPNP_RPC_API getResultsSentElsewhere();
-  inline void CAPNP_RPC_API setResultsSentElsewhere( ::capnp::Void value = ::capnp::VOID);
+  CAPNP_RPC_API inline bool isResultsSentElsewhere();
+  CAPNP_RPC_API inline  ::capnp::Void getResultsSentElsewhere();
+  CAPNP_RPC_API inline void setResultsSentElsewhere( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool CAPNP_RPC_API isTakeFromOtherQuestion();
-  inline  ::uint32_t CAPNP_RPC_API getTakeFromOtherQuestion();
-  inline void CAPNP_RPC_API setTakeFromOtherQuestion( ::uint32_t value);
+  CAPNP_RPC_API inline bool isTakeFromOtherQuestion();
+  CAPNP_RPC_API inline  ::uint32_t getTakeFromOtherQuestion();
+  CAPNP_RPC_API inline void setTakeFromOtherQuestion( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API isAcceptFromThirdParty();
-  inline bool CAPNP_RPC_API hasAcceptFromThirdParty();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getAcceptFromThirdParty();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initAcceptFromThirdParty();
+  CAPNP_RPC_API inline bool isAcceptFromThirdParty();
+  CAPNP_RPC_API inline bool hasAcceptFromThirdParty();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getAcceptFromThirdParty();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initAcceptFromThirdParty();
 
-  inline bool CAPNP_RPC_API getNoFinishNeeded();
-  inline void CAPNP_RPC_API setNoFinishNeeded(bool value);
+  CAPNP_RPC_API inline bool getNoFinishNeeded();
+  CAPNP_RPC_API inline void setNoFinishNeeded(bool value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1089,8 +1089,8 @@ class CAPNP_RPC_CLASS Return::Pipeline {
 public:
   typedef Return Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1106,23 +1106,23 @@ public:
   typedef Finish Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId() const;
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId() const;
 
-  inline bool CAPNP_RPC_API getReleaseResultCaps() const;
+  CAPNP_RPC_API inline bool getReleaseResultCaps() const;
 
-  inline bool CAPNP_RPC_API getRequireEarlyCancellationWorkaround() const;
+  CAPNP_RPC_API inline bool getRequireEarlyCancellationWorkaround() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1142,24 +1142,24 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId();
-  inline void CAPNP_RPC_API setQuestionId( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId();
+  CAPNP_RPC_API inline void setQuestionId( ::uint32_t value);
 
   inline bool getReleaseResultCaps();
-  inline void CAPNP_RPC_API setReleaseResultCaps(bool value);
+  CAPNP_RPC_API inline void setReleaseResultCaps(bool value);
 
   inline bool getRequireEarlyCancellationWorkaround();
-  inline void CAPNP_RPC_API setRequireEarlyCancellationWorkaround(bool value);
+  CAPNP_RPC_API inline void setRequireEarlyCancellationWorkaround(bool value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1175,8 +1175,8 @@ class CAPNP_RPC_CLASS Finish::Pipeline {
 public:
   typedef Finish Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1192,28 +1192,28 @@ public:
   typedef Resolve Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which() const;
-  inline  ::uint32_t CAPNP_RPC_API getPromiseId() const;
+  CAPNP_RPC_API inline Which which() const;
+  CAPNP_RPC_API inline  ::uint32_t getPromiseId() const;
 
-  inline bool CAPNP_RPC_API isCap() const;
-  inline bool CAPNP_RPC_API hasCap() const;
-  inline  ::capnp::rpc::CapDescriptor::Reader CAPNP_RPC_API getCap() const;
+  CAPNP_RPC_API inline bool isCap() const;
+  CAPNP_RPC_API inline bool hasCap() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::CapDescriptor::Reader getCap() const;
 
-  inline bool CAPNP_RPC_API isException() const;
-  inline bool CAPNP_RPC_API hasException() const;
-  inline  ::capnp::rpc::Exception::Reader CAPNP_RPC_API getException() const;
+  CAPNP_RPC_API inline bool isException() const;
+  CAPNP_RPC_API inline bool hasException() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Reader getException() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1233,35 +1233,35 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which();
-  inline  ::uint32_t CAPNP_RPC_API getPromiseId();
-  inline void CAPNP_RPC_API setPromiseId( ::uint32_t value);
+  CAPNP_RPC_API inline Which which();
+  CAPNP_RPC_API inline  ::uint32_t getPromiseId();
+  CAPNP_RPC_API inline void setPromiseId( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API isCap();
-  inline bool CAPNP_RPC_API hasCap();
-  inline  ::capnp::rpc::CapDescriptor::Builder CAPNP_RPC_API getCap();
-  inline void CAPNP_RPC_API setCap( ::capnp::rpc::CapDescriptor::Reader value);
-  inline  ::capnp::rpc::CapDescriptor::Builder CAPNP_RPC_API initCap();
-  inline void CAPNP_RPC_API adoptCap(::capnp::Orphan< ::capnp::rpc::CapDescriptor>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::CapDescriptor> CAPNP_RPC_API disownCap();
+  CAPNP_RPC_API inline bool isCap();
+  CAPNP_RPC_API inline bool hasCap();
+  CAPNP_RPC_API inline  ::capnp::rpc::CapDescriptor::Builder getCap();
+  CAPNP_RPC_API inline void setCap( ::capnp::rpc::CapDescriptor::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::CapDescriptor::Builder initCap();
+  CAPNP_RPC_API inline void adoptCap(::capnp::Orphan< ::capnp::rpc::CapDescriptor>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::CapDescriptor> disownCap();
 
-  inline bool CAPNP_RPC_API isException();
-  inline bool CAPNP_RPC_API hasException();
-  inline  ::capnp::rpc::Exception::Builder CAPNP_RPC_API getException();
-  inline void CAPNP_RPC_API setException( ::capnp::rpc::Exception::Reader value);
-  inline  ::capnp::rpc::Exception::Builder CAPNP_RPC_API initException();
-  inline void CAPNP_RPC_API adoptException(::capnp::Orphan< ::capnp::rpc::Exception>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::Exception> CAPNP_RPC_API disownException();
+  CAPNP_RPC_API inline bool isException();
+  CAPNP_RPC_API inline bool hasException();
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Builder getException();
+  CAPNP_RPC_API inline void setException( ::capnp::rpc::Exception::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Builder initException();
+  CAPNP_RPC_API inline void adoptException(::capnp::Orphan< ::capnp::rpc::Exception>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::Exception> disownException();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1277,8 +1277,8 @@ class CAPNP_RPC_CLASS Resolve::Pipeline {
 public:
   typedef Resolve Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1294,21 +1294,21 @@ public:
   typedef Release Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getId() const;
+  CAPNP_RPC_API inline  ::uint32_t getId() const;
 
-  inline  ::uint32_t CAPNP_RPC_API getReferenceCount() const;
+  CAPNP_RPC_API inline  ::uint32_t getReferenceCount() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1328,21 +1328,21 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getId();
-  inline void CAPNP_RPC_API setId( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getId();
+  CAPNP_RPC_API inline void setId( ::uint32_t value);
 
-  inline  ::uint32_t CAPNP_RPC_API getReferenceCount();
-  inline void CAPNP_RPC_API setReferenceCount( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getReferenceCount();
+  CAPNP_RPC_API inline void setReferenceCount( ::uint32_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1358,8 +1358,8 @@ class CAPNP_RPC_CLASS Release::Pipeline {
 public:
   typedef Release Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1375,22 +1375,22 @@ public:
   typedef Disembargo Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool CAPNP_RPC_API hasTarget() const;
-  inline  ::capnp::rpc::MessageTarget::Reader CAPNP_RPC_API getTarget() const;
+  CAPNP_RPC_API inline bool hasTarget() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Reader getTarget() const;
 
-  inline typename Context::Reader CAPNP_RPC_API getContext() const;
+  CAPNP_RPC_API inline typename Context::Reader getContext() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1410,25 +1410,25 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool CAPNP_RPC_API hasTarget();
-  inline  ::capnp::rpc::MessageTarget::Builder CAPNP_RPC_API getTarget();
-  inline void CAPNP_RPC_API setTarget( ::capnp::rpc::MessageTarget::Reader value);
-  inline  ::capnp::rpc::MessageTarget::Builder CAPNP_RPC_API initTarget();
-  inline void CAPNP_RPC_API adoptTarget(::capnp::Orphan< ::capnp::rpc::MessageTarget>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::MessageTarget> CAPNP_RPC_API disownTarget();
+  CAPNP_RPC_API inline bool hasTarget();
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Builder getTarget();
+  CAPNP_RPC_API inline void setTarget( ::capnp::rpc::MessageTarget::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Builder initTarget();
+  CAPNP_RPC_API inline void adoptTarget(::capnp::Orphan< ::capnp::rpc::MessageTarget>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::MessageTarget> disownTarget();
 
-  inline typename Context::Builder CAPNP_RPC_API getContext();
-  inline typename Context::Builder CAPNP_RPC_API initContext();
+  CAPNP_RPC_API inline typename Context::Builder getContext();
+  CAPNP_RPC_API inline typename Context::Builder initContext();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1444,12 +1444,12 @@ class CAPNP_RPC_CLASS Disembargo::Pipeline {
 public:
   typedef Disembargo Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::rpc::MessageTarget::Pipeline CAPNP_RPC_API getTarget();
-  inline typename Context::Pipeline CAPNP_RPC_API getContext();
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Pipeline getTarget();
+  CAPNP_RPC_API inline typename Context::Pipeline getContext();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -1463,30 +1463,30 @@ public:
   typedef Context Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which() const;
-  inline bool CAPNP_RPC_API isSenderLoopback() const;
-  inline  ::uint32_t CAPNP_RPC_API getSenderLoopback() const;
+  CAPNP_RPC_API inline Which which() const;
+  CAPNP_RPC_API inline bool isSenderLoopback() const;
+  CAPNP_RPC_API inline  ::uint32_t getSenderLoopback() const;
 
-  inline bool CAPNP_RPC_API isReceiverLoopback() const;
-  inline  ::uint32_t CAPNP_RPC_API getReceiverLoopback() const;
+  CAPNP_RPC_API inline bool isReceiverLoopback() const;
+  CAPNP_RPC_API inline  ::uint32_t getReceiverLoopback() const;
 
-  inline bool CAPNP_RPC_API isAccept() const;
-  inline  ::capnp::Void CAPNP_RPC_API getAccept() const;
+  CAPNP_RPC_API inline bool isAccept() const;
+  CAPNP_RPC_API inline  ::capnp::Void getAccept() const;
 
-  inline bool CAPNP_RPC_API isProvide() const;
-  inline  ::uint32_t CAPNP_RPC_API getProvide() const;
+  CAPNP_RPC_API inline bool isProvide() const;
+  CAPNP_RPC_API inline  ::uint32_t getProvide() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1506,32 +1506,32 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which();
-  inline bool CAPNP_RPC_API isSenderLoopback();
-  inline  ::uint32_t CAPNP_RPC_API getSenderLoopback();
-  inline void CAPNP_RPC_API setSenderLoopback( ::uint32_t value);
+  CAPNP_RPC_API inline Which which();
+  CAPNP_RPC_API inline bool isSenderLoopback();
+  CAPNP_RPC_API inline  ::uint32_t getSenderLoopback();
+  CAPNP_RPC_API inline void setSenderLoopback( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API isReceiverLoopback();
-  inline  ::uint32_t CAPNP_RPC_API getReceiverLoopback();
-  inline void CAPNP_RPC_API setReceiverLoopback( ::uint32_t value);
+  CAPNP_RPC_API inline bool isReceiverLoopback();
+  CAPNP_RPC_API inline  ::uint32_t getReceiverLoopback();
+  CAPNP_RPC_API inline void setReceiverLoopback( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API isAccept();
-  inline  ::capnp::Void CAPNP_RPC_API getAccept();
-  inline void CAPNP_RPC_API setAccept( ::capnp::Void value = ::capnp::VOID);
+  CAPNP_RPC_API inline bool isAccept();
+  CAPNP_RPC_API inline  ::capnp::Void getAccept();
+  CAPNP_RPC_API inline void setAccept( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool CAPNP_RPC_API isProvide();
-  inline  ::uint32_t CAPNP_RPC_API getProvide();
-  inline void CAPNP_RPC_API setProvide( ::uint32_t value);
+  CAPNP_RPC_API inline bool isProvide();
+  CAPNP_RPC_API inline  ::uint32_t getProvide();
+  CAPNP_RPC_API inline void setProvide( ::uint32_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1547,8 +1547,8 @@ class CAPNP_RPC_CLASS Disembargo::Context::Pipeline {
 public:
   typedef Context Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1564,25 +1564,25 @@ public:
   typedef Provide Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId() const;
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId() const;
 
-  inline bool CAPNP_RPC_API hasTarget() const;
-  inline  ::capnp::rpc::MessageTarget::Reader CAPNP_RPC_API getTarget() const;
+  CAPNP_RPC_API inline bool hasTarget() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Reader getTarget() const;
 
-  inline bool CAPNP_RPC_API hasRecipient() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getRecipient() const;
+  CAPNP_RPC_API inline bool hasRecipient() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getRecipient() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1602,29 +1602,29 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId();
-  inline void CAPNP_RPC_API setQuestionId( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId();
+  CAPNP_RPC_API inline void setQuestionId( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API hasTarget();
-  inline  ::capnp::rpc::MessageTarget::Builder CAPNP_RPC_API getTarget();
-  inline void CAPNP_RPC_API setTarget( ::capnp::rpc::MessageTarget::Reader value);
-  inline  ::capnp::rpc::MessageTarget::Builder CAPNP_RPC_API initTarget();
-  inline void CAPNP_RPC_API adoptTarget(::capnp::Orphan< ::capnp::rpc::MessageTarget>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::MessageTarget> CAPNP_RPC_API disownTarget();
+  CAPNP_RPC_API inline bool hasTarget();
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Builder getTarget();
+  CAPNP_RPC_API inline void setTarget( ::capnp::rpc::MessageTarget::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Builder initTarget();
+  CAPNP_RPC_API inline void adoptTarget(::capnp::Orphan< ::capnp::rpc::MessageTarget>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::MessageTarget> disownTarget();
 
-  inline bool CAPNP_RPC_API hasRecipient();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getRecipient();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initRecipient();
+  CAPNP_RPC_API inline bool hasRecipient();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getRecipient();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initRecipient();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1640,11 +1640,11 @@ class CAPNP_RPC_CLASS Provide::Pipeline {
 public:
   typedef Provide Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::rpc::MessageTarget::Pipeline CAPNP_RPC_API getTarget();
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Pipeline getTarget();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -1658,24 +1658,24 @@ public:
   typedef Accept Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId() const;
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId() const;
 
-  inline bool CAPNP_RPC_API hasProvision() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getProvision() const;
+  CAPNP_RPC_API inline bool hasProvision() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getProvision() const;
 
-  inline bool CAPNP_RPC_API getEmbargo() const;
+  CAPNP_RPC_API inline bool getEmbargo() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1695,25 +1695,25 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId();
-  inline void CAPNP_RPC_API setQuestionId( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId();
+  CAPNP_RPC_API inline void setQuestionId( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API hasProvision();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getProvision();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initProvision();
+  CAPNP_RPC_API inline bool hasProvision();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getProvision();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initProvision();
 
-  inline bool CAPNP_RPC_API getEmbargo();
-  inline void CAPNP_RPC_API setEmbargo(bool value);
+  CAPNP_RPC_API inline bool getEmbargo();
+  CAPNP_RPC_API inline void setEmbargo(bool value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1729,8 +1729,8 @@ class CAPNP_RPC_CLASS Accept::Pipeline {
 public:
   typedef Accept Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1746,25 +1746,25 @@ public:
   typedef Join Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId() const;
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId() const;
 
-  inline bool CAPNP_RPC_API hasTarget() const;
-  inline  ::capnp::rpc::MessageTarget::Reader CAPNP_RPC_API getTarget() const;
+  CAPNP_RPC_API inline bool hasTarget() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Reader getTarget() const;
 
-  inline bool CAPNP_RPC_API hasKeyPart() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getKeyPart() const;
+  CAPNP_RPC_API inline bool hasKeyPart() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getKeyPart() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1784,29 +1784,29 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId();
-  inline void CAPNP_RPC_API setQuestionId( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId();
+  CAPNP_RPC_API inline void setQuestionId( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API hasTarget();
-  inline  ::capnp::rpc::MessageTarget::Builder CAPNP_RPC_API getTarget();
-  inline void CAPNP_RPC_API setTarget( ::capnp::rpc::MessageTarget::Reader value);
-  inline  ::capnp::rpc::MessageTarget::Builder CAPNP_RPC_API initTarget();
-  inline void CAPNP_RPC_API adoptTarget(::capnp::Orphan< ::capnp::rpc::MessageTarget>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::MessageTarget> CAPNP_RPC_API disownTarget();
+  CAPNP_RPC_API inline bool hasTarget();
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Builder getTarget();
+  CAPNP_RPC_API inline void setTarget( ::capnp::rpc::MessageTarget::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Builder initTarget();
+  CAPNP_RPC_API inline void adoptTarget(::capnp::Orphan< ::capnp::rpc::MessageTarget>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::MessageTarget> disownTarget();
 
-  inline bool CAPNP_RPC_API hasKeyPart();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getKeyPart();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initKeyPart();
+  CAPNP_RPC_API inline bool hasKeyPart();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getKeyPart();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initKeyPart();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1822,11 +1822,11 @@ class CAPNP_RPC_CLASS Join::Pipeline {
 public:
   typedef Join Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
-  inline  ::capnp::rpc::MessageTarget::Pipeline CAPNP_RPC_API getTarget();
+  CAPNP_RPC_API inline  ::capnp::rpc::MessageTarget::Pipeline getTarget();
 private:
   ::capnp::AnyPointer::Pipeline _typeless;
   friend class ::capnp::PipelineHook;
@@ -1840,25 +1840,25 @@ public:
   typedef MessageTarget Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which() const;
-  inline bool CAPNP_RPC_API isImportedCap() const;
-  inline  ::uint32_t CAPNP_RPC_API getImportedCap() const;
+  CAPNP_RPC_API inline Which which() const;
+  CAPNP_RPC_API inline bool isImportedCap() const;
+  CAPNP_RPC_API inline  ::uint32_t getImportedCap() const;
 
-  inline bool CAPNP_RPC_API isPromisedAnswer() const;
-  inline bool CAPNP_RPC_API hasPromisedAnswer() const;
-  inline  ::capnp::rpc::PromisedAnswer::Reader CAPNP_RPC_API getPromisedAnswer() const;
+  CAPNP_RPC_API inline bool isPromisedAnswer() const;
+  CAPNP_RPC_API inline bool hasPromisedAnswer() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::PromisedAnswer::Reader getPromisedAnswer() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1878,28 +1878,28 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which();
-  inline bool CAPNP_RPC_API isImportedCap();
-  inline  ::uint32_t CAPNP_RPC_API getImportedCap();
-  inline void CAPNP_RPC_API setImportedCap( ::uint32_t value);
+  CAPNP_RPC_API inline Which which();
+  CAPNP_RPC_API inline bool isImportedCap();
+  CAPNP_RPC_API inline  ::uint32_t getImportedCap();
+  CAPNP_RPC_API inline void setImportedCap( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API isPromisedAnswer();
-  inline bool CAPNP_RPC_API hasPromisedAnswer();
-  inline  ::capnp::rpc::PromisedAnswer::Builder CAPNP_RPC_API getPromisedAnswer();
-  inline void CAPNP_RPC_API setPromisedAnswer( ::capnp::rpc::PromisedAnswer::Reader value);
-  inline  ::capnp::rpc::PromisedAnswer::Builder CAPNP_RPC_API initPromisedAnswer();
-  inline void CAPNP_RPC_API adoptPromisedAnswer(::capnp::Orphan< ::capnp::rpc::PromisedAnswer>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::PromisedAnswer> CAPNP_RPC_API disownPromisedAnswer();
+  CAPNP_RPC_API inline bool isPromisedAnswer();
+  CAPNP_RPC_API inline bool hasPromisedAnswer();
+  CAPNP_RPC_API inline  ::capnp::rpc::PromisedAnswer::Builder getPromisedAnswer();
+  CAPNP_RPC_API inline void setPromisedAnswer( ::capnp::rpc::PromisedAnswer::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::PromisedAnswer::Builder initPromisedAnswer();
+  CAPNP_RPC_API inline void adoptPromisedAnswer(::capnp::Orphan< ::capnp::rpc::PromisedAnswer>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::PromisedAnswer> disownPromisedAnswer();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -1915,8 +1915,8 @@ class CAPNP_RPC_CLASS MessageTarget::Pipeline {
 public:
   typedef MessageTarget Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -1932,23 +1932,23 @@ public:
   typedef Payload Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool CAPNP_RPC_API hasContent() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getContent() const;
+  CAPNP_RPC_API inline bool hasContent() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getContent() const;
 
-  inline bool CAPNP_RPC_API hasCapTable() const;
-  inline  ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>::Reader CAPNP_RPC_API getCapTable() const;
+  CAPNP_RPC_API inline bool hasCapTable() const;
+  CAPNP_RPC_API inline  ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>::Reader getCapTable() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -1968,26 +1968,26 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool CAPNP_RPC_API hasContent();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getContent();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initContent();
+  CAPNP_RPC_API inline bool hasContent();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getContent();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initContent();
 
-  inline bool CAPNP_RPC_API hasCapTable();
-  inline  ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>::Builder CAPNP_RPC_API getCapTable();
-  inline void CAPNP_RPC_API setCapTable( ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>::Builder CAPNP_RPC_API initCapTable(unsigned int size);
-  inline void CAPNP_RPC_API adoptCapTable(::capnp::Orphan< ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>> CAPNP_RPC_API disownCapTable();
+  CAPNP_RPC_API inline bool hasCapTable();
+  CAPNP_RPC_API inline  ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>::Builder getCapTable();
+  CAPNP_RPC_API inline void setCapTable( ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>::Reader value);
+  CAPNP_RPC_API inline  ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>::Builder initCapTable(unsigned int size);
+  CAPNP_RPC_API inline void adoptCapTable(::capnp::Orphan< ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::List< ::capnp::rpc::CapDescriptor,  ::capnp::Kind::STRUCT>> disownCapTable();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2003,8 +2003,8 @@ class CAPNP_RPC_CLASS Payload::Pipeline {
 public:
   typedef Payload Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -2020,40 +2020,40 @@ public:
   typedef CapDescriptor Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which() const;
-  inline bool CAPNP_RPC_API isNone() const;
-  inline  ::capnp::Void CAPNP_RPC_API getNone() const;
+  CAPNP_RPC_API inline Which which() const;
+  CAPNP_RPC_API inline bool isNone() const;
+  CAPNP_RPC_API inline  ::capnp::Void getNone() const;
 
-  inline bool CAPNP_RPC_API isSenderHosted() const;
-  inline  ::uint32_t CAPNP_RPC_API getSenderHosted() const;
+  CAPNP_RPC_API inline bool isSenderHosted() const;
+  CAPNP_RPC_API inline  ::uint32_t getSenderHosted() const;
 
-  inline bool CAPNP_RPC_API isSenderPromise() const;
-  inline  ::uint32_t CAPNP_RPC_API getSenderPromise() const;
+  CAPNP_RPC_API inline bool isSenderPromise() const;
+  CAPNP_RPC_API inline  ::uint32_t getSenderPromise() const;
 
-  inline bool CAPNP_RPC_API isReceiverHosted() const;
-  inline  ::uint32_t CAPNP_RPC_API getReceiverHosted() const;
+  CAPNP_RPC_API inline bool isReceiverHosted() const;
+  CAPNP_RPC_API inline  ::uint32_t getReceiverHosted() const;
 
-  inline bool CAPNP_RPC_API isReceiverAnswer() const;
-  inline bool CAPNP_RPC_API hasReceiverAnswer() const;
-  inline  ::capnp::rpc::PromisedAnswer::Reader CAPNP_RPC_API getReceiverAnswer() const;
+  CAPNP_RPC_API inline bool isReceiverAnswer() const;
+  CAPNP_RPC_API inline bool hasReceiverAnswer() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::PromisedAnswer::Reader getReceiverAnswer() const;
 
-  inline bool CAPNP_RPC_API isThirdPartyHosted() const;
-  inline bool CAPNP_RPC_API hasThirdPartyHosted() const;
-  inline  ::capnp::rpc::ThirdPartyCapDescriptor::Reader CAPNP_RPC_API getThirdPartyHosted() const;
+  CAPNP_RPC_API inline bool isThirdPartyHosted() const;
+  CAPNP_RPC_API inline bool hasThirdPartyHosted() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::ThirdPartyCapDescriptor::Reader getThirdPartyHosted() const;
 
-  inline  ::uint8_t CAPNP_RPC_API getAttachedFd() const;
+  CAPNP_RPC_API inline  ::uint8_t getAttachedFd() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2073,51 +2073,51 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which();
-  inline bool CAPNP_RPC_API isNone();
-  inline  ::capnp::Void CAPNP_RPC_API getNone();
-  inline void CAPNP_RPC_API setNone( ::capnp::Void value = ::capnp::VOID);
+  CAPNP_RPC_API inline Which which();
+  CAPNP_RPC_API inline bool isNone();
+  CAPNP_RPC_API inline  ::capnp::Void getNone();
+  CAPNP_RPC_API inline void setNone( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool CAPNP_RPC_API isSenderHosted();
-  inline  ::uint32_t CAPNP_RPC_API getSenderHosted();
-  inline void CAPNP_RPC_API setSenderHosted( ::uint32_t value);
+  CAPNP_RPC_API inline bool isSenderHosted();
+  CAPNP_RPC_API inline  ::uint32_t getSenderHosted();
+  CAPNP_RPC_API inline void setSenderHosted( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API isSenderPromise();
-  inline  ::uint32_t CAPNP_RPC_API getSenderPromise();
-  inline void CAPNP_RPC_API setSenderPromise( ::uint32_t value);
+  CAPNP_RPC_API inline bool isSenderPromise();
+  CAPNP_RPC_API inline  ::uint32_t getSenderPromise();
+  CAPNP_RPC_API inline void setSenderPromise( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API isReceiverHosted();
-  inline  ::uint32_t CAPNP_RPC_API getReceiverHosted();
-  inline void CAPNP_RPC_API setReceiverHosted( ::uint32_t value);
+  CAPNP_RPC_API inline bool isReceiverHosted();
+  CAPNP_RPC_API inline  ::uint32_t getReceiverHosted();
+  CAPNP_RPC_API inline void setReceiverHosted( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API isReceiverAnswer();
-  inline bool CAPNP_RPC_API hasReceiverAnswer();
-  inline  ::capnp::rpc::PromisedAnswer::Builder CAPNP_RPC_API getReceiverAnswer();
-  inline void CAPNP_RPC_API setReceiverAnswer( ::capnp::rpc::PromisedAnswer::Reader value);
-  inline  ::capnp::rpc::PromisedAnswer::Builder CAPNP_RPC_API initReceiverAnswer();
-  inline void CAPNP_RPC_API adoptReceiverAnswer(::capnp::Orphan< ::capnp::rpc::PromisedAnswer>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::PromisedAnswer> CAPNP_RPC_API disownReceiverAnswer();
+  CAPNP_RPC_API inline bool isReceiverAnswer();
+  CAPNP_RPC_API inline bool hasReceiverAnswer();
+  CAPNP_RPC_API inline  ::capnp::rpc::PromisedAnswer::Builder getReceiverAnswer();
+  CAPNP_RPC_API inline void setReceiverAnswer( ::capnp::rpc::PromisedAnswer::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::PromisedAnswer::Builder initReceiverAnswer();
+  CAPNP_RPC_API inline void adoptReceiverAnswer(::capnp::Orphan< ::capnp::rpc::PromisedAnswer>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::PromisedAnswer> disownReceiverAnswer();
 
-  inline bool CAPNP_RPC_API isThirdPartyHosted();
-  inline bool CAPNP_RPC_API hasThirdPartyHosted();
-  inline  ::capnp::rpc::ThirdPartyCapDescriptor::Builder CAPNP_RPC_API getThirdPartyHosted();
-  inline void CAPNP_RPC_API setThirdPartyHosted( ::capnp::rpc::ThirdPartyCapDescriptor::Reader value);
-  inline  ::capnp::rpc::ThirdPartyCapDescriptor::Builder CAPNP_RPC_API initThirdPartyHosted();
-  inline void CAPNP_RPC_API adoptThirdPartyHosted(::capnp::Orphan< ::capnp::rpc::ThirdPartyCapDescriptor>&& value);
-  inline ::capnp::Orphan< ::capnp::rpc::ThirdPartyCapDescriptor> CAPNP_RPC_API disownThirdPartyHosted();
+  CAPNP_RPC_API inline bool isThirdPartyHosted();
+  CAPNP_RPC_API inline bool hasThirdPartyHosted();
+  CAPNP_RPC_API inline  ::capnp::rpc::ThirdPartyCapDescriptor::Builder getThirdPartyHosted();
+  CAPNP_RPC_API inline void setThirdPartyHosted( ::capnp::rpc::ThirdPartyCapDescriptor::Reader value);
+  CAPNP_RPC_API inline  ::capnp::rpc::ThirdPartyCapDescriptor::Builder initThirdPartyHosted();
+  CAPNP_RPC_API inline void adoptThirdPartyHosted(::capnp::Orphan< ::capnp::rpc::ThirdPartyCapDescriptor>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::rpc::ThirdPartyCapDescriptor> disownThirdPartyHosted();
 
-  inline  ::uint8_t CAPNP_RPC_API getAttachedFd();
-  inline void CAPNP_RPC_API setAttachedFd( ::uint8_t value);
+  CAPNP_RPC_API inline  ::uint8_t getAttachedFd();
+  CAPNP_RPC_API inline void setAttachedFd( ::uint8_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2133,8 +2133,8 @@ class CAPNP_RPC_CLASS CapDescriptor::Pipeline {
 public:
   typedef CapDescriptor Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -2150,22 +2150,22 @@ public:
   typedef PromisedAnswer Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId() const;
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId() const;
 
-  inline bool CAPNP_RPC_API hasTransform() const;
-  inline  ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>::Reader CAPNP_RPC_API getTransform() const;
+  CAPNP_RPC_API inline bool hasTransform() const;
+  CAPNP_RPC_API inline  ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>::Reader getTransform() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2185,25 +2185,25 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline  ::uint32_t CAPNP_RPC_API getQuestionId();
-  inline void CAPNP_RPC_API setQuestionId( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getQuestionId();
+  CAPNP_RPC_API inline void setQuestionId( ::uint32_t value);
 
-  inline bool CAPNP_RPC_API hasTransform();
-  inline  ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>::Builder CAPNP_RPC_API getTransform();
-  inline void CAPNP_RPC_API setTransform( ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>::Reader value);
-  inline  ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>::Builder CAPNP_RPC_API initTransform(unsigned int size);
-  inline void CAPNP_RPC_API adoptTransform(::capnp::Orphan< ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>>&& value);
-  inline ::capnp::Orphan< ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>> CAPNP_RPC_API disownTransform();
+  CAPNP_RPC_API inline bool hasTransform();
+  CAPNP_RPC_API inline  ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>::Builder getTransform();
+  CAPNP_RPC_API inline void setTransform( ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>::Reader value);
+  CAPNP_RPC_API inline  ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>::Builder initTransform(unsigned int size);
+  CAPNP_RPC_API inline void adoptTransform(::capnp::Orphan< ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::List< ::capnp::rpc::PromisedAnswer::Op,  ::capnp::Kind::STRUCT>> disownTransform();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2219,8 +2219,8 @@ class CAPNP_RPC_CLASS PromisedAnswer::Pipeline {
 public:
   typedef PromisedAnswer Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -2236,24 +2236,24 @@ public:
   typedef Op Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which() const;
-  inline bool CAPNP_RPC_API isNoop() const;
-  inline  ::capnp::Void CAPNP_RPC_API getNoop() const;
+  CAPNP_RPC_API inline Which which() const;
+  CAPNP_RPC_API inline bool isNoop() const;
+  CAPNP_RPC_API inline  ::capnp::Void getNoop() const;
 
-  inline bool CAPNP_RPC_API isGetPointerField() const;
-  inline  ::uint16_t CAPNP_RPC_API getGetPointerField() const;
+  CAPNP_RPC_API inline bool isGetPointerField() const;
+  CAPNP_RPC_API inline  ::uint16_t getGetPointerField() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2273,24 +2273,24 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline Which CAPNP_RPC_API which();
-  inline bool CAPNP_RPC_API isNoop();
-  inline  ::capnp::Void CAPNP_RPC_API getNoop();
-  inline void CAPNP_RPC_API setNoop( ::capnp::Void value = ::capnp::VOID);
+  CAPNP_RPC_API inline Which which();
+  CAPNP_RPC_API inline bool isNoop();
+  CAPNP_RPC_API inline  ::capnp::Void getNoop();
+  CAPNP_RPC_API inline void setNoop( ::capnp::Void value = ::capnp::VOID);
 
-  inline bool CAPNP_RPC_API isGetPointerField();
-  inline  ::uint16_t CAPNP_RPC_API getGetPointerField();
-  inline void CAPNP_RPC_API setGetPointerField( ::uint16_t value);
+  CAPNP_RPC_API inline bool isGetPointerField();
+  CAPNP_RPC_API inline  ::uint16_t getGetPointerField();
+  CAPNP_RPC_API inline void setGetPointerField( ::uint16_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2306,8 +2306,8 @@ class CAPNP_RPC_CLASS PromisedAnswer::Op::Pipeline {
 public:
   typedef Op Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -2323,22 +2323,22 @@ public:
   typedef ThirdPartyCapDescriptor Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool CAPNP_RPC_API hasId() const;
-  inline ::capnp::AnyPointer::Reader CAPNP_RPC_API getId() const;
+  CAPNP_RPC_API inline bool hasId() const;
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Reader getId() const;
 
-  inline  ::uint32_t CAPNP_RPC_API getVineId() const;
+  CAPNP_RPC_API inline  ::uint32_t getVineId() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2358,22 +2358,22 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool CAPNP_RPC_API hasId();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API getId();
-  inline ::capnp::AnyPointer::Builder CAPNP_RPC_API initId();
+  CAPNP_RPC_API inline bool hasId();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder getId();
+  CAPNP_RPC_API inline ::capnp::AnyPointer::Builder initId();
 
-  inline  ::uint32_t CAPNP_RPC_API getVineId();
-  inline void CAPNP_RPC_API setVineId( ::uint32_t value);
+  CAPNP_RPC_API inline  ::uint32_t getVineId();
+  CAPNP_RPC_API inline void setVineId( ::uint32_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2389,8 +2389,8 @@ class CAPNP_RPC_CLASS ThirdPartyCapDescriptor::Pipeline {
 public:
   typedef ThirdPartyCapDescriptor Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:
@@ -2406,29 +2406,29 @@ public:
   typedef Exception Reads;
 
   CAPNP_RPC_API Reader() = default;
-  inline explicit CAPNP_RPC_API Reader(::capnp::_::StructReader base): _reader(base) {}
+  CAPNP_RPC_API inline explicit Reader(::capnp::_::StructReader base): _reader(base) {}
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const {
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const {
     return _reader.totalSize().asPublic();
   }
 
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const {
+  CAPNP_RPC_API inline ::kj::StringTree toString() const {
     return ::capnp::_::structString(_reader, *_capnpPrivate::brand());
   }
 #endif  // !CAPNP_LITE
 
-  inline bool CAPNP_RPC_API hasReason() const;
-  inline  ::capnp::Text::Reader CAPNP_RPC_API getReason() const;
+  CAPNP_RPC_API inline bool hasReason() const;
+  CAPNP_RPC_API inline  ::capnp::Text::Reader getReason() const;
 
-  inline bool CAPNP_RPC_API getObsoleteIsCallersFault() const;
+  CAPNP_RPC_API inline bool getObsoleteIsCallersFault() const;
 
-  inline  ::uint16_t CAPNP_RPC_API getObsoleteDurability() const;
+  CAPNP_RPC_API inline  ::uint16_t getObsoleteDurability() const;
 
-  inline  ::capnp::rpc::Exception::Type CAPNP_RPC_API getType() const;
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Type getType() const;
 
-  inline bool CAPNP_RPC_API hasTrace() const;
-  inline  ::capnp::Text::Reader CAPNP_RPC_API getTrace() const;
+  CAPNP_RPC_API inline bool hasTrace() const;
+  CAPNP_RPC_API inline  ::capnp::Text::Reader getTrace() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -2448,38 +2448,38 @@ public:
 
   Builder() = delete;  // Deleted to discourage incorrect usage.
                        // You can explicitly initialize to nullptr instead.
-  inline CAPNP_RPC_API Builder(decltype(nullptr)) {}
-  inline explicit CAPNP_RPC_API Builder(::capnp::_::StructBuilder base): _builder(base) {}
-  inline CAPNP_RPC_API operator Reader() const { return Reader(_builder.asReader()); }
-  inline Reader CAPNP_RPC_API asReader() const { return *this; }
+  CAPNP_RPC_API inline Builder(decltype(nullptr)) {}
+  CAPNP_RPC_API inline explicit Builder(::capnp::_::StructBuilder base): _builder(base) {}
+  CAPNP_RPC_API inline operator Reader() const { return Reader(_builder.asReader()); }
+  CAPNP_RPC_API inline Reader asReader() const { return *this; }
 
-  inline ::capnp::MessageSize CAPNP_RPC_API totalSize() const { return asReader().totalSize(); }
+  CAPNP_RPC_API inline ::capnp::MessageSize totalSize() const { return asReader().totalSize(); }
 #if !CAPNP_LITE
-  inline ::kj::StringTree CAPNP_RPC_API toString() const { return asReader().toString(); }
+  CAPNP_RPC_API inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool CAPNP_RPC_API hasReason();
-  inline  ::capnp::Text::Builder CAPNP_RPC_API getReason();
-  inline void CAPNP_RPC_API setReason( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder CAPNP_RPC_API initReason(unsigned int size);
-  inline void CAPNP_RPC_API adoptReason(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> CAPNP_RPC_API disownReason();
+  CAPNP_RPC_API inline bool hasReason();
+  CAPNP_RPC_API inline  ::capnp::Text::Builder getReason();
+  CAPNP_RPC_API inline void setReason( ::capnp::Text::Reader value);
+  CAPNP_RPC_API inline  ::capnp::Text::Builder initReason(unsigned int size);
+  CAPNP_RPC_API inline void adoptReason(::capnp::Orphan< ::capnp::Text>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::Text> disownReason();
 
-  inline bool CAPNP_RPC_API getObsoleteIsCallersFault();
-  inline void CAPNP_RPC_API setObsoleteIsCallersFault(bool value);
+  CAPNP_RPC_API inline bool getObsoleteIsCallersFault();
+  CAPNP_RPC_API inline void setObsoleteIsCallersFault(bool value);
 
-  inline  ::uint16_t CAPNP_RPC_API getObsoleteDurability();
-  inline void CAPNP_RPC_API setObsoleteDurability( ::uint16_t value);
+  CAPNP_RPC_API inline  ::uint16_t getObsoleteDurability();
+  CAPNP_RPC_API inline void setObsoleteDurability( ::uint16_t value);
 
-  inline  ::capnp::rpc::Exception::Type CAPNP_RPC_API getType();
-  inline void CAPNP_RPC_API setType( ::capnp::rpc::Exception::Type value);
+  CAPNP_RPC_API inline  ::capnp::rpc::Exception::Type getType();
+  CAPNP_RPC_API inline void setType( ::capnp::rpc::Exception::Type value);
 
-  inline bool CAPNP_RPC_API hasTrace();
-  inline  ::capnp::Text::Builder CAPNP_RPC_API getTrace();
-  inline void CAPNP_RPC_API setTrace( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder CAPNP_RPC_API initTrace(unsigned int size);
-  inline void CAPNP_RPC_API adoptTrace(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> CAPNP_RPC_API disownTrace();
+  CAPNP_RPC_API inline bool hasTrace();
+  CAPNP_RPC_API inline  ::capnp::Text::Builder getTrace();
+  CAPNP_RPC_API inline void setTrace( ::capnp::Text::Reader value);
+  CAPNP_RPC_API inline  ::capnp::Text::Builder initTrace(unsigned int size);
+  CAPNP_RPC_API inline void adoptTrace(::capnp::Orphan< ::capnp::Text>&& value);
+  CAPNP_RPC_API inline ::capnp::Orphan< ::capnp::Text> disownTrace();
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -2495,8 +2495,8 @@ class CAPNP_RPC_CLASS Exception::Pipeline {
 public:
   typedef Exception Pipelines;
 
-  inline CAPNP_RPC_API Pipeline(decltype(nullptr)): _typeless(nullptr) {}
-  inline explicit CAPNP_RPC_API Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
+  CAPNP_RPC_API inline Pipeline(decltype(nullptr)): _typeless(nullptr) {}
+  CAPNP_RPC_API inline explicit Pipeline(::capnp::AnyPointer::Pipeline&& typeless)
       : _typeless(kj::mv(typeless)) {}
 
 private:

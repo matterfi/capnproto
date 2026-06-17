@@ -60,17 +60,17 @@ public:
   // overlapped I/O
 
   struct KJ_ASYNC_CLASS IoResult {
-    DWORD KJ_ASYNC_API errorCode;
-    DWORD KJ_ASYNC_API bytesTransferred;
+    KJ_ASYNC_API DWORD errorCode;
+    KJ_ASYNC_API DWORD bytesTransferred;
   };
 
   class KJ_ASYNC_CLASS IoOperation {
   public:
-    virtual LPOVERLAPPED KJ_ASYNC_API getOverlapped() = 0;
+    KJ_ASYNC_API virtual LPOVERLAPPED getOverlapped() = 0;
     // Gets the OVERLAPPED structure to pass to the Win32 I/O call. Do NOT modify it; just pass it
     // on.
 
-    virtual Promise<IoResult> KJ_ASYNC_API onComplete() = 0;
+    KJ_ASYNC_API virtual Promise<IoResult> onComplete() = 0;
     // After making the Win32 call, if the return value indicates that the operation was
     // successfully queued (i.e. the completion event will definitely occur), call this to wait
     // for completion.
@@ -89,12 +89,12 @@ public:
 
   class KJ_ASYNC_CLASS IoObserver {
   public:
-    virtual Own<IoOperation> KJ_ASYNC_API newOperation(uint64_t offset) = 0;
+    KJ_ASYNC_API virtual Own<IoOperation> newOperation(uint64_t offset) = 0;
     // Begin an I/O operation. For file operations, `offset` is the offset within the file at
     // which the operation will start. For stream operations, `offset` is ignored.
   };
 
-  virtual Own<IoObserver> KJ_ASYNC_API observeIo(HANDLE handle) = 0;
+  KJ_ASYNC_API virtual Own<IoObserver> observeIo(HANDLE handle) = 0;
   // Given a handle which supports overlapped I/O, arrange to receive I/O completion events via
   // this EventPort.
   //
@@ -117,7 +117,7 @@ public:
 
   class KJ_ASYNC_CLASS SignalObserver {
   public:
-    virtual Promise<void> KJ_ASYNC_API onSignaled() = 0;
+    KJ_ASYNC_API virtual Promise<void> onSignaled() = 0;
     // Returns a promise that completes the next time the handle enters the signaled state.
     //
     // Depending on the type of handle, the handle may automatically be reset to a non-signaled
@@ -127,19 +127,19 @@ public:
     // If the handle is a mutex and it is abandoned without being unlocked, the promise breaks with
     // an exception.
 
-    virtual Promise<bool> KJ_ASYNC_API onSignaledOrAbandoned() = 0;
+    KJ_ASYNC_API virtual Promise<bool> onSignaledOrAbandoned() = 0;
     // Like onSignaled(), but instead of throwing when a mutex is abandoned, resolves to `true`.
     // Resolves to `false` for non-abandoned signals.
   };
 
-  virtual Own<SignalObserver> KJ_ASYNC_API observeSignalState(HANDLE handle) = 0;
+  KJ_ASYNC_API virtual Own<SignalObserver> observeSignalState(HANDLE handle) = 0;
   // Given a handle that supports waiting for it to become "signaled" via WaitForSingleObject(),
   // return an object that can wait for this state using the EventPort.
 
   // ---------------------------------------------------------------------------
   // APCs
 
-  virtual void KJ_ASYNC_API allowApc() = 0;
+  KJ_ASYNC_API virtual void allowApc() = 0;
   // If this is ever called, the Win32EventPort will switch modes so that APCs can be scheduled
   // on the thread, e.g. through the Win32 QueueUserAPC() call. In the future, this may be enabled
   // by default. However, as of this writing, Wine does not support the necessary
@@ -151,7 +151,7 @@ public:
   // ---------------------------------------------------------------------------
   // time
 
-  virtual Timer& KJ_ASYNC_API getTimer() = 0;
+  KJ_ASYNC_API virtual Timer& getTimer() = 0;
 };
 
 class KJ_ASYNC_CLASS Win32WaitObjectThreadPool {
@@ -167,10 +167,10 @@ public:
   // port) or MAXIMUM_WAIT_OBJECTS (e.g. if the main thread is a UI thread but can use
   // MsgWaitForMultipleObjectsEx() to wait on some handles at the same time as messages).
 
-  Own<Win32EventPort::SignalObserver> KJ_ASYNC_API observeSignalState(HANDLE handle);
+  KJ_ASYNC_API Own<Win32EventPort::SignalObserver> observeSignalState(HANDLE handle);
   // Implemetns Win32EventPort::observeSignalState().
 
-  uint KJ_ASYNC_API prepareMainThreadWait(HANDLE* handles[]);
+  KJ_ASYNC_API uint prepareMainThreadWait(HANDLE* handles[]);
   // Call immediately before invoking WaitForMultipleObjects() or similar in the main thread.
   // Fills in `handles` with the handle pointers to wait on, and returns the number of handles
   // in this array. (The array should be allocated to be at least the size passed to the
@@ -178,7 +178,7 @@ public:
   //
   // There's no need to call this if `mainThreadCount` as passed to the constructor was zero.
 
-  bool KJ_ASYNC_API finishedMainThreadWait(DWORD returnCode);
+  KJ_ASYNC_API bool finishedMainThreadWait(DWORD returnCode);
   // Call immediately after invoking WaitForMultipleObjects() or similar in the main thread,
   // passing the value returned by that call. Returns true if the event indicated by `returnCode`
   // has been handled (i.e. it was WAIT_OBJECT_n or WAIT_ABANDONED_n where n is in-range for the
@@ -195,15 +195,15 @@ public:
   KJ_ASYNC_API ~Win32IocpEventPort() noexcept(false);
 
   // implements EventPort ------------------------------------------------------
-  bool KJ_ASYNC_API wait() override;
-  bool KJ_ASYNC_API poll() override;
-  void KJ_ASYNC_API wake() const override;
+  KJ_ASYNC_API bool wait() override;
+  KJ_ASYNC_API bool poll() override;
+  KJ_ASYNC_API void wake() const override;
 
   // implements Win32IocpEventPort ---------------------------------------------
-  Own<IoObserver> KJ_ASYNC_API observeIo(HANDLE handle) override;
-  Own<SignalObserver> KJ_ASYNC_API observeSignalState(HANDLE handle) override;
-  Timer& KJ_ASYNC_API getTimer() override { return timerImpl; }
-  void KJ_ASYNC_API allowApc() override { isAllowApc = true; }
+  KJ_ASYNC_API Own<IoObserver> observeIo(HANDLE handle) override;
+  KJ_ASYNC_API Own<SignalObserver> observeSignalState(HANDLE handle) override;
+  KJ_ASYNC_API Timer& getTimer() override { return timerImpl; }
+  KJ_ASYNC_API void allowApc() override { isAllowApc = true; }
 
 private:
   class IoPromiseAdapter;

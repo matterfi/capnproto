@@ -40,7 +40,7 @@ protected:
   // Do not declare a destructor, as doing so will force a global initializer for
   // HeapArrayDisposer::instance.
 
-  virtual void KJ_API disposeImpl(void* firstElement, size_t elementSize, size_t elementCount,
+  KJ_API virtual void disposeImpl(void* firstElement, size_t elementSize, size_t elementCount,
                                   size_t capacity, void (*destroyElement)(void*)) const = 0;
   // Disposes of the array.  `destroyElement` invokes the destructor of each element, or is nullptr
   // if the elements have trivial destructors.  `capacity` is the amount of space that was
@@ -70,7 +70,7 @@ class KJ_CLASS ExceptionSafeArrayUtil {
   // than one exception will be thrown (and the program will not terminate).
 
 public:
-  inline KJ_API ExceptionSafeArrayUtil(void* ptr, size_t elementSize,
+  KJ_API inline ExceptionSafeArrayUtil(void* ptr, size_t elementSize,
                                        size_t constructedElementCount,
                                        void (*destroyElement)(void*))
       : pos(reinterpret_cast<byte*>(ptr) + elementSize * constructedElementCount),
@@ -78,19 +78,19 @@ public:
         destroyElement(destroyElement) {}
   KJ_DISALLOW_COPY_AND_MOVE(ExceptionSafeArrayUtil);
 
-  inline KJ_API ~ExceptionSafeArrayUtil() noexcept(false) {
+  KJ_API inline ~ExceptionSafeArrayUtil() noexcept(false) {
     if (constructedElementCount > 0) destroyAll();
   }
 
-  void KJ_API construct(size_t count, void (*constructElement)(void*));
+  KJ_API void construct(size_t count, void (*constructElement)(void*));
   // Construct the given number of elements.
 
-  void KJ_API destroyAll();
+  KJ_API void destroyAll();
   // Destroy all elements.  Call this immediately before ExceptionSafeArrayUtil goes out-of-scope
   // to ensure that one element throwing an exception does not prevent the others from being
   // destroyed.
 
-  void KJ_API release() { constructedElementCount = 0; }
+  KJ_API void release() { constructedElementCount = 0; }
   // Prevent ExceptionSafeArrayUtil's destructor from destroying the constructed elements.
   // Call this after you've successfully finished constructing.
 
@@ -103,9 +103,9 @@ private:
 
 class KJ_CLASS DestructorOnlyArrayDisposer: public ArrayDisposer {
 public:
-  static const DestructorOnlyArrayDisposer KJ_API instance;
+  KJ_API static const DestructorOnlyArrayDisposer instance;
 
-  void KJ_API disposeImpl(void* firstElement, size_t elementSize, size_t elementCount,
+  KJ_API void disposeImpl(void* firstElement, size_t elementSize, size_t elementCount,
                           size_t capacity, void (*destroyElement)(void*)) const override;
 };
 
@@ -114,9 +114,9 @@ class KJ_CLASS NullArrayDisposer: public ArrayDisposer {
   // actually own its content.
 
 public:
-  static const NullArrayDisposer KJ_API instance;
+  KJ_API static const NullArrayDisposer instance;
 
-  void KJ_API disposeImpl(void* firstElement, size_t elementSize, size_t elementCount,
+  KJ_API void disposeImpl(void* firstElement, size_t elementSize, size_t elementCount,
                           size_t capacity, void (*destroyElement)(void*)) const override;
 };
 
@@ -276,15 +276,15 @@ public:
   template <typename T>
   static T* allocateUninitialized(size_t count);
 
-  static const HeapArrayDisposer KJ_API instance;
+  KJ_API static const HeapArrayDisposer instance;
 
 private:
-  static void* allocateImpl(size_t elementSize, size_t elementCount, size_t capacity,
-                            void (*constructElement)(void*), void (*destroyElement)(void*));
+  KJ_API static void* allocateImpl(size_t elementSize, size_t elementCount, size_t capacity,
+                                   void (*constructElement)(void*), void (*destroyElement)(void*));
   // Allocates and constructs the array.  Both function pointers are null if the constructor is
   // trivial, otherwise destroyElement is null if the constructor doesn't throw.
 
-  virtual void KJ_API disposeImpl(void* firstElement, size_t elementSize, size_t elementCount,
+  KJ_API virtual void disposeImpl(void* firstElement, size_t elementSize, size_t elementCount,
                                   size_t capacity, void (*destroyElement)(void*)) const override;
 
   template <typename T, bool hasTrivialConstructor = KJ_HAS_TRIVIAL_CONSTRUCTOR(T),

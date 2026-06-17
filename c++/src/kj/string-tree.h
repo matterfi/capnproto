@@ -43,26 +43,26 @@ class KJ_CLASS StringTree {
   // to return StringTree rather than a flat char container.
 
 public:
-  inline KJ_API StringTree(): size_(0) {}
-  inline KJ_API StringTree(String&& text): size_(text.size()), text(kj::mv(text)) {}
+  KJ_API inline StringTree(): size_(0) {}
+  KJ_API inline StringTree(String&& text): size_(text.size()), text(kj::mv(text)) {}
 
   KJ_API StringTree(Array<StringTree>&& pieces, StringPtr delim);
   // Build a StringTree by concatenating the given pieces, delimited by the given delimiter
   // (e.g. ", ").
 
-  inline size_t KJ_API size() const { return size_; }
+  KJ_API inline size_t size() const { return size_; }
 
   template <typename Func>
   void visit(Func&& func) const;
 
-  String KJ_API flatten() const;
+  KJ_API String flatten() const;
   // Return the contents as a string.
 
   // TODO(someday):  flatten() when *this is an rvalue and when branches.size() == 0 could simply
   //   return `kj::mv(text)`.  Requires reference qualifiers (Clang 3.3 / GCC 4.8).
 
-  char* KJ_API flattenTo(char* __restrict__ target) const;
-  char* KJ_API flattenTo(char* __restrict__ target, char* limit) const;
+  KJ_API char* flattenTo(char* __restrict__ target) const;
+  KJ_API char* flattenTo(char* __restrict__ target, char* limit) const;
   // Copy the contents to the given character array.  Does not add a NUL terminator. Returns a
   // pointer just past the end of what was filled.
 
@@ -101,10 +101,10 @@ private:
   friend StringTree strTree(Params&&... params);
 };
 
-inline StringTree&& KJ_API KJ_STRINGIFY(StringTree&& tree) { return kj::mv(tree); }
-inline const StringTree& KJ_API KJ_STRINGIFY(const StringTree& tree) { return tree; }
+KJ_API inline StringTree&& KJ_STRINGIFY(StringTree&& tree) { return kj::mv(tree); }
+KJ_API inline const StringTree& KJ_STRINGIFY(const StringTree& tree) { return tree; }
 
-inline StringTree KJ_API KJ_STRINGIFY(Array<StringTree>&& trees) {
+KJ_API inline StringTree KJ_STRINGIFY(Array<StringTree>&& trees) {
   return StringTree(kj::mv(trees), "");
 }
 
@@ -154,10 +154,10 @@ inline auto toStringTreeOrCharSequence(T&& value)
 }  // namespace _ (private)
 
 struct KJ_CLASS StringTree::Branch {
-  size_t KJ_API index;
+  KJ_API size_t index;
   // Index in `text` where this branch should be inserted.
 
-  StringTree KJ_API content;
+  KJ_API StringTree content;
 };
 
 template <typename Func>

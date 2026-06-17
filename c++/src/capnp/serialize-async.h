@@ -31,20 +31,20 @@ CAPNP_BEGIN_HEADER
 namespace capnp {
 
 struct CAPNP_RPC_CLASS MessageReaderAndFds {
-  kj::Own<MessageReader> CAPNP_RPC_API reader;
-  kj::ArrayPtr<kj::AutoCloseFd> CAPNP_RPC_API fds;
+  CAPNP_RPC_API kj::Own<MessageReader> reader;
+  CAPNP_RPC_API kj::ArrayPtr<kj::AutoCloseFd> fds;
 };
 
 struct CAPNP_RPC_CLASS MessageAndFds {
-  kj::ArrayPtr<const kj::ArrayPtr<const word>> CAPNP_RPC_API segments;
-  kj::ArrayPtr<const int> CAPNP_RPC_API fds;
+  CAPNP_RPC_API kj::ArrayPtr<const kj::ArrayPtr<const word>> segments;
+  CAPNP_RPC_API kj::ArrayPtr<const int> fds;
 };
 
 class CAPNP_RPC_CLASS MessageStream {
   // Interface over which messages can be sent and received; virtualizes
   // the functionality above.
 public:
-  virtual kj::Promise<kj::Maybe<MessageReaderAndFds>> CAPNP_RPC_API tryReadMessage(
+  CAPNP_RPC_API virtual kj::Promise<kj::Maybe<MessageReaderAndFds>> tryReadMessage(
       kj::ArrayPtr<kj::AutoCloseFd> fdSpace,
       ReaderOptions options = ReaderOptions(), kj::ArrayPtr<word> scratchSpace = nullptr) = 0;
   // Read a message that may also have file descriptors attached, e.g. from a Unix socket with
@@ -52,48 +52,48 @@ public:
   //
   // `scratchSpace`, if provided, must remain valid until the returned MessageReader is destroyed.
 
-  kj::Promise<kj::Maybe<kj::Own<MessageReader>>> CAPNP_RPC_API tryReadMessage(
+  CAPNP_RPC_API kj::Promise<kj::Maybe<kj::Own<MessageReader>>> tryReadMessage(
       ReaderOptions options = ReaderOptions(),
       kj::ArrayPtr<word> scratchSpace = nullptr);
   // Equivalent to the above with fdSpace = nullptr.
 
-  kj::Promise<MessageReaderAndFds> CAPNP_RPC_API readMessage(
+  CAPNP_RPC_API kj::Promise<MessageReaderAndFds> readMessage(
       kj::ArrayPtr<kj::AutoCloseFd> fdSpace,
       ReaderOptions options = ReaderOptions(), kj::ArrayPtr<word> scratchSpace = nullptr);
-  kj::Promise<kj::Own<MessageReader>> CAPNP_RPC_API readMessage(
+  CAPNP_RPC_API kj::Promise<kj::Own<MessageReader>> readMessage(
       ReaderOptions options = ReaderOptions(),
       kj::ArrayPtr<word> scratchSpace = nullptr);
   // Like tryReadMessage, but throws an exception on EOF.
 
-  virtual kj::Promise<void> CAPNP_RPC_API writeMessage(
+  CAPNP_RPC_API virtual kj::Promise<void> writeMessage(
       kj::ArrayPtr<const int> fds,
       kj::ArrayPtr<const kj::ArrayPtr<const word>> segments)
     KJ_WARN_UNUSED_RESULT = 0;
-  kj::Promise<void> CAPNP_RPC_API writeMessage(
+  CAPNP_RPC_API kj::Promise<void> writeMessage(
       kj::ArrayPtr<const int> fds,
       MessageBuilder& builder)
     KJ_WARN_UNUSED_RESULT;
   // Write a message with FDs attached, e.g. to a Unix socket with SCM_RIGHTS.
   // The parameters must remain valid until the returned promise resolves.
 
-  kj::Promise<void> CAPNP_RPC_API writeMessage(
+  CAPNP_RPC_API kj::Promise<void> writeMessage(
       kj::ArrayPtr<const kj::ArrayPtr<const word>> segments)
     KJ_WARN_UNUSED_RESULT;
-  kj::Promise<void> CAPNP_RPC_API writeMessage(MessageBuilder& builder)
+  CAPNP_RPC_API kj::Promise<void> writeMessage(MessageBuilder& builder)
       KJ_WARN_UNUSED_RESULT;
   // Equivalent to the above with fds = nullptr.
 
-  kj::Promise<void> CAPNP_RPC_API writeMessages(
+  CAPNP_RPC_API kj::Promise<void> writeMessages(
       kj::ArrayPtr<MessageAndFds> messages)
     KJ_WARN_UNUSED_RESULT;
-  virtual kj::Promise<void> CAPNP_RPC_API writeMessages(
+  CAPNP_RPC_API virtual kj::Promise<void> writeMessages(
       kj::ArrayPtr<kj::ArrayPtr<const kj::ArrayPtr<const word>>> messages)
     KJ_WARN_UNUSED_RESULT = 0;
-  kj::Promise<void> CAPNP_RPC_API writeMessages(kj::ArrayPtr<MessageBuilder*> builders)
+  CAPNP_RPC_API kj::Promise<void> writeMessages(kj::ArrayPtr<MessageBuilder*> builders)
       KJ_WARN_UNUSED_RESULT;
   // Similar to the above, but for writing multiple messages at a time in a batch.
 
-  virtual kj::Maybe<int> CAPNP_RPC_API getSendBufferSize() = 0;
+  CAPNP_RPC_API virtual kj::Maybe<int> getSendBufferSize() = 0;
   // Get the size of the underlying send buffer, if applicable. The RPC
   // system uses this as a hint for flow control purposes; see:
   //
@@ -103,7 +103,7 @@ public:
   // may return nullptr if they do not have access to this information, or if
   // the underlying transport does not use a congestion window.
 
-  virtual kj::Promise<void> CAPNP_RPC_API end() = 0;
+  CAPNP_RPC_API virtual kj::Promise<void> end() = 0;
   // Cleanly shut down just the write end of the transport, while keeping the read end open.
 
 };
@@ -111,20 +111,20 @@ public:
 class CAPNP_RPC_CLASS AsyncIoMessageStream final: public MessageStream {
   // A MessageStream that wraps an AsyncIoStream.
 public:
-  explicit CAPNP_RPC_API AsyncIoMessageStream(kj::AsyncIoStream& stream);
+  CAPNP_RPC_API explicit AsyncIoMessageStream(kj::AsyncIoStream& stream);
 
   // Implements MessageStream
-  kj::Promise<kj::Maybe<MessageReaderAndFds>> CAPNP_RPC_API tryReadMessage(
+  CAPNP_RPC_API kj::Promise<kj::Maybe<MessageReaderAndFds>> tryReadMessage(
       kj::ArrayPtr<kj::AutoCloseFd> fdSpace,
       ReaderOptions options = ReaderOptions(), kj::ArrayPtr<word> scratchSpace = nullptr) override;
-  kj::Promise<void> CAPNP_RPC_API writeMessage(
+  CAPNP_RPC_API kj::Promise<void> writeMessage(
       kj::ArrayPtr<const int> fds,
       kj::ArrayPtr<const kj::ArrayPtr<const word>> segments) override;
-  kj::Promise<void> CAPNP_RPC_API writeMessages(
+  CAPNP_RPC_API kj::Promise<void> writeMessages(
       kj::ArrayPtr<kj::ArrayPtr<const kj::ArrayPtr<const word>>> messages) override;
-  kj::Maybe<int> CAPNP_RPC_API getSendBufferSize() override;
+  CAPNP_RPC_API kj::Maybe<int> getSendBufferSize() override;
 
-  kj::Promise<void> CAPNP_RPC_API end() override;
+  CAPNP_RPC_API kj::Promise<void> end() override;
 
   // Make sure the overridden virtual methods don't hide the non-virtual methods.
   using MessageStream::tryReadMessage;
@@ -136,19 +136,19 @@ private:
 class CAPNP_RPC_CLASS AsyncCapabilityMessageStream final: public MessageStream {
   // A MessageStream that wraps an AsyncCapabilityStream.
 public:
-  explicit CAPNP_RPC_API AsyncCapabilityMessageStream(kj::AsyncCapabilityStream& stream);
+  CAPNP_RPC_API explicit AsyncCapabilityMessageStream(kj::AsyncCapabilityStream& stream);
 
   // Implements MessageStream
-  kj::Promise<kj::Maybe<MessageReaderAndFds>> CAPNP_RPC_API tryReadMessage(
+  CAPNP_RPC_API kj::Promise<kj::Maybe<MessageReaderAndFds>> tryReadMessage(
       kj::ArrayPtr<kj::AutoCloseFd> fdSpace,
       ReaderOptions options = ReaderOptions(), kj::ArrayPtr<word> scratchSpace = nullptr) override;
-  kj::Promise<void> CAPNP_RPC_API writeMessage(
+  CAPNP_RPC_API kj::Promise<void> writeMessage(
       kj::ArrayPtr<const int> fds,
       kj::ArrayPtr<const kj::ArrayPtr<const word>> segments) override;
-  kj::Promise<void> CAPNP_RPC_API writeMessages(
+  CAPNP_RPC_API kj::Promise<void> writeMessages(
       kj::ArrayPtr<kj::ArrayPtr<const kj::ArrayPtr<const word>>> messages) override;
-  kj::Maybe<int> CAPNP_RPC_API getSendBufferSize() override;
-  kj::Promise<void> CAPNP_RPC_API end() override;
+  CAPNP_RPC_API kj::Maybe<int> getSendBufferSize() override;
+  CAPNP_RPC_API kj::Promise<void> end() override;
 
   // Make sure the overridden virtual methods don't hide the non-virtual methods.
   using MessageStream::tryReadMessage;
@@ -172,24 +172,24 @@ public:
   // will be reused for future reads. For long-lived messages, the stream must copy the content
   // into a separate buffer.
 
-  explicit CAPNP_RPC_API BufferedMessageStream(
+  CAPNP_RPC_API explicit BufferedMessageStream(
       kj::AsyncIoStream& stream, IsShortLivedCallback isShortLivedCallback,
       size_t bufferSizeInWords = 8192);
-  explicit CAPNP_RPC_API BufferedMessageStream(
+  CAPNP_RPC_API explicit BufferedMessageStream(
       kj::AsyncCapabilityStream& stream, IsShortLivedCallback isShortLivedCallback,
       size_t bufferSizeInWords = 8192);
 
   // Implements MessageStream
-  kj::Promise<kj::Maybe<MessageReaderAndFds>> CAPNP_RPC_API tryReadMessage(
+  CAPNP_RPC_API kj::Promise<kj::Maybe<MessageReaderAndFds>> tryReadMessage(
       kj::ArrayPtr<kj::AutoCloseFd> fdSpace,
       ReaderOptions options = ReaderOptions(), kj::ArrayPtr<word> scratchSpace = nullptr) override;
-  kj::Promise<void> CAPNP_RPC_API writeMessage(
+  CAPNP_RPC_API kj::Promise<void> writeMessage(
       kj::ArrayPtr<const int> fds,
       kj::ArrayPtr<const kj::ArrayPtr<const word>> segments) override;
-  kj::Promise<void> CAPNP_RPC_API writeMessages(
+  CAPNP_RPC_API kj::Promise<void> writeMessages(
       kj::ArrayPtr<kj::ArrayPtr<const kj::ArrayPtr<const word>>> messages) override;
-  kj::Maybe<int> CAPNP_RPC_API getSendBufferSize() override;
-  kj::Promise<void> CAPNP_RPC_API end() override;
+  CAPNP_RPC_API kj::Maybe<int> getSendBufferSize() override;
+  CAPNP_RPC_API kj::Promise<void> end() override;
 
   // Make sure the overridden virtual methods don't hide the non-virtual methods.
   using MessageStream::tryReadMessage;
@@ -244,19 +244,19 @@ private:
 // The first argument must remain valid until the returned promise resolves
 // (or is canceled).
 
-kj::Promise<kj::Own<MessageReader>> CAPNP_RPC_API readMessage(
+CAPNP_RPC_API kj::Promise<kj::Own<MessageReader>> readMessage(
     kj::AsyncInputStream& input, ReaderOptions options = ReaderOptions(),
     kj::ArrayPtr<word> scratchSpace = nullptr);
 
-kj::Promise<kj::Maybe<kj::Own<MessageReader>>> CAPNP_RPC_API tryReadMessage(
+CAPNP_RPC_API kj::Promise<kj::Maybe<kj::Own<MessageReader>>> tryReadMessage(
     kj::AsyncInputStream& input, ReaderOptions options = ReaderOptions(),
     kj::ArrayPtr<word> scratchSpace = nullptr);
 
-kj::Promise<void> CAPNP_RPC_API writeMessage(kj::AsyncOutputStream& output,
+CAPNP_RPC_API kj::Promise<void> writeMessage(kj::AsyncOutputStream& output,
                                              kj::ArrayPtr<const kj::ArrayPtr<const word>> segments)
     KJ_WARN_UNUSED_RESULT;
 
-kj::Promise<void> CAPNP_RPC_API writeMessage(kj::AsyncOutputStream& output, MessageBuilder& builder)
+CAPNP_RPC_API kj::Promise<void> writeMessage(kj::AsyncOutputStream& output, MessageBuilder& builder)
     KJ_WARN_UNUSED_RESULT;
 
 // -----------------------------------------------------------------------------
@@ -265,18 +265,18 @@ kj::Promise<void> CAPNP_RPC_API writeMessage(kj::AsyncOutputStream& output, Mess
 // For each of these, `foo(stream, ...)` is equivalent to
 // `AsyncCapabilityMessageStream(stream).foo(...)`.
 
-kj::Promise<MessageReaderAndFds> CAPNP_RPC_API readMessage(
+CAPNP_RPC_API kj::Promise<MessageReaderAndFds> readMessage(
     kj::AsyncCapabilityStream& input, kj::ArrayPtr<kj::AutoCloseFd> fdSpace,
     ReaderOptions options = ReaderOptions(), kj::ArrayPtr<word> scratchSpace = nullptr);
 
-kj::Promise<kj::Maybe<MessageReaderAndFds>> CAPNP_RPC_API tryReadMessage(
+CAPNP_RPC_API kj::Promise<kj::Maybe<MessageReaderAndFds>> tryReadMessage(
     kj::AsyncCapabilityStream& input, kj::ArrayPtr<kj::AutoCloseFd> fdSpace,
     ReaderOptions options = ReaderOptions(), kj::ArrayPtr<word> scratchSpace = nullptr);
 
-kj::Promise<void> CAPNP_RPC_API writeMessage(kj::AsyncCapabilityStream& output,
+CAPNP_RPC_API kj::Promise<void> writeMessage(kj::AsyncCapabilityStream& output,
     kj::ArrayPtr<const int> fds, kj::ArrayPtr<const kj::ArrayPtr<const word>> segments)
     KJ_WARN_UNUSED_RESULT;
-kj::Promise<void> CAPNP_RPC_API writeMessage(kj::AsyncCapabilityStream& output,
+CAPNP_RPC_API kj::Promise<void> writeMessage(kj::AsyncCapabilityStream& output,
     kj::ArrayPtr<const int> fds, MessageBuilder& builder)
     KJ_WARN_UNUSED_RESULT;
 
@@ -284,12 +284,12 @@ kj::Promise<void> CAPNP_RPC_API writeMessage(kj::AsyncCapabilityStream& output,
 // -----------------------------------------------------------------------------
 // Stand-alone functions for writing multiple messages at once on AsyncOutputStreams.
 
-kj::Promise<void> CAPNP_RPC_API writeMessages(
+CAPNP_RPC_API kj::Promise<void> writeMessages(
     kj::AsyncOutputStream& output,
     kj::ArrayPtr<kj::ArrayPtr<const kj::ArrayPtr<const word>>> messages)
     KJ_WARN_UNUSED_RESULT;
 
-kj::Promise<void> CAPNP_RPC_API writeMessages(
+CAPNP_RPC_API kj::Promise<void> writeMessages(
     kj::AsyncOutputStream& output, kj::ArrayPtr<MessageBuilder*> builders)
     KJ_WARN_UNUSED_RESULT;
 

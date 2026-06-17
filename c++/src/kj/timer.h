@@ -51,15 +51,15 @@ class KJ_ASYNC_CLASS Timer: public MonotonicClock {
   // `systemPreciseMonotonicClock()` directly in this case.
 
 public:
-  virtual TimePoint KJ_ASYNC_API now() const = 0;
+  KJ_ASYNC_API virtual TimePoint now() const = 0;
   // Returns the current value of a clock that moves steadily forward, independent of any
   // changes in the wall clock. The value is updated every time the event loop waits,
   // and is constant in-between waits.
 
-  virtual Promise<void> KJ_ASYNC_API atTime(TimePoint time) = 0;
+  KJ_ASYNC_API virtual Promise<void> atTime(TimePoint time) = 0;
   // Returns a promise that returns as soon as now() >= time.
 
-  virtual Promise<void> KJ_ASYNC_API afterDelay(Duration delay) = 0;
+  KJ_ASYNC_API virtual Promise<void> afterDelay(Duration delay) = 0;
   // Equivalent to atTime(now() + delay).
 
   template <typename T>
@@ -86,11 +86,11 @@ public:
   KJ_ASYNC_API TimerImpl(TimePoint startTime);
   KJ_ASYNC_API ~TimerImpl() noexcept(false);
 
-  Maybe<TimePoint> KJ_ASYNC_API nextEvent();
+  KJ_ASYNC_API Maybe<TimePoint> nextEvent();
   // Returns the time at which the next scheduled timer event will occur, or null if no timer
   // events are scheduled.
 
-  Maybe<uint64_t> KJ_ASYNC_API timeoutToNextEvent(TimePoint start, Duration unit, uint64_t max);
+  KJ_ASYNC_API Maybe<uint64_t> timeoutToNextEvent(TimePoint start, Duration unit, uint64_t max);
   // Convenience method which computes a timeout value to pass to an event-waiting system call to
   // cause it to time out when the next timer event occurs.
   //
@@ -106,13 +106,13 @@ public:
   //
   // Returns nullptr if there are no future events.
 
-  void KJ_ASYNC_API advanceTo(TimePoint newTime);
+  KJ_ASYNC_API void advanceTo(TimePoint newTime);
   // Set the time to `time` and fire any at() events that have been passed.
 
   // implements Timer ----------------------------------------------------------
-  TimePoint KJ_ASYNC_API now() const override;
-  Promise<void> KJ_ASYNC_API atTime(TimePoint time) override;
-  Promise<void> KJ_ASYNC_API afterDelay(Duration delay) override;
+  KJ_ASYNC_API TimePoint now() const override;
+  KJ_ASYNC_API Promise<void> atTime(TimePoint time) override;
+  KJ_ASYNC_API Promise<void> afterDelay(Duration delay) override;
 
 private:
   struct Impl;

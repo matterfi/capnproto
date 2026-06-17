@@ -42,7 +42,7 @@ public:
   CAPNP_CAPNPC_API SchemaParser();
   CAPNP_CAPNPC_API ~SchemaParser() noexcept(false);
 
-  ParsedSchema CAPNP_CAPNPC_API parseFromDirectory(
+  CAPNP_CAPNPC_API ParsedSchema parseFromDirectory(
       const kj::ReadableDirectory& baseDir, kj::Path path,
       kj::ArrayPtr<const kj::ReadableDirectory* const> importPath) const;
   // Parse a file from the KJ filesystem API.  Throws an exception if the file doesn't exist.
@@ -99,7 +99,7 @@ public:
   //   In this example, note that any imports in the file will fail, since the in-memory directory
   //   you created contains no files except the specific one you linked in.
 
-  ParsedSchema CAPNP_CAPNPC_API parseDiskFile(kj::StringPtr displayName, kj::StringPtr diskPath,
+  CAPNP_CAPNPC_API ParsedSchema parseDiskFile(kj::StringPtr displayName, kj::StringPtr diskPath,
                                               kj::ArrayPtr<const kj::StringPtr> importPath) const
       CAPNP_DEPRECATED("Use parseFromDirectory() instead.");
   // Creates a private kj::Filesystem and uses it to parse files from the real disk.
@@ -111,7 +111,7 @@ public:
   // using `parseFromDirectory()`, you can arrange so that imports are only allowed within a
   // particular directory, or even set up a dummy filesystem where other files are not visible.
 
-  void CAPNP_CAPNPC_API setDiskFilesystem(kj::Filesystem& fs)
+  CAPNP_CAPNPC_API void setDiskFilesystem(kj::Filesystem& fs)
       CAPNP_DEPRECATED("Use parseFromDirectory() instead.");
   // Call before calling parseDiskFile() to choose an alternative disk filesystem implementation.
   // This exists mostly for testing purposes; new code should use parseFromDirectory() instead.
@@ -119,7 +119,7 @@ public:
   // If parseDiskFile() is called without having called setDiskFilesystem(), then
   // kj::newDiskFilesystem() will be used instead.
 
-  ParsedSchema CAPNP_CAPNPC_API parseFile(kj::Own<SchemaFile>&& file) const;
+  CAPNP_CAPNPC_API ParsedSchema parseFile(kj::Own<SchemaFile>&& file) const;
   // Advanced interface for parsing a file that may or may not be located in any global namespace.
   // Most users will prefer `parseFromDirectory()`.
   //
@@ -131,7 +131,7 @@ public:
   // normally.  In this case, the result is a best-effort attempt to compile the schema, but it
   // may be invalid or corrupt, and using it for anything may cause exceptions to be thrown.
 
-  kj::Maybe<schema::Node::SourceInfo::Reader> CAPNP_CAPNPC_API getSourceInfo(Schema schema) const;
+  CAPNP_CAPNPC_API kj::Maybe<schema::Node::SourceInfo::Reader> getSourceInfo(Schema schema) const;
   // Look up source info (e.g. doc comments) for the given schema, which must have come from this
   // SchemaParser. Note that this will also work for implicit group and param types that don't have
   // a type name hence don't have a `ParsedSchema`.
@@ -142,12 +142,12 @@ public:
     getLoader().loadCompiledTypeAndDependencies<T>();
   }
 
-  kj::Array<Schema> CAPNP_CAPNPC_API getAllLoaded() const {
+  CAPNP_CAPNPC_API kj::Array<Schema> getAllLoaded() const {
     // Gets an array of all schema nodes that have been parsed so far.
     return getLoader().getAllLoaded();
   }
 
-  void CAPNP_CAPNPC_API setFileIdsRequired(bool value) { fileIdsRequired = value; }
+  CAPNP_CAPNPC_API void setFileIdsRequired(bool value) { fileIdsRequired = value; }
   // By befault, capnp files must declare a file-level type ID (like `@0xbe702824338d3f7f;`).
   // Use `setFileIdsReqired(false)` to lift this requirement.
   //
@@ -184,20 +184,20 @@ class CAPNP_CAPNPC_CLASS ParsedSchema: public Schema {
   friend class ParsedSchemaList;
 
 public:
-  inline CAPNP_CAPNPC_API ParsedSchema(): parser(nullptr) {}
+  CAPNP_CAPNPC_API inline ParsedSchema(): parser(nullptr) {}
 
-  kj::Maybe<ParsedSchema> CAPNP_CAPNPC_API findNested(kj::StringPtr name) const;
+  CAPNP_CAPNPC_API kj::Maybe<ParsedSchema> findNested(kj::StringPtr name) const;
   // Gets the nested node with the given name, or returns null if there is no such nested
   // declaration.
 
-  ParsedSchema CAPNP_CAPNPC_API getNested(kj::StringPtr name) const;
+  CAPNP_CAPNPC_API ParsedSchema getNested(kj::StringPtr name) const;
   // Gets the nested node with the given name, or throws an exception if there is no such nested
   // declaration.
 
-  ParsedSchemaList CAPNP_CAPNPC_API getAllNested() const;
+  CAPNP_CAPNPC_API ParsedSchemaList getAllNested() const;
   // Get all the nested nodes
 
-  schema::Node::SourceInfo::Reader CAPNP_CAPNPC_API getSourceInfo() const;
+  CAPNP_CAPNPC_API schema::Node::SourceInfo::Reader getSourceInfo() const;
   // Get the source info for this schema.
 
 private:
@@ -211,12 +211,12 @@ class CAPNP_CAPNPC_CLASS ParsedSchema::ParsedSchemaList {
 public:
   CAPNP_CAPNPC_API ParsedSchemaList() = default;  // empty list
 
-  inline uint CAPNP_CAPNPC_API size() const { return list.size(); }
-  ParsedSchema CAPNP_CAPNPC_API operator[](uint index) const;
+  CAPNP_CAPNPC_API inline uint size() const { return list.size(); }
+  CAPNP_CAPNPC_API ParsedSchema operator[](uint index) const;
 
   typedef _::IndexingIterator<const ParsedSchemaList, ParsedSchema> Iterator;
-  inline Iterator CAPNP_CAPNPC_API begin() const { return Iterator(this, 0); }
-  inline Iterator CAPNP_CAPNPC_API end() const { return Iterator(this, size()); }
+  CAPNP_CAPNPC_API inline Iterator begin() const { return Iterator(this, 0); }
+  CAPNP_CAPNPC_API inline Iterator end() const { return Iterator(this, size()); }
 
 private:
   ParsedSchema parent;
@@ -243,7 +243,7 @@ public:
   //   KJ filesystem API. You should be able to get the same effect by subclassing
   //   kj::ReadableDirectory, or using kj::newInMemoryDirectory().
 
-  static kj::Own<SchemaFile> CAPNP_CAPNPC_API newFromDirectory(
+  CAPNP_CAPNPC_API static kj::Own<SchemaFile> newFromDirectory(
       const kj::ReadableDirectory& baseDir, kj::Path path,
       kj::ArrayPtr<const kj::ReadableDirectory* const> importPath,
       kj::Maybe<kj::String> displayNameOverride = nullptr);
@@ -256,13 +256,13 @@ public:
   // -----------------------------------------------------------------
   // For more control, you can implement this interface.
 
-  virtual kj::StringPtr CAPNP_CAPNPC_API getDisplayName() const = 0;
+  CAPNP_CAPNPC_API virtual kj::StringPtr getDisplayName() const = 0;
   // Get the file's name, as it should appear in the schema.
 
-  virtual kj::Array<const char> CAPNP_CAPNPC_API readContent() const = 0;
+  CAPNP_CAPNPC_API virtual kj::Array<const char> readContent() const = 0;
   // Read the file's entire content and return it as a byte array.
 
-  virtual kj::Maybe<kj::Own<SchemaFile>> CAPNP_CAPNPC_API import(kj::StringPtr path) const = 0;
+  CAPNP_CAPNPC_API virtual kj::Maybe<kj::Own<SchemaFile>> import(kj::StringPtr path) const = 0;
   // Resolve an import, relative to this file.
   //
   // `path` is exactly what appears between quotes after the `import` keyword in the source code.
@@ -271,18 +271,18 @@ public:
   // schema file repositories.  On the other hand, a path that doesn't start with '/' is relative
   // to the importing file.
 
-  virtual bool CAPNP_CAPNPC_API operator==(const SchemaFile& other) const = 0;
-  virtual bool CAPNP_CAPNPC_API operator!=(const SchemaFile& other) const = 0;
-  virtual size_t CAPNP_CAPNPC_API hashCode() const = 0;
+  CAPNP_CAPNPC_API virtual bool operator==(const SchemaFile& other) const = 0;
+  CAPNP_CAPNPC_API virtual bool operator!=(const SchemaFile& other) const = 0;
+  CAPNP_CAPNPC_API virtual size_t hashCode() const = 0;
   // Compare two SchemaFiles to see if they refer to the same underlying file.  This is an
   // optimization used to avoid the need to re-parse a file to check its ID.
 
   struct CAPNP_CAPNPC_CLASS SourcePos {
-    uint CAPNP_CAPNPC_API byte;
-    uint CAPNP_CAPNPC_API line;
-    uint CAPNP_CAPNPC_API column;
+    CAPNP_CAPNPC_API uint byte;
+    CAPNP_CAPNPC_API uint line;
+    CAPNP_CAPNPC_API uint column;
   };
-  virtual void CAPNP_CAPNPC_API reportError(SourcePos start, SourcePos end,
+  CAPNP_CAPNPC_API virtual void reportError(SourcePos start, SourcePos end,
                                             kj::StringPtr message) const = 0;
   // Report that the file contains an error at the given interval.
 

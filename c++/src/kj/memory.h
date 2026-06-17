@@ -44,7 +44,7 @@ inline constexpr bool _kj_internal_isPolymorphic(T*) {
 }
 
 #define KJ_DECLARE_NON_POLYMORPHIC(...) \
-  inline constexpr bool KJ_API _kj_internal_isPolymorphic(__VA_ARGS__*) { \
+  KJ_API inline constexpr bool _kj_internal_isPolymorphic(__VA_ARGS__*) { \
     return false; \
   }
 // If you want to use kj::Own<T> for an incomplete type T that you know is not polymorphic, then
@@ -122,7 +122,7 @@ protected:
   // Do not declare a destructor, as doing so will force a global initializer for each HeapDisposer
   // instance.  Eww!
 
-  virtual void KJ_API disposeImpl(void* pointer) const = 0;
+  KJ_API virtual void disposeImpl(void* pointer) const = 0;
   // Disposes of the object, given a pointer to the beginning of the object.  If the object is
   // polymorphic, this pointer is determined by dynamic_cast<void*>().  For non-polymorphic types,
   // Own<T> does not allow any casting, so the pointer exactly matches the original one given to
@@ -164,9 +164,9 @@ class KJ_CLASS NullDisposer: public Disposer {
   // A disposer that does nothing.
 
 public:
-  static const NullDisposer KJ_API instance;
+  KJ_API static const NullDisposer instance;
 
-  void KJ_API disposeImpl(void* pointer) const override {}
+  KJ_API void disposeImpl(void* pointer) const override {}
 };
 
 // =======================================================================================

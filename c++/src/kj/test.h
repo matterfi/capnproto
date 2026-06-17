@@ -38,7 +38,7 @@ public:
   KJ_TEST_API TestCase(const char* file, uint line, const char* description);
   KJ_TEST_API ~TestCase();
 
-  virtual void KJ_TEST_API run() = 0;
+  KJ_TEST_API virtual void run() = 0;
 
 protected:
   template <typename Func>
@@ -171,22 +171,22 @@ private:
 
 namespace _ {  // private
 
-bool KJ_TEST_API hasSubstring(kj::StringPtr haystack, kj::StringPtr needle);
+KJ_TEST_API bool hasSubstring(kj::StringPtr haystack, kj::StringPtr needle);
 
 #if KJ_NO_EXCEPTIONS
-bool KJ_TEST_API expectFatalThrow(Maybe<Exception::Type> type, Maybe<StringPtr> message,
+KJ_TEST_API bool expectFatalThrow(Maybe<Exception::Type> type, Maybe<StringPtr> message,
                              Function<void()> code);
 // Expects that the given code will throw a fatal exception matching the given type and/or message.
 // Since exceptions are disabled, the test will fork() and run in a subprocess. On Windows, where
 // fork() is not available, this always returns true.
 #endif
 
-bool KJ_TEST_API expectExit(Maybe<int> statusCode, FunctionParam<void()> code) noexcept;
+KJ_TEST_API bool expectExit(Maybe<int> statusCode, FunctionParam<void()> code) noexcept;
 // Expects that the given code will exit with a given statusCode.
 // The test will fork() and run in a subprocess. On Windows, where fork() is not available,
 // this always returns true.
 
-bool KJ_TEST_API expectSignal(Maybe<int> signal, FunctionParam<void()> code) noexcept;
+KJ_TEST_API bool expectSignal(Maybe<int> signal, FunctionParam<void()> code) noexcept;
 // Expects that the given code will trigger a signal.
 // The test will fork() and run in a subprocess. On Windows, where fork() is not available,
 // this always returns true.
@@ -197,7 +197,7 @@ public:
   KJ_TEST_API LogExpectation(LogSeverity severity, StringPtr substring);
   KJ_TEST_API ~LogExpectation();
 
-  void KJ_TEST_API logMessage(LogSeverity severity, const char* file, int line, int contextDepth,
+  KJ_TEST_API void logMessage(LogSeverity severity, const char* file, int line, int contextDepth,
                          String&& text) override;
 
 private:
@@ -213,10 +213,10 @@ class KJ_TEST_CLASS GlobFilter {
   // Exposed in header only for testing.
 
 public:
-  explicit KJ_TEST_API GlobFilter(const char* pattern);
-  explicit KJ_TEST_API GlobFilter(ArrayPtr<const char> pattern);
+  KJ_TEST_API explicit GlobFilter(const char* pattern);
+  KJ_TEST_API explicit GlobFilter(ArrayPtr<const char> pattern);
 
-  bool KJ_TEST_API matches(StringPtr name);
+  KJ_TEST_API bool matches(StringPtr name);
 
 private:
   String pattern;

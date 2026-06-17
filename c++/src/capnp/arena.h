@@ -280,21 +280,21 @@ class CAPNP_CLASS BuilderArena final: public Arena {
   // A BuilderArena that does not allow the injection of capabilities.
 
 public:
-  explicit CAPNP_API BuilderArena(MessageBuilder* message);
+  CAPNP_API explicit BuilderArena(MessageBuilder* message);
   CAPNP_API BuilderArena(MessageBuilder* message, kj::ArrayPtr<MessageBuilder::SegmentInit> segments);
   CAPNP_API ~BuilderArena() noexcept(false);
   KJ_DISALLOW_COPY_AND_MOVE(BuilderArena);
 
-  size_t CAPNP_API sizeInWords();
+  CAPNP_API size_t sizeInWords();
 
-  inline SegmentBuilder* CAPNP_API getRootSegment() { return &segment0; }
+  CAPNP_API inline SegmentBuilder* getRootSegment() { return &segment0; }
 
-  kj::ArrayPtr<const kj::ArrayPtr<const word>> CAPNP_API getSegmentsForOutput();
+  CAPNP_API kj::ArrayPtr<const kj::ArrayPtr<const word>> getSegmentsForOutput();
   // Get an array of all the segments, suitable for writing out.  This only returns the allocated
   // portion of each segment, whereas tryGetSegment() returns something that includes
   // not-yet-allocated space.
 
-  inline CapTableBuilder* CAPNP_API getLocalCapTable() {
+  CAPNP_API inline CapTableBuilder* getLocalCapTable() {
     // Return a CapTableBuilder that merely implements local loopback. That is, you can set
     // capabilities, then read the same capabilities back, but there is no intent ever to transmit
     // these capabilities. A MessageBuilder that isn't imbued with some other CapTable uses this
@@ -311,25 +311,25 @@ public:
     return &localCapTable;
   }
 
-  kj::Own<_::CapTableBuilder> CAPNP_API releaseLocalCapTable() {
+  CAPNP_API kj::Own<_::CapTableBuilder> releaseLocalCapTable() {
     return kj::heap<LocalCapTable>(kj::mv(localCapTable));
   }
 
-  SegmentBuilder* CAPNP_API getSegment(SegmentId id);
+  CAPNP_API SegmentBuilder* getSegment(SegmentId id);
   // Get the segment with the given id.  Crashes or throws an exception if no such segment exists.
 
   struct CAPNP_CLASS AllocateResult {
-    SegmentBuilder* CAPNP_API segment;
-    word* CAPNP_API words;
+    CAPNP_API SegmentBuilder* segment;
+    CAPNP_API word* words;
   };
 
-  AllocateResult CAPNP_API allocate(SegmentWordCount amount);
+  CAPNP_API AllocateResult allocate(SegmentWordCount amount);
   // Find a segment with at least the given amount of space available and allocate the space.
   // Note that allocating directly from a particular segment is much faster, but allocating from
   // the arena is guaranteed to succeed.  Therefore callers should try to allocate from a specific
   // segment first if there is one, then fall back to the arena.
 
-  SegmentBuilder* CAPNP_API addExternalSegment(kj::ArrayPtr<const word> content);
+  CAPNP_API SegmentBuilder* addExternalSegment(kj::ArrayPtr<const word> content);
   // Add a new segment to the arena which points to some existing memory region.  The segment is
   // assumed to be completley full; the arena will never allocate from it.  In fact, the segment
   // is considered read-only.  Any attempt to get a Builder pointing into this segment will throw
@@ -341,8 +341,8 @@ public:
   // this feature.
 
   // implements Arena ------------------------------------------------
-  SegmentReader* CAPNP_API tryGetSegment(SegmentId id) override;
-  void CAPNP_API reportReadLimitReached() override;
+  CAPNP_API SegmentReader* tryGetSegment(SegmentId id) override;
+  CAPNP_API void reportReadLimitReached() override;
 
 private:
   MessageBuilder* message;
